@@ -185,51 +185,107 @@ P6_tlf_vl_efter()
 P6_initialer()
 {
     FormatTime, Time, ,HHmm tt ;definerer format på tid/dato
-    initialer = /mt%A_userName%%time%
-    initialer_udentid =mt%A_userName%
-    P6_Planvindue()
-    sleep 40
-    sendinput ^n
-    sleep 1400
-    clipboard :=
-    SendInput, ^a^c
-    ClipWait, 1, 0
-    sleep 40
-    notering := Clipboard
-    sleep 400
+    ; initialer = /mt%A_userName%%time%
+    initialer = /mtebk
+    ; initialer_udentid =mt%A_userName%
+    initialer_udentid =/mtebk
+    ; P6_Planvindue()
+    ; sleep 40
+    ; sendinput ^n
+    ; sleep 1400
+    ; clipboard :=
+    ; SendInput, ^a^c
+    ; ClipWait, 1, 0
+    ; sleep 40
+    notering =  /mtebk123 asdjlksd
+    ; nynotering = a%notering%
+    MsgBox, , notering, %notering%, 
     ; deler notering op i array med ord delt i mellemrum
     ; notering_array := StrSplit(notering, A_Space)
-    notering_array := StrSplit(notering, A_space, "/")
+    notering_array := StrSplit(notering)
     sleep 400
-    MsgBox, , Felt 1, % notering_array.1, 
-    MsgBox, , Felt 2, % notering_array.2, 
-    ; tjekker for initialer uden tid i første ord i notering
-    ; falsk positiv, hvis der er skrevet ud i ét, uden mellemrum
+    fem = % notering_array.1 notering_array.2 notering_array.3 notering_array.4 notering_array.5 notering_array.6
+    MsgBox, , fem, %fem%,
+    MsgBox, , udentid, %initialer_udentid%
+    ;tjekker for initialer uden tid i første ord i notering
+    ;falsk positiv, hvis der er skrevet ud i ét, uden mellemrum
     ; hvis ja, fjerner de første 11 bogstaver (= initialer med tid) ? kan det laves smartere?
-    if InStr(notering_array[1], initialer_udentid, 0, 1)
+    if InStr(fem, initialer_udentid, 0, 1)
     {
+        ; MsgBox, , If, Ja, fem er lig uden tid
         StringTrimLeft, noteringuden, notering, 11
         Clipboard :=
         sleep 200
         Clipboard := noteringuden
-        sendinput ^a^v
-        sleep 200
-        SendInput, !o
+        ; sendinput ^a^v
+        ; sleep 200
+        ; SendInput, !o
+        MsgBox, , klippet, %noteringuden%, 
         return
     }
     ;indsætter initialer med tid
     Else
-        Clipboard :=
+        ; MsgBox, , Else, Nej, det er ikke, 
+    Clipboard :=
     sleep 40
     Clipboard := initialer
     ClipWait, 1, 0
-    SendInput, {Left}
-    Sendinput ^v
-    SendInput, %A_Space%
-    sleep 100
-    SendInput, !o
+    ; SendInput, {Left}
+    ; Sendinput ^v
+    ; SendInput, %A_Space%
+    ; sleep 100
+    ; SendInput, !o
 }
 
+
+; P6_initialer()
+; {
+;     FormatTime, Time, ,HHmm tt ;definerer format på tid/dato
+;     initialer = /mt%A_userName%%time%
+;     initialer_udentid =mt%A_userName%
+;     P6_Planvindue()
+;     sleep 40
+;     sendinput ^n
+;     sleep 1400
+;     clipboard :=
+;     SendInput, ^a^c
+;     ClipWait, 1, 0
+;     sleep 40
+;     notering := Clipboard
+;     sleep 400
+;     ; deler notering op i array med ord delt i mellemrum
+;     ; notering_array := StrSplit(notering, A_Space)
+;     notering_array := StrSplit(notering, A_space, "/")
+;     sleep 400
+;     MsgBox, , Felt 1, % notering_array.1, 
+;     MsgBox, , Felt 2, % notering_array.2, 
+;     ; tjekker for initialer uden tid i første ord i notering
+;     ; falsk positiv, hvis der er skrevet ud i ét, uden mellemrum
+;     ; hvis ja, fjerner de første 11 bogstaver (= initialer med tid) ? kan det laves smartere?
+;     if InStr(notering_array[1], initialer_udentid, 0, 1)
+;     {
+;         StringTrimLeft, noteringuden, notering, 11
+;         Clipboard :=
+;         sleep 200
+;         Clipboard := noteringuden
+;         sendinput ^a^v
+;         sleep 200
+;         SendInput, !o
+;         return
+;     }
+;     ;indsætter initialer med tid
+;     Else
+;         Clipboard :=
+;     sleep 40
+;     Clipboard := initialer
+;     ClipWait, 1, 0
+;     SendInput, {Left}
+;     Sendinput ^v
+;     SendInput, %A_Space%
+;     sleep 100
+;     SendInput, !o
+; }
+^+p::P6_initialer()
 ; ** kan gemtklip-funktion skrives bedre?
 ;Indsæt initialer med efterf. kommentar, behold tidligere klip
 P6_initialer_skriv()
@@ -535,8 +591,10 @@ Flexfinder_opslag()
 
 ; Misc
 
+; *
+; Mangler udbygning af funktioner
 ; SygehusGUI
-+^p::
++^t::
 gui, Ring:Default
 Gui,Add,Button,vButton1,&AUH
 Gui,Add,Button,vButton2,RH&G
@@ -567,7 +625,7 @@ exit
 return
 
 ; Gui-escape: escape når gui er aktivt.
-; hvorfor virker ikke?
+
 GuiEscape: 
 Gui, Destroy
 return
