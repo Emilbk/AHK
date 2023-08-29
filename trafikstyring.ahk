@@ -809,8 +809,6 @@ Return
         sleep 800
         Clipboard := gemtklip
         return
-        sdfdsf 
-        dsfdsflk
     }
 
 
