@@ -537,24 +537,39 @@ Flexfinder_opslag()
 
 ; SygehusGUI
 +^p::
-{
-Gui,Add,Button,vButton1,AUH
-Gui,Add,Button,vButton2,RHG
-Gui,Add,Button,vButton3,Randers Sygehus
-Gui,Add,Button,vButton4,Viborg Sygehus
-Gui,Add,Button,vButton5,Horsens Sygehus
-Gui,Show
-funb1:=Func("fun").Bind("Button1","test1")
-funb2:=Func("fun").Bind("Button2","test2")
-GuiControl,+g,Button1,%funb1%
-GuiControl,+g,Button2,%funb2%
+gui, Ring:Default
+Gui,Add,Button,vButton1,&AUH
+Gui,Add,Button,vButton2,RH&G
+Gui,Add,Button,vButton3,&Randers Sygehus
+Gui,Add,Button,vButton4,V&iborg Sygehus
+Gui,Add,Button,vButton5,&Horsens Sygehus
+Gui,Show, AutoSize Center , Ring op til sygehus
+knap1:=Func("fun").Bind("7845000")
+knap2:=Func("fun").Bind("RHG")
+knap3:=Func("fun").Bind("Randers")
+knap4:=Func("fun").Bind("Vibogr")
+knap5:=Func("fun").Bind("Hor")
+GuiControl,+g,Button1,%knap1%
+GuiControl,+g,Button2,%knap2%
+GuiControl,+g,Button3,%knap3%
+GuiControl,+g,Button4,%knap4%
+GuiControl,+g,Button5,%knap5%
 return
 Fun(p*){
-  MsgBox % p.1 "`n" p.2
+  clipboard := % p.1
+  Gui, Destroy
 }
+
+
+GuiClose:
+gui, Destroy
+exit
 return
 
-
+; Gui-escape: escape når gui er aktivt.
+GuiEscape: 
+Gui, Destroy
+return
 
 ;; Outlook
 ; ***
@@ -565,10 +580,6 @@ Outlook_nymail()
     Return
 }
 
-
-
-return
-}
 
 ;; Testknap
 ; +^e::
