@@ -564,10 +564,7 @@ Fun(p*){
 }
 return
 
-}
-GUI_sygehus()
-{
- 
+
 
 return
 }
