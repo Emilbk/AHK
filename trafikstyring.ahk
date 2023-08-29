@@ -567,6 +567,7 @@ exit
 return
 
 ; Gui-escape: escape når gui er aktivt.
+; hvorfor virker ikke?
 GuiEscape: 
 Gui, Destroy
 return
