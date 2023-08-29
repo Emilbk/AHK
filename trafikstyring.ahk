@@ -535,17 +535,7 @@ Flexfinder_opslag()
 
 ; Misc
 
-
-;; Outlook
-; ***
-; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script.
-Outlook_nymail()
-{  
-    Run, nymail.lnk, , , 
-    Return
-}
-
-;
+; SygehusGUI
 +^p::
 {
 Gui,Add,Button,vButton1,AUH
@@ -563,6 +553,17 @@ Fun(p*){
   MsgBox % p.1 "`n" p.2
 }
 return
+
+
+
+;; Outlook
+; ***
+; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script.
+Outlook_nymail()
+{  
+    Run, nymail.lnk, , , 
+    Return
+}
 
 
 
