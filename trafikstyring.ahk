@@ -545,27 +545,33 @@ Flexfinder_opslag()
 ; *
 ; Mangler udbygning af funktioner
 ; SygehusGUI
-+^t::
++^s::
 gui, Ring:Default
 Gui,Add,Button,vButton1,&AUH
 Gui,Add,Button,vButton2,RH&G
 Gui,Add,Button,vButton3,&Randers Sygehus
 Gui,Add,Button,vButton4,V&iborg Sygehus
 Gui,Add,Button,vButton5,&Horsens Sygehus
+Gui,Add,Button,vButton6,&Silkeborg Sygehus
 Gui,Show, AutoSize Center , Ring op til sygehus
-knap1:=Func("fun").Bind("7845000")
-knap2:=Func("fun").Bind("RHG")
-knap3:=Func("fun").Bind("Randers")
-knap4:=Func("fun").Bind("Vibogr")
-knap5:=Func("fun").Bind("Hor")
+knap1:=Func("opkald").Bind("78450000")
+knap2:=Func("opkald").Bind("78430000")
+knap3:=Func("opkald").Bind("78420000")
+knap4:=Func("opkald").Bind("78440000")
+knap5:=Func("opkald").Bind("78440000")
+knap5:=Func("opkald").Bind("78425000")
+knap6:=Func("opkald").Bind("78415000")
 GuiControl,+g,Button1,%knap1%
 GuiControl,+g,Button2,%knap2%
 GuiControl,+g,Button3,%knap3%
 GuiControl,+g,Button4,%knap4%
 GuiControl,+g,Button5,%knap5%
+GuiControl,+g,Button6,%knap6%
 return
-Fun(p*){
+Opkald(p*){
   clipboard := % p.1
+  sleep 100
+  Trio_opkald()
   Gui, Destroy
 }
 
