@@ -291,6 +291,7 @@ P6_tekstTilChf()
     ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
     kørselsaftale := P6_k_aftale()
     styresystem := P6_styresystem()
+    sleep 200
     Sendinput !tt^k
     Sleep 100
     Sendinput !k
