@@ -185,28 +185,25 @@ P6_tlf_vl_efter()
 P6_initialer()
 {
     FormatTime, Time, ,HHmm tt ;definerer format på tid/dato
-    ; initialer = /mt%A_userName%%time%
-    initialer = /mtebk
-    ; initialer_udentid =mt%A_userName%
-    initialer_udentid =/mtebk
-    ; P6_Planvindue()
-    ; sleep 40
-    ; sendinput ^n
-    ; sleep 1400
-    ; clipboard :=
-    ; SendInput, ^a^c
-    ; ClipWait, 1, 0
-    ; sleep 40
-    notering =  /mtebk123 asdjlksd
-    ; nynotering = a%notering%
-    MsgBox, , notering, %notering%, 
+    initialer = /mt%A_userName%%time%
+    initialer_udentid =/mt%A_userName%
+    P6_Planvindue()
+    sleep 40
+    sendinput ^n
+    sleep 1400
+    clipboard :=
+    SendInput, ^a^c
+    ClipWait, 1, 0
+    notering := clipboard
+    sleep 40
+    ; MsgBox, , notering, %notering%, 
     ; deler notering op i array med ord delt i mellemrum
     ; notering_array := StrSplit(notering, A_Space)
     notering_array := StrSplit(notering)
     sleep 400
     fem = % notering_array.1 notering_array.2 notering_array.3 notering_array.4 notering_array.5 notering_array.6
-    MsgBox, , fem, %fem%,
-    MsgBox, , udentid, %initialer_udentid%
+    ; MsgBox, , fem, %fem%,
+    ; MsgBox, , udentid, %initialer_udentid%
     ;tjekker for initialer uden tid i første ord i notering
     ;falsk positiv, hvis der er skrevet ud i ét, uden mellemrum
     ; hvis ja, fjerner de første 11 bogstaver (= initialer med tid) ? kan det laves smartere?
@@ -214,13 +211,16 @@ P6_initialer()
     {
         ; MsgBox, , If, Ja, fem er lig uden tid
         StringTrimLeft, noteringuden, notering, 11
+        If (noteringuden) = ""
+            noteringuden := " "
+        else
         Clipboard :=
         sleep 200
         Clipboard := noteringuden
-        ; sendinput ^a^v
-        ; sleep 200
-        ; SendInput, !o
-        MsgBox, , klippet, %noteringuden%, 
+        sendinput ^a^v
+        sleep 800
+        SendInput, !o
+        ; MsgBox, , klippet, %noteringuden%, 
         return
     }
     ;indsætter initialer med tid
@@ -230,11 +230,11 @@ P6_initialer()
     sleep 40
     Clipboard := initialer
     ClipWait, 1, 0
-    ; SendInput, {Left}
-    ; Sendinput ^v
-    ; SendInput, %A_Space%
-    ; sleep 100
-    ; SendInput, !o
+    SendInput, {Left}
+    Sendinput ^v
+    SendInput, %A_Space%
+    sleep 100
+    SendInput, !o
 }
 
 
