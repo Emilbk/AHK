@@ -178,10 +178,8 @@ P6_tlf_vl_efter()
 
     return
 }
-; ** Virker ikke hvis noteringen er eneste ord
+; *** 
 ; Noterer intialer, fjerner dem hvis første ord i notering er initialer
-
-; midlertidig løsning at kun eksakt tidspunkt skæres fra?
 P6_initialer()
 {
     FormatTime, Time, ,HHmm tt ;definerer format på tid/dato
@@ -238,54 +236,6 @@ P6_initialer()
 }
 
 
-; P6_initialer()
-; {
-;     FormatTime, Time, ,HHmm tt ;definerer format på tid/dato
-;     initialer = /mt%A_userName%%time%
-;     initialer_udentid =mt%A_userName%
-;     P6_Planvindue()
-;     sleep 40
-;     sendinput ^n
-;     sleep 1400
-;     clipboard :=
-;     SendInput, ^a^c
-;     ClipWait, 1, 0
-;     sleep 40
-;     notering := Clipboard
-;     sleep 400
-;     ; deler notering op i array med ord delt i mellemrum
-;     ; notering_array := StrSplit(notering, A_Space)
-;     notering_array := StrSplit(notering, A_space, "/")
-;     sleep 400
-;     MsgBox, , Felt 1, % notering_array.1, 
-;     MsgBox, , Felt 2, % notering_array.2, 
-;     ; tjekker for initialer uden tid i første ord i notering
-;     ; falsk positiv, hvis der er skrevet ud i ét, uden mellemrum
-;     ; hvis ja, fjerner de første 11 bogstaver (= initialer med tid) ? kan det laves smartere?
-;     if InStr(notering_array[1], initialer_udentid, 0, 1)
-;     {
-;         StringTrimLeft, noteringuden, notering, 11
-;         Clipboard :=
-;         sleep 200
-;         Clipboard := noteringuden
-;         sendinput ^a^v
-;         sleep 200
-;         SendInput, !o
-;         return
-;     }
-;     ;indsætter initialer med tid
-;     Else
-;         Clipboard :=
-;     sleep 40
-;     Clipboard := initialer
-;     ClipWait, 1, 0
-;     SendInput, {Left}
-;     Sendinput ^v
-;     SendInput, %A_Space%
-;     sleep 100
-;     SendInput, !o
-; }
-^+p::P6_initialer()
 ; ** kan gemtklip-funktion skrives bedre?
 ;Indsæt initialer med efterf. kommentar, behold tidligere klip
 P6_initialer_skriv()
