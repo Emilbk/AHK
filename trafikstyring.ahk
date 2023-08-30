@@ -591,11 +591,10 @@ Outlook_nymail()
 }
 
 
-; Testknap
+;; Testknap
 +^e::
-Sendinput æ
+SendInput, æ
 return
-
 
 ;; HOTKEYS
 
