@@ -1,4 +1,5 @@
-#NoEnv ; Recommended for performance and compatibility with future AutoHotkey releases.
+﻿#NoEnv ; Recommended for performance and compatibility with future AutoHotkey releases.
+;FileEncoding UTF-8
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
@@ -110,20 +111,20 @@ P6_hent_vl_tlf()
 {
     P6_Planvindue()
     SendInput ^{F12}
-    sleep 800
+    sleep 1000
     sendinput ^æ
     sleep 200
     SendInput {Enter}{Enter}
-    ; Sleep 40
+    Sleep 40
     SendInput !ø
-    ; sleep 40
+    sleep 40
     Clipboard :=
     SendInput {tab}{tab}^c{enter}
     ClipWait, 2, 0
     vl_tlf := Clipboard
     Return vl_tlf
 }
-
+return
 ; ***
 ; P6 hent VM tlf
 P6_hent_vm_tlf()
@@ -590,9 +591,10 @@ Outlook_nymail()
 }
 
 
-;; Testknap
-; +^e::
-; return
+; Testknap
++^e::
+Sendinput æ
+return
 
 
 ;; HOTKEYS
