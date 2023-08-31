@@ -179,7 +179,6 @@ P6_tlf_vl_efter()
     return
 }
 ; ***
-; tskkestksetsd
 ; Noterer intialer, fjerner dem hvis første ord i notering er initialer
 P6_initialer()
 {
