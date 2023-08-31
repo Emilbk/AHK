@@ -546,6 +546,7 @@ Flexfinder_opslag()
     {
         MsgBox, , k_aftale1, % k_aftale
         ; k_aftale_ny := "000" . k_aftale
+        KeyWait, Enter, D, T3
         SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
     }
     sleep 200
