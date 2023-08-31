@@ -525,48 +525,53 @@ Trio_clipboard()
 ; Kørselsaftale til flexfinder
 Flexfinder_opslag()
 {
-    k_aftale := P6_k_aftale()
-    ; MsgBox, , StrLen, % StrLen(k_aftale)
-    If (StrLen(k_aftale) = 4 )
+    If (WinExist("FlexDanmark FlexFinder"))
     {
-        k_aftale_ny := k_aftale
-        ; MsgBox, , k_aftale4, % k_aftale
-    }
-    If (StrLen(k_aftale) = 3 )
-    {
-        k_aftale_ny := "0" . k_aftale
-        ; MsgBox, , k_aftale3, % k_aftale_ny
-    }
-    If (StrLen(k_aftale) = 2 )
-    {
-        MsgBox, , k_aftale2, % k_aftale
-        ; k_aftale_ny := "00" . k_aftale
-    }
-    If (StrLen(k_aftale) = 1 )
-    {
-        MsgBox, , k_aftale1, % k_aftale
-        ; k_aftale_ny := "000" . k_aftale
+        k_aftale := P6_k_aftale()
+        ; MsgBox, , StrLen, % StrLen(k_aftale)
+        If (StrLen(k_aftale) = 4 )
+        {
+            k_aftale_ny := k_aftale
+            ; MsgBox, , k_aftale4, % k_aftale
+        }
+        If (StrLen(k_aftale) = 3 )
+        {
+            k_aftale_ny := "0" . k_aftale
+            ; MsgBox, , k_aftale3, % k_aftale_ny
+        }
+        If (StrLen(k_aftale) = 2 )
+        {
+            MsgBox, , k_aftale2, % k_aftale
+            ; k_aftale_ny := "00" . k_aftale
+        }
+        If (StrLen(k_aftale) = 1 )
+        {
+            MsgBox, , k_aftale1, % k_aftale
+            ; k_aftale_ny := "000" . k_aftale
+        }
+        sleep 200
+        WinActivate, FlexDanmark FlexFinder
+        SendInput, {F5}
+        sleep 800
+        ; MsgBox, , , % A_UserName,
+        If (%A_UserName% = "mje")
+            SendInput, {Tab}{Tab}{Tab}{Tab}{tab}{tab}
+        Else
+            SendInput, {Tab}{Tab}{Tab}{Tab}{tab}
+        clipboard := k_aftale_ny
+        sleep 100
+        ClipWait, 2, 0
+        sleep 200
+        SendInput, ^v
         KeyWait, Enter, D, T3
+        sleep 200
+        WinActivate, PLANET
         SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
+     
     }
-    sleep 200
-    WinActivate, FlexDanmark FlexFinder
-    SendInput, {F5}
-    sleep 800
-    ; MsgBox, , , % A_UserName, 
-    If (%A_UserName% = "mje")
-        SendInput, {Tab}{Tab}{Tab}{Tab}{tab}{tab}
     Else
-        SendInput, {Tab}{Tab}{Tab}{Tab}{tab}
-    clipboard := k_aftale_ny
-    sleep 100
-    ClipWait, 2, 0
-    sleep 200
-    SendInput, ^v
-    KeyWait, Enter, D
-    sleep 200
-    WinActivate, PLANET
-    Return
+        MsgBox, , FlexFinder, Flexfinder ikke åben
+Return  
 }
 
 ; Misc
@@ -626,7 +631,10 @@ Outlook_nymail()
 
 ; Testknap
 +^e::
-    Sendinput æ
+If (WinExist("FlexDanmark FlexFinder"))
+    MsgBox, , Flexfinder, Ja,
+Else
+    MsgBox, , Flexfinder, Nej,
 return
 
 ;; HOTKEYS
@@ -664,6 +672,7 @@ Return
     clipboard := telefon
     ClipWait, 1, 0
     WinActivate, PLANET
+
     P6_tlf_vl()
 return
 
