@@ -635,7 +635,11 @@ If (WinExist("FlexDanmark FlexFinder"))
     MsgBox, , Flexfinder, Ja,
 Else
     MsgBox, , Flexfinder, Nej,
+
+MsgBox, 4, JanNej, test
+
 return
+
 
 ;; HOTKEYS
 
@@ -672,9 +676,10 @@ Return
     clipboard := telefon
     ClipWait, 1, 0
     WinActivate, PLANET
-
-    P6_tlf_vl()
-return
+    MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon%?, 
+    IfMsgBox, Yes
+        P6_tlf_vl()
+    return
 
 ;træk tlf til rejsesøg
 ; ***
