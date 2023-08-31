@@ -527,18 +527,46 @@ Trio_clipboard()
 ; Kørselsaftale til flexfinder
 Flexfinder_opslag()
 {
-    P6_k_aftale()
+    k_aftale := P6_k_aftale()
+    ; MsgBox, , StrLen, % StrLen(k_aftale)
+    If (StrLen(k_aftale) = 4 )
+    {
+        k_aftale_ny := k_aftale
+        ; MsgBox, , k_aftale4, % k_aftale
+    }
+    If (StrLen(k_aftale) = 3 )
+    {
+        k_aftale_ny := "0" . k_aftale
+        ; MsgBox, , k_aftale3, % k_aftale_ny
+    }
+    If (StrLen(k_aftale) = 2 )
+    {
+        MsgBox, , k_aftale2, % k_aftale
+        ; k_aftale_ny := "00" . k_aftale
+    }
+    If (StrLen(k_aftale) = 1 )
+    {
+        MsgBox, , k_aftale1, % k_aftale
+        ; k_aftale_ny := "000" . k_aftale
+    }
     sleep 200
     WinActivate, FlexDanmark FlexFinder
     SendInput, {F5}
     sleep 800
-    SendInput, {Tab}{Tab}{Tab}{Tab}{tab}
+    ; MsgBox, , , % A_UserName, 
+    If (%A_UserName% = "mje")
+        SendInput, {Tab}{Tab}{Tab}{Tab}{tab}{tab}
+    Else
+        SendInput, {Tab}{Tab}{Tab}{Tab}{tab}
+    clipboard := k_aftale_ny
+    sleep 100
+    ClipWait, 2, 0
     sleep 200
     SendInput, ^v
-    ClipWait, 2, 0
     KeyWait, Enter, D
     sleep 200
     WinActivate, PLANET
+    Return
 }
 
 ; Misc
