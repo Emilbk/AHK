@@ -64,9 +64,21 @@ P6_alarmer()
     SendInput, ^{Delete}
     SendInput, !k
     sleep 200
-    sleep 200
+    SendInput, +{PgUp}
     SendInput, +{PgDn}
-    sleep 40
+    SendInput, +{PgDn}
+    SendInput, +{PgDn}
+    SendInput, +{PgDn}
+    SendInput, +{PgDn}
+    SendInput, +{PgDn}
+    SendInput, +{PgDn}
+    SendInput, +{PgDn}
+    SendInput, +{PgDn}
+    SendInput, +{PgDn}
+    SendInput, +{PgDn}
+    SendInput, +{PgDn}
+    SendInput, +{PgDn}
+    sleep 200
     SendInput, ^l
     P6_Planvindue()
     sleep 200
