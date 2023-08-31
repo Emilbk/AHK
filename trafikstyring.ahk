@@ -624,8 +624,11 @@ Outlook_nymail()
 
 ; Testknap
 +^e::
-    Sendinput æ
+
+MsgBox, 4, JanNej, test
+
 return
+
 
 ;; HOTKEYS
 
@@ -662,8 +665,10 @@ Return
     clipboard := telefon
     ClipWait, 1, 0
     WinActivate, PLANET
-    P6_tlf_vl()
-return
+    MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon%?, 
+    IfMsgBox, Yes
+        P6_tlf_vl()
+    return
 
 ;træk tlf til rejsesøg
 ; ***
