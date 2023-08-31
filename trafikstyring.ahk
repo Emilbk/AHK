@@ -578,7 +578,7 @@ Return
 
 ; *
 ; Mangler udbygning af funktioner
-; SygehusGUI
+;; SygehusGUI
 +^s::
     gui, Ring:Default
     Gui,Add,Button,vButton1,&AUH
@@ -592,7 +592,6 @@ Return
     knap2:=Func("opkald").Bind("78430000")
     knap3:=Func("opkald").Bind("78420000")
     knap4:=Func("opkald").Bind("78440000")
-    knap5:=Func("opkald").Bind("78440000")
     knap5:=Func("opkald").Bind("78425000")
     knap6:=Func("opkald").Bind("78415000")
     GuiControl,+g,Button1,%knap1%
@@ -608,6 +607,7 @@ Opkald(p*){
     Trio_opkald()
     Gui, Destroy
 }
+
 
 GuiClose:
     gui, Destroy
