@@ -19,7 +19,6 @@ GroupAdd, gruppe, ahk_class Addressbook
 ; gemt-klip-funktion ved al brug af clipboard
 ; Luk om x antal minutter
 
-
 ;; kendte fejl
 ; P6_initialer sletter ikke, hvis initialerne er eneste ord i notering
 
@@ -179,7 +178,7 @@ P6_tlf_vl_efter()
 
     return
 }
-; *** 
+; ***
 ; Noterer intialer, fjerner dem hvis første ord i notering er initialer
 P6_initialer()
 {
@@ -195,7 +194,7 @@ P6_initialer()
     ClipWait, 1, 0
     notering := clipboard
     sleep 40
-    ; MsgBox, , notering, %notering%, 
+    ; MsgBox, , notering, %notering%,
     ; deler notering op i array med ord delt i mellemrum
     ; notering_array := StrSplit(notering, A_Space)
     notering_array := StrSplit(notering)
@@ -213,19 +212,19 @@ P6_initialer()
         If (noteringuden) = ""
             noteringuden := " "
         else
-        Clipboard :=
+            Clipboard :=
         sleep 200
         Clipboard := noteringuden
         sendinput ^a^v
         sleep 800
         SendInput, !o
-        ; MsgBox, , klippet, %noteringuden%, 
+        ; MsgBox, , klippet, %noteringuden%,
         return
     }
     ;indsætter initialer med tid
     Else
-        ; MsgBox, , Else, Nej, det er ikke, 
-    Clipboard :=
+        ; MsgBox, , Else, Nej, det er ikke,
+        Clipboard :=
     sleep 40
     Clipboard := initialer
     ClipWait, 1, 0
@@ -235,7 +234,6 @@ P6_initialer()
     sleep 100
     SendInput, !o
 }
-
 
 ; ** kan gemtklip-funktion skrives bedre?
 ;Indsæt initialer med efterf. kommentar, behold tidligere klip
@@ -266,7 +264,9 @@ P6_k_aftale()
     Sendinput !tp!k
     clipboard := ""
     Sendinput +{F10}c
+    Send, {Ctrl}
     ClipWait
+    sleep 200
     kørselsaftale := clipboard
     return kørselsaftale
 }
@@ -326,7 +326,6 @@ screenshot_aktivvindue()
     Return
 }
 
-
 ;; Telenor
 
 ;træk telenor indgåend
@@ -342,7 +341,6 @@ Telenor()
     SendInput {tab}
     return
 }
-
 
 ;; Trio
 ; ***
@@ -509,7 +507,7 @@ trio_pauseklar()
 Trio_clipboard()
 {
     clipboard := ""
-    WinActivate, ahk_class AccessBar, , , 
+    WinActivate, ahk_class AccessBar, , ,
     Sendinput !+k
     ClipWait
     Telefon := Clipboard
@@ -575,64 +573,61 @@ Flexfinder_opslag()
 ; Mangler udbygning af funktioner
 ; SygehusGUI
 +^s::
-gui, Ring:Default
-Gui,Add,Button,vButton1,&AUH
-Gui,Add,Button,vButton2,RH&G
-Gui,Add,Button,vButton3,&Randers Sygehus
-Gui,Add,Button,vButton4,V&iborg Sygehus
-Gui,Add,Button,vButton5,&Horsens Sygehus
-Gui,Add,Button,vButton6,&Silkeborg Sygehus
-Gui,Show, AutoSize Center , Ring op til sygehus
-knap1:=Func("opkald").Bind("78450000")
-knap2:=Func("opkald").Bind("78430000")
-knap3:=Func("opkald").Bind("78420000")
-knap4:=Func("opkald").Bind("78440000")
-knap5:=Func("opkald").Bind("78440000")
-knap5:=Func("opkald").Bind("78425000")
-knap6:=Func("opkald").Bind("78415000")
-GuiControl,+g,Button1,%knap1%
-GuiControl,+g,Button2,%knap2%
-GuiControl,+g,Button3,%knap3%
-GuiControl,+g,Button4,%knap4%
-GuiControl,+g,Button5,%knap5%
-GuiControl,+g,Button6,%knap6%
+    gui, Ring:Default
+    Gui,Add,Button,vButton1,&AUH
+    Gui,Add,Button,vButton2,RH&G
+    Gui,Add,Button,vButton3,&Randers Sygehus
+    Gui,Add,Button,vButton4,V&iborg Sygehus
+    Gui,Add,Button,vButton5,&Horsens Sygehus
+    Gui,Add,Button,vButton6,&Silkeborg Sygehus
+    Gui,Show, AutoSize Center , Ring op til sygehus
+    knap1:=Func("opkald").Bind("78450000")
+    knap2:=Func("opkald").Bind("78430000")
+    knap3:=Func("opkald").Bind("78420000")
+    knap4:=Func("opkald").Bind("78440000")
+    knap5:=Func("opkald").Bind("78440000")
+    knap5:=Func("opkald").Bind("78425000")
+    knap6:=Func("opkald").Bind("78415000")
+    GuiControl,+g,Button1,%knap1%
+    GuiControl,+g,Button2,%knap2%
+    GuiControl,+g,Button3,%knap3%
+    GuiControl,+g,Button4,%knap4%
+    GuiControl,+g,Button5,%knap5%
+    GuiControl,+g,Button6,%knap6%
 return
 Opkald(p*){
-  clipboard := % p.1
-  sleep 100
-  Trio_opkald()
-  Gui, Destroy
+    clipboard := % p.1
+    sleep 100
+    Trio_opkald()
+    Gui, Destroy
 }
 
-
 GuiClose:
-gui, Destroy
+    gui, Destroy
 exit
 return
 
 ; Gui-escape: escape når gui er aktivt.
 
-GuiEscape: 
-Gui, Destroy
+GuiEscape:
+    Gui, Destroy
 return
 
 ;; Outlook
 ; ***
 ; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script.
 Outlook_nymail()
-{  
-    Run, nymail.lnk, , , 
+{
+    Run, nymail.lnk, , ,
     Return
 }
 
-
 ; Testknap
 +^e::
-Sendinput æ
+    Sendinput æ
 return
 
 ;; HOTKEYS
-
 
 +Escape::
 ExitApp
@@ -644,7 +639,6 @@ Return
         P6_initialer()
     Return
 #IfWinActive
-
 
 ; skriv initialer og forsæt notering.
 #IfWinActive PLANET
@@ -687,18 +681,18 @@ return
 ;træk tlf fra aktiv planbillede, ring op i Trio
 #IfWinActive PLANET
     +F5::
-    gemtklip := ClipboardAll
-    vl_tlf := P6_hent_vl_tlf()
-    clipboard := vl_tlf
-    ClipWait, 2, 0
-    sleep 200
-    Trio_opkald()
-    Clipboard = %gemtklip%
-    ClipWait, 2, 1
-    gemtklip :=
-    sleep 800
-    WinActivate, PLANET
-    P6_Planvindue()
+        gemtklip := ClipboardAll
+        vl_tlf := P6_hent_vl_tlf()
+        clipboard := vl_tlf
+        ClipWait, 2, 0
+        sleep 200
+        Trio_opkald()
+        Clipboard = %gemtklip%
+        ClipWait, 2, 1
+        gemtklip :=
+        sleep 800
+        WinActivate, PLANET
+        P6_Planvindue()
     Return
 #IfWinActive
 
@@ -706,19 +700,19 @@ return
 ; træk vm-tlf fra aktivt planbillede, ring op i Trio
 #IfWinActive PLANET
     ^+F5::
-    gemtklip := ClipboardAll
-    vm_tlf := P6_hent_vm_tlf()
-    clipboard := vm_tlf
-    ClipWait, 2, 0
-    sleep 200
-    Trio_opkald()
-    sleep 500
-    Clipboard = %gemtklip%
-    ClipWait, 2, 1
-    gemtklip :=
-    sleep 800
-    WinActivate, PLANET
-    P6_Planvindue()
+        gemtklip := ClipboardAll
+        vm_tlf := P6_hent_vm_tlf()
+        clipboard := vm_tlf
+        ClipWait, 2, 0
+        sleep 200
+        Trio_opkald()
+        sleep 500
+        Clipboard = %gemtklip%
+        ClipWait, 2, 1
+        gemtklip :=
+        sleep 800
+        WinActivate, PLANET
+        P6_Planvindue()
     Return
 #IfWinActive
 
@@ -744,33 +738,31 @@ return
 
 ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
 #IfWinActive PLANET
-+F1::
-gemtklip := ClipboardAll
-sleep 400
-screenshot_aktivvindue()
-Outlook_nymail()
-sleep 1000
-SendInput, pl
-sleep 250
-SendInput, {Tab}
-sleep 40
-SendInput, {Tab}{Tab}{Tab}{Enter}{Enter}
-sleep 40
-SendInput, ^v
-SendInput, {Up}{Up}
-sleep 2000
-Clipboard = %gemtklip%
-ClipWait, 2, 1
-gemtklip :=
-Return
+    +F1::
+        gemtklip := ClipboardAll
+        sleep 400
+        screenshot_aktivvindue()
+        Outlook_nymail()
+        sleep 1000
+        SendInput, pl
+        sleep 250
+        SendInput, {Tab}
+        sleep 40
+        SendInput, {Tab}{Tab}{Tab}{Enter}{Enter}
+        sleep 40
+        SendInput, ^v
+        SendInput, {Up}{Up}
+        sleep 2000
+        Clipboard = %gemtklip%
+        ClipWait, 2, 1
+        gemtklip :=
+    Return
 #IfWinActive
 
+    ;https://www.autohotkey.com/docs/v1/lib/WinActivate.htm
 
-;https://www.autohotkey.com/docs/v1/lib/WinActivate.htm
-
-
-;; Trio-Hotkey
-||
+    ;; Trio-Hotkey
+    ||
 #IfWinActive ahk_group gruppe
     ^1::
         trio_klar()
@@ -789,14 +781,12 @@ Return
     Return
 #IfWinActive
 
-
 #IfWinActive ahk_group gruppe
     ^3::
         trio_efterbehandling()
         trio_pauseklar()
     Return
 #IfWinActive
-
 
 #IfWinActive ahk_group gruppe
     ^4::
@@ -811,18 +801,18 @@ Return
 #IfWinActive
 
 ; Kald det markerede nummer i trio, global
-    !q::
+!q::
     SendInput, ^c
     sleep 100
     Trio_opkald()
-    Return
+Return
 
-    ; Minus på numpad afslutter Trioopkald global (Skal der tilbage til P6?)
+; Minus på numpad afslutter Trioopkald global (Skal der tilbage til P6?)
 ; #IfWinActive PLANET
 +NumpadSub::
-Trio_afslutopkald()
-sleep 200
-WinActivate, PLANET
+    Trio_afslutopkald()
+    sleep 200
+    WinActivate, PLANET
 Return
 ; #IfWinActive
 
@@ -835,11 +825,9 @@ Return
 
 ;; GUI
 
-
 ;; HOTSTRINGS
 
 ; #IfWinActive PLANET
-
 
 ; Hvorfor virker ifwinactive ikke?
 ; #IfWinActive PLANET
@@ -864,10 +852,6 @@ Return
         Clipboard := gemtklip
         return
     }
-
-
-
-
 
 ; +r::
 ;     Reload
