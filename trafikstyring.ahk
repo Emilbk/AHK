@@ -576,7 +576,7 @@ Flexfinder_opslag()
         ClipWait, 2, 0
         sleep 200
         SendInput, ^v
-        KeyWait, Enter, D, T3
+        KeyWait, Enter, D, T7
         sleep 200
         WinActivate, PLANET
         SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
