@@ -360,10 +360,10 @@ Telenor()
 ; Sæt kopieret tlf i Trio
 Trio_opkald()
 {
+    WinActivate, ahk_class Addressbook
     ControlClick, Edit2, ahk_class Addressbook
     ; controlsend, Edit2, 50541537, ahk_class Addressbook
     sleep 40
-    WinActivate, ahk_class Addressbook
     sleep 40
     SendInput, ^v
     sleep 40
@@ -832,6 +832,7 @@ return
 ; Kald det markerede nummer i trio, global
 !q::
     SendInput, ^c
+    ClipWait, 2, 0
     sleep 100
     Trio_opkald()
 Return
