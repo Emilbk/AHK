@@ -530,12 +530,17 @@ Flexfinder_opslag()
         }
         sleep 200
         WinActivate, FlexDanmark FlexFinder
+        sleep 40
         SendInput, {Home}
-        sleep 300
+        sleep 400
         SendInput, {PgUp}
         sleep 200
         ControlClick, x244 y215, FlexDanmark FlexFinder
         sleep 40
+        SendInput, +{tab}{Up}
+        sleep 40
+        SendInput, {tab}
+        sleep 400
         SendInput, ^a{del}
         clipboard := k_aftale_ny
         sleep 100
