@@ -835,7 +835,6 @@ return
 !q::
     SendInput, ^c
     ClipWait, 2, 0
-    sleep 100
     Trio_opkald()
 Return
 
