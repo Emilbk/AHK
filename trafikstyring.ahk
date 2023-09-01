@@ -583,7 +583,7 @@ Flexfinder_opslag()
      
     }
     Else
-        MsgBox, , FlexFinder, Flexfinder ikke åben
+        MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den aktive fane)
 Return  
 }
 
