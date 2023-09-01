@@ -64,13 +64,14 @@ P6_alarmer()
     SendInput, ^{Delete}
     SendInput, !k
     sleep 200
-    SendInput, +^{Down}
+    SendInput, {PgUp}
+    SendInput, !{Down}
     sleep 200
     SendInput, ^l
     P6_Planvindue()
     sleep 200
-    SendInput, {PgUp}
     SendInput, !{Down}
+
     return
 }
 
@@ -84,8 +85,8 @@ P6_udraabsalarmer()
     SendInput, ^{Delete}
     SendInput, !u
     sleep 200
-    sleep 200
-    SendInput, +{PgDn}
+    SendInput, {PgUp}
+    SendInput, !{Down}
     sleep 40
     SendInput, ^l
     P6_Planvindue()
