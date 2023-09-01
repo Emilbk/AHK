@@ -61,11 +61,11 @@ P6_alarmer()
     P6_alt_menu()
     sendinput ta
     sleep 40
-    SendInput, ^{Delete}
     SendInput, !k
-    sleep 200
+    SendInput, ^{Delete}
+    sleep 100
     SendInput, {PgUp}
-    SendInput, !{Down}
+    SendInput, +^{Down}
     sleep 200
     SendInput, ^l
     P6_Planvindue()
@@ -82,11 +82,11 @@ P6_udraabsalarmer()
     P6_alt_menu()
     sendinput ta
     sleep 40
-    SendInput, ^{Delete}
     SendInput, !u
+    SendInput, ^{Delete}
     sleep 200
     SendInput, {PgUp}
-    SendInput, !{Down}
+    SendInput, +^{Down}
     sleep 40
     SendInput, ^l
     P6_Planvindue()
