@@ -529,6 +529,10 @@ Flexfinder_opslag()
         }
         sleep 200
         WinActivate, FlexDanmark FlexFinder
+        SendInput, {Home}
+        sleep 300
+        SendInput, {PgUp}
+        sleep 200
         ControlClick, x244 y215, FlexDanmark FlexFinder
         sleep 40
         SendInput, ^a{del}
