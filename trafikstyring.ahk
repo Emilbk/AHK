@@ -828,6 +828,12 @@ return
     Return
 #IfWinActive
 
+#IfWinActive ahk_group gruppe
+    !w::
+        clipboard := Trio_clipboard()
+    Return
+#IfWinActive
+
 ; Kald det markerede nummer i trio, global
 !q::
     SendInput, ^c
