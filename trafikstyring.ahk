@@ -362,12 +362,17 @@ screenshot_aktivvindue()
 ; Sæt kopieret tlf i Trio
 Trio_opkald()
 {
-    WinActivate, ahk_class Addressbook
-    ControlClick, Edit2, ahk_class Addressbook
-    sleep 800
-    SendInput, ^v
-    sleep 100
-    SendInput, +{enter} ; undgår kobling ved igangværende opkald
+    If (WinExist("Trio Attendant"))
+    {
+        WinActivate, ahk_class Addressbook
+        ControlClick, Edit2, ahk_class Addressbook
+        sleep 800
+        SendInput, ^v
+        sleep 100
+        SendInput, +{enter} ; undgår kobling ved igangværende opkald
+    }
+    Else
+        MsgBox, , Åbn Adressebog, Adressebogen i Trio er ikke åben
     Return
 }
 
@@ -696,7 +701,6 @@ return
 ;træk tlf fra aktiv planbillede, ring op i Trio
 #IfWinActive PLANET
     +F5::
-    If (WinExist("Trio Attendant"))
     {
         gemtklip := ClipboardAll
         vl_tlf := P6_hent_vl_tlf()
@@ -711,8 +715,6 @@ return
         WinActivate, PLANET
         P6_Planvindue()
     }
-    Else
-        MsgBox, , Åbn Adressebog, Adressebogen er ikke åben
     Return
 #IfWinActive
 
@@ -720,7 +722,6 @@ return
 ; træk vm-tlf fra aktivt planbillede, ring op i Trio
 #IfWinActive PLANET
     ^+F5::
-    If (WinExist("Trio Attendant"))
     {
         gemtklip := ClipboardAll
         vm_tlf := P6_hent_vm_tlf()
@@ -736,8 +737,6 @@ return
         WinActivate, PLANET
         P6_Planvindue()
     }
-    Else
-        MsgBox, , Åbn Adressebog, Adressebogen er ikke åben
     Return
 #IfWinActive
 
