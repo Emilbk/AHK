@@ -488,11 +488,7 @@ Trio_clipboard()
     Sendinput !+k
     ClipWait
     Telefon := Clipboard
-    Ciffer_antal := StrLen(Telefon)
-    if (Ciffer_antal = 11)
-        rentelefon := Substr(Telefon, 4, 8)
-    Else
-        rentelefon := telefon
+    rentelefon := Substr(Telefon, 4, 8)
     return rentelefon
 }
 
