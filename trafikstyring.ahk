@@ -701,7 +701,8 @@ Return
     clipboard := telefon
     ClipWait, 1, 0
     WinActivate, PLANET
-    MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon%?, 
+    vl := P6_vl()
+    MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?, 
     IfMsgBox, Yes
         P6_tlf_vl()
     return
