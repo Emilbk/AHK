@@ -113,7 +113,7 @@ P6_hent_vl_tlf()
 {
     P6_Planvindue()
     SendInput ^{F12}
-    sleep 1000
+    sleep 1500
     sendinput ^æ
     sleep 200
     SendInput {Enter}{Enter}
@@ -732,7 +732,7 @@ return
         ClipWait, 2, 0
         sleep 200
         Trio_opkald()
-        sleep 500
+        sleep 200
         Clipboard = %gemtklip%
         ClipWait, 2, 1
         gemtklip :=
