@@ -630,6 +630,7 @@ Opkald(p*){
     sleep 100
     Trio_opkald()
     Gui, Destroy
+    WinActivate, PLANET, , , 
 }
 
 
