@@ -364,7 +364,7 @@ Trio_opkald()
 {
     WinActivate, ahk_class Addressbook
     ControlClick, Edit2, ahk_class Addressbook
-    sleep 100
+    sleep 800
     SendInput, ^v
     sleep 100
     SendInput, +{enter} ; undgår kobling ved igangværende opkald
