@@ -364,9 +364,9 @@ Trio_opkald()
 {
     WinActivate, ahk_class Addressbook
     ControlClick, Edit2, ahk_class Addressbook
-    sleep 40
+    sleep 100
     SendInput, ^v
-    sleep 40
+    sleep 100
     SendInput, +{enter} ; undgår kobling ved igangværende opkald
     Return
 }
@@ -879,6 +879,10 @@ Return
         Clipboard := gemtklip
         return
     }
+
+;; Outlook
+^+m::Outlook_nymail()
+Return
 
 ; +r::
 ;     Reload
