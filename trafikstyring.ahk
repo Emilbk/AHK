@@ -298,6 +298,16 @@ P6_styresystem()
     return styresystem
 }
 
+; Hent VL-nummer
+P6_vl()
+{
+    SendInput, !l
+    sleep 20
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    vl := Clipboard
+    return vl
+}
 ;  ***
 ;åben tekst m. kørselsaftale udfyldt
 P6_tekstTilChf()
