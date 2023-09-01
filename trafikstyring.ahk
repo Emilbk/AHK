@@ -18,6 +18,8 @@ GroupAdd, gruppe, ahk_class Addressbook
 ; ring op til VM
 ; gemt-klip-funktion ved al brug af clipboard
 ; Luk om x antal minutter
+; Trio gå til linie 1 hvis linie 2 aktiv
+; omskriv initialer
 
 ;; kendte fejl
 ; P6_initialer sletter ikke, hvis initialerne er eneste ord i notering
@@ -180,7 +182,7 @@ P6_tlf_vl_efter()
     return
 }
 ; ***
-; asdsa
+; Omskriv til simplere funktion
 ; Noterer intialer, fjerner dem hvis første ord i notering er initialer
 P6_initialer()
 {
@@ -298,7 +300,7 @@ P6_vl()
     return vl
 }
 ;  ***
-;åben tekst m. kørselsaftale udfyldt
+; Send tekst til chf
 P6_tekstTilChf()
 {
     ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
@@ -343,17 +345,17 @@ screenshot_aktivvindue()
 
 ;træk telenor indgåend
 ;virker ikke
-Telenor()
-{
-    WinActivate, Telenor KontaktCenter
-    ControlClick, x179 y491, Telenor KontaktCenter,, Left,2,
-    sleep 100
-    ControlClick, x179 y491, Telenor KontaktCenter,, Left,2,
-    sleep 100
-    SendInput {tab}
-    SendInput {tab}
-    return
-}
+; Telenor()
+; {
+;     WinActivate, Telenor KontaktCenter
+;     ControlClick, x179 y491, Telenor KontaktCenter,, Left,2,
+;     sleep 100
+;     ControlClick, x179 y491, Telenor KontaktCenter,, Left,2,
+;     sleep 100
+;     SendInput {tab}
+;     SendInput {tab}
+;     return
+; }
 
 ;; Trio
 ; ***
@@ -362,8 +364,6 @@ Trio_opkald()
 {
     WinActivate, ahk_class Addressbook
     ControlClick, Edit2, ahk_class Addressbook
-    ; controlsend, Edit2, 50541537, ahk_class Addressbook
-    sleep 40
     sleep 40
     SendInput, ^v
     sleep 40
@@ -371,15 +371,6 @@ Trio_opkald()
     Return
 }
 
-; ***
-; Sæt kopieret tlf i Trio
-; Trio_opkald()
-; {
-;     ControlClick, Edit2, ahk_class Addressbook
-;     sleep 40
-;     SendInput, ^v{enter}
-;     Return
-; }
 
 ; ***
 ; Læg på i Trio
@@ -404,10 +395,6 @@ trio_efterbehandling()
     sleep 40
     SendInput, 8
     WinActivate, PLANET
-    ; ControlClick, ComboBox2, ahk_class Agent Main GUI
-    ; sleep 400
-    ; Controlsend, ComboBox2, ahk_class AccessBar, '
-    ; ControlClick, x68 y185, ahk_class AccessBar
     Return
 }
 
@@ -423,10 +410,6 @@ trio_udenov()
     sleep 40
     SendInput, 3
     WinActivate, PLANET
-    ; ControlClick, ComboBox2, ahk_class Agent Main GUI
-    ; sleep 400
-    ; Controlsend, ComboBox2, ahk_class AccessBar, '
-    ; ControlClick, x68 y185, ahk_class AccessBar
     Return
 }
 
@@ -442,10 +425,6 @@ trio_alarm()
     sleep 40
     SendInput, 7
     WinActivate, PLANET
-    ; ControlClick, ComboBox2, ahk_class Agent Main GUI
-    ; sleep 400
-    ; Controlsend, ComboBox2, ahk_class AccessBar, '
-    ; ControlClick, x68 y185, ahk_class AccessBar
     Return
 }
 
@@ -457,10 +436,6 @@ trio_pause()
     sleep 100
     SendInput, {F3}
     WinActivate, PLANET
-    ; ControlClick, ComboBox2, ahk_class Agent Main GUI
-    ; sleep 400
-    ; Controlsend, ComboBox2, ahk_class AccessBar, '
-    ; ControlClick, x68 y185, ahk_class AccessBar
     Return
 }
 
@@ -472,10 +447,6 @@ trio_klar()
     Sleep 100
     SendInput, {F4}
     WinActivate, PLANET
-    ; ControlClick, ComboBox2, ahk_class Agent Main GUI
-    ; sleep 400
-    ; Controlsend, ComboBox2, ahk_class AccessBar, '
-    ; ControlClick, x68 y185, ahk_class AccessBar
     Return
 }
 
@@ -491,10 +462,6 @@ trio_frokost()
     sleep 40
     SendInput, 9
     WinActivate, PLANET
-    ; ControlClick, ComboBox2, ahk_class Agent Main GUI
-    ; sleep 400
-    ; Controlsend, ComboBox2, ahk_class AccessBar, '
-    ; ControlClick, x68 y185, ahk_class AccessBar
     Return
 }
 
@@ -505,13 +472,10 @@ trio_pauseklar()
     WinActivate, ahk_class AccessBar
     Sleep 200
     SendInput, {F3}
-    sleep 200
+    sleep 400
     SendInput, {F4}
     WinActivate, PLANET
-    ; ControlClick, ComboBox2, ahk_class Agent Main GUI
-    ; sleep 400
-    ; Controlsend, ComboBox2, ahk_class AccessBar, '
-    ; ControlClick, x68 y185, ahk_class AccessBar
+
     Return
 }
 
@@ -536,6 +500,7 @@ Trio_clipboard()
 
 ; *
 ; Kørselsaftale til flexfinder
+    ; 244,215
 Flexfinder_opslag()
 {
     If (WinExist("FlexDanmark FlexFinder"))
@@ -576,7 +541,6 @@ Flexfinder_opslag()
         sleep 200
         WinActivate, PLANET
         SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
-     
     }
     Else
         MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den aktive fane)
@@ -639,16 +603,10 @@ Outlook_nymail()
     Return
 }
 
-; Testknap
-+^e::
-If (WinExist("FlexDanmark FlexFinder"))
-    MsgBox, , Flexfinder, Ja,
-Else
-    MsgBox, , Flexfinder, Nej,
-
-MsgBox, 4, JanNej, test
-
-return
+;; Testknap
+; +^e::
+; ControlClick, x244 y215, FlexDanmark FlexFinder
+; return
 
 
 ;; HOTKEYS
@@ -658,6 +616,7 @@ ExitApp
 Return
 
 ;; PLANET
+;; Initialer til/fra
 #IfWinActive PLANET
     F2::
         P6_initialer()
@@ -773,6 +732,7 @@ return
     return
 #IfWinActive
 
+; hent VL
 ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
 #IfWinActive PLANET
     +F1::
@@ -796,10 +756,8 @@ return
     Return
 #IfWinActive
 
-    ;https://www.autohotkey.com/docs/v1/lib/WinActivate.htm
 
     ;; Trio-Hotkey
-    ||
 #IfWinActive ahk_group gruppe
     ^1::
         trio_klar()
@@ -866,12 +824,10 @@ Return
 ;; HOTSTRINGS
 
 ; #IfWinActive PLANET
-
-; Hvorfor virker ifwinactive ikke?
-; #IfWinActive PLANET
 ::vllp::Låst, ingen kontakt til chf, privatrejse ikke udråbt
 ::bsgs::Glemt slettet retur
 ::rgef::Rejsegaranti, egenbetaling fjernet
+::vlaok::Alarm st OK
 ; #IfWinActive
 ;    Clipboard := "Låst, ingen kontakt til chf, privatrejse ikke udråbt"
 ;	ClipWait
