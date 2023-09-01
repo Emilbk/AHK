@@ -199,6 +199,7 @@ P6_initialer()
     initialer = /mt%A_userName%%time%
     initialer_udentid =/mt%A_userName%
     P6_Planvindue()
+    SendInput, {F5} ; for at undgå timeout. Giver det problemer med langsom opdatering?
     sleep 40
     sendinput ^n
     sleep 1400
