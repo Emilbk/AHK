@@ -588,6 +588,35 @@ GuiClose:
 exit
 return
 
++^c::
+    gui, Taxa:Default
+    Gui,Add,Button,vtaxa1,&Århus Taxa
+    Gui,Add,Button,vtaxa2,Århus Taxa Sk&ole
+    Gui,Add,Button,vtaxa3,&Dantaxi
+    Gui,Add,Button,vtaxa4,Taxa &Midt
+    Gui,Add,Button,vtaxa5,&DK Taxi
+    Gui,Show, AutoSize Center , Ring op til central
+    taxaknap1:=Func("opkaldtaxa").Bind("89484892")
+    taxaknap2:=Func("opkaldtaxa").Bind("89484837")
+    taxaknap3:=Func("opkaldtaxa").Bind("96341121")
+    taxaknap4:=Func("opkaldtaxa").Bind("97120777")
+    taxaknap5:=Func("opkaldtaxa").Bind("87113030")
+    GuiControl,+g,taxa1,%taxaknap1%
+    GuiControl,+g,taxa2,%taxaknap2%
+    GuiControl,+g,taxa3,%taxaknap3%
+    GuiControl,+g,taxa4,%taxaknap4%
+    GuiControl,+g,taxa5,%taxaknap5%
+return
+Opkaldtaxa(p*){
+    clipboard := % p.1
+    sleep 100
+    Trio_opkald()
+    Gui, Destroy
+    WinActivate, PLANET, , , 
+}
+
+
+
 ; Gui-escape: escape når gui er aktivt.
 
 GuiEscape:
