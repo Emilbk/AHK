@@ -558,7 +558,7 @@ Return
 ; Mangler udbygning af funktioner
 ;; SygehusGUI
 +^s::
-    gui, Ring:Default
+    gui, Sygehus:Default
     Gui,Add,Button,vButton1,&AUH
     Gui,Add,Button,vButton2,RH&G
     Gui,Add,Button,vButton3,&Randers Sygehus
@@ -578,18 +578,22 @@ Return
     GuiControl,+g,Button4,%knap4%
     GuiControl,+g,Button5,%knap5%
     GuiControl,+g,Button6,%knap6%
+
 return
 Opkald(p*){
+    Gui, Sygehus:Destroy
     clipboard := % p.1
     sleep 100
     Trio_opkald()
-    Gui, Destroy
     WinActivate, PLANET, , , 
 }
 
 
-GuiClose:
-    gui, Destroy
+; GuiEscape:
+;     Gui, Destroy
+; return
+; GuiClose:
+;     gui, Destroy
 exit
 return
 
@@ -624,9 +628,9 @@ Opkaldtaxa(p*){
 
 ; Gui-escape: escape når gui er aktivt.
 
-GuiEscape:
-    Gui, Destroy
-return
+; GuiEscape:
+;     Gui, Destroy
+; return
 
 ;; Outlook
 ; ***
