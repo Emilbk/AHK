@@ -824,6 +824,7 @@ return
     Return
 #IfWinActive
 
+; trækker indkommende kald til udklip, ringer ikke op
 #IfWinActive ahk_group gruppe
     !w::
         clipboard := Trio_clipboard()
