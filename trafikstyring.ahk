@@ -723,6 +723,8 @@ return
 ;træk tlf fra aktiv planbillede, ring op i Trio
 #IfWinActive PLANET
     +F5::
+    If (WinExist("Trio Attendant"))
+    {
         gemtklip := ClipboardAll
         vl_tlf := P6_hent_vl_tlf()
         clipboard := vl_tlf
@@ -735,6 +737,9 @@ return
         sleep 800
         WinActivate, PLANET
         P6_Planvindue()
+    }
+    Else
+        MsgBox, , Åbn Adressebog, Adressebogen er ikke åben
     Return
 #IfWinActive
 
@@ -742,6 +747,8 @@ return
 ; træk vm-tlf fra aktivt planbillede, ring op i Trio
 #IfWinActive PLANET
     ^+F5::
+    If (WinExist("Trio Attendant"))
+    {
         gemtklip := ClipboardAll
         vm_tlf := P6_hent_vm_tlf()
         clipboard := vm_tlf
@@ -755,6 +762,9 @@ return
         sleep 800
         WinActivate, PLANET
         P6_Planvindue()
+    }
+    Else
+        MsgBox, , Åbn Adressebog, Adressebogen er ikke åben
     Return
 #IfWinActive
 
