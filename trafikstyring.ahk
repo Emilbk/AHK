@@ -575,13 +575,9 @@ Flexfinder_opslag()
         }
         sleep 200
         WinActivate, FlexDanmark FlexFinder
-        SendInput, {F5}
-        sleep 800
-        ; MsgBox, , , % A_UserName,
-        If (%A_UserName% = "mje")
-            SendInput, {Tab}{Tab}{Tab}{Tab}{tab}{tab}
-        Else
-            SendInput, {Tab}{Tab}{Tab}{Tab}{tab}
+        ControlClick, x244 y215, FlexDanmark FlexFinder
+        sleep 40
+        SendInput, ^a{del}
         clipboard := k_aftale_ny
         sleep 100
         ClipWait, 2, 0
