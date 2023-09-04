@@ -302,7 +302,7 @@ P6_vl()
 
 ;  ***
 ; Send tekst til chf
-P6_tekstTilChf(tekst:=" ")
+P6_tekstTilChf(ByRef tekst:=" ")
 {
     WinActivate PLANET version 6   Jylland-Fyn DRIFT
     kørselsaftale := P6_k_aftale()
@@ -776,7 +776,7 @@ return
 
 #IfWinActive PLANET
     +^t::
-        P6_tekstTilChf() ; tager tekst som parameter
+        P6_tekstTilChf(tekst) ; tager tekst som parameter (accepterer variabel)
     return
 #IfWinActive
 
