@@ -522,53 +522,31 @@ Flexfinder_opslag()
     If (WinExist("FlexDanmark FlexFinder"))
     {
         k_aftale := P6_hent_k_aftale()
-        ; MsgBox, , StrLen, % StrLen(k_aftale)
-        If (StrLen(k_aftale) = 4 )
-        {
-            k_aftale_ny := k_aftale
-            ; MsgBox, , k_aftale4, % k_aftale
-        }
-        If (StrLen(k_aftale) = 3 )
-        {
-            k_aftale_ny := "0" . k_aftale
-            ; MsgBox, , k_aftale3, % k_aftale_ny
-        }
-        If (StrLen(k_aftale) = 2 )
-        {
-            MsgBox, , k_aftale2, % k_aftale
-            ; k_aftale_ny := "00" . k_aftale
-        }
-        If (StrLen(k_aftale) = 1 )
-        {
-            MsgBox, , k_aftale1, % k_aftale
-            ; k_aftale_ny := "000" . k_aftale
-        }
+        k_aftale := SubStr("000" . k_aftale, -3) ; indsætter nuller og tager sidste fire cifre i strengen.
+        ; MsgBox, , er 4 , % k_aftale
         sleep 200
         WinActivate, FlexDanmark FlexFinder
         sleep 40
         SendInput, {Home}
         sleep 400
         SendInput, {PgUp}
-        sleep 200
+        sleep 100
         ControlClick, x244 y215, FlexDanmark FlexFinder
         sleep 40
         SendInput, +{tab}{Up}
         sleep 40
         SendInput, {tab}
-        sleep 400
-        SendInput, ^a{del}
-        clipboard := k_aftale_ny
         sleep 100
-        ClipWait, 2, 0
+        SendInput, ^a{del}
         sleep 200
-        SendInput, ^v
+        SendInput, %k_aftale%
         KeyWait, Enter, D, T7
         sleep 200
         WinActivate, PLANET
-        SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
+        ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
     }
     Else
-        MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den aktive fane)
+        MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den forreste fane)
 Return  
 }
 
