@@ -99,11 +99,13 @@ P6_udraabsalarmer()
 
 ; ***
 ; gå i rent rejsesøg med karet i telefonfelt
-P6_rejsesog_tlf()
+P6_rejsesog_tlf(ByRef telefon:=" ")
 {
     P6_rejsesogvindue()
     sleep 300
-    SendInput {tab}{tab}^v^r
+    SendInput {tab}{tab}
+    SendInput, %telefon%
+    SendInput, ^r
 
     Return
 }
@@ -148,28 +150,27 @@ P6_hent_vm_tlf()
 }
 ; ***
 ;indsæt clipboard i vl-tlf
-P6_tlf_vl(ByRef telefon:=" ")
+P6_ret_tlf_vl(ByRef telefon:=" ")
 {
     P6_Planvindue()
-    clipboard := ""
-    clipboard := telefon
-    ClipWait, 2, 0
-    sleep 200
+    sleep 50
     SendInput ^{F12}
     sleep 800
     sendinput ^æ
     sleep 200
     SendInput {Enter}{Enter}
-    ; Sleep 40
+    Sleep 40
     SendInput !ø
-    ; sleep 40
-    SendInput {tab}{tab}^v{enter}
+    sleep 40
+    SendInput {tab}{tab}
+    SendInput, %telefon%
+    SendInput, {enter}
     return
 }
 
 ;  ***
 ;indsæt clipboard i vl-tlf dagen efterfølgende
-P6_tlf_vl_efter()
+P6_tlf_vl_efter(ByRef telefon:=" ")
 {
     WinActivate PLANET version 6 Jylland-Fyn DRIFT
     SendInput, {Tab}
@@ -180,7 +181,9 @@ P6_tlf_vl_efter()
     Sleep 40
     SendInput !ø
     sleep 40
-    SendInput {tab}{tab}^v{Enter}
+    SendInput {tab}{tab}
+    SendInput, %telefon%
+    SendInput, {enter}
 
     return
 }
@@ -247,20 +250,17 @@ P6_initialer()
 ;Indsæt initialer med efterf. kommentar, behold tidligere klip
 P6_initialer_skriv()
 {
-    gemtklip := ClipboardAll
     FormatTime, Time, ,HHmm tt ;definerer format på tid/dato
     initialer = /mt%A_userName%%time%
     P6_Planvindue()
     sleep 40
     sendinput ^n
-    sleep 40
-    Clipboard := initialer
-    Sendinput ^v
+    sleep 40    
+    Sendinput %initialer%
     Sendinput %A_space%
     Sendinput {home}
     sleep 2000
-    Clipboard = %gemtklip%
-    gemtklip := ""
+    ; gemtklip := ""
     return
 }
 
@@ -317,18 +317,15 @@ P6_tekstTilChf(ByRef tekst:=" ")
     Sendinput !k
     sleep 40
     SendInput, ^t
-    clipboard := kørselsaftale
-    sleep 60
-    Sendinput +{F10}p{tab}
-    sleep 200
-    clipboard := styresystem
-    Sendinput +{F10}p{Tab}
-    sleep 200
+    Sendinput %kørselsaftale%
+    sleep 100
+    SendInput, {tab}
+    Sendinput %styresystem%
+    SendInput, {tab}
+    sleep 100
     if (tekst != " ")
     {
-        clipboard := tekst
-        sleep 40
-        SendInput, ^v
+        SendInput, %tekst%
     }
     Else
         return
@@ -375,15 +372,15 @@ screenshot_aktivvindue()
 ;; Trio
 ; ***
 ; Sæt kopieret tlf i Trio
-Trio_opkald()
+Trio_opkald(ByRef telefon)
 {
     If (WinExist("Trio Attendant"))
     {
         WinActivate, ahk_class Addressbook
         ControlClick, Edit2, ahk_class Addressbook
-        sleep 800
-        SendInput, ^v
-        sleep 100
+        sleep 500
+        SendInput, %telefon%
+        sleep 300
         SendInput, +{enter} ; undgår kobling ved igangværende opkald
     }
     Else
@@ -580,9 +577,9 @@ Return
 return
 Opkald(p*){
     Gui, Sygehus:Destroy
-    clipboard := % p.1
+    telefon := % p.1
     sleep 100
-    Trio_opkald()
+    Trio_opkald(telefon)
     WinActivate, PLANET, , , 
 }
 
@@ -682,17 +679,15 @@ Return
     vl := P6_hent_vl()
     MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?, 
     IfMsgBox, Yes
-        P6_tlf_vl(telefon)
+        P6_ret_tlf_vl(telefon)
     return
 
 ;træk tlf til rejsesøg
 ; ***
 +F4::
     telefon := Trio_clipboard()
-    clipboard := telefon
-    ClipWait, 1, 0
     WinActivate, PLANET
-    P6_rejsesog_tlf()
+    P6_rejsesog_tlf(telefon)
 return
 
 #IfWinActive
@@ -702,15 +697,10 @@ return
 #IfWinActive PLANET
     +F5::
     {
-        gemtklip := ClipboardAll
         vl_tlf := P6_hent_vl_tlf()
-        clipboard := vl_tlf
-        ClipWait, 2, 0
-        sleep 200
-        Trio_opkald()
-        Clipboard = %gemtklip%
-        ClipWait, 2, 1
-        gemtklip :=
+        Trio_opkald(vl_tlf)
+        ; Clipboard = %gemtklip%
+        ; gemtklip :=
         sleep 400
         WinActivate, PLANET
         P6_Planvindue()
@@ -723,19 +713,11 @@ return
 #IfWinActive PLANET
     ^+F5::
     {
-        gemtklip := ClipboardAll
         vm_tlf := P6_hent_vm_tlf()
-        clipboard := vm_tlf
-        ClipWait, 2, 0
         sleep 200
-        Trio_opkald()
-        sleep 200
-        Clipboard = %gemtklip%
-        ClipWait, 2, 1
-        gemtklip :=
+        Trio_opkald(vm_tlf)
         sleep 800
         WinActivate, PLANET
-        P6_Planvindue()
     }
     Return
 #IfWinActive
@@ -756,7 +738,7 @@ return
 
 #IfWinActive PLANET
     +^t::
-        P6_tekstTilChf(tekst) ; tager tekst som parameter (accepterer variabel)
+        P6_tekstTilChf(tekst) ; tager tekst ("eksempel") som parameter (accepterer variabel)
     return
 #IfWinActive
 
@@ -834,7 +816,8 @@ return
 !q::
     SendInput, ^c
     ClipWait, 2, 0
-    Trio_opkald()
+    telefon := clipboard
+    Trio_opkald(telefon)
 Return
 
 ; Minus på numpad afslutter Trioopkald global (Skal der tilbage til P6?)
