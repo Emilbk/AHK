@@ -263,7 +263,7 @@ P6_initialer_skriv()
 
 ; ***
 ;Kørselsaftale på VL til clipboard
-P6_k_aftale()
+P6_hent_k_aftale()
 {
     ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
     Sendinput !tp!k
@@ -278,7 +278,7 @@ P6_k_aftale()
 
 ; ***
 ;styresystem til clipboard
-P6_styresystem()
+P6_hent_styresystem()
 {
     ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
     Sendinput !tp!k{tab}
@@ -290,7 +290,7 @@ P6_styresystem()
 }
 
 ; Hent VL-nummer
-P6_vl()
+P6_hent_vl()
 {
     SendInput, !l
     sleep 20
@@ -305,8 +305,8 @@ P6_vl()
 P6_tekstTilChf(ByRef tekst:=" ")
 {
     WinActivate PLANET version 6   Jylland-Fyn DRIFT
-    kørselsaftale := P6_k_aftale()
-    styresystem := P6_styresystem()
+    kørselsaftale := P6_hent_k_aftale()
+    styresystem := P6_hent_styresystem()
     sleep 200
     Sendinput !tt^k
     Sleep 100
@@ -517,7 +517,7 @@ Flexfinder_opslag()
 {
     If (WinExist("FlexDanmark FlexFinder"))
     {
-        k_aftale := P6_k_aftale()
+        k_aftale := P6_hent_k_aftale()
         ; MsgBox, , StrLen, % StrLen(k_aftale)
         If (StrLen(k_aftale) = 4 )
         {
@@ -697,7 +697,7 @@ Return
 +F3::
     telefon := Trio_clipboard()
     WinActivate, PLANET
-    vl := P6_vl()
+    vl := P6_hent_vl()
     clipboard := telefon
     ClipWait, 1, 0
     MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?, 
