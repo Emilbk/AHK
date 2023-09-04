@@ -301,7 +301,7 @@ P6_vl()
 }
 ;  ***
 ; Send tekst til chf
-P6_tekstTilChf()
+P6_tekstTilChf(tekst:="")
 {
     ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
     kørselsaftale := P6_k_aftale()
@@ -316,6 +316,7 @@ P6_tekstTilChf()
     sleep 200
     clipboard := styresystem
     Sendinput +{F10}p{Tab}
+   
     return
 }
 
