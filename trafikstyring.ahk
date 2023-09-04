@@ -153,6 +153,7 @@ P6_tlf_vl(ByRef telefon:=" ")
     P6_Planvindue()
     clipboard := ""
     clipboard := telefon
+    ClipWait, 2, 0
     sleep 200
     SendInput ^{F12}
     sleep 800
