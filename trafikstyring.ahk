@@ -316,7 +316,6 @@ P6_tekstTilChf()
     sleep 200
     clipboard := styresystem
     Sendinput +{F10}p{Tab}
-
     return
 }
 
