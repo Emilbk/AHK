@@ -731,7 +731,7 @@ return
         Clipboard = %gemtklip%
         ClipWait, 2, 1
         gemtklip :=
-        sleep 800
+        sleep 400
         WinActivate, PLANET
         P6_Planvindue()
     }
