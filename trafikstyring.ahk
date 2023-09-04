@@ -148,9 +148,11 @@ P6_hent_vm_tlf()
 }
 ; ***
 ;indsæt clipboard i vl-tlf
-P6_tlf_vl()
+P6_tlf_vl(ByRef telefon:=" ")
 {
     P6_Planvindue()
+    clipboard := ""
+    clipboard := telefon
     sleep 200
     SendInput ^{F12}
     sleep 800
@@ -292,10 +294,11 @@ P6_hent_styresystem()
 ; Hent VL-nummer
 P6_hent_vl()
 {
+    clipboard := ""
     SendInput, !l
     sleep 20
     SendInput, +{F10}c
-    ClipWait, 1, 0
+    ClipWait, 2, 0
     vl := Clipboard
     return vl
 }
@@ -698,11 +701,9 @@ Return
     telefon := Trio_clipboard()
     WinActivate, PLANET
     vl := P6_hent_vl()
-    clipboard := telefon
-    ClipWait, 1, 0
     MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?, 
     IfMsgBox, Yes
-        P6_tlf_vl()
+        P6_tlf_vl(telefon)
     return
 
 ;træk tlf til rejsesøg
