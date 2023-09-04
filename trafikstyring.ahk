@@ -299,25 +299,36 @@ P6_vl()
     vl := Clipboard
     return vl
 }
+
 ;  ***
 ; Send tekst til chf
-P6_tekstTilChf(tekst:="")
+P6_tekstTilChf(tekst:=" ")
 {
-    ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
+    WinActivate PLANET version 6   Jylland-Fyn DRIFT
     kørselsaftale := P6_k_aftale()
     styresystem := P6_styresystem()
     sleep 200
     Sendinput !tt^k
     Sleep 100
     Sendinput !k
-    clipboard := kørselsaftale
     sleep 40
+    SendInput, ^t
+    clipboard := kørselsaftale
+    sleep 60
     Sendinput +{F10}p{tab}
     sleep 200
     clipboard := styresystem
     Sendinput +{F10}p{Tab}
-   
-    return
+    sleep 200
+    if (tekst != " ")
+    {
+        clipboard := tekst
+        sleep 40
+        SendInput, ^v
+    }
+    Else
+        return
+return
 }
 
 ;  ***
@@ -765,7 +776,7 @@ return
 
 #IfWinActive PLANET
     +^t::
-        P6_tekstTilChf()
+        P6_tekstTilChf() ; tager tekst som parameter
     return
 #IfWinActive
 
