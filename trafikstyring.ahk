@@ -28,14 +28,16 @@ GroupAdd, gruppe, ahk_class Addressbook
 
 ;; Database
 
-database()
+P6_hent_vl_fra_tlf(ByRef vl:="")
 {
-    database := DataBasefind( "gv_tlf.txt", "31377")
-    ^+r::databaseview("gv_tlf.txt")
-    ^+g::msgbox ,, search, søgeresultat celle: %database%
+    row := DataBasefind( "gv_tlf.txt", vl)
+    MsgBox % row.1
+    celle := databaseget("gv_tlf.txt", row.1, 1)
+    msgbox % celle
 }
 
-
+^e::P6_hent_vl_fra_tlf(31319)
+^+g::DatabaseView("gv_tlf.txt")
 
 
 ; FUNKTIONER
