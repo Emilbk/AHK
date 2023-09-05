@@ -840,6 +840,15 @@ Return
     Return
 #IfWinActive
 
+;; Telenor
+!e::
+{
+    SendInput, !e
+    telefon := Trio_hent_tlf()
+    WinActivate, PLANET, , , 
+    P6_rejsesog_tlf(telefon)
+}
+
 ;; GUI
 
 ;; HOTSTRINGS
