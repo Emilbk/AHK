@@ -498,7 +498,7 @@ trio_pauseklar()
 
 ;  ***
 ;Træk tlf fra Trio indkomne kald
-Trio_clipboard()
+Trio_hent_tlf()
 {
     clipboard := ""
     WinActivate, ahk_class AccessBar, , ,
@@ -678,7 +678,7 @@ Return
 ;træk trio-opkald til Vl-tl
 ; ***
 +F3::
-    telefon := Trio_clipboard()
+    telefon := Trio_hent_tlf()
     WinActivate, PLANET
     vl := P6_hent_vl()
     MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?, 
@@ -689,7 +689,7 @@ Return
 ;træk tlf til rejsesøg
 ; ***
 +F4::
-    telefon := Trio_clipboard()
+    telefon := Trio_hent_tlf()
     WinActivate, PLANET
     P6_rejsesog_tlf(telefon)
 return
@@ -812,7 +812,7 @@ return
 ; trækker indkommende kald til udklip, ringer ikke op
 #IfWinActive ahk_group gruppe
     !w::
-        clipboard := Trio_clipboard()
+        clipboard := Trio_hent_tlf()
     Return
 #IfWinActive
 
