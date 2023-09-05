@@ -821,6 +821,7 @@ return
     SendInput, ^c
     ClipWait, 2, 0
     telefon := clipboard
+    sleep 200
     Trio_opkald(telefon)
 Return
 
