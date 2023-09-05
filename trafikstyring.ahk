@@ -818,6 +818,7 @@ return
 
 ; Kald det markerede nummer i trio, global
 !q::
+    clipboard := ""
     SendInput, ^c
     ClipWait, 2, 0
     telefon := clipboard
