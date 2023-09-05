@@ -11,6 +11,8 @@ GroupAdd, gruppe, ahk_class Chrome_WidgetWin_1
 GroupAdd, gruppe, ahk_class AccessBar
 GroupAdd, gruppe, ahk_class Agent Main GUI
 GroupAdd, gruppe, ahk_class Addressbook
+;; lib
+#Include, %A_linefile%\..\AHKDb\ahkdb.ahk
 
 ;; TODO
 

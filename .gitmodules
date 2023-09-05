@@ -1,0 +1,3 @@
+[submodule "AHKDb"]
+	path = AHKDb
+	url = https://github.com/AHKDb/AHKDb
