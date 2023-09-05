@@ -30,13 +30,22 @@ GroupAdd, gruppe, ahk_class Addressbook
 
 P6_hent_vl_fra_tlf(ByRef vl:="")
 {
-    row := DataBasefind( "gv_tlf.txt", vl)
-    MsgBox % row.1
-    celle := databaseget("gv_tlf.txt", row.1, 1)
-    msgbox % celle
+
+    række := DataBasefind( "gv_tlf.txt", vl)
+    MsgBox,,række, % række.1
+    celle := databaseget("gv_tlf.txt", række.1, 1)
+    if (række.1 is number) ; hvorfor virker den ikke med true/false?
+        {
+        msgbox ,,celle, % celle
+        Return
+        }
+    else
+        msgbox ,,tom, tom
+    Return
+Return
 }
 
-^e::P6_hent_vl_fra_tlf(31319)
+^e::P6_hent_vl_fra_tlf("31225")
 ^+g::DatabaseView("gv_tlf.txt")
 
 
