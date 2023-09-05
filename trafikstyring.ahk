@@ -26,6 +26,18 @@ GroupAdd, gruppe, ahk_class Addressbook
 ;; kendte fejl
 ; P6_initialer sletter ikke, hvis initialerne er eneste ord i notering
 
+;; Database
+
+database()
+{
+    database := DataBasefind( "gv_tlf.txt", "31377")
+    ^+r::databaseview("gv_tlf.txt")
+    ^+g::msgbox ,, search, søgeresultat celle: %database%
+}
+
+
+
+
 ; FUNKTIONER
 
 ; Gem Clipboard
@@ -380,9 +392,9 @@ Trio_opkald(ByRef telefon)
     {
         WinActivate, ahk_class Addressbook
         ControlClick, Edit2, ahk_class Addressbook
-        sleep 1000
+        sleep 500
         SendInput, %telefon%
-        sleep 1000
+        sleep 500
         SendInput, +{enter} ; undgår kobling ved igangværende opkald
     }
     Else
@@ -704,6 +716,7 @@ return
     +F5::
     {
         vl_tlf := P6_hent_vl_tlf()
+        sleep 200
         Trio_opkald(vl_tlf)
         ; Clipboard = %gemtklip%
         ; gemtklip :=
@@ -845,13 +858,13 @@ Return
 #IfWinActive
 
 ;; Telenor
-!e::
-{
-    SendInput, !e
-    telefon := Trio_hent_tlf()
-    WinActivate, PLANET, , , 
-    P6_rejsesog_tlf(telefon)
-}
+; !e::
+; {
+;     SendInput, !e
+;     telefon := Trio_hent_tlf()
+;     WinActivate, PLANET, , , 
+;     P6_rejsesog_tlf(telefon)
+; }
 
 ;; GUI
 
