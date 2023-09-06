@@ -40,8 +40,8 @@ P6_hent_vl_fra_tlf(ByRef tlf:="")
         Return vl
     }
     else
-        vl = false
-    Return vl
+        vl = 0
+        Return vl
 }
 
 ; FUNKTIONER
@@ -716,7 +716,7 @@ F4::
         WinActivate, PLANET, , ,
         sleep 40
         vl := P6_hent_vl_fra_tlf(tlf)
-        if (vl is False)
+        if (vl = 0)
         {
             MsgBox, , Tlf ikke registreret , Telefonnummeret er ikke registreret i Ethics.,
             WinActivate, PLANET, , ,
