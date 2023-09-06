@@ -12,7 +12,7 @@ GroupAdd, gruppe, ahk_class AccessBar
 GroupAdd, gruppe, ahk_class Agent Main GUI
 GroupAdd, gruppe, ahk_class Addressbook
 ;; lib
-#Include, %A_linefile%\..\AHKDb\ahkdb.ahk
+#Include, %A_linefile%\..\lib\AHKDb\ahkdb.ahk
 
 ;; TODO
 
@@ -31,9 +31,9 @@ GroupAdd, gruppe, ahk_class Addressbook
 P6_hent_vl_fra_tlf(ByRef tlf:="")
 {
 
-    række := DataBasefind( "gv_tlf.txt", tlf)
+    række := DataBasefind( "%A_linefile%\..\db\VL_tlf.txt", tlf)
     ; MsgBox,,række, % række.1
-    celle := databaseget("gv_tlf.txt", række.1, 2)
+    celle := databaseget("%A_linefile%\..\db\VL_tlf.txt", række.1, 2)
     if (række.1 is number) ; hvorfor virker den ikke med true/false?
     {
         vl := celle
@@ -41,7 +41,7 @@ P6_hent_vl_fra_tlf(ByRef tlf:="")
     }
     else
         vl = 0
-        Return vl
+    Return vl
 }
 
 ; FUNKTIONER
@@ -663,10 +663,10 @@ Outlook_nymail()
     Return
 }
 
-; Testknap
+;; Testknap
 +^e::
     {
-
+        DataBaseview( "%A_linefile%\..\db\VL_tlf.txt")
     }
 return
 
@@ -706,17 +706,17 @@ Return
     WinActivate, PLANET
     vl := P6_hent_vl()
     if (telefon = "")
-       {
-         MsgBox, , Intet ingående telefonnummer, Der er intet indgående telefonnummer, 1
+    {
+        MsgBox, , Intet ingående telefonnummer, Der er intet indgående telefonnummer, 1
         return
     }
     else
-        {
+    {
         MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
         IfMsgBox, Yes
         P6_ret_tlf_vl(telefon)
         return
-}   
+    }
 
 #IfWinActive PLANET
 F4::
@@ -740,11 +740,27 @@ F4::
 ; ***
 +F4::
     telefon := Trio_hent_tlf()
-    WinActivate, PLANET
-    P6_rejsesog_tlf(telefon)
+    if (telefon = "")
+    {
+        MsgBox, , Intet indgående telefonnummer, Der er intet indgående telefonnummer, 1
+        return
+    }
+    if (telefon = "78410222")
+    {
+        MsgBox, ,Patientbefordring ,Patientbefordring - CPR, 1
+        sleep 1200
+        WinActivate, , PLANET
+        SendInput, !rr
+        sleep 100
+        SendInput, ^t
+        return
+    }
+    Else
+    {
+        WinActivate, PLANET
+        P6_rejsesog_tlf(telefon)
+    }
 return
-
-
 
 ; *
 ;træk tlf fra aktiv planbillede, ring op i Trio
