@@ -32,22 +32,17 @@ P6_hent_vl_fra_tlf(ByRef tlf:="")
 {
 
     række := DataBasefind( "gv_tlf.txt", tlf)
-    MsgBox,,række, % række.1
+    ; MsgBox,,række, % række.1
     celle := databaseget("gv_tlf.txt", række.1, 2)
     if (række.1 is number) ; hvorfor virker den ikke med true/false?
-        {
-        msgbox ,,celle, % celle
-        Return
-        }
+    {
+        vl := celle
+        Return vl
+    }
     else
-        msgbox ,,tom, tom
-    Return
-Return
+        vl = false
+    Return vl
 }
-
-^e::P6_hent_vl_fra_tlf("26796802")
-^+g::DatabaseView("gv_tlf.txt")
-
 
 ; FUNKTIONER
 
@@ -280,7 +275,7 @@ P6_initialer_skriv()
     P6_Planvindue()
     sleep 40
     sendinput ^n
-    sleep 40    
+    sleep 40
     Sendinput %initialer%
     Sendinput %A_space%
     Sendinput {home}
@@ -328,12 +323,23 @@ P6_hent_vl()
     vl := Clipboard
     return vl
 }
+P6_udfyld_vl(vl:="")
+{
+    clipboard := vl
+    P6_Planvindue()
+    sleep 40
+    SendInput, !l
+    sleep 40
+    SendInput, {AppsKey}P
+    sleep 40
+    SendInput, {Enter}
+}
 
 ;  ***
 ; Send tekst til chf
 P6_tekstTilChf(ByRef tekst:=" ")
 {
-    WinActivate PLANET version 6   Jylland-Fyn DRIFT
+    WinActivate PLANET version 6 Jylland-Fyn DRIFT
     kørselsaftale := P6_hent_k_aftale()
     styresystem := P6_hent_styresystem()
     sleep 200
@@ -354,7 +360,7 @@ P6_tekstTilChf(ByRef tekst:=" ")
     }
     Else
         return
-return
+    return
 }
 
 ;  ***
@@ -412,7 +418,6 @@ Trio_opkald(ByRef telefon)
         MsgBox, , Åbn Adressebog, Adressebogen i Trio er ikke åben
     Return
 }
-
 
 ; ***
 ; Læg på i Trio
@@ -538,7 +543,7 @@ Trio_hent_tlf()
 
 ; *
 ; Kørselsaftale til flexfinder
-    ; 244,215
+; 244,215
 Flexfinder_opslag()
 {
     If (WinExist("FlexDanmark FlexFinder"))
@@ -569,7 +574,7 @@ Flexfinder_opslag()
     }
     Else
         MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den forreste fane)
-Return  
+    Return
 }
 
 ; Misc
@@ -605,9 +610,8 @@ Opkald(p*){
     telefon := % p.1
     sleep 100
     Trio_opkald(telefon)
-    WinActivate, PLANET, , , 
+    WinActivate, PLANET, , ,
 }
-
 
 ; GuiEscape:
 ;     Gui, Destroy
@@ -641,10 +645,8 @@ Opkald(p*){
 ;     sleep 100
 ;     Trio_opkald()
 ;     Gui, Destroy
-;     WinActivate, PLANET, , , 
+;     WinActivate, PLANET, , ,
 ; }
-
-
 
 ; Gui-escape: escape når gui er aktivt.
 
@@ -663,13 +665,10 @@ Outlook_nymail()
 
 ; Testknap
 +^e::
-{ 
+    {
 
-
-
-}
+    }
 return
-
 
 ;; HOTKEYS
 
@@ -706,10 +705,27 @@ Return
     telefon := Trio_hent_tlf()
     WinActivate, PLANET
     vl := P6_hent_vl()
-    MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?, 
+    MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
     IfMsgBox, Yes
         P6_ret_tlf_vl(telefon)
-    return
+return
+
+F4::
+    {
+        tlf := Trio_hent_tlf()
+        WinActivate, PLANET, , ,
+        sleep 40
+        vl := P6_hent_vl_fra_tlf(tlf)
+        if (vl is False)
+        {
+            MsgBox, , Tlf ikke registreret , Telefonnummeret er ikke registreret i Ethics.,
+            WinActivate, PLANET, , ,
+            return
+        }
+        else
+            P6_udfyld_vl(vl)
+        Return
+    }
 
 ;træk tlf til rejsesøg
 ; ***
@@ -725,16 +741,16 @@ return
 ;træk tlf fra aktiv planbillede, ring op i Trio
 #IfWinActive PLANET
     +F5::
-    {
-        vl_tlf := P6_hent_vl_tlf()
-        sleep 200
-        Trio_opkald(vl_tlf)
-        ; Clipboard = %gemtklip%
-        ; gemtklip :=
-        sleep 400
-        WinActivate, PLANET
-        P6_Planvindue()
-    }
+        {
+            vl_tlf := P6_hent_vl_tlf()
+            sleep 200
+            Trio_opkald(vl_tlf)
+            ; Clipboard = %gemtklip%
+            ; gemtklip :=
+            sleep 400
+            WinActivate, PLANET
+            P6_Planvindue()
+        }
     Return
 #IfWinActive
 
@@ -742,13 +758,13 @@ return
 ; træk vm-tlf fra aktivt planbillede, ring op i Trio
 #IfWinActive PLANET
     ^+F5::
-    {
-        vm_tlf := P6_hent_vm_tlf()
-        sleep 200
-        Trio_opkald(vm_tlf)
-        sleep 800
-        WinActivate, PLANET
-    }
+        {
+            vm_tlf := P6_hent_vm_tlf()
+            sleep 200
+            Trio_opkald(vm_tlf)
+            sleep 800
+            WinActivate, PLANET
+        }
     Return
 #IfWinActive
 
@@ -796,8 +812,7 @@ return
     Return
 #IfWinActive
 
-
-    ;; Trio-Hotkey
+;; Trio-Hotkey
 #IfWinActive ahk_group gruppe
     ^1::
         trio_klar()
@@ -873,7 +888,7 @@ Return
 ; {
 ;     SendInput, !e
 ;     telefon := Trio_hent_tlf()
-;     WinActivate, PLANET, , , 
+;     WinActivate, PLANET, , ,
 ;     P6_rejsesog_tlf(telefon)
 ; }
 
@@ -887,10 +902,10 @@ Return
 ::rgef::Rejsegaranti, egenbetaling fjernet
 ::vlaok::Alarm st OK
 ::vlik::
-{
-    ; hent st og tid - gui
-    SendInput, St. %stop% ank. %tid%, ikke kvitteret 
-}
+    {
+        ; hent st og tid - gui
+        SendInput, St. %stop% ank. %tid%, ikke kvitteret
+    }
 ; #IfWinActive
 ;    Clipboard := "Låst, ingen kontakt til chf, privatrejse ikke udråbt"
 ;	ClipWait
@@ -910,8 +925,8 @@ Return
         return
     }
 
-;; Outlook
-^+m::Outlook_nymail()
+    ;; Outlook
+    ^+m::Outlook_nymail()
 Return
 
 ; +r::
