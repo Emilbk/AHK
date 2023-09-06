@@ -699,7 +699,7 @@ Return
     Return
 #IfWinActive
 
-;træk trio-opkald til Vl-tl
+;ret vl-tlf til triopkald
 ; ***
 +F3::
     telefon := Trio_hent_tlf()
