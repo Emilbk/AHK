@@ -12,7 +12,7 @@ GroupAdd, gruppe, ahk_class AccessBar
 GroupAdd, gruppe, ahk_class Agent Main GUI
 GroupAdd, gruppe, ahk_class Addressbook
 ;; lib
-#Include, %A_linefile%\..\lib\AHKDb\ahkdb.ahk
+#Include, %A_linefile%\..\AHKDb\ahkdb.ahk
 
 ;; TODO
 
@@ -659,14 +659,16 @@ Opkald(p*){
 ; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script.
 Outlook_nymail()
 {
-    Run, nymail.lnk, , ,
+    Run, %A_linefile%\..\lib\nymail.lnk, , ,
     Return
 }
 
 ;; Testknap
-+^e::
+
+
+^e::
     {
-        DataBaseview( "%A_linefile%\..\db\VL_tlf.txt")
+
     }
 return
 
@@ -714,7 +716,7 @@ Return
     {
         MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
         IfMsgBox, Yes
-        P6_ret_tlf_vl(telefon)
+            P6_ret_tlf_vl(telefon)
         return
     }
 
