@@ -705,10 +705,18 @@ Return
     telefon := Trio_hent_tlf()
     WinActivate, PLANET
     vl := P6_hent_vl()
-    MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
-    IfMsgBox, Yes
+    if (telefon = "")
+       {
+         MsgBox, , Intet ingående telefonnummer, Der er intet indgående telefonnummer, 1
+        return
+    }
+    else
+        {
+        MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
+        IfMsgBox, Yes
         P6_ret_tlf_vl(telefon)
-return
+        return
+}   
 
 #IfWinActive PLANET
 F4::
@@ -719,7 +727,7 @@ F4::
         vl := P6_hent_vl_fra_tlf(tlf)
         if (vl = 0)
         {
-            MsgBox, , Tlf ikke registreret , Telefonnummeret er ikke registreret i Ethics.,
+            MsgBox, , Tlf ikke registreret , Telefonnummeret er ikke registreret i Ethics., 1
             WinActivate, PLANET, , ,
             return
         }
