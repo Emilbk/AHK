@@ -557,14 +557,12 @@ Flexfinder_opslag()
         SendInput, {Home}
         sleep 400
         SendInput, {PgUp}
-        sleep 100
+        sleep 200
+        PixelSearch, Px, Py, 90, 190, 1062, 621, 0x5E6FF2, 0, Fast 
+        sleep 200
+        click %Px% %Py%
+        sleep 200
         ControlClick, x244 y215, FlexDanmark FlexFinder
-        sleep 40
-        SendInput, +{tab}{Up}
-        sleep 40
-        SendInput, {tab}
-        sleep 100
-        SendInput, ^a{del}
         sleep 200
         SendInput, %k_aftale%
         KeyWait, Enter, D, T7
