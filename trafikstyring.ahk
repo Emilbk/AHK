@@ -710,6 +710,7 @@ Return
         P6_ret_tlf_vl(telefon)
 return
 
+#IfWinActive PLANET
 F4::
     {
         tlf := Trio_hent_tlf()
@@ -726,7 +727,7 @@ F4::
             P6_udfyld_vl(vl)
         Return
     }
-
+#IfWinActive
 ;træk tlf til rejsesøg
 ; ***
 +F4::
@@ -735,7 +736,7 @@ F4::
     P6_rejsesog_tlf(telefon)
 return
 
-#IfWinActive
+
 
 ; *
 ;træk tlf fra aktiv planbillede, ring op i Trio
