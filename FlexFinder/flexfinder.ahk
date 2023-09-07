@@ -4,9 +4,18 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance, force
 
-vl := "bla"
-FileRead, vl, liftvogn.txt
-MsgBox, , , % vl[1]
+
+; 0-13, 9-36, aktiv_8, liftvogn, tripstol, type2, type5, ttj_larve, ttj_hjul
+; aktiv_fil := %A_linefile%\..\ff_vl\type2.txt
+
+vl := 3323_32
+vl := StrSplit(vl)
+MsgBox, , , % vl[2], 
+k := vl[2]
+s := vl[2]
+MsgBox, , , % k, 
+
+vl := SubStr("000" . k, -3)
 
 !^+s::
 ; IfWinExist, FlexDanmark FlexFinder ;insert the window name
@@ -55,11 +64,13 @@ return
 z::
 IfWinExist, FlexDanmark FlexFinder ;insert the window name
 WinActivate
-PixelSearch, Px, Py, 90, 190, 1062, 621, 0x5E6FF2, 0, Fast ; oxo0FFFF is the pixel color fould from using the first script, insert yours there
+PixelSearch, Px, Py, 90, 190, 1062, 621, 0x68615c, 0, Fast ; oxo0FFFF is the pixel color fould from using the first script, insert yours there
 if ErrorLevel
 MsgBox, That color was not found in the specified region.
 else
-   click %Px%, %Py%
+    click %Px%, %Py%
+
+return
 
 +Escape::
 ExitApp

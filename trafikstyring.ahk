@@ -28,21 +28,7 @@ GroupAdd, gruppe, ahk_class Addressbook
 
 ;; Database
 
-P6_hent_vl_fra_tlf(ByRef tlf:="")
-{
 
-    række := DataBasefind( "%A_linefile%\..\db\VL_tlf.txt", tlf)
-    ; MsgBox,,række, % række.1
-    celle := databaseget("%A_linefile%\..\db\VL_tlf.txt", række.1, 2)
-    if (række.1 is number) ; hvorfor virker den ikke med true/false?
-    {
-        vl := celle
-        Return vl
-    }
-    else
-        vl = 0
-    Return vl
-}
 
 ; FUNKTIONER
 
@@ -168,6 +154,23 @@ P6_hent_vm_tlf()
     vm_tlf := Clipboard
     Return vm_tlf
 }
+
+P6_hent_vl_fra_tlf(ByRef tlf:="")
+{
+
+    række := DataBasefind( "%A_linefile%\..\db\VL_tlf.txt", tlf)
+    ; MsgBox,,række, % række.1
+    celle := databaseget("%A_linefile%\..\db\VL_tlf.txt", række.1, 2)
+    if (række.1 is number) ; hvorfor virker den ikke med true/false?
+    {
+        vl := celle
+        Return vl
+    }
+    else
+        vl = 0
+    Return vl
+}
+
 ; ***
 ;indsæt clipboard i vl-tlf
 P6_ret_tlf_vl(ByRef telefon:=" ")
@@ -325,21 +328,63 @@ P6_hent_vl()
 }
 P6_udfyld_vl(vl:="")
 {
-    clipboard := vl
+    ; clipboard := vl
     P6_Planvindue()
     sleep 40
     SendInput, !l
+    sleep 200
+    SendInput, %vl%
+    sleep 40
+    SendInput, {Enter}
+}
+
+P6_udfyld_k(k:="")
+{
+    clipboard := k
+    P6_Planvindue()
+    sleep 40
+    SendInput, !k
     sleep 40
     SendInput, {AppsKey}P
     sleep 40
     SendInput, {Enter}
 }
 
+P6_udfyld_s(s:="")
+{
+    clipboard := s
+    P6_Planvindue()
+    sleep 40
+    SendInput, !k
+    sleep 40
+    SendInput, {tab}
+    sleep 40
+    SendInput, {AppsKey}P
+    sleep 40
+    SendInput, {Enter}
+}
+
+P6_udfyld_k_s(vl:="")
+{
+    P6_Planvindue()
+    sleep 40
+    SendInput, !k
+    sleep 40
+    SendInput, % vl.k
+    sleep 40
+    SendInput, {tab}
+    sleep 40
+    SendInput, % vl.s
+    sleep 40
+    SendInput, {Enter}
+}
+
+
 ;  ***
 ; Send tekst til chf
 P6_tekstTilChf(ByRef tekst:=" ")
 {
-    WinActivate PLANET version 6 Jylland-Fyn DRIFT
+    WinActivate PLANET
     kørselsaftale := P6_hent_k_aftale()
     styresystem := P6_hent_styresystem()
     sleep 200
@@ -576,6 +621,31 @@ Flexfinder_opslag()
     Return
 }
 
+Flexfinder_til_p6()
+{
+   
+    vl := {}
+    sleep 40
+    SendInput, {Home}
+    sleep 400
+    SendInput, {PgUp}
+    BlockInput, Mouse
+    PixelSearch, Px, Py, 90, 190, 1062, 621, 0x7E7974, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
+    click %Px%, %Py%
+    click %Px%, %Py%
+    BlockInput, MouseMoveOff
+    SendInput, ^c
+    sleep 400
+    ClipWait, 2, 0
+    ff_opslag := clipboard
+    vl.k := SubStr(ff_opslag, 1, 4)
+    vl.s := SubStr(ff_opslag, 6, 4)
+    vl.s := StrReplace(vl.s, 0, , , Limit := -1)
+
+
+    return vl
+}
+
 ; Misc
 
 ; *
@@ -664,18 +734,17 @@ Outlook_nymail()
 
 ;; Testknap
 
-
-^e::
-    {
-
-    }
+^e::Flexfinder_til_p6()
 return
 
 ;; HOTKEYS
 
+;; Global
 +Escape::
 ExitApp
 Return
+
+^+p::WinActivate, PLANET, , ,
 
 ;; PLANET
 ;; Initialer til/fra
@@ -731,7 +800,7 @@ F4::
             MsgBox, , Tlf ikke registreret , Telefonnummeret er ikke registreret i Ethics., 1
             WinActivate, PLANET, , ,
             SendInput, !tp!l
-            
+
             return
         }
         else
@@ -750,9 +819,9 @@ F4::
     }
     if (telefon = "78410222")
     {
-        MsgBox, ,Patientbefordring ,Patientbefordring - CPR, 1
-        sleep 500
-        WinActivate, , PLANET
+        ; MsgBox, ,CPR, CPR, 1
+        WinActivate, PLANET
+        sleep 200
         SendInput, !rr
         sleep 100
         SendInput, ^t
@@ -788,7 +857,7 @@ return
     ^+F5::
         {
             vm_tlf := P6_hent_vm_tlf()
-            sleep 200
+            sleep 500
             Trio_opkald(vm_tlf)
             sleep 800
             WinActivate, PLANET
@@ -908,6 +977,20 @@ Return
 #IfWinActive PLANET
     ^+f::
         Flexfinder_opslag()
+    Return
+#IfWinActive
+
+#IfWinActive FlexDanmark FlexFinder
+    ~$^LButton::
+        KeyWait, ctrl
+        sleep 200
+        vl :=Flexfinder_til_p6()
+        WinActivate PLANET
+        sleep 200
+        P6_udfyld_k_s(vl)
+        WinActivate, FlexDanmark FlexFinder, , , 
+
+
     Return
 #IfWinActive
 
