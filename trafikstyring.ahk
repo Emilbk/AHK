@@ -164,6 +164,7 @@ P6_hent_vl_fra_tlf(ByRef tlf:="")
     if (række.1 is number) ; hvorfor virker den ikke med true/false?
     {
         vl := celle
+        vl := StrSplit(vl, "_") ;vl.1 k, vl.2 s
         Return vl
     }
     else
