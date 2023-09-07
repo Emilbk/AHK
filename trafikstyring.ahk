@@ -558,7 +558,7 @@ Flexfinder_opslag()
         sleep 400
         SendInput, {PgUp}
         sleep 200
-        PixelSearch, Px, Py, 90, 190, 1062, 621, 0x5E6FF2, 0, Fast 
+        PixelSearch, Px, Py, 90, 190, 1062, 621, 0x5E6FF2, 0, Fast
         sleep 200
         click %Px% %Py%
         sleep 200
@@ -729,6 +729,8 @@ F4::
         {
             MsgBox, , Tlf ikke registreret , Telefonnummeret er ikke registreret i Ethics., 1
             WinActivate, PLANET, , ,
+            SendInput, !tp!l
+            
             return
         }
         else
@@ -748,7 +750,7 @@ F4::
     if (telefon = "78410222")
     {
         MsgBox, ,Patientbefordring ,Patientbefordring - CPR, 1
-        sleep 1200
+        sleep 500
         WinActivate, , PLANET
         SendInput, !rr
         sleep 100
