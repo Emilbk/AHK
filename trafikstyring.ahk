@@ -804,7 +804,10 @@ F4::
             return
         }
         else
-            P6_udfyld_vl(vl)
+        P6_udfyld_k(vl.1)
+        ; MsgBox, , , % vl.1
+        P6_udfyld_s(vl.2)
+        ; MsgBox, , , % vl.2
         Return
     }
 #IfWinActive
