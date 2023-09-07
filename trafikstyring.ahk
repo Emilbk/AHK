@@ -409,7 +409,8 @@ Trio_opkald(ByRef telefon)
     {
         WinActivate, ahk_class Addressbook
         ControlClick, Edit2, ahk_class Addressbook
-        sleep 500
+        SendInput, ^a{del}
+        sleep 100
         SendInput, %telefon%
         sleep 500
         SendInput, +{enter} ; undgår kobling ved igangværende opkald
