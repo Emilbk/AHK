@@ -72,22 +72,22 @@ return
 
 return
 
-; +z:: ; Control+Z hotkey.
-;     MouseGetPos, MouseX, MouseY
-;     PixelGetColor, color, %MouseX%, %MouseY%
-;     MsgBox The color at the current cursor position is %color%.
-; return
++z:: ; Control+Z hotkey.
+    MouseGetPos, MouseX, MouseY
+    PixelGetColor, color, %MouseX%, %MouseY%
+    MsgBox The color at the current cursor position is %color%.
+return
 
-; z::
-;     IfWinExist, FlexDanmark FlexFinder ;insert the window name
-;         WinActivate
-;     PixelSearch, Px, Py, 90, 190, 1062, 621, 0x68615c, 0, Fast ; oxo0FFFF is the pixel color fould from using the first script, insert yours there
-;     if ErrorLevel
-;         MsgBox, That color was not found in the specified region.
-;     else
-;         click %Px%, %Py%
+z::
+    IfWinExist, FlexDanmark FlexFinder ;insert the window name
+        WinActivate
+    PixelSearch, Px, Py, 13, 182, 1203, 230, 0x5B6CF2, 0, Fast
+    if ErrorLevel
+        MsgBox, That color was not found in the specified region.
+    else
+        click %Px%, %Py%
 
-; return
+return
 
 +Escape::
 ExitApp
