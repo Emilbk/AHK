@@ -371,13 +371,13 @@ P6_udfyld_k_s(vl:="")
     P6_Planvindue()
     sleep 40
     SendInput, !k
-    sleep 40
+    sleep 100
     SendInput, % vl.1
-    sleep 40
+    sleep 100
     SendInput, {tab}
-    sleep 40
+    sleep 100
     SendInput, % vl.2
-    sleep 40
+    sleep 100
     SendInput, {Enter}
 }
 
@@ -642,9 +642,9 @@ Flexfinder_til_p6()
     sleep 400
     ClipWait, 2, 0
     ff_opslag := clipboard
-    vl.k := SubStr(ff_opslag, 1, 4)
-    vl.s := SubStr(ff_opslag, 6, 4)
-    vl.s := StrReplace(vl.s, 0, , , Limit := -1)
+    vl.1 := SubStr(ff_opslag, 1, 4)
+    vl.2 := SubStr(ff_opslag, 6, 4)
+    vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
 
 
     return vl
