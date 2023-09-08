@@ -664,12 +664,11 @@ Flexfinder_til_p6()
         BlockInput, MouseMoveOff
         SendInput, ^c
         sleep 400
-        ClipWait, 2, 0
         ff_opslag := clipboard
         vl.1 := SubStr(ff_opslag, 1, 4)
         vl.2 := SubStr(ff_opslag, 6, 4)
         vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
-        return
+        return vl
         }
     Else
         {
