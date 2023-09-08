@@ -672,37 +672,50 @@ Flexfinder_til_p6()
     BlockInput, Mouse
     WinGetPos, X, Y, , , FlexDanmark FlexFinder, , , 
     if(x = "0")
+        PixelGetColor, pixel, 281, 155
+        if (pixel = 0xFCFBFB)
+            {
+            MsgBox, , FlexFinder, Fanen "Grupper" i FlexFinder skal være lukket
+            return 0
+            }
+        if (x = 0)
+            {
+            ; PixelSearch, Px, Py, 90, 190, 1062, 621, 0x7E7974, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
+            ; click %Px%, %Py%
+            ; click %Px%, %Py%
+            ControlClick, x281 y155, FlexDanmark FlexFinder
+            ControlClick, x281 y155, FlexDanmark FlexFinder
+            BlockInput, MouseMoveOff
+            SendInput, ^c
+            sleep 400
+            ff_opslag := clipboard
+            vl.1 := SubStr(ff_opslag, 1, 4)
+            vl.2 := SubStr(ff_opslag, 6, 4)
+            vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
+            return vl
+            }
+    else
+        PixelGetColor, pixel, 236, 262
+        if (pixel = 0xFBFBFB)
+            {  
+            MsgBox, , FlexFinder, Fanen "Grupper" i FlexFinder skal være lukket
+            return 0
+            }
+        Else
         {
-        ; PixelSearch, Px, Py, 90, 190, 1062, 621, 0x7E7974, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
-        ; click %Px%, %Py%
-        ; click %Px%, %Py%
-        ControlClick, x281 y155, FlexDanmark FlexFinder
-        ControlClick, x281 y155, FlexDanmark FlexFinder
-        BlockInput, MouseMoveOff
-        SendInput, ^c
-        sleep 400
-        ff_opslag := clipboard
-        vl.1 := SubStr(ff_opslag, 1, 4)
-        vl.2 := SubStr(ff_opslag, 6, 4)
-        vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
-        return vl
+            ControlClick, x236 y262, FlexDanmark FlexFinder
+            ControlClick, x236 y262, FlexDanmark FlexFinder
+            BlockInput, MouseMoveOff
+            SendInput, ^c
+            sleep 400
+            ClipWait, 2, 0
+            ff_opslag := clipboard
+            vl.1 := SubStr(ff_opslag, 1, 4)
+            vl.2 := SubStr(ff_opslag, 6, 4)
+            vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
+            return vl
         }
-    Else
-        {
-        ControlClick, x236 y262, FlexDanmark FlexFinder
-        ControlClick, x236 y262, FlexDanmark FlexFinder
-        BlockInput, MouseMoveOff
-        SendInput, ^c
-        sleep 400
-        ClipWait, 2, 0
-        ff_opslag := clipboard
-        vl.1 := SubStr(ff_opslag, 1, 4)
-        vl.2 := SubStr(ff_opslag, 6, 4)
-        vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
-        }
-    ; PixelSearch, Px, Py, 90, 190, 1062, 621, 0x7E7974, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
 
-    return vl
 }
 
 ; Misc
