@@ -22,6 +22,7 @@ GroupAdd, gruppe, ahk_class Addressbook
 ; Luk om x antal minutter
 ; Trio gå til linie 1 hvis linie 2 aktiv
 ; omskriv initialer
+; forstå pixelsearch
 
 ;; kendte fejl
 ; P6_initialer sletter ikke, hvis initialerne er eneste ord i notering
@@ -610,6 +611,8 @@ Flexfinder_opslag()
         click %Px% %Py%
         sleep 200
         ControlClick, x244 y215, FlexDanmark FlexFinder
+        sleep 40
+        SendInput, +{tab}{up}{tab}
         sleep 200
         SendInput, %k_aftale%
         KeyWait, Enter, D, T7
