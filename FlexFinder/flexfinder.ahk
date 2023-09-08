@@ -5,11 +5,11 @@ SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
 #SingleInstance, force
 
 ; Udfyld variabel aktiv_fil - Vælg mellem:
-; 0-13, 9-36, aktiv_8, liftvogn, tripstol,
+; 0-13, 9-36, aktiv_8, liftvogn, tripstol, gv_alle,
 ; type2, type5, ttj_larve, ttj_hjul,variabel_lift,variabel_type2,
 ; variabel_ttj,
 
-aktiv_fil := "ttj_hjul"
+aktiv_fil := "gv_alle"
 FileRead, fil, %A_linefile%\..\ff_vl\%aktiv_fil%.txt
 ; MsgBox, , fil, % fil,
 vl := StrSplit(fil, "`n")

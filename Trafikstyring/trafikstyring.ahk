@@ -738,7 +738,11 @@ Outlook_nymail()
 
 ;; Testknap
 
-^e::Flexfinder_til_p6()
+^e::
+{
+    tlf := Trio_hent_tlf()
+    MsgBox, , , % tlf, 
+}
 return
 
 ;; HOTKEYS
