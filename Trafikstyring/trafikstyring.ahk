@@ -606,18 +606,37 @@ Flexfinder_opslag()
         sleep 400
         SendInput, {PgUp}
         sleep 200
-        PixelSearch, Px, Py, 90, 190, 1062, 621, 0x5E6FF2, 0, Fast
-        sleep 200
-        click %Px% %Py%
-        sleep 200
-        ControlClick, x244 y215, FlexDanmark FlexFinder
-        sleep 40
-        SendInput, +{tab}{up}{tab}
-        sleep 200
-        SendInput, %k_aftale%
-        KeyWait, Enter, D, T7
-        sleep 200
-        WinActivate, PLANET
+        WinGetPos, X, Y, , , FlexDanmark FlexFinder, , , 
+        if(x = "0")
+            {
+            PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6CF2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
+            sleep 200
+            click %Px% %Py%
+            sleep 200
+            ControlClick, x322 y100, FlexDanmark FlexFinder
+            sleep 40
+            SendInput, +{tab}{up}{tab}
+            sleep 200
+            SendInput, %k_aftale%
+            KeyWait, Enter, D, T7
+            sleep 200
+            WinActivate, PLANET
+            }
+        Else
+            {
+            PixelSearch, Px, Py, 90, 190, 1062, 621, 0x5E6FF2, 0, Fast
+            sleep 200
+            click %Px% %Py%
+            sleep 200
+            ControlClick, x244 y215, FlexDanmark FlexFinder
+            sleep 40
+            SendInput, +{tab}{up}{tab}
+            sleep 200
+            SendInput, %k_aftale%
+            KeyWait, Enter, D, T7
+            sleep 200
+            WinActivate, PLANET
+            }
         ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
     }
     Else
