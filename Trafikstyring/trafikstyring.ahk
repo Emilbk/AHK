@@ -1063,13 +1063,17 @@ Return
         KeyWait, ctrl
         sleep 200
         vl :=Flexfinder_til_p6()
-        WinActivate PLANET
-        sleep 200
-        P6_udfyld_k_s(vl)
-        WinActivate, FlexDanmark FlexFinder, , , 
+        if (vl is 0)
+            return
+        Else
+            {
+            WinActivate PLANET
+            sleep 200
+            P6_udfyld_k_s(vl)   
+            WinActivate, FlexDanmark FlexFinder, , , 
+            Return
+            }
 
-
-    Return
 #IfWinActive
 
 ;; Telenor
