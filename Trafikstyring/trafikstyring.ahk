@@ -12,7 +12,7 @@ GroupAdd, gruppe, ahk_class AccessBar
 GroupAdd, gruppe, ahk_class Agent Main GUI
 GroupAdd, gruppe, ahk_class Addressbook
 ;; lib
-#Include, %A_linefile%\..\AHKDb\ahkdb.ahk
+#Include, %A_linefile%\..\..\AHKDb\ahkdb.ahk
 
 ;; TODO
 
@@ -653,18 +653,38 @@ Flexfinder_til_p6()
     sleep 400
     SendInput, {PgUp}
     BlockInput, Mouse
-    PixelSearch, Px, Py, 90, 190, 1062, 621, 0x7E7974, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
-    click %Px%, %Py%
-    click %Px%, %Py%
-    BlockInput, MouseMoveOff
-    SendInput, ^c
-    sleep 400
-    ClipWait, 2, 0
-    ff_opslag := clipboard
-    vl.1 := SubStr(ff_opslag, 1, 4)
-    vl.2 := SubStr(ff_opslag, 6, 4)
-    vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
-
+    WinGetPos, X, Y, , , FlexDanmark FlexFinder, , , 
+    if(x = "0")
+        {
+        ; PixelSearch, Px, Py, 90, 190, 1062, 621, 0x7E7974, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
+        ; click %Px%, %Py%
+        ; click %Px%, %Py%
+        ControlClick, x281 y155, FlexDanmark FlexFinder
+        ControlClick, x281 y155, FlexDanmark FlexFinder
+        BlockInput, MouseMoveOff
+        SendInput, ^c
+        sleep 400
+        ClipWait, 2, 0
+        ff_opslag := clipboard
+        vl.1 := SubStr(ff_opslag, 1, 4)
+        vl.2 := SubStr(ff_opslag, 6, 4)
+        vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
+        return
+        }
+    Else
+        {
+        ControlClick, x236 y262, FlexDanmark FlexFinder
+        ControlClick, x236 y262, FlexDanmark FlexFinder
+        BlockInput, MouseMoveOff
+        SendInput, ^c
+        sleep 400
+        ClipWait, 2, 0
+        ff_opslag := clipboard
+        vl.1 := SubStr(ff_opslag, 1, 4)
+        vl.2 := SubStr(ff_opslag, 6, 4)
+        vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
+        }
+    ; PixelSearch, Px, Py, 90, 190, 1062, 621, 0x7E7974, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
 
     return vl
 }
@@ -771,7 +791,7 @@ return
 ExitApp
 Return
 
-^+p::WinActivate, PLANET, , ,
+^+!p::WinActivate, PLANET, , ,
 
 ;; PLANET
 ;; Initialer til/fra
