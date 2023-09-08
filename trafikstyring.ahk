@@ -372,11 +372,11 @@ P6_udfyld_k_s(vl:="")
     sleep 40
     SendInput, !k
     sleep 40
-    SendInput, % vl.k
+    SendInput, % vl.1
     sleep 40
     SendInput, {tab}
     sleep 40
-    SendInput, % vl.s
+    SendInput, % vl.2
     sleep 40
     SendInput, {Enter}
 }
@@ -808,9 +808,8 @@ F4::
             return
         }
         else
-        P6_udfyld_k(vl.1)
-        ; MsgBox, , , % vl.1
-        P6_udfyld_s(vl.2)
+        sleep 40
+        P6_udfyld_k_s(vl)
         ; MsgBox, , , % vl.2
         Return
     }
