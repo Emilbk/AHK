@@ -41,12 +41,15 @@ GroupAdd, gruppe, ahk_class Addressbook
 ;     vis liste over tilknyttede vognløb, med markering for kommentar
 ;     vælg vl
 
+; scratchpad, med mulighed for at liste vognløb
+; tilknyt kommentar til vl (vis i oversigten hvis og hvornår)
+; mulighed for timer reminder
+; klik for åben vl i planet
+
 ;; kendte fejl
 ; P6_initialer sletter ikke, hvis initialerne er eneste ord i notering
 
 ;; Database
-
-
 
 ; FUNKTIONER
 
@@ -177,11 +180,9 @@ P6_hent_vl_fra_tlf(ByRef tlf:="")
 {
 
     række := DataBasefind( "%A_linefile%\..\db\VL_tlf.txt", tlf)
-    ; MsgBox,,række, % række.1
-    celle := databaseget("%A_linefile%\..\db\VL_tlf.txt", række.1, 2)
+    vl := databaseget("%A_linefile%\..\db\VL_tlf.txt", række.1, 2)
     if (række.1 is number) ; hvorfor virker den ikke med true/false?
-    {
-        vl := celle
+        {
         vl := StrSplit(vl, "_") ;vl.1 k, vl.2 s
         Return vl
     }
@@ -241,18 +242,18 @@ P6_initialer()
     SendInput, {F5} ; for at undgå timeout. Giver det problemer med langsom opdatering?
     sleep 40
     sendinput ^n
-    sleep 400
+    sleep 200
     clipboard :=
     SendInput, ^a^c
-    ClipWait, 1, 0
+    sleep 200
     notering := clipboard
-    sleep 400
+    sleep 200s
     fem := SubStr(notering, 1 ,6)
     if InStr(fem, initialer_udentid, 0, 1)
     {
         StringTrimLeft, oprindelig_notering, notering, 11
         If (oprindelig_notering) = ""
-            {
+        {
             oprindelig_notering := " "
             Clipboard :=
             Clipboard := oprindelig_notering
@@ -261,9 +262,9 @@ P6_initialer()
             sleep 200
             SendInput, !o
             return
-            }
+        }
         else
-            {
+        {
             Clipboard :=
             Clipboard := oprindelig_notering
             sleep 400
@@ -271,10 +272,10 @@ P6_initialer()
             sleep 200
             SendInput, !o
             return
-            }
+        }
     }
     Else
-        {
+    {
         Clipboard :=
         sleep 200
         Clipboard := initialer
@@ -285,7 +286,7 @@ P6_initialer()
         SendInput, %A_Space%
         sleep 400
         SendInput, !o
-        }
+    }
 }
 
 ; ** kan gemtklip-funktion skrives bedre?
@@ -388,7 +389,7 @@ P6_udfyld_k_s(vl:="")
     P6_Planvindue()
     sleep 40
     SendInput, !k
-    sleep 200
+    SendInput, {BackSpace} ; ved tp til udfyldt VL er første tastetryk lig med delete
     SendInput, % vl.1
     sleep 100
     SendInput, {tab}
@@ -397,7 +398,6 @@ P6_udfyld_k_s(vl:="")
     sleep 100
     SendInput, {Enter}
 }
-
 
 ;  ***
 ; Send tekst til chf
@@ -623,9 +623,9 @@ Flexfinder_opslag()
         sleep 400
         SendInput, {PgUp}
         sleep 200
-        WinGetPos, X, Y, , , FlexDanmark FlexFinder, , , 
+        WinGetPos, X, Y, , , FlexDanmark FlexFinder, , ,
         if(x = "0")
-            {
+        {
             PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6CF2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
             sleep 200
             click %Px% %Py%
@@ -638,9 +638,9 @@ Flexfinder_opslag()
             KeyWait, Enter, D, T7
             sleep 200
             WinActivate, PLANET
-            }
+        }
         Else
-            {
+        {
             PixelSearch, Px, Py, 90, 190, 1062, 621, 0x5E6FF2, 0, Fast
             sleep 200
             click %Px% %Py%
@@ -653,7 +653,7 @@ Flexfinder_opslag()
             KeyWait, Enter, D, T7
             sleep 200
             WinActivate, PLANET
-            }
+        }
         ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
     }
     Else
@@ -663,58 +663,58 @@ Flexfinder_opslag()
 
 Flexfinder_til_p6()
 {
-   
+
     vl := {}
     sleep 40
     SendInput, {Home}
     sleep 400
     SendInput, {PgUp}
     BlockInput, Mouse
-    WinGetPos, X, Y, , , FlexDanmark FlexFinder, , , 
+    WinGetPos, X, Y, , , FlexDanmark FlexFinder, , ,
     if(x = "0")
         PixelGetColor, pixel, 281, 155
-        if (pixel = 0xFCFBFB)
-            {
-            MsgBox, , FlexFinder, Fanenerne "Grupper" og "Tid" i FlexFinder skal være lukket.
-            return 0
-            }
-        if (x = 0)
-            {
-            ; PixelSearch, Px, Py, 90, 190, 1062, 621, 0x7E7974, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
-            ; click %Px%, %Py%
-            ; click %Px%, %Py%
-            ControlClick, x281 y155, FlexDanmark FlexFinder
-            ControlClick, x281 y155, FlexDanmark FlexFinder
-            BlockInput, MouseMoveOff
-            SendInput, ^c
-            sleep 400
-            ff_opslag := clipboard
-            vl.1 := SubStr(ff_opslag, 1, 4)
-            vl.2 := SubStr(ff_opslag, 6, 4)
-            vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
-            return vl
-            }
+    if (pixel = 0xFCFBFB)
+    {
+        MsgBox, , FlexFinder, Fanenerne "Grupper" og "Tid" i FlexFinder skal være lukket.
+        return 0
+    }
+    if (x = 0)
+    {
+        ; PixelSearch, Px, Py, 90, 190, 1062, 621, 0x7E7974, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
+        ; click %Px%, %Py%
+        ; click %Px%, %Py%
+        ControlClick, x281 y155, FlexDanmark FlexFinder
+        ControlClick, x281 y155, FlexDanmark FlexFinder
+        BlockInput, MouseMoveOff
+        SendInput, ^c
+        sleep 400
+        ff_opslag := clipboard
+        vl.1 := SubStr(ff_opslag, 1, 4)
+        vl.2 := SubStr(ff_opslag, 6, 4)
+        vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
+        return vl
+    }
     else
         PixelGetColor, pixel, 236, 262
-        if (pixel = 0xFBFBFB)
-            {  
-            MsgBox, , FlexFinder, Fanenerne "Grupper" og "Tid" i FlexFinder skal være lukket.
-            return 0
-            }
-        Else
-        {
-            ControlClick, x236 y262, FlexDanmark FlexFinder
-            ControlClick, x236 y262, FlexDanmark FlexFinder
-            BlockInput, MouseMoveOff
-            SendInput, ^c
-            sleep 400
-            ClipWait, 2, 0
-            ff_opslag := clipboard
-            vl.1 := SubStr(ff_opslag, 1, 4)
-            vl.2 := SubStr(ff_opslag, 6, 4)
-            vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
-            return vl
-        }
+    if (pixel = 0xFBFBFB)
+    {
+        MsgBox, , FlexFinder, Fanenerne "Grupper" og "Tid" i FlexFinder skal være lukket.
+        return 0
+    }
+    Else
+    {
+        ControlClick, x236 y262, FlexDanmark FlexFinder
+        ControlClick, x236 y262, FlexDanmark FlexFinder
+        BlockInput, MouseMoveOff
+        SendInput, ^c
+        sleep 400
+        ClipWait, 2, 0
+        ff_opslag := clipboard
+        vl.1 := SubStr(ff_opslag, 1, 4)
+        vl.2 := SubStr(ff_opslag, 6, 4)
+        vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
+        return vl
+    }
 
 }
 
@@ -807,10 +807,10 @@ Outlook_nymail()
 ;; Testknap
 
 ^e::
-{
-    tlf := Trio_hent_tlf()
-    MsgBox, , , % tlf, 
-}
+    {
+        tlf := Trio_hent_tlf()
+        MsgBox, , , % tlf,
+    }
 return
 
 ;; HOTKEYS
@@ -849,23 +849,23 @@ Return
 ; ***
 +F3::
     telefon := Trio_hent_tlf()
-    IfWinNotActive, PLANET, , , 
-        MsgBox, , PLANET, P6 er ikke åben., 
-    Else
+    IfWinNotActive, PLANET, , ,
+        MsgBox, , PLANET, P6 er ikke åben.,
+Else
+{
+    WinActivate, PLANET
+    vl := P6_hent_vl()
+    if (telefon = "")
     {
-        WinActivate, PLANET
-        vl := P6_hent_vl()
-        if (telefon = "")
-        {
-            MsgBox, , Intet ingående telefonnummer, Der er intet indgående telefonnummer, 1
-            return
-        }
-        else
-        {
-            MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
-            IfMsgBox, Yes
-                P6_ret_tlf_vl(telefon)
-            return
+        MsgBox, , Intet ingående telefonnummer, Der er intet indgående telefonnummer, 1
+        return
+    }
+    else
+    {
+        MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
+        IfMsgBox, Yes
+            P6_ret_tlf_vl(telefon)
+        return
     }
 }
 
@@ -885,7 +885,7 @@ F4::
             return
         }
         else
-        sleep 40
+            sleep 40
         P6_udfyld_k_s(vl)
         ; MsgBox, , , % vl.2
         Return
@@ -894,31 +894,32 @@ F4::
 ;træk tlf til rejsesøg
 ; ***
 +F4::
-    IfWinNotActive, PLANET, , , 
-        MsgBox, , PLANET, P6 er ikke åben., 
+    IfWinNotActive, PLANET, , ,
+        MsgBox, , PLANET, P6 er ikke åben.,
+Else
+{
+    telefon := Trio_hent_tlf()
+    if (telefon = "")
+    {
+        MsgBox, , Intet indgående telefonnummer, Der er intet indgående telefonnummer, 1
+        return
+    }
+    if (telefon = "78410222")
+    {
+        ; MsgBox, ,CPR, CPR, 1
+        WinActivate, PLANET
+        sleep 200
+        SendInput, !rr
+        sleep 100
+        SendInput, ^t
+        return
+    }
     Else
-        {
-        telefon := Trio_hent_tlf()
-        if (telefon = "")
-        {
-            MsgBox, , Intet indgående telefonnummer, Der er intet indgående telefonnummer, 1
-            return
-        }
-        if (telefon = "78410222")
-        {
-            ; MsgBox, ,CPR, CPR, 1
-            WinActivate, PLANET
-            sleep 200
-            SendInput, !rr
-            sleep 100
-            SendInput, ^t
-            return
-        }
-        Else
-        {
-            WinActivate, PLANET
-            P6_rejsesog_tlf(telefon)
-        }
+    {
+        WinActivate, PLANET
+        P6_rejsesog_tlf(telefon)
+        return
+    }
 }
 return
 
@@ -1037,10 +1038,43 @@ return
 
 ; trækker indkommende kald til udklip, ringer ikke op
 #IfWinActive ahk_group gruppe
-    !w::
+    !q::
         clipboard := Trio_hent_tlf()
     Return
 #IfWinActive
+
+; Telenor accepter indgående kald, søg planet
+!w::
+    SendInput, !e
+    sleep 40
+    ; telefon := Trio_hent_tlf()
+    telefon := Trio_hent_tlf()
+    sleep 40
+    vl := P6_hent_vl_fra_tlf(telefon)
+    sleep 40
+    if (vl != 0)
+    {
+        KeyWait, Alt, 
+        WinActivate, PLANET, , , 
+        P6_udfyld_k_s(vl)
+        Return
+    }
+    if (telefon = "78410222") OR telefon ="23"
+    {
+        ; MsgBox, ,CPR, CPR, 1
+        WinActivate, PLANET
+        sleep 200
+        SendInput, !rr
+        sleep 100
+        SendInput, ^t
+        return
+    }
+    Else
+    {
+        WinActivate, PLANET, , ,
+        P6_rejsesog_tlf(telefon)
+        return
+    }
 
 ; Kald det markerede nummer i trio, global
 !q::
@@ -1076,14 +1110,14 @@ Return
         if (vl = 0)
             return
         Else
-            {
+        {
             WinActivate PLANET
             sleep 200
-            P6_udfyld_k_s(vl) 
-            sleep 400  ; skal optimeres
-            WinActivate, FlexDanmark FlexFinder, , , 
+            P6_udfyld_k_s(vl)
+            sleep 400 ; skal optimeres
+            WinActivate, FlexDanmark FlexFinder, , ,
             Return
-            }
+        }
 
 #IfWinActive
 
