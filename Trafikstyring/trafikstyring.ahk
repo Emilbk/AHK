@@ -849,20 +849,25 @@ Return
 ; ***
 +F3::
     telefon := Trio_hent_tlf()
-    WinActivate, PLANET
-    vl := P6_hent_vl()
-    if (telefon = "")
+    IfWinNotActive, PLANET, , , 
+        MsgBox, , PLANET, P6 er ikke åben., 
+    Else
     {
-        MsgBox, , Intet ingående telefonnummer, Der er intet indgående telefonnummer, 1
-        return
+        WinActivate, PLANET
+        vl := P6_hent_vl()
+        if (telefon = "")
+        {
+            MsgBox, , Intet ingående telefonnummer, Der er intet indgående telefonnummer, 1
+            return
+        }
+        else
+        {
+            MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
+            IfMsgBox, Yes
+                P6_ret_tlf_vl(telefon)
+            return
     }
-    else
-    {
-        MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
-        IfMsgBox, Yes
-            P6_ret_tlf_vl(telefon)
-        return
-    }
+}
 
 #IfWinActive PLANET
 F4::
@@ -889,27 +894,32 @@ F4::
 ;træk tlf til rejsesøg
 ; ***
 +F4::
-    telefon := Trio_hent_tlf()
-    if (telefon = "")
-    {
-        MsgBox, , Intet indgående telefonnummer, Der er intet indgående telefonnummer, 1
-        return
-    }
-    if (telefon = "78410222")
-    {
-        ; MsgBox, ,CPR, CPR, 1
-        WinActivate, PLANET
-        sleep 200
-        SendInput, !rr
-        sleep 100
-        SendInput, ^t
-        return
-    }
+    IfWinNotActive, PLANET, , , 
+        MsgBox, , PLANET, P6 er ikke åben., 
     Else
-    {
-        WinActivate, PLANET
-        P6_rejsesog_tlf(telefon)
-    }
+        {
+        telefon := Trio_hent_tlf()
+        if (telefon = "")
+        {
+            MsgBox, , Intet indgående telefonnummer, Der er intet indgående telefonnummer, 1
+            return
+        }
+        if (telefon = "78410222")
+        {
+            ; MsgBox, ,CPR, CPR, 1
+            WinActivate, PLANET
+            sleep 200
+            SendInput, !rr
+            sleep 100
+            SendInput, ^t
+            return
+        }
+        Else
+        {
+            WinActivate, PLANET
+            P6_rejsesog_tlf(telefon)
+        }
+}
 return
 
 ; *
