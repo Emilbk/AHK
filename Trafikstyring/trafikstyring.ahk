@@ -1073,7 +1073,7 @@ Return
         KeyWait, ctrl
         sleep 200
         vl :=Flexfinder_til_p6()
-        if (vl is 0)
+        if (vl = 0)
             return
         Else
             {
