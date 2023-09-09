@@ -241,51 +241,51 @@ P6_initialer()
     SendInput, {F5} ; for at undgå timeout. Giver det problemer med langsom opdatering?
     sleep 40
     sendinput ^n
-    sleep 1400
+    sleep 400
     clipboard :=
     SendInput, ^a^c
     ClipWait, 1, 0
     notering := clipboard
-    sleep 40
-    ; MsgBox, , notering, %notering%,
-    ; deler notering op i array med ord delt i mellemrum
-    ; notering_array := StrSplit(notering, A_Space)
-    notering_array := StrSplit(notering)
     sleep 400
-    fem = % notering_array.1 notering_array.2 notering_array.3 notering_array.4 notering_array.5 notering_array.6
-    ; MsgBox, , fem, %fem%,
-    ; MsgBox, , udentid, %initialer_udentid%
-    ;tjekker for initialer uden tid i første ord i notering
-    ;falsk positiv, hvis der er skrevet ud i ét, uden mellemrum
-    ; hvis ja, fjerner de første 11 bogstaver (= initialer med tid) ? kan det laves smartere?
+    fem := SubStr(notering, 1 ,6)
     if InStr(fem, initialer_udentid, 0, 1)
     {
-        ; MsgBox, , If, Ja, fem er lig uden tid
-        StringTrimLeft, noteringuden, notering, 11
-        If (noteringuden) = ""
-            noteringuden := " "
-        else
+        StringTrimLeft, oprindelig_notering, notering, 11
+        If (oprindelig_notering) = ""
+            {
+            oprindelig_notering := " "
             Clipboard :=
-        sleep 200
-        Clipboard := noteringuden
-        sendinput ^a^v
-        sleep 800
-        SendInput, !o
-        ; MsgBox, , klippet, %noteringuden%,
-        return
+            Clipboard := oprindelig_notering
+            sleep 400
+            sendinput ^a^v
+            sleep 200
+            SendInput, !o
+            return
+            }
+        else
+            {
+            Clipboard :=
+            Clipboard := oprindelig_notering
+            sleep 400
+            sendinput ^a^v
+            sleep 200
+            SendInput, !o
+            return
+            }
     }
-    ;indsætter initialer med tid
     Else
-        ; MsgBox, , Else, Nej, det er ikke,
+        {
         Clipboard :=
-    sleep 40
-    Clipboard := initialer
-    ClipWait, 1, 0
-    SendInput, {Left}
-    Sendinput ^v
-    SendInput, %A_Space%
-    sleep 100
-    SendInput, !o
+        sleep 200
+        Clipboard := initialer
+        ClipWait, 1, 0
+        SendInput, {Left}
+        Sendinput ^v
+        sleep 100
+        SendInput, %A_Space%
+        sleep 400
+        SendInput, !o
+        }
 }
 
 ; ** kan gemtklip-funktion skrives bedre?
