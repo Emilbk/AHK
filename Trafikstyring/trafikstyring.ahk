@@ -55,12 +55,13 @@ GroupAdd, gruppe, ahk_class Addressbook
 databaseview("%A_linefile%\..\db\bruger_ops.txt") ; definerer brugers valgte genveje
 brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.txt", A_UserName, ,1) ; brugerens række i databasen
 bruger := databaseget("%A_linefile%\..\db\bruger_ops.txt", brugerrække.1) ; array med alle brugerens data
-telenor_genvej_opr := bruger.2 ; genvejen som defineret i Telenor
-telenor_genvej_plus := bruger.3 ; ahk-genvejen, der bl. a. sender telenor genvej
+;   1       2               3
+;   bruger  telenor_opr     telenor_ahk
+
 ;; autoexec slut
 ;; hotkeydef.
 Hotkey, % bruger.3, l_telenor_plus
-return
+Hotkey, % bruger.4, l_ret_vl_tlf
 
 ;; P6
 
@@ -189,7 +190,7 @@ P6_hent_vl_fra_tlf(ByRef tlf:="")
     række := DataBasefind( "%A_linefile%\..\db\VL_tlf.txt", tlf)
     vl := databaseget("%A_linefile%\..\db\VL_tlf.txt", række.1, 2)
     if (række.1 is number) ; hvorfor virker den ikke med true/false?
-        {
+    {
         vl := StrSplit(vl, "_") ;vl.1 k, vl.2 s
         Return vl
     }
@@ -854,12 +855,12 @@ Return
 
 ;ret vl-tlf til triopkald
 ; ***
-+F3::
+l_ret_vl_tlf: ; +F3
     telefon := Trio_hent_tlf()
-    IfWinNotActive, PLANET, , ,
+    IfWinNotExist, PLANET, , , 
         MsgBox, , PLANET, P6 er ikke åben.,
-Else
-{
+    Else
+    {
     WinActivate, PLANET
     vl := P6_hent_vl()
     if (telefon = "")
@@ -1062,8 +1063,8 @@ l_telenor_plus: ; brug label ist. for hotkey, defineret ovenfor
     sleep 40
     if (vl != 0)
     {
-        KeyWait, Alt, 
-        WinActivate, PLANET, , , 
+        KeyWait, Alt,
+        WinActivate, PLANET, , ,
         P6_udfyld_k_s(vl)
         Return
     }

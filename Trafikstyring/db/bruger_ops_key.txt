@@ -1,0 +1,4 @@
+1	Bruger
+2	Telenor_genvej
+3	Telenor_ahk
+4	Ret_vl_tlf
