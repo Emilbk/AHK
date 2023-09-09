@@ -51,9 +51,16 @@ GroupAdd, gruppe, ahk_class Addressbook
 
 ;; Database
 
-; FUNKTIONER
-
-; Gem Clipboard
+;; Globale variabler
+databaseview("%A_linefile%\..\db\bruger_ops.txt") ; definerer brugers valgte genveje
+brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.txt", A_UserName, ,1) ; brugerens række i databasen
+bruger := databaseget("%A_linefile%\..\db\bruger_ops.txt", brugerrække.1) ; array med alle brugerens data
+telenor_genvej_opr := bruger.2 ; genvejen som defineret i Telenor
+telenor_genvej_plus := bruger.3 ; ahk-genvejen, der bl. a. sender telenor genvej
+;; autoexec slut
+;; hotkeydef.
+Hotkey, % bruger.3, l_telenor_plus
+return
 
 ;; P6
 
@@ -1044,8 +1051,9 @@ return
 #IfWinActive
 
 ; Telenor accepter indgående kald, søg planet
-!w::
-    SendInput, !e
+
+l_telenor_plus: ; brug label ist. for hotkey, defineret ovenfor
+    SendInput, % bruger[2] ; opr telenor-genvej
     sleep 40
     ; telefon := Trio_hent_tlf()
     telefon := Trio_hent_tlf()
