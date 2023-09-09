@@ -24,7 +24,7 @@ GroupAdd, gruppe, ahk_class Addressbook
 ; omskriv initialer
 ; forstå pixelsearch
 
-;; Slå tlf op med telenor-genvej
+; Slå tlf op med telenor-genvej
 ; !w:: ; lav database over username ift. valgt genvej
 ; send rigtig telenor-genvej
 ; slå telefon
@@ -35,7 +35,7 @@ GroupAdd, gruppe, ahk_class Addressbook
 ; hvis alt andet
 ;     slå tlf op i rejsesøg
 
-;; Tilføj kommentar, der vises når VM ringer op
+; Tilføj kommentar, der vises når VM ringer op
 
 ; hvis vm tlf
 ;     vis liste over tilknyttede vognløb, med markering for kommentar
