@@ -388,7 +388,7 @@ P6_udfyld_k_s(vl:="")
     P6_Planvindue()
     sleep 40
     SendInput, !k
-    sleep 100
+    sleep 200
     SendInput, % vl.1
     sleep 100
     SendInput, {tab}
@@ -675,7 +675,7 @@ Flexfinder_til_p6()
         PixelGetColor, pixel, 281, 155
         if (pixel = 0xFCFBFB)
             {
-            MsgBox, , FlexFinder, Fanen "Grupper" i FlexFinder skal være lukket
+            MsgBox, , FlexFinder, Fanenerne "Grupper" og "Tid" i FlexFinder skal være lukket.
             return 0
             }
         if (x = 0)
@@ -698,7 +698,7 @@ Flexfinder_til_p6()
         PixelGetColor, pixel, 236, 262
         if (pixel = 0xFBFBFB)
             {  
-            MsgBox, , FlexFinder, Fanen "Grupper" i FlexFinder skal være lukket
+            MsgBox, , FlexFinder, Fanenerne "Grupper" og "Tid" i FlexFinder skal være lukket.
             return 0
             }
         Else
@@ -1079,7 +1079,8 @@ Return
             {
             WinActivate PLANET
             sleep 200
-            P6_udfyld_k_s(vl)   
+            P6_udfyld_k_s(vl) 
+            sleep 400  ; skal optimeres
             WinActivate, FlexDanmark FlexFinder, , , 
             Return
             }
