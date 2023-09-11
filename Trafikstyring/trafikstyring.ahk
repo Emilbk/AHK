@@ -831,31 +831,31 @@ Return
 ^+!p::WinActivate, PLANET, , ,
 
 ;; PLANET
-;; Initialer til/fra
+
 #IfWinActive PLANET
-    F2::
+    F2:: ;; Initialer til/fra
         P6_initialer()
     Return
 #IfWinActive
 
-; skriv initialer og forsæt notering.
+
 #IfWinActive PLANET
-    +F2::
+    +F2:: ; skriv initialer og forsæt notering.
         P6_initialer_skriv()
     return
 
 #IfWinActive
 
-;Vis kørselsaftale for aktivt vognløb
+
 #IfWinActive PLANET
-    F3::
+    F3:: ;Vis kørselsaftale for aktivt vognløb
         P6_vis_KA()
     Return
 #IfWinActive
 
-;ret vl-tlf til triopkald
+
 ; ***
-l_ret_vl_tlf: ; +F3
+l_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     telefon := Trio_hent_tlf()
     IfWinNotExist, PLANET, , , 
         MsgBox, , PLANET, P6 er ikke åben.,
@@ -878,7 +878,7 @@ l_ret_vl_tlf: ; +F3
 }
 
 #IfWinActive PLANET
-F4::
+F4:: ; Søg VL ud fra indgående kald i Trio
     {
         tlf := Trio_hent_tlf()
         WinActivate, PLANET, , ,
@@ -899,9 +899,9 @@ F4::
         Return
     }
 #IfWinActive
-;træk tlf til rejsesøg
+
 ; ***
-+F4::
++F4:: ;træk tlf til rejsesøg
     IfWinNotActive, PLANET, , ,
         MsgBox, , PLANET, P6 er ikke åben.,
 Else
@@ -932,9 +932,9 @@ Else
 return
 
 ; *
-;træk tlf fra aktiv planbillede, ring op i Trio
+
 #IfWinActive PLANET
-    +F5::
+    +F5:: ;træk tlf fra aktiv planbillede, ring op i Trio
         {
             vl_tlf := P6_hent_vl_tlf()
             sleep 200
@@ -949,9 +949,9 @@ return
 #IfWinActive
 
 ; ***
-; træk vm-tlf fra aktivt planbillede, ring op i Trio
+
 #IfWinActive PLANET
-    ^+F5::
+    ^+F5:: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
         {
             vm_tlf := P6_hent_vm_tlf()
             sleep 500
@@ -962,30 +962,30 @@ return
     Return
 #IfWinActive
 
-;alarmer
+
 #IfWinActive PLANET
-    F7::
+    F7:: ;alarmer
         P6_alarmer()
     return
 #IfWinActive
 
-;udråbsalarmer
+
 #IfWinActive PLANET
-    +F7::
+    +F7:: ;udråbsalarmer
         P6_udraabsalarmer()
     return
 #IfWinActive
 
 #IfWinActive PLANET
-    +^t::
+    +^t:: ; Send tekst til aktive vognløb
         P6_tekstTilChf(tekst) ; tager tekst ("eksempel") som parameter (accepterer variabel)
     return
 #IfWinActive
 
-; hent VL
-; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+
+
 #IfWinActive PLANET
-    +F1::
+    +F1:: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         gemtklip := ClipboardAll
         sleep 400
         screenshot_aktivvindue()
@@ -1008,45 +1008,45 @@ return
 
 ;; Trio-Hotkey
 #IfWinActive ahk_group gruppe
-    ^1::
+    ^1:: ;Trio klar
         trio_klar()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^0::
+    ^0:: ;Trio pause
         trio_pause()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^2::
+    ^2:: ;Trio Midt uden overløb
         trio_udenov()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^3::
+    ^3:: ;Trio efterbehandling
         trio_efterbehandling()
         trio_pauseklar()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^4::
+    ^4:: ;Trio alarm
         trio_alarm()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^5::
+    ^5:: ;Trio frokost
         trio_frokost()
     Return
 #IfWinActive
 
-; trækker indkommende kald til udklip, ringer ikke op
+
 #IfWinActive ahk_group gruppe
-    !q::
+    #q:: ; trækker indkommende kald til udklip, ringer ikke op
         clipboard := Trio_hent_tlf()
     Return
 #IfWinActive
@@ -1056,7 +1056,6 @@ return
 l_telenor_plus: ; brug label ist. for hotkey, defineret ovenfor
     SendInput, % bruger[2] ; opr telenor-genvej
     sleep 40
-    ; telefon := Trio_hent_tlf()
     telefon := Trio_hent_tlf()
     sleep 40
     vl := P6_hent_vl_fra_tlf(telefon)
