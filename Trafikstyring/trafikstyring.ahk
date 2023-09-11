@@ -1176,7 +1176,8 @@ Return
     ^+m::Outlook_nymail()
 Return
 
-; +r::
-;     Reload
-;     sleep 2000
-; Return
+^+r::
+    SendInput, {CtrlUp}
+    Reload
+    sleep 2000
+Return
