@@ -63,6 +63,14 @@ bruger := databaseget("%A_linefile%\..\db\bruger_ops.txt", brugerrække.1) ; arr
 Hotkey, % bruger.3, l_telenor_plus
 Hotkey, % bruger.4, l_ret_vl_tlf
 
+; Trio
+Hotkey, % bruger.5, l_trio_klar
+Hotkey, % bruger.6, l_trio_pause
+Hotkey, % bruger.7, l_trio_udenov
+Hotkey, % bruger.8, l_trio_efterbehandling
+Hotkey, % bruger.9, l_trio_alarm
+Hotkey, % bruger.10, l_trio_frokost
+
 ;; P6
 
 ; ***
