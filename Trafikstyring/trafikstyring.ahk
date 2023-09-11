@@ -1054,7 +1054,7 @@ return
 ; Telenor accepter indgående kald, søg planet
 
 l_telenor_plus: ; brug label ist. for hotkey, defineret ovenfor
-    SendInput, % bruger[3] ; opr telenor-genvej
+    SendInput, % bruger[2] ; opr telenor-genvej
     sleep 40
     telefon := Trio_hent_tlf()
     sleep 40
