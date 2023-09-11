@@ -60,16 +60,31 @@ bruger := databaseget("%A_linefile%\..\db\bruger_ops.txt", brugerrække.1) ; arr
 
 ;; autoexec slut
 ;; hotkeydef.
-Hotkey, % bruger.3, l_telenor_plus
+
 Hotkey, % bruger.4, l_ret_vl_tlf
 
 ; Trio
+Hotkey, % bruger.3, l_telenor_p6_opslag
 Hotkey, % bruger.5, l_trio_klar
 Hotkey, % bruger.6, l_trio_pause
 Hotkey, % bruger.7, l_trio_udenov
 Hotkey, % bruger.8, l_trio_efterbehandling
 Hotkey, % bruger.9, l_trio_alarm
 Hotkey, % bruger.10, l_trio_frokost
+Hotkey, % bruger.11, l_triokald_til_udklip
+Hotkey, % bruger.12, l_trio_opkald_markeret
+Hotkey, % bruger.15, l_trio_afslut_opkald
+
+; flexfinder
+Hotkey, % bruger.13, l_flexf_til_p6
+Hotkey, % bruger.14, l_flexf_fra_p6
+
+; outlook
+Hotkey, % bruger.16, l_outlook_ny_mail
+Hotkey, % bruger.17, l_outlook_svigt
+
+; settings
+
 
 ;; P6
 
@@ -992,7 +1007,7 @@ return
 
 
 #IfWinActive PLANET
-    +F1:: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+    l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         gemtklip := ClipboardAll
         sleep 400
         screenshot_aktivvindue()
@@ -1015,53 +1030,53 @@ return
 
 ;; Trio-Hotkey
 #IfWinActive ahk_group gruppe
-    ^1:: ;Trio klar
+    l_trio_klar: ;Trio klar .bruger5
         trio_klar()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^0:: ;Trio pause
+    l_trio_pause: ;Trio pause bruger.6
         trio_pause()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^2:: ;Trio Midt uden overløb
+    l_trio_udenov: ;Trio Midt uden overløb bruger.7
         trio_udenov()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^3:: ;Trio efterbehandling
+    l_trio_efterbehandling: ;Trio efterbehandling bruger.8
         trio_efterbehandling()
         trio_pauseklar()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^4:: ;Trio alarm
+    l_trio_alarm: ;Trio alarm bruger.9
         trio_alarm()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^5:: ;Trio frokost
+    l_trio_frokost: ;Trio frokostr. bruger.10
         trio_frokost()
     Return
 #IfWinActive
 
 
 #IfWinActive ahk_group gruppe
-    #q:: ; trækker indkommende kald til udklip, ringer ikke op
+    l_triokald_til_udklip: ; trækker indkommende kald til udklip, ringer ikke op.
         clipboard := Trio_hent_tlf()
     Return
 #IfWinActive
 
 ; Telenor accepter indgående kald, søg planet
 
-l_telenor_plus: ; brug label ist. for hotkey, defineret ovenfor
-    SendInput, % bruger[3] ; opr telenor-genvej
+l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
+    SendInput, % bruger[2] ; opr telenor-genvej
     sleep 40
     telefon := Trio_hent_tlf()
     sleep 40
@@ -1091,8 +1106,8 @@ l_telenor_plus: ; brug label ist. for hotkey, defineret ovenfor
         return
     }
 
-; Kald det markerede nummer i trio, global
-!q::
+
+l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     clipboard := ""
     SendInput, ^c
     ClipWait, 2, 0
@@ -1103,7 +1118,7 @@ Return
 
 ; Minus på numpad afslutter Trioopkald global (Skal der tilbage til P6?)
 ; #IfWinActive PLANET
-+NumpadSub::
+l_trio_afslut_opkald:
     Trio_afslutopkald()
     sleep 200
     WinActivate, PLANET
@@ -1112,13 +1127,13 @@ Return
 
 ;; Flexfinder
 #IfWinActive PLANET
-    ^+f::
+    L_flexf_fra_p6:
         Flexfinder_opslag()
     Return
 #IfWinActive
 
 #IfWinActive FlexDanmark FlexFinder
-    ~$^LButton::
+    l_flexf_til_p6: ; slår valgte FF-bil op i P6. Bruger.13
         KeyWait, ctrl
         sleep 200
         vl :=Flexfinder_til_p6()
@@ -1179,7 +1194,8 @@ Return
     }
 
     ;; Outlook
-    ^+m::Outlook_nymail()
+    l_outlook_ny_mail: ; opretter ny mail. Bruger.16
+    Outlook_nymail()
 Return
 
 ^+r::
