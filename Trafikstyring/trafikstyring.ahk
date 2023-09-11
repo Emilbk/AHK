@@ -52,7 +52,7 @@ GroupAdd, gruppe, ahk_class Addressbook
 ;; Database
 
 ;; Globale variabler
-databaseview("%A_linefile%\..\db\bruger_ops.txt") ; definerer brugers valgte genveje
+
 brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.txt", A_UserName, ,1) ; brugerens række i databasen
 bruger := databaseget("%A_linefile%\..\db\bruger_ops.txt", brugerrække.1) ; array med alle brugerens data
 ;   1       2               3
@@ -814,10 +814,9 @@ Outlook_nymail()
 
 ;; Testknap
 
-^e::
+^+e::
     {
-        tlf := Trio_hent_tlf()
-        MsgBox, , , % tlf,
+        databaseview("%A_linefile%\..\db\bruger_ops.txt") ; definerer brugers valgte genveje
     }
 return
 
