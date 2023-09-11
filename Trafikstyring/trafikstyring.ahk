@@ -58,6 +58,7 @@ bruger := databaseget("%A_linefile%\..\db\bruger_ops.txt", brugerrække.1) ; arr
 ;   1       2               3
 ;   bruger  telenor_opr     telenor_ahk
 
+
 ;; autoexec slut
 ;; hotkeydef.
 Hotkey, % bruger.3, l_telenor_plus
