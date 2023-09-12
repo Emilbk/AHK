@@ -10,3 +10,5 @@
 10	trio_frokost
 11	triokald_til_udklip
 12	triopkald_markeret
+13	ff_til_p6
+14	ff_fra_p6

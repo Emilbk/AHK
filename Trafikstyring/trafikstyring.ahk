@@ -7,7 +7,7 @@ SetTitleMatchMode, 1 ; matcher så længe et ord er der
 #SingleInstance, force
 ; Define the group: gruppe
 GroupAdd, gruppe, PLANET
-GroupAdd, gruppe, ahk_class Chrome_WidgetWin_1
+; GroupAdd, gruppe, ahk_class Chrome_WidgetWin_1
 GroupAdd, gruppe, ahk_class AccessBar
 GroupAdd, gruppe, ahk_class Agent Main GUI
 GroupAdd, gruppe, ahk_class Addressbook
@@ -53,18 +53,17 @@ GroupAdd, gruppe, ahk_class Addressbook
 
 ;; Globale variabler
 
-brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.txt", A_UserName, ,1) ; brugerens række i databasen
-bruger := databaseget("%A_linefile%\..\db\bruger_ops.txt", brugerrække.1) ; array med alle brugerens data
+brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
+bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
 ;   1       2               3
 ;   bruger  telenor_opr     telenor_ahk
 
 ;; autoexec slut
 ;; hotkeydef.
-
-Hotkey, % bruger.4, l_ret_vl_tlf
-
-; Trio
-Hotkey, % bruger.3, l_telenor_p6_opslag
+; globale genveje
+Hotkey, % bruger.14, l_flexf_fra_p6
+Hotkey, % bruger.15, l_trio_afslut_opkald
+Hotkey, % bruger.23, l_trio_til_p6
 Hotkey, % bruger.5, l_trio_klar
 Hotkey, % bruger.6, l_trio_pause
 Hotkey, % bruger.7, l_trio_udenov
@@ -73,15 +72,32 @@ Hotkey, % bruger.9, l_trio_alarm
 Hotkey, % bruger.10, l_trio_frokost
 Hotkey, % bruger.11, l_triokald_til_udklip
 Hotkey, % bruger.12, l_trio_opkald_markeret
-Hotkey, % bruger.15, l_trio_afslut_opkald
+
+Hotkey, IfWinActive, PLANET
+Hotkey, % bruger.4, l_ret_vl_tlf
+Hotkey, % bruger.18, l_tekst_til_chf
+Hotkey, % bruger.19, l_p6_udråbsalarmer
+Hotkey, % bruger.20, l_p6_alarmer
+Hotkey, % bruger.21, l_p6_vm_ring_op
+Hotkey, % bruger.22, l_p6_vl_ring_op
+Hotkey, IfWinActive
+
+
+; Trio
+Hotkey, IfWinActive, ahk_group gruppe
+Hotkey, % bruger.3, l_telenor_p6_opslag
+Hotkey, IfWinActive
 
 ; flexfinder
+Hotkey, IfWinActive, FlexDanmark FlexFinder ; ved labels defineres aktiv vindue når hotkey defineres først
 Hotkey, % bruger.13, l_flexf_til_p6
-Hotkey, % bruger.14, l_flexf_fra_p6
-
+Hotkey, IfWinActive, , 
 ; outlook
 Hotkey, % bruger.16, l_outlook_ny_mail
+
+Hotkey, IfWinActive, PLANET
 Hotkey, % bruger.17, l_outlook_svigt
+Hotkey, IfWinActive, , 
 
 ; settings
 
@@ -692,6 +708,7 @@ Flexfinder_opslag()
     Return
 }
 
+
 Flexfinder_til_p6()
 {
 
@@ -923,7 +940,7 @@ F4:: ; Søg VL ud fra indgående kald i Trio
 #IfWinActive
 
 ; ***
-+F4:: ;træk tlf til rejsesøg
+l_trio_til_p6: ;træk tlf til rejsesøg
     IfWinNotActive, PLANET, , ,
         MsgBox, , PLANET, P6 er ikke åben.,
 Else
@@ -956,7 +973,7 @@ return
 ; *
 
 #IfWinActive PLANET
-    +F5:: ;træk tlf fra aktiv planbillede, ring op i Trio
+l_p6_vl_ring_op: ;træk tlf fra aktiv planbillede, ring op i Trio
         {
             vl_tlf := P6_hent_vl_tlf()
             sleep 200
@@ -973,7 +990,7 @@ return
 ; ***
 
 #IfWinActive PLANET
-    ^+F5:: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
+l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
         {
             vm_tlf := P6_hent_vm_tlf()
             sleep 500
@@ -986,20 +1003,20 @@ return
 
 
 #IfWinActive PLANET
-    F7:: ;alarmer
+    l_p6_alarmer: ;alarmer
         P6_alarmer()
     return
 #IfWinActive
 
 
 #IfWinActive PLANET
-    +F7:: ;udråbsalarmer
+    l_p6_udråbsalarmer: ;udråbsalarmer
         P6_udraabsalarmer()
     return
 #IfWinActive
 
 #IfWinActive PLANET
-    +^t:: ; Send tekst til aktive vognløb
+    l_tekst_til_chf: ; Send tekst til aktive vognløb
         P6_tekstTilChf(tekst) ; tager tekst ("eksempel") som parameter (accepterer variabel)
     return
 #IfWinActive
@@ -1127,12 +1144,12 @@ Return
 
 ;; Flexfinder
 #IfWinActive PLANET
-    L_flexf_fra_p6:
+    l_flexf_fra_p6:
         Flexfinder_opslag()
     Return
 #IfWinActive
 
-#IfWinActive FlexDanmark FlexFinder
+#IfWinActive PLANET
     l_flexf_til_p6: ; slår valgte FF-bil op i P6. Bruger.13
         KeyWait, ctrl
         sleep 200
