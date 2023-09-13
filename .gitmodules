@@ -1,6 +1,3 @@
 [submodule "AHKDb"]
 	path = AHKDb
 	url = https://github.com/AHKDb/AHKDb
-[submodule "Vis2"]
-	path = Vis2
-	url = https://github.com/iseahound/Vis2

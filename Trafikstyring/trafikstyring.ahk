@@ -58,7 +58,6 @@ bruger := databaseget("%A_linefile%\..\db\bruger_ops.txt", brugerrække.1) ; arr
 ;   1       2               3
 ;   bruger  telenor_opr     telenor_ahk
 
-
 ;; autoexec slut
 ;; hotkeydef.
 Hotkey, % bruger.3, l_telenor_plus
@@ -71,6 +70,8 @@ Hotkey, % bruger.4, l_ret_vl_tlf
 P6_alt_menu()
 {
     keywait Shift ; for ikke at ødelægge shiftgenveje
+    keywait ctrl
+    keywait alt
     SendInput, {Alt}
 }
 
@@ -169,7 +170,7 @@ return
 ; P6 hent VM tlf
 P6_hent_vm_tlf()
 {
-    P6_vis_KA()()
+    P6_vis_k_aft()()
     sleep 200
     sendinput ^æ
     sleep 200
@@ -438,7 +439,7 @@ P6_tekstTilChf(ByRef tekst:=" ")
 
 ;  ***
 ; Udfyld kørselsaftale for aktivt planbillede
-P6_vis_KA()
+P6_vis_k_aft()
 {
     P6_alt_menu()
     sleep 40
@@ -448,9 +449,13 @@ P6_vis_KA()
     return
 }
 
+p6_luk_vl()
+{
+
+}
 ; ***
 ; Tag skærmprint af aktivt vindue
-screenshot_aktivvindue()
+screenshot_aktivt_vindue()
 {
     SendInput, !{PrintScreen}
     ClipWait, 3, 1
@@ -816,19 +821,17 @@ Outlook_nymail()
 ;; Testknap
 
 ^+e::
-    {
-        databaseview("%A_linefile%\..\db\bruger_ops.txt") ; definerer brugers valgte genveje
-    }
-return
 
-;; HOTKEYS
+    return
 
-;; Global
-+Escape::
-ExitApp
-Return
+    ;; HOTKEYS
 
-^+!p::WinActivate, PLANET, , ,
+    ;; Global
+    +Escape::
+    ExitApp
+    Return
+
+    ^+!p::WinActivate, PLANET, , ,
 
 ;; PLANET
 
@@ -838,7 +841,6 @@ Return
     Return
 #IfWinActive
 
-
 #IfWinActive PLANET
     +F2:: ; skriv initialer og forsæt notering.
         P6_initialer_skriv()
@@ -846,21 +848,19 @@ Return
 
 #IfWinActive
 
-
 #IfWinActive PLANET
     F3:: ;Vis kørselsaftale for aktivt vognløb
-        P6_vis_KA()
+        P6_vis_k_aft()
     Return
 #IfWinActive
-
 
 ; ***
 l_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     telefon := Trio_hent_tlf()
-    IfWinNotExist, PLANET, , , 
+    IfWinNotExist, PLANET, , ,
         MsgBox, , PLANET, P6 er ikke åben.,
-    Else
-    {
+Else
+{
     WinActivate, PLANET
     vl := P6_hent_vl()
     if (telefon = "")
@@ -930,7 +930,16 @@ Else
     }
 }
 return
-
+#IfWinActive PLANET
+    ; gå i vl
+    ^F4::
+        {
+            P6_Planvindue()
+            sleep 100
+            SendInput, !l
+            return
+        }
+#IfWinActive
 ; *
 
 #IfWinActive PLANET
@@ -962,13 +971,11 @@ return
     Return
 #IfWinActive
 
-
 #IfWinActive PLANET
     F7:: ;alarmer
         P6_alarmer()
     return
 #IfWinActive
-
 
 #IfWinActive PLANET
     +F7:: ;udråbsalarmer
@@ -982,13 +989,11 @@ return
     return
 #IfWinActive
 
-
-
 #IfWinActive PLANET
     +F1:: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         gemtklip := ClipboardAll
         sleep 400
-        screenshot_aktivvindue()
+        screenshot_aktivt_vindue()
         Outlook_nymail()
         sleep 1000
         SendInput, pl
@@ -1043,7 +1048,6 @@ return
         trio_frokost()
     Return
 #IfWinActive
-
 
 #IfWinActive ahk_group gruppe
     #q:: ; trækker indkommende kald til udklip, ringer ikke op
