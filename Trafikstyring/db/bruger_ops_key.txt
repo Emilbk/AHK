@@ -1,4 +1,14 @@
 1	Bruger
 2	Telenor_genvej
-3	Telenor_ahk
+3	Telenor_p6_opslag
 4	Ret_vl_tlf
+5	trio_klar
+6	trio_pause
+7	trio_udenoverløb
+8	trio_efterbehandling
+9	trio_alarm
+10	trio_frokost
+11	triokald_til_udklip
+12	triopkald_markeret
+13	ff_til_p6
+14	ff_fra_p6

@@ -7,7 +7,7 @@ SetTitleMatchMode, 1 ; matcher så længe et ord er der
 #SingleInstance, force
 ; Define the group: gruppe
 GroupAdd, gruppe, PLANET
-GroupAdd, gruppe, ahk_class Chrome_WidgetWin_1
+; GroupAdd, gruppe, ahk_class Chrome_WidgetWin_1
 GroupAdd, gruppe, ahk_class AccessBar
 GroupAdd, gruppe, ahk_class Agent Main GUI
 GroupAdd, gruppe, ahk_class Addressbook
@@ -53,16 +53,64 @@ GroupAdd, gruppe, ahk_class Addressbook
 
 ;; Globale variabler
 
-brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.txt", A_UserName, ,1) ; brugerens række i databasen
-bruger := databaseget("%A_linefile%\..\db\bruger_ops.txt", brugerrække.1) ; array med alle brugerens data
+brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
+bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
 ;   1       2               3
-;   bruger  telenor_opr     telenor_ahk
+;   bruger_genvej  telenor_opr     telenor_ahk
+DatabaseView("%A_linefile%\..\db\bruger_ops.tsv")
 
 ;; autoexec slut
 ;; hotkeydef.
-Hotkey, % bruger.3, l_telenor_plus
-Hotkey, % bruger.4, l_ret_vl_tlf
+; globale genveje                                           ; Standard-opsætning
+Hotkey, % bruger_genvej.14, l_flexf_fra_p6                  ; +^F
+Hotkey, % bruger_genvej.15, l_trio_afslut_opkald            ; Numpad -  
+Hotkey, % bruger_genvej.23, l_trio_til_p6                   ; +F4
+Hotkey, % bruger_genvej.5, l_trio_klar                      ; ^1
+Hotkey, % bruger_genvej.6, l_trio_pause                     ; ^0
+Hotkey, % bruger_genvej.7, l_trio_udenov                    ; ^2
+Hotkey, % bruger_genvej.8, l_trio_efterbehandling           ; ^3
+Hotkey, % bruger_genvej.9, l_trio_alarm                     ; ^4
+Hotkey, % bruger_genvej.10, l_trio_frokost                  ; ^5
+Hotkey, % bruger_genvej.11, l_triokald_til_udklip           ; #q
+Hotkey, % bruger_genvej.12, l_trio_opkald_markeret          ; !q
+Hotkey, % bruger_genvej.26, l_planet                        ; ^+!p
+Hotkey, % bruger_genvej.27, l_escape                        ; +escape
 
+Hotkey, IfWinActive, PLANET
+Hotkey, % bruger_genvej.4, l_p6_ret_vl_tlf                  ; +F3
+Hotkey, % bruger_genvej.24, l_p6_søg_vl                     ; F4
+Hotkey, % bruger_genvej.25, l_p6_initialer                  ; F2
+Hotkey, % bruger_genvej.30, l_p6_initialer_skriv            ; +F2
+Hotkey, % bruger_genvej.31, l_p6_vis_k_aftale               ; F3
+Hotkey, % bruger_genvej.18, l_tekst_til_chf                 ; ^+t
+Hotkey, % bruger_genvej.19, l_p6_udråbsalarmer              ; +F7
+Hotkey, % bruger_genvej.20, l_p6_alarmer                    ; F7
+Hotkey, % bruger_genvej.21, l_p6_vm_ring_op                 ; ^+F5
+Hotkey, % bruger_genvej.22, l_p6_vl_ring_op                 ; +F5
+Hotkey, % bruger_genvej.28, l_p6_sygehus_ring_op            ; +F5
+Hotkey, % bruger_genvej.29, l_p6_central_ring_op            ; +F5
+Hotkey, IfWinActive
+
+
+; Trio
+Hotkey, IfWinActive, ahk_group gruppe
+Hotkey, % bruger_genvej.3, l_telenor_p6_opslag              ; !w               
+Hotkey, IfWinActive
+
+; flexfinder
+Hotkey, IfWinActive, FlexDanmark FlexFinder                 ;
+Hotkey, % bruger_genvej.13, l_flexf_til_p6                  ; ~$^LButton
+Hotkey, IfWinActive, , 
+; outlook
+Hotkey, % bruger_genvej.16, l_outlook_ny_mail               ; ^+m
+
+Hotkey, IfWinActive, PLANET
+Hotkey, % bruger_genvej.17, l_outlook_svigt                 ; +F1
+Hotkey, IfWinActive, , 
+
+; settings
+
+;; FUNKTIONER
 ;; P6
 
 ; ***
@@ -464,20 +512,6 @@ screenshot_aktivt_vindue()
 
 ;; Telenor
 
-;træk telenor indgåend
-;virker ikke
-; Telenor()
-; {
-;     WinActivate, Telenor KontaktCenter
-;     ControlClick, x179 y491, Telenor KontaktCenter,, Left,2,
-;     sleep 100
-;     ControlClick, x179 y491, Telenor KontaktCenter,, Left,2,
-;     sleep 100
-;     SendInput {tab}
-;     SendInput {tab}
-;     return
-; }
-
 ;; Trio
 ; ***
 ; Sæt kopieret tlf i Trio
@@ -675,6 +709,8 @@ Flexfinder_opslag()
     Return
 }
 
+; Klik VL i FlexFinder, slår op i p6
+; skal tilpasse Edge også 
 Flexfinder_til_p6()
 {
 
@@ -733,11 +769,9 @@ Flexfinder_til_p6()
 }
 
 ; Misc
-
 ; *
-; Mangler udbygning af funktioner
 ;; SygehusGUI
-+^s::
+l_p6_sygehus_ring_op:
     gui, Sygehus:Default
     Gui,Add,Button,vButton1,&AUH
     Gui,Add,Button,vButton2,RH&G
@@ -775,7 +809,7 @@ SygehusGuiClose:
     gui, Destroy
 return
 
-+^c::
+l_p6_central_ring_op:
     gui, Taxa:Default
     Gui,Add,Button,vtaxa1,&Århus Taxa
     Gui,Add,Button,vtaxa2,Århus Taxa Sk&ole
@@ -822,6 +856,7 @@ Outlook_nymail()
 
 ^+e::
 
+<<<<<<< HEAD
     return
 
     ;; HOTKEYS
@@ -833,29 +868,45 @@ Outlook_nymail()
 
     ^+!p::WinActivate, PLANET, , ,
 
+=======
+;; HOTKEYS
+;; Global
+l_escape:
+ExitApp
+Return
+
+l_planet: 
+WinActivate, PLANET, , ,
+return
+>>>>>>> genvej2
 ;; PLANET
 
 #IfWinActive PLANET
-    F2:: ;; Initialer til/fra
+l_p6_initialer: ;; Initialer til/fra
         P6_initialer()
     Return
 #IfWinActive
 
 #IfWinActive PLANET
-    +F2:: ; skriv initialer og forsæt notering.
+l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
         P6_initialer_skriv()
     return
 
 #IfWinActive
 
 #IfWinActive PLANET
+<<<<<<< HEAD
     F3:: ;Vis kørselsaftale for aktivt vognløb
         P6_vis_k_aft()
+=======
+l_p6_vis_k_aftale: ;Vis kørselsaftale for aktivt vognløb
+        P6_vis_KA()
+>>>>>>> genvej2
     Return
 #IfWinActive
 
 ; ***
-l_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
+l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     telefon := Trio_hent_tlf()
     IfWinNotExist, PLANET, , ,
         MsgBox, , PLANET, P6 er ikke åben.,
@@ -878,7 +929,7 @@ Else
 }
 
 #IfWinActive PLANET
-F4:: ; Søg VL ud fra indgående kald i Trio
+l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
     {
         tlf := Trio_hent_tlf()
         WinActivate, PLANET, , ,
@@ -901,7 +952,7 @@ F4:: ; Søg VL ud fra indgående kald i Trio
 #IfWinActive
 
 ; ***
-+F4:: ;træk tlf til rejsesøg
+l_trio_til_p6: ;træk tlf til rejsesøg
     IfWinNotActive, PLANET, , ,
         MsgBox, , PLANET, P6 er ikke åben.,
 Else
@@ -943,7 +994,7 @@ return
 ; *
 
 #IfWinActive PLANET
-    +F5:: ;træk tlf fra aktiv planbillede, ring op i Trio
+l_p6_vl_ring_op: ;træk tlf fra aktiv planbillede, ring op i Trio
         {
             vl_tlf := P6_hent_vl_tlf()
             sleep 200
@@ -960,7 +1011,7 @@ return
 ; ***
 
 #IfWinActive PLANET
-    ^+F5:: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
+l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
         {
             vm_tlf := P6_hent_vm_tlf()
             sleep 500
@@ -972,25 +1023,25 @@ return
 #IfWinActive
 
 #IfWinActive PLANET
-    F7:: ;alarmer
+    l_p6_alarmer: ;alarmer
         P6_alarmer()
     return
 #IfWinActive
 
 #IfWinActive PLANET
-    +F7:: ;udråbsalarmer
+    l_p6_udråbsalarmer: ;udråbsalarmer
         P6_udraabsalarmer()
     return
 #IfWinActive
 
 #IfWinActive PLANET
-    +^t:: ; Send tekst til aktive vognløb
+    l_tekst_til_chf: ; Send tekst til aktive vognløb
         P6_tekstTilChf(tekst) ; tager tekst ("eksempel") som parameter (accepterer variabel)
     return
 #IfWinActive
 
 #IfWinActive PLANET
-    +F1:: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+    l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         gemtklip := ClipboardAll
         sleep 400
         screenshot_aktivt_vindue()
@@ -1013,51 +1064,55 @@ return
 
 ;; Trio-Hotkey
 #IfWinActive ahk_group gruppe
-    ^1:: ;Trio klar
+    l_trio_klar: ;Trio klar .bruger5
         trio_klar()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^0:: ;Trio pause
+    l_trio_pause: ;Trio pause bruger.6
         trio_pause()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^2:: ;Trio Midt uden overløb
+    l_trio_udenov: ;Trio Midt uden overløb bruger.7
         trio_udenov()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^3:: ;Trio efterbehandling
+    l_trio_efterbehandling: ;Trio efterbehandling bruger.8
         trio_efterbehandling()
         trio_pauseklar()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^4:: ;Trio alarm
+    l_trio_alarm: ;Trio alarm bruger.9
         trio_alarm()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    ^5:: ;Trio frokost
+    l_trio_frokost: ;Trio frokostr. bruger.10
         trio_frokost()
     Return
 #IfWinActive
 
 #IfWinActive ahk_group gruppe
-    #q:: ; trækker indkommende kald til udklip, ringer ikke op
+    l_triokald_til_udklip: ; trækker indkommende kald til udklip, ringer ikke op.
         clipboard := Trio_hent_tlf()
     Return
 #IfWinActive
 
 ; Telenor accepter indgående kald, søg planet
 
+<<<<<<< HEAD
 l_telenor_plus: ; brug label ist. for hotkey, defineret ovenfor
+=======
+l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
+>>>>>>> genvej2
     SendInput, % bruger[2] ; opr telenor-genvej
     sleep 40
     telefon := Trio_hent_tlf()
@@ -1088,8 +1143,8 @@ l_telenor_plus: ; brug label ist. for hotkey, defineret ovenfor
         return
     }
 
-; Kald det markerede nummer i trio, global
-!q::
+
+l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     clipboard := ""
     SendInput, ^c
     ClipWait, 2, 0
@@ -1100,7 +1155,7 @@ Return
 
 ; Minus på numpad afslutter Trioopkald global (Skal der tilbage til P6?)
 ; #IfWinActive PLANET
-+NumpadSub::
+l_trio_afslut_opkald:
     Trio_afslutopkald()
     sleep 200
     WinActivate, PLANET
@@ -1109,13 +1164,13 @@ Return
 
 ;; Flexfinder
 #IfWinActive PLANET
-    ^+f::
+    l_flexf_fra_p6:
         Flexfinder_opslag()
     Return
 #IfWinActive
 
-#IfWinActive FlexDanmark FlexFinder
-    ~$^LButton::
+#IfWinActive PLANET
+    l_flexf_til_p6: ; slår valgte FF-bil op i P6. Bruger.13
         KeyWait, ctrl
         sleep 200
         vl :=Flexfinder_til_p6()
@@ -1176,7 +1231,8 @@ Return
     }
 
     ;; Outlook
-    ^+m::Outlook_nymail()
+    l_outlook_ny_mail: ; opretter ny mail. Bruger.16
+    Outlook_nymail()
 Return
 
 ^+r::
