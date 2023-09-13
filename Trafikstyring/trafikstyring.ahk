@@ -12,7 +12,7 @@ GroupAdd, gruppe, ahk_class AccessBar
 GroupAdd, gruppe, ahk_class Agent Main GUI
 GroupAdd, gruppe, ahk_class Addressbook
 ;; lib
-#Include, %A_linefile%\..\..\AHKDb\ahkdb.ahk
+#Include, %A_linefile%\..\..\lib\AHKDb\ahkdb.ahk
 
 ;; TODO
 
