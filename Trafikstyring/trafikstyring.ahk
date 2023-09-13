@@ -53,7 +53,8 @@ GroupAdd, gruppe, ahk_class Addressbook
 
 ;; Globale variabler
 
-brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
+brugerrække := [3]
+; brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
 bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
 ;   1       2               3
 ;   bruger_genvej  telenor_opr     telenor_ahk
@@ -856,29 +857,18 @@ Outlook_nymail()
 
 ^+e::
 
-<<<<<<< HEAD
     return
 
     ;; HOTKEYS
 
     ;; Global
-    +Escape::
+    l_escape:
     ExitApp
     Return
 
-    ^+!p::WinActivate, PLANET, , ,
-
-=======
-;; HOTKEYS
-;; Global
-l_escape:
-ExitApp
-Return
-
-l_planet: 
-WinActivate, PLANET, , ,
-return
->>>>>>> genvej2
+l_planet:
+    WinActivate, PLANET, , ,
+    return
 ;; PLANET
 
 #IfWinActive PLANET
@@ -895,13 +885,8 @@ l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
 #IfWinActive
 
 #IfWinActive PLANET
-<<<<<<< HEAD
-    F3:: ;Vis kørselsaftale for aktivt vognløb
-        P6_vis_k_aft()
-=======
 l_p6_vis_k_aftale: ;Vis kørselsaftale for aktivt vognløb
-        P6_vis_KA()
->>>>>>> genvej2
+P6_vis_k_aft()
     Return
 #IfWinActive
 
@@ -1108,11 +1093,7 @@ l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
 
 ; Telenor accepter indgående kald, søg planet
 
-<<<<<<< HEAD
-l_telenor_plus: ; brug label ist. for hotkey, defineret ovenfor
-=======
 l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
->>>>>>> genvej2
     SendInput, % bruger[2] ; opr telenor-genvej
     sleep 40
     telefon := Trio_hent_tlf()
