@@ -54,54 +54,63 @@ GroupAdd, gruppe, ahk_class Addressbook
 ;; Globale variabler
 
 brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
-bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
+bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
 ;   1       2               3
-;   bruger  telenor_opr     telenor_ahk
+;   bruger_genvej  telenor_opr     telenor_ahk
+DatabaseView("%A_linefile%\..\db\bruger_ops.tsv")
 
 ;; autoexec slut
 ;; hotkeydef.
-; globale genveje
-Hotkey, % bruger.14, l_flexf_fra_p6
-Hotkey, % bruger.15, l_trio_afslut_opkald
-Hotkey, % bruger.23, l_trio_til_p6
-Hotkey, % bruger.5, l_trio_klar
-Hotkey, % bruger.6, l_trio_pause
-Hotkey, % bruger.7, l_trio_udenov
-Hotkey, % bruger.8, l_trio_efterbehandling
-Hotkey, % bruger.9, l_trio_alarm
-Hotkey, % bruger.10, l_trio_frokost
-Hotkey, % bruger.11, l_triokald_til_udklip
-Hotkey, % bruger.12, l_trio_opkald_markeret
+; globale genveje                                           ; Standard-opsætning
+Hotkey, % bruger_genvej.14, l_flexf_fra_p6                  ; +^F
+Hotkey, % bruger_genvej.15, l_trio_afslut_opkald            ; Numpad -  
+Hotkey, % bruger_genvej.23, l_trio_til_p6                   ; +F4
+Hotkey, % bruger_genvej.5, l_trio_klar                      ; ^1
+Hotkey, % bruger_genvej.6, l_trio_pause                     ; ^0
+Hotkey, % bruger_genvej.7, l_trio_udenov                    ; ^2
+Hotkey, % bruger_genvej.8, l_trio_efterbehandling           ; ^3
+Hotkey, % bruger_genvej.9, l_trio_alarm                     ; ^4
+Hotkey, % bruger_genvej.10, l_trio_frokost                  ; ^5
+Hotkey, % bruger_genvej.11, l_triokald_til_udklip           ; #q
+Hotkey, % bruger_genvej.12, l_trio_opkald_markeret          ; !q
+Hotkey, % bruger_genvej.26, l_planet                        ; ^+!p
+Hotkey, % bruger_genvej.27, l_escape                        ; +escape
 
 Hotkey, IfWinActive, PLANET
-Hotkey, % bruger.4, l_ret_vl_tlf
-Hotkey, % bruger.18, l_tekst_til_chf
-Hotkey, % bruger.19, l_p6_udråbsalarmer
-Hotkey, % bruger.20, l_p6_alarmer
-Hotkey, % bruger.21, l_p6_vm_ring_op
-Hotkey, % bruger.22, l_p6_vl_ring_op
+Hotkey, % bruger_genvej.4, l_p6_ret_vl_tlf                  ; +F3
+Hotkey, % bruger_genvej.24, l_p6_søg_vl                     ; F4
+Hotkey, % bruger_genvej.25, l_p6_initialer                  ; F2
+Hotkey, % bruger_genvej.30, l_p6_initialer_skriv            ; +F2
+Hotkey, % bruger_genvej.31, l_p6_vis_k_aftale               ; F3
+Hotkey, % bruger_genvej.18, l_tekst_til_chf                 ; ^+t
+Hotkey, % bruger_genvej.19, l_p6_udråbsalarmer              ; +F7
+Hotkey, % bruger_genvej.20, l_p6_alarmer                    ; F7
+Hotkey, % bruger_genvej.21, l_p6_vm_ring_op                 ; ^+F5
+Hotkey, % bruger_genvej.22, l_p6_vl_ring_op                 ; +F5
+Hotkey, % bruger_genvej.28, l_p6_sygehus_ring_op            ; +F5
+Hotkey, % bruger_genvej.29, l_p6_central_ring_op            ; +F5
 Hotkey, IfWinActive
 
 
 ; Trio
 Hotkey, IfWinActive, ahk_group gruppe
-Hotkey, % bruger.3, l_telenor_p6_opslag
+Hotkey, % bruger_genvej.3, l_telenor_p6_opslag              ; !w               
 Hotkey, IfWinActive
 
 ; flexfinder
-Hotkey, IfWinActive, FlexDanmark FlexFinder ; ved labels defineres aktiv vindue når hotkey defineres først
-Hotkey, % bruger.13, l_flexf_til_p6
+Hotkey, IfWinActive, FlexDanmark FlexFinder                 ;
+Hotkey, % bruger_genvej.13, l_flexf_til_p6                  ; ~$^LButton
 Hotkey, IfWinActive, , 
 ; outlook
-Hotkey, % bruger.16, l_outlook_ny_mail
+Hotkey, % bruger_genvej.16, l_outlook_ny_mail               ; ^+m
 
 Hotkey, IfWinActive, PLANET
-Hotkey, % bruger.17, l_outlook_svigt
+Hotkey, % bruger_genvej.17, l_outlook_svigt                 ; +F1
 Hotkey, IfWinActive, , 
 
 ; settings
 
-
+;; FUNKTIONER
 ;; P6
 
 ; ***
@@ -497,20 +506,6 @@ screenshot_aktivvindue()
 
 ;; Telenor
 
-;træk telenor indgåend
-;virker ikke
-; Telenor()
-; {
-;     WinActivate, Telenor KontaktCenter
-;     ControlClick, x179 y491, Telenor KontaktCenter,, Left,2,
-;     sleep 100
-;     ControlClick, x179 y491, Telenor KontaktCenter,, Left,2,
-;     sleep 100
-;     SendInput {tab}
-;     SendInput {tab}
-;     return
-; }
-
 ;; Trio
 ; ***
 ; Sæt kopieret tlf i Trio
@@ -708,7 +703,8 @@ Flexfinder_opslag()
     Return
 }
 
-
+; Klik VL i FlexFinder, slår op i p6
+; skal tilpasse Edge også 
 Flexfinder_til_p6()
 {
 
@@ -767,11 +763,9 @@ Flexfinder_til_p6()
 }
 
 ; Misc
-
 ; *
-; Mangler udbygning af funktioner
 ;; SygehusGUI
-+^s::
+l_p6_sygehus_ring_op:
     gui, Sygehus:Default
     Gui,Add,Button,vButton1,&AUH
     Gui,Add,Button,vButton2,RH&G
@@ -809,7 +803,7 @@ SygehusGuiClose:
     gui, Destroy
 return
 
-+^c::
+l_p6_central_ring_op:
     gui, Taxa:Default
     Gui,Add,Button,vtaxa1,&Århus Taxa
     Gui,Add,Button,vtaxa2,Århus Taxa Sk&ole
@@ -861,25 +855,25 @@ Outlook_nymail()
 return
 
 ;; HOTKEYS
-
 ;; Global
-+Escape::
+l_escape:
 ExitApp
 Return
 
-^+!p::WinActivate, PLANET, , ,
-
+l_planet: 
+WinActivate, PLANET, , ,
+return
 ;; PLANET
 
 #IfWinActive PLANET
-    F2:: ;; Initialer til/fra
+l_p6_initialer: ;; Initialer til/fra
         P6_initialer()
     Return
 #IfWinActive
 
 
 #IfWinActive PLANET
-    +F2:: ; skriv initialer og forsæt notering.
+l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
         P6_initialer_skriv()
     return
 
@@ -887,19 +881,19 @@ Return
 
 
 #IfWinActive PLANET
-    F3:: ;Vis kørselsaftale for aktivt vognløb
+l_p6_vis_k_aftale: ;Vis kørselsaftale for aktivt vognløb
         P6_vis_KA()
     Return
 #IfWinActive
 
 
 ; ***
-l_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
+l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     telefon := Trio_hent_tlf()
-    IfWinNotExist, PLANET, , , 
+    IfWinNotExist, PLANET, , ,
         MsgBox, , PLANET, P6 er ikke åben.,
-    Else
-    {
+Else
+{
     WinActivate, PLANET
     vl := P6_hent_vl()
     if (telefon = "")
@@ -917,7 +911,7 @@ l_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
 }
 
 #IfWinActive PLANET
-F4:: ; Søg VL ud fra indgående kald i Trio
+l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
     {
         tlf := Trio_hent_tlf()
         WinActivate, PLANET, , ,
