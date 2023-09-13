@@ -53,12 +53,10 @@ GroupAdd, gruppe, ahk_class Addressbook
 
 ;; Globale variabler
 
-brugerrække := [3]
-; brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
+brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
 bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
 ;   1       2               3
 ;   bruger_genvej  telenor_opr     telenor_ahk
-DatabaseView("%A_linefile%\..\db\bruger_ops.tsv")
 
 ;; autoexec slut
 ;; hotkeydef.
