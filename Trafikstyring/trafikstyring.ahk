@@ -64,6 +64,10 @@ bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1
 Hotkey, % bruger_genvej.14, l_flexf_fra_p6                  ; +^F
 Hotkey, % bruger_genvej.15, l_trio_afslut_opkald            ; Numpad -  
 Hotkey, % bruger_genvej.23, l_trio_til_p6                   ; +F4
+Hotkey, % bruger_genvej.27, l_escape                        ; +escape
+Hotkey, % bruger_genvej.26, l_planet                        ; ^+!p
+
+Hotkey, IfWinActive, gruppe
 Hotkey, % bruger_genvej.5, l_trio_klar                      ; ^1
 Hotkey, % bruger_genvej.6, l_trio_pause                     ; ^0
 Hotkey, % bruger_genvej.7, l_trio_udenov                    ; ^2
@@ -72,8 +76,6 @@ Hotkey, % bruger_genvej.9, l_trio_alarm                     ; ^4
 Hotkey, % bruger_genvej.10, l_trio_frokost                  ; ^5
 Hotkey, % bruger_genvej.11, l_triokald_til_udklip           ; #q
 Hotkey, % bruger_genvej.12, l_trio_opkald_markeret          ; !q
-Hotkey, % bruger_genvej.26, l_planet                        ; ^+!p
-Hotkey, % bruger_genvej.27, l_escape                        ; +escape
 
 Hotkey, IfWinActive, PLANET
 Hotkey, % bruger_genvej.4, l_p6_ret_vl_tlf                  ; +F3
@@ -854,7 +856,9 @@ Outlook_nymail()
 ;; Testknap
 
 ^+e::
-
+{
+    Databaseview("%A_linefile%\..\db\bruger_ops.tsv")
+}
     return
 
     ;; HOTKEYS
