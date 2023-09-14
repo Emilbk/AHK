@@ -659,6 +659,8 @@ Trio_hent_tlf()
 ; 244,215
 Flexfinder_opslag()
 {
+    KeyWait, Shift,
+    KeyWait, Ctrl 
     If (WinExist("FlexDanmark FlexFinder"))
     {
         k_aftale := P6_hent_k_aftale()
