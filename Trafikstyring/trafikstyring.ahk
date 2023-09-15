@@ -497,10 +497,53 @@ P6_vis_k_aft()
     SendInput !{F5}
     return
 }
+P6_vl_lukketid(ByRef luk:="")
+{
+    P6_Planvindue()
+    sleep 100
+    SendInput, ^{F12}
+    sleep 100
+    SendInput, ^æ{Enter}{Tab}{tab}{tab}
+    SendInput, %luk%
+    SendInput, {tab}{tab}
+    SendInput, %luk%
+    SendInput, {enter}{enter}
+    return
+}
+
+; w::P6_vl_lukketid(1800)
+return
+
++^w::
+{
+    keywait, shift
+    keywait, Ctrl
+    tid := A_Hour . A_Min
+    tid_5 := tid + 5
+    ; MsgBox, , nutid , % nu_tid, 
+    ; MsgBox, , luktid , % luk_tid, 
+    Input, sidste_stop, T5, {enter}{esc}
+    Input, hjemzone_tid, T5 , {enter}{esc}
+    if (ErrorLevel = "EndKey:Escape") or (ErrorLevel = "Timeout")
+        {MsgBox, , , "escape/timeout"
+        return
+        }
+    else if (hjemzone_tid = "")
+        {
+            P6_vl_lukketid(tid_5)
+            return
+        } 
+    else
+        {
+            luk := sidste_stop + hjemzone_tid
+            P6_vl_lukketid(luk)
+        }
+    return
+}
 
 p6_luk_vl()
 {
-
+    
 }
 ; ***
 ; Tag skærmprint af aktivt vindue
@@ -857,10 +900,8 @@ Outlook_nymail()
 
 ;; Testknap
 
-^+e::
-{
-    Databaseview("%A_linefile%\..\db\bruger_ops.tsv")
-}
+; ^+e::
+
     return
 
     ;; HOTKEYS
@@ -1089,6 +1130,7 @@ l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
     Return
 #IfWinActive
 
+; fiks
 #IfWinActive ahk_group gruppe
     l_triokald_til_udklip: ; trækker indkommende kald til udklip, ringer ikke op.
         clipboard := Trio_hent_tlf()
@@ -1111,7 +1153,7 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
         P6_udfyld_k_s(vl)
         Return
     }
-    if (telefon = "78410222") OR telefon ="23"
+    if (telefon = "78410222" OR telefon ="78410224")
     {
         ; MsgBox, ,CPR, CPR, 1
         WinActivate, PLANET
