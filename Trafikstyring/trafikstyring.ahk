@@ -66,6 +66,7 @@ Hotkey, % bruger_genvej.15, l_trio_afslut_opkald            ; Numpad -
 Hotkey, % bruger_genvej.23, l_trio_til_p6                   ; +F4
 Hotkey, % bruger_genvej.27, l_escape                        ; +escape
 Hotkey, % bruger_genvej.26, l_planet                        ; ^+!p
+Hotkey, % bruger_genvej.3, l_telenor_p6_opslag              ; !w          
 
 
 Hotkey, IfWinActive, PLANET
@@ -86,7 +87,6 @@ Hotkey, IfWinActive
 
 ; Trio
 Hotkey, IfWinActive, ahk_group gruppe
-Hotkey, % bruger_genvej.3, l_telenor_p6_opslag              ; !w          
 Hotkey, % bruger_genvej.5, l_trio_klar                      ; ^1
 Hotkey, % bruger_genvej.6, l_trio_pause                     ; ^0
 Hotkey, % bruger_genvej.7, l_trio_udenov                    ; ^2
@@ -345,6 +345,7 @@ P6_initialer()
     SendInput, %A_Space%
     sleep 100
     SendInput, !o
+
 }
 
 ; ** kan gemtklip-funktion skrives bedre?
@@ -1115,8 +1116,8 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
         ; MsgBox, ,CPR, CPR, 1
         WinActivate, PLANET
         sleep 200
-        SendInput, !rr
-        sleep 100
+        P6_rejsesogvindue()
+        sleep 200
         SendInput, ^t
         return
     }
