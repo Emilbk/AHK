@@ -1097,7 +1097,7 @@ l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
 ; Telenor accepter indgående kald, søg planet
 
 l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
-    SendInput, % bruger[2] ; opr telenor-genvej
+    SendInput, % bruger_genvej[2] ; opr telenor-genvej
     sleep 40
     telefon := Trio_hent_tlf()
     sleep 40
