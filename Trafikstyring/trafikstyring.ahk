@@ -1224,3 +1224,8 @@ Return
     Reload
     sleep 2000
 Return
+
+; ^Numpad9::
+; {
+;     P6_tekstTilChf("Husk at blabla")
+; }
