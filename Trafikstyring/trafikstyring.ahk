@@ -516,28 +516,43 @@ return
 
 +^w::
 {
-    keywait, shift
-    keywait, Ctrl
-    tid := A_Hour . A_Min
-    tid_5 := tid + 5
-    ; MsgBox, , nutid , % nu_tid, 
-    ; MsgBox, , luktid , % luk_tid, 
-    Input, sidste_stop, T5, {enter}{esc}
-    Input, hjemzone_tid, T5 , {enter}{esc}
+    KeyWait, Ctrl,
+    KeyWait, Shift, 
+    EnvAdd, tid_5, 5, minutes
+    FormatTime, tid_5, tid_5, HHmm
+    Input, sidste_stop, T5, {Enter}{escape}
     if (ErrorLevel = "EndKey:Escape") or (ErrorLevel = "Timeout")
-        {MsgBox, , , "escape/timeout"
+    {MsgBox, , , "escape/timeout"
         return
-        }
-    else if (hjemzone_tid = "")
-        {
-            P6_vl_lukketid(tid_5)
-            return
-        } 
-    else
-        {
-            luk := sidste_stop + hjemzone_tid
-            P6_vl_lukketid(luk)
-        }
+    }
+    if (sidste_stop = "")
+    {
+        ; P6_vl_lukketid(tid_5)
+        MsgBox, , tid_5, % tid_5,
+        return
+    }
+    if (StrLen(sidste_stop)!= 4)
+    {
+        MsgBox, , Fejl, Der skal bruges fire tal i formatet TTMM (f. eks 1434).,
+        return
+    }
+    sidste_stop_tjek := "20030423" . sidste_stop
+    if sidste_stop_tjek is not Time
+    {
+        MsgBox, , , Det indtastede er ikke et klokkeslæt.,
+        return
+    }
+    sidste_stop := "20030423" . sidste_stop
+    Input, tid_til_hjemzone, T5, {enter}{Escape},
+    if (ErrorLevel = "EndKey:Escape") or (ErrorLevel = "Timeout")
+    {MsgBox, , , "escape/timeout"
+        return
+    }
+    EnvAdd, sidste_stop, tid_til_hjemzone, minutes
+    FormatTime, sidste_stop, %sidste_stop%, HHmm
+    MsgBox, , Luk, % sidste_stop,
+    ; P6_vl_lukketid(luk)
+
     return
 }
 
