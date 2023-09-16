@@ -128,7 +128,7 @@ P6_hastighed()
     global s
     global brugerrække
     keywait, shift
-    InputBox, s, P6-hastighed, Hastighed fra 1-5? `n 1 = hurtig (standard)`,  5 = meget langsom`, 2.5 = midt i mellem.`n `n Er nu: %s%
+    InputBox, s, P6-hastighed, Hastighed fra 1-3? `n 1 = hurtig (standard)`,  3 = meget langsom`, kommatal f. eks. = 1.5.`n `n Er nu: %s%
     if (s = "" or s = "0")
         {
         sleep 400
