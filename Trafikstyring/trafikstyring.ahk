@@ -59,6 +59,7 @@ GroupAdd, gruppe, ahk_class Addressbook
 brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
 bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
 ;   1       2               3
+s := bruger_genvej.35
 ;   bruger_genvej  telenor_opr     telenor_ahk
 
 ;; autoexec slut
@@ -120,6 +121,23 @@ Hotkey, IfWinActive, ,
 ;; P6
 
 ; ***
++w::P6_hastighed()
+
+P6_hastighed()
+{
+    global s
+    global brugerrække
+    keywait, shift
+    InputBox, s, P6-hastighed, Hastighed fra 1-5? `n 1 = hurtig (standard)`,  5 = meget langsom`, 2.5 = midt i mellem.`n `n Er nu: %s%
+    if (s = "" or s = "0")
+        {
+        sleep 400
+        MsgBox, , Fejl, Kan ikke være nul eller intet.
+        return
+        }
+    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 35, s) 
+    return
+}
 ; P6 alt menu
 P6_aktiver()
 {
@@ -138,8 +156,11 @@ P6_alt_menu()
 ; Åben planbillede
 P6_planvindue()
 {
+    global s
+    
     P6_alt_menu()
     SendInput, tp
+    sleep s * 100
     return
 }
 
@@ -147,27 +168,143 @@ P6_planvindue()
 ; Åben renset rejsesøg
 P6_rejsesogvindue()
 {
+    global s
+    
     P6_alt_menu()
     SendInput rr^t
+    sleep s * 100
     Return
 }
+
+
+;  ***
+; Vis kørselsaftale for aktivt planbillede
+P6_vis_k()
+{   
+    global s
+    P6_alt_menu()
+    sleep s * 40
+    SendInput, tk
+    sleep s * 40
+    SendInput !{F5}
+    return
+}
+; ***
+;Kørselsaftale på VL til clipboard
+P6_hent_k()
+{
+    global s
+    ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
+    Sendinput !tp!k
+    clipboard := ""
+    Sendinput +{F10}c
+    Send, {Ctrl}
+    ClipWait
+    sleep s * 200
+    kørselsaftale := clipboard
+    return kørselsaftale
+}
+
+P6_udfyld_k(k:="")
+{
+    global s
+    clipboard := k
+    P6_Planvindue()
+    sleep s * 40
+    SendInput, !k
+    sleep 40
+    SendInput, {AppsKey}P
+    sleep 40
+    SendInput, {Enter}
+}
+; ***
+;styresystem til clipboard
+P6_hent_s()
+{
+    global s
+    ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
+    Sendinput !tp!k{tab}
+    clipboard := ""
+    Sendinput +{F10}c
+    ClipWait
+    styresystem := clipboard
+    return styresystem
+}
+
+P6_udfyld_s(ss:="")
+{
+    global s
+    clipboard := ss
+    P6_Planvindue()
+    sleep s * 40
+    SendInput, !k
+    sleep 40
+    SendInput, {tab}
+    sleep 40
+    SendInput, {AppsKey}P
+    sleep 40
+    SendInput, {Enter}
+}
+; Hent VL-nummer
+P6_hent_vl()
+{
+    global s
+    clipboard := ""
+    SendInput, !l
+    sleep 20 ; ikke P6-afhængig
+    SendInput, +{F10}c
+    ClipWait, 2, 0
+    vl := Clipboard
+    return vl
+}
+
+P6_udfyld_vl(vl:="")
+{
+    global s
+    P6_Planvindue()
+    sleep s * 40
+    SendInput, !l
+    sleep s * 200
+    SendInput, %vl%
+    sleep s * 40
+    SendInput, {Enter}
+}
+
+
+P6_udfyld_k_og_s(vl:="")
+{
+    global s
+    P6_Planvindue()
+    sleep s * 40
+    SendInput, !k
+    SendInput, {BackSpace} ; ved tp til udfyldt VL er første tastetryk lig med delete
+    SendInput, % vl.1
+    sleep s * 100
+    SendInput, {tab}
+    sleep s * 100
+    SendInput, % vl.2
+    sleep s * 100
+    SendInput, {Enter}
+}
+
 
 ; ***
 ; åben alarmvinduet, ny liste alle alarmer, blad til første
 P6_alarmer()
 {
+    global s
     P6_alt_menu()
     sendinput ta
-    sleep 40
+    sleep s * 40
     SendInput, !k
     SendInput, ^{Delete}
-    sleep 100
+    sleep s * 100
     SendInput, {PgUp}
     SendInput, +^{Down}
-    sleep 200
+    sleep s * 200
     SendInput, ^l
     P6_Planvindue()
-    sleep 200
+    sleep s * 200
     SendInput, !{Down}
 
     return
@@ -177,18 +314,19 @@ P6_alarmer()
 ; åben alarmvinduet, ny liste alle udråbsalarmer, blad til første
 P6_udraabsalarmer()
 {
+    global s
     P6_alt_menu()
     sendinput ta
-    sleep 40
+    sleep s * 40
     SendInput, !u
     SendInput, ^{Delete}
-    sleep 200
+    sleep s * 200
     SendInput, {PgUp}
     SendInput, +^{Down}
-    sleep 40
+    sleep s * 40
     SendInput, ^l
     P6_Planvindue()
-    sleep 200
+    sleep s * 200
     SendInput, !{Down}
     return
 }
@@ -197,8 +335,9 @@ P6_udraabsalarmer()
 ; gå i rent rejsesøg med karet i telefonfelt
 P6_rejsesog_tlf(ByRef telefon:=" ")
 {
+    global s
     P6_rejsesogvindue()
-    sleep 300
+    sleep s * 300
     SendInput {tab}{tab}
     SendInput, %telefon%
     SendInput, ^r
@@ -209,15 +348,16 @@ P6_rejsesog_tlf(ByRef telefon:=" ")
 ;
 P6_hent_vl_tlf()
 {
+    global s
     P6_Planvindue()
     SendInput ^{F12}
-    sleep 1500
+    sleep s * 1500
     sendinput ^æ
-    sleep 200
+    sleep s * 200
     SendInput {Enter}{Enter}
-    Sleep 40
+    sleep s * 40
     SendInput !ø
-    sleep 40
+    sleep s * 40
     Clipboard :=
     SendInput {tab}{tab}^c{enter}
     ClipWait, 2, 0
@@ -229,14 +369,15 @@ return
 ; P6 hent VM tlf
 P6_hent_vm_tlf()
 {
-    P6_vis_k_aft()()
-    sleep 200
+    global s
+    P6_vis_k()()
+    sleep * 200
     sendinput ^æ
-    sleep 200
+    sleep * 200
     SendInput {Enter}
-    ; Sleep 40
+    ; sleep * 40
     SendInput !a
-    ; sleep 40
+    ; sleep * 40
     Clipboard :=
     SendInput {tab}{tab}{tab}{tab}^c{enter}
     ClipWait, 2, 0
@@ -265,15 +406,15 @@ P6_hent_vl_fra_tlf(ByRef tlf:="")
 P6_ret_tlf_vl(ByRef telefon:=" ")
 {
     P6_Planvindue()
-    sleep 50
+    sleep s * 50
     SendInput ^{F12}
-    sleep 800
+    sleep s * 800
     sendinput ^æ
-    sleep 200
+    sleep s * 200
     SendInput {Enter}{Enter}
-    Sleep 40
+    sleep s * 40
     SendInput !ø
-    sleep 40
+    sleep s * 40
     SendInput {tab}{tab}
     SendInput, %telefon%
     SendInput, {enter}
@@ -284,15 +425,16 @@ P6_ret_tlf_vl(ByRef telefon:=" ")
 ;indsæt clipboard i vl-tlf dagen efterfølgende
 P6_tlf_vl_efter(ByRef telefon:=" ")
 {
+    global s
     WinActivate PLANET version 6 Jylland-Fyn DRIFT
     SendInput, {Tab}
-    sleep 200
+    sleep s * 200
     SendInput, !{right}^æ
-    Sleep 40
+    sleep s * 40
     SendInput {Enter}{Enter}
-    Sleep 40
+    sleep s * 40
     SendInput !ø
-    sleep 40
+    sleep s * 40
     SendInput {tab}{tab}
     SendInput, %telefon%
     SendInput, {enter}
@@ -304,24 +446,25 @@ P6_tlf_vl_efter(ByRef telefon:=" ")
 ; Noterer intialer, fjerner dem hvis første ord i notering er initialer
 P6_initialer()
 {
+    global s
     FormatTime, Time, ,HHmm tt ;definerer format på tid/dato
     initialer = /mt%A_userName%%time%
     initialer_udentid =/mt%A_userName%
     P6_Planvindue()
     SendInput, {F5} ; for at undgå timeout. Giver det problemer med langsom opdatering?
-    sleep 40
+    sleep s * 40
     sendinput ^n
-    sleep 1400
+    sleep s * 1400
     clipboard :=
     SendInput, ^a^c
     ClipWait, 1, 0
     notering := clipboard
-    sleep 40
+    sleep s * 40
     ; MsgBox, , notering, %notering%,
     ; deler notering op i array med ord delt i mellemrum
     ; notering_array := StrSplit(notering, A_Space)
     notering_array := StrSplit(notering)
-    sleep 400
+    sleep s * 400
     fem = % notering_array.1 notering_array.2 notering_array.3 notering_array.4 notering_array.5 notering_array.6
     ; MsgBox, , fem, %fem%,
     ; MsgBox, , udentid, %initialer_udentid%
@@ -336,10 +479,10 @@ P6_initialer()
             noteringuden := " "
         else
             Clipboard :=
-        sleep 200
+        sleep s * 200
         Clipboard := noteringuden
         sendinput ^a^v
-        sleep 800
+        sleep s * 800
         SendInput, !o
         ; MsgBox, , klippet, %noteringuden%,
         return
@@ -348,163 +491,63 @@ P6_initialer()
     Else
         ; MsgBox, , Else, Nej, det er ikke,
         Clipboard :=
-    sleep 40
+    sleep s * 40
     Clipboard := initialer
     ClipWait, 1, 0
     SendInput, {Left}
     Sendinput ^v
     SendInput, %A_Space%
-    sleep 100
+    sleep s * 100
     SendInput, !o
-
+    
 }
 
 ; ** kan gemtklip-funktion skrives bedre?
 ;Indsæt initialer med efterf. kommentar, behold tidligere klip
 P6_initialer_skriv()
 {
+    global s
     FormatTime, Time, ,HHmm tt ;definerer format på tid/dato
     initialer = /mt%A_userName%%time%
     P6_Planvindue()
-    sleep 40
+    sleep s * 40
     sendinput ^n
-    sleep 40
+    sleep s * 40
     Sendinput %initialer%
     Sendinput %A_space%
     Sendinput {home}
-    sleep 2000
+    sleep 2000 ; ikke P6-afhængig
     ; gemtklip := ""
     return
 }
 
-; ***
-;Kørselsaftale på VL til clipboard
-P6_hent_k_aftale()
-{
-    ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
-    Sendinput !tp!k
-    clipboard := ""
-    Sendinput +{F10}c
-    Send, {Ctrl}
-    ClipWait
-    sleep 200
-    kørselsaftale := clipboard
-    return kørselsaftale
-}
-
-; ***
-;styresystem til clipboard
-P6_hent_styresystem()
-{
-    ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
-    Sendinput !tp!k{tab}
-    clipboard := ""
-    Sendinput +{F10}c
-    ClipWait
-    styresystem := clipboard
-    return styresystem
-}
-
-; Hent VL-nummer
-P6_hent_vl()
-{
-    clipboard := ""
-    SendInput, !l
-    sleep 20
-    SendInput, +{F10}c
-    ClipWait, 2, 0
-    vl := Clipboard
-    return vl
-}
-P6_udfyld_vl(vl:="")
-{
-    P6_Planvindue()
-    sleep 40
-    SendInput, !l
-    sleep 200
-    SendInput, %vl%
-    sleep 40
-    SendInput, {Enter}
-}
-
-P6_udfyld_k(k:="")
-{
-    clipboard := k
-    P6_Planvindue()
-    sleep 40
-    SendInput, !k
-    sleep 40
-    SendInput, {AppsKey}P
-    sleep 40
-    SendInput, {Enter}
-}
-
-P6_udfyld_s(s:="")
-{
-    clipboard := s
-    P6_Planvindue()
-    sleep 40
-    SendInput, !k
-    sleep 40
-    SendInput, {tab}
-    sleep 40
-    SendInput, {AppsKey}P
-    sleep 40
-    SendInput, {Enter}
-}
-
-P6_udfyld_k_s(vl:="")
-{
-    P6_Planvindue()
-    sleep 40
-    SendInput, !k
-    SendInput, {BackSpace} ; ved tp til udfyldt VL er første tastetryk lig med delete
-    SendInput, % vl.1
-    sleep 100
-    SendInput, {tab}
-    sleep 100
-    SendInput, % vl.2
-    sleep 100
-    SendInput, {Enter}
-}
 
 ;  ***
 ; Send tekst til chf
 P6_tekstTilChf(ByRef tekst:=" ")
 {
+    global s
     WinActivate PLANET
-    kørselsaftale := P6_hent_k_aftale()
-    styresystem := P6_hent_styresystem()
-    sleep 200
+    kørselsaftale := P6_hent_k()
+    styresystem := P6_hent_s()
+    sleep s * 200
     Sendinput !tt^k
-    Sleep 100
+    sleep s * 100
     Sendinput !k
-    sleep 40
+    sleep s * 40
     SendInput, ^t
     Sendinput %kørselsaftale%
-    sleep 100
+    sleep s * 100
     SendInput, {tab}
     Sendinput %styresystem%
     SendInput, {tab}
-    sleep 100
+    sleep s * 100
     if (tekst != " ")
     {
         SendInput, %tekst%
     }
     Else
         return
-    return
-}
-
-;  ***
-; Udfyld kørselsaftale for aktivt planbillede
-P6_vis_k_aft()
-{
-    P6_alt_menu()
-    sleep 40
-    SendInput, tk
-    sleep 40
-    SendInput !{F5}
     return
 }
 
@@ -559,10 +602,12 @@ p6_vl_lukketid()
 ; luk vl på variabel tid
 P6_vl_luk(ByRef tid:="")
 {
+    global s
+    
     P6_Planvindue()
-    sleep 100
+    sleep s * 100
     SendInput, ^{F12}
-    sleep 100
+    sleep s * 100
     SendInput, ^æ{Enter}{Tab}{tab}{tab}
     SendInput, %tid%
     SendInput, {tab}{tab}
@@ -736,7 +781,7 @@ Flexfinder_opslag()
     KeyWait, Ctrl
     If (WinExist("FlexDanmark FlexFinder"))
     {
-        k_aftale := P6_hent_k_aftale()
+        k_aftale := P6_hent_k()
         k_aftale := SubStr("000" . k_aftale, -3) ; indsætter nuller og tager sidste fire cifre i strengen.
         ; MsgBox, , er 4 , % k_aftale
         sleep 200
@@ -1016,7 +1061,7 @@ return
 
 #IfWinActive PLANET
     l_p6_vis_k_aftale: ;Vis kørselsaftale for aktivt vognløb
-        P6_vis_k_aft()
+        P6_vis_k()
     Return
 #IfWinActive
 
@@ -1031,7 +1076,7 @@ Else
     vl := P6_hent_vl()
     if (telefon = "")
     {
-        MsgBox, , Intet ingående telefonnummer, Der er intet indgående telefonnummer, 1
+        MsgBox, , Intet indgående telefonnummer, Der er intet indgående telefonnummer, 1
         return
     }
     else
@@ -1064,12 +1109,14 @@ Else
     return  
     }
 
+
 #IfWinActive PLANET
 l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
     {
+        global s
         tlf := Trio_hent_tlf()
         WinActivate, PLANET, , ,
-        sleep 40
+        sleep s * 40
         vl := P6_hent_vl_fra_tlf(tlf)
         if (vl = 0)
         {
@@ -1080,8 +1127,8 @@ l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
             return
         }
         else
-            sleep 40
-        P6_udfyld_k_s(vl)
+            sleep s * 40
+        P6_udfyld_k_og_s(vl)
         ; MsgBox, , , % vl.2
         Return
     }
@@ -1089,6 +1136,8 @@ l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
 
 ; ***
 l_trio_til_p6: ;træk tlf til rejsesøg
+
+    global s
     IfWinNotActive, PLANET, , ,
         MsgBox, , PLANET, P6 er ikke åben.,
 Else
@@ -1101,11 +1150,9 @@ Else
     }
     if (telefon = "78410222")
     {
-        ; MsgBox, ,CPR, CPR, 1
-        WinActivate, PLANET
-        sleep 200
-        SendInput, !rr
-        sleep 100
+        
+        P6_rejsesogvindue()
+        sleep s * 40
         SendInput, ^t
         return
     }
@@ -1122,7 +1169,6 @@ return
     ^F4::
         {
             P6_Planvindue()
-            sleep 100
             SendInput, !l
             return
         }
@@ -1267,7 +1313,7 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
     {
         KeyWait, Alt,
         WinActivate, PLANET, , ,
-        P6_udfyld_k_s(vl)
+        P6_udfyld_k_og_s(vl)
         Return
     }
     if (telefon = "78410222" OR telefon ="78410224")
@@ -1322,8 +1368,8 @@ Return
         Else
         {
             WinActivate PLANET
-            sleep 200
-            P6_udfyld_k_s(vl)
+            sleep s * 200
+            P6_udfyld_k_og_s(vl)
             sleep 400 ; skal optimeres
             WinActivate, FlexDanmark FlexFinder, , ,
             Return
@@ -1368,7 +1414,7 @@ Return
         Clipboard := initialer
         ClipWait, 1, 0
         Sendinput ^v
-        sleep 800
+        sleep s * 800
         Clipboard := gemtklip
         return
     }
