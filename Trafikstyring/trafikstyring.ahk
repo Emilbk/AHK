@@ -944,6 +944,7 @@ l_excel_vl_til_P6_B:
             input, tast, L1 V T4, {Up}{Down}{tab}
             if (tast = chr(27))
                 {
+                    sleep 100 ; forhindrer hop tilbage til P6, hvis infobox
                     WinActivate, Garantivognsoversigt FG8.xlsm
                     return
                 }
