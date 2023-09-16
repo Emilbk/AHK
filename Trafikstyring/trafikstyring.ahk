@@ -80,8 +80,9 @@ Hotkey, % bruger_genvej.19, l_p6_udråbsalarmer              ; +F7
 Hotkey, % bruger_genvej.20, l_p6_alarmer                    ; F7
 Hotkey, % bruger_genvej.21, l_p6_vm_ring_op                 ; ^+F5
 Hotkey, % bruger_genvej.22, l_p6_vl_ring_op                 ; +F5
-Hotkey, % bruger_genvej.28, l_p6_sygehus_ring_op            ; +F5
-Hotkey, % bruger_genvej.29, l_p6_central_ring_op            ; +F5
+Hotkey, % bruger_genvej.32, l_p6_vl_luk                     ; #F5
+Hotkey, % bruger_genvej.28, l_p6_sygehus_ring_op            ; ^+s
+Hotkey, % bruger_genvej.29, l_p6_central_ring_op            ; ^+c
 Hotkey, IfWinActive
 
 
@@ -497,16 +498,67 @@ P6_vis_k_aft()
     SendInput !{F5}
     return
 }
-P6_vl_lukketid(ByRef luk:="")
+
+
+; ***
+; Finder lukketid ud fra sidste stop og tid til hjemzone.
+; Input tid for sidste stop, tryk enter. Input tid til hjemzone, tryk enter.
+; Hvis tid for sidste stop hjemzone er tom, luk nu + 5 min
+; hvis tid til hjemzone stop tom luk til udfyldte tid for sidste stop uden ændringer
+; hvis tid for sidste stop og tid til hjemzone udfyldt, luk til tiden fra sidste stop til hjemzone, plus 2 min
+p6_vl_lukketid()
+{
+    KeyWait, Ctrl,
+    KeyWait, Shift, 
+    EnvAdd, nu_plus_5, 5, minutes
+    FormatTime, nu_plus_5, %nu_plus_5%, HHmm
+    Input, sidste_stop, T5, {Enter}{escape}
+    if (ErrorLevel = "EndKey:Escape") or (ErrorLevel = "Timeout")
+    {MsgBox, , Timeout , Det tog for lang tid.
+        return 0
+    }
+    if (sidste_stop = "")
+    {
+        return nu_plus_5
+    }
+    if (StrLen(sidste_stop)!= 4)
+        {
+        MsgBox, , Fejl i indtastning, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
+        return 0
+    }
+    sidste_stop_tjek := "20230916" . sidste_stop
+    if sidste_stop_tjek is not Time
+    {
+        MsgBox, , Fejl i indtastning , Det indtastede er ikke et klokkeslæt.,
+        return 0
+    }
+    sidste_stop := "20030423" . sidste_stop
+    Input, tid_til_hjemzone, T5, {enter}{Escape},
+    if (ErrorLevel = "EndKey:Escape") or (ErrorLevel = "Timeout")
+    {MsgBox, , Timeout , Det tog for lang tid.
+        return 0
+    }
+    if (tid_til_hjemzone = "" )
+        {
+            FormatTime, sidste_stop, %sidste_stop%, HHmm
+            return sidste_stop
+        }
+    EnvAdd, sidste_stop, tid_til_hjemzone + 2, minutes
+    FormatTime, sidste_stop, %sidste_stop%, HHmm 
+    return sidste_stop
+}
+
+; luk vl på variabel tid
+P6_vl_luk(ByRef tid:="")
 {
     P6_Planvindue()
     sleep 100
     SendInput, ^{F12}
     sleep 100
     SendInput, ^æ{Enter}{Tab}{tab}{tab}
-    SendInput, %luk%
+    SendInput, %tid%
     SendInput, {tab}{tab}
-    SendInput, %luk%
+    SendInput, %tid%
     SendInput, {enter}{enter}
     return
 }
@@ -514,52 +566,6 @@ P6_vl_lukketid(ByRef luk:="")
 ; w::P6_vl_lukketid(1800)
 return
 
-+^w::
-{
-    KeyWait, Ctrl,
-    KeyWait, Shift, 
-    EnvAdd, tid_5, 5, minutes
-    FormatTime, tid_5, tid_5, HHmm
-    Input, sidste_stop, T5, {Enter}{escape}
-    if (ErrorLevel = "EndKey:Escape") or (ErrorLevel = "Timeout")
-    {MsgBox, , , "escape/timeout"
-        return
-    }
-    if (sidste_stop = "")
-    {
-        ; P6_vl_lukketid(tid_5)
-        MsgBox, , tid_5, % tid_5,
-        return
-    }
-    if (StrLen(sidste_stop)!= 4)
-    {
-        MsgBox, , Fejl, Der skal bruges fire tal i formatet TTMM (f. eks 1434).,
-        return
-    }
-    sidste_stop_tjek := "20030423" . sidste_stop
-    if sidste_stop_tjek is not Time
-    {
-        MsgBox, , , Det indtastede er ikke et klokkeslæt.,
-        return
-    }
-    sidste_stop := "20030423" . sidste_stop
-    Input, tid_til_hjemzone, T5, {enter}{Escape},
-    if (ErrorLevel = "EndKey:Escape") or (ErrorLevel = "Timeout")
-    {MsgBox, , , "escape/timeout"
-        return
-    }
-    EnvAdd, sidste_stop, tid_til_hjemzone, minutes
-    FormatTime, sidste_stop, %sidste_stop%, HHmm
-    MsgBox, , Luk, % sidste_stop,
-    ; P6_vl_lukketid(luk)
-
-    return
-}
-
-p6_luk_vl()
-{
-    
-}
 ; ***
 ; Tag skærmprint af aktivt vindue
 screenshot_aktivt_vindue()
@@ -1038,6 +1044,7 @@ return
 #IfWinActive
 ; *
 
+; +F5
 #IfWinActive PLANET
 l_p6_vl_ring_op: ;træk tlf fra aktiv planbillede, ring op i Trio
         {
@@ -1055,6 +1062,7 @@ l_p6_vl_ring_op: ;træk tlf fra aktiv planbillede, ring op i Trio
 
 ; ***
 
+; ^+F5
 #IfWinActive PLANET
 l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
         {
@@ -1067,6 +1075,15 @@ l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
     Return
 #IfWinActive
 
+; #F5
+l_p6_vl_luk:
+{
+    tid := p6_vl_lukketid()
+    if tid = 0
+        return
+    p6_vl_luk(tid)
+    return
+}
 #IfWinActive PLANET
     l_p6_alarmer: ;alarmer
         P6_alarmer()
@@ -1282,6 +1299,8 @@ Return
     Reload
     sleep 2000
 Return
+
+^+d::databaseview("%A_linefile%\..\db\bruger_ops.tsv")
 
 ; ^Numpad9::
 ; {
