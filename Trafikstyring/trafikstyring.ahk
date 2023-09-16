@@ -941,10 +941,9 @@ l_excel_vl_til_P6_B:
         {
             WinActivate, PLANET
             P6_udfyld_vl(vl)
-            input, tast, L1 V T2
+            input, tast, L1 V T4, {Up}{Down}
             if (tast = chr(27))
                 {
-                    sleep 100
                     WinActivate, Garantivognsoversigt FG8.xlsm
                     return
                 }
