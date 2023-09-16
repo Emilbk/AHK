@@ -86,6 +86,7 @@ Hotkey, % bruger_genvej.22, l_p6_vl_ring_op ; +F5
 Hotkey, % bruger_genvej.32, l_p6_vl_luk ; #F5
 Hotkey, % bruger_genvej.28, l_p6_sygehus_ring_op ; ^+s
 Hotkey, % bruger_genvej.29, l_p6_central_ring_op ; ^+c
+Hotkey, % bruger_genvej.36, l_p6_hastighed ; #½
 Hotkey, IfWinActive
 
 ; Trio
@@ -121,7 +122,6 @@ Hotkey, IfWinActive, ,
 ;; P6
 
 ; ***
-+w::P6_hastighed()
 
 P6_hastighed()
 {
@@ -1045,6 +1045,9 @@ l_p6_aktiver:
     p6_aktiver()
 return
 ;; PLANET
+l_p6_hastighed:
+P6_hastighed()
+return
 
 #IfWinActive PLANET
     l_p6_initialer: ;; Initialer til/fra
