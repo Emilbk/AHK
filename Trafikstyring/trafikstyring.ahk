@@ -423,15 +423,17 @@ P6_ret_tlf_vl(ByRef telefon:=" ")
 
 ;  ***
 ;indsæt clipboard i vl-tlf dagen efterfølgende
-P6_tlf_vl_efter(ByRef telefon:=" ")
+P6_tlf_vl_dato_efter(ByRef telefon:=" ")
 {
     global s
     WinActivate PLANET version 6 Jylland-Fyn DRIFT
     SendInput, {Tab}
     sleep s * 200
-    SendInput, !{right}^æ
-    sleep s * 40
-    SendInput {Enter}{Enter}
+    SendInput, !{right}{AltUp}
+    sleep s * 200
+    SendInput, ^æ
+    sleep s * 200
+    SendInput {Enter 2}
     sleep s * 40
     SendInput !ø
     sleep s * 40
@@ -1097,7 +1099,8 @@ Else
         IfMsgBox, Yes
         {
         sleep 100
-        MsgBox, , , ok,
+        P6_tlf_vl_dato_efter(telefon)
+        sleep s * 800
         Goto, igen
         }
         IfMsgBox, no
