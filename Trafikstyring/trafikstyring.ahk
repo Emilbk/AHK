@@ -1039,9 +1039,30 @@ Else
         MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
         IfMsgBox, Yes
             P6_ret_tlf_vl(telefon)
+            sleep s * 100
+        Input, næste, L1 V T4
+        if (næste = "n")
+        {
+        igen:
+        sleep 100
+        MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl% på den efterfølgende dato?,
+        IfMsgBox, Yes
+        {
+        sleep 100
+        MsgBox, , , ok,
+        Goto, igen
+        }
+        IfMsgBox, no
+        {
+        sleep 100
+        MsgBox, , , Nej tak, 
+         
+        }
+        } 
         return
+        }
+    return  
     }
-}
 
 #IfWinActive PLANET
 l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
