@@ -1119,6 +1119,8 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
         else
         {
             InputBox, telefon, VL, Skal tlf %telefon% ændres?,, Width, Height, X, Y, Locale, Timeout, %telefon%
+            if (ErrorLevel = 1 or ErrorLevel = 2)
+                return
             MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
             IfMsgBox, Yes
                 P6_ret_tlf_vl(telefon)
