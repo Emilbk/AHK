@@ -1111,6 +1111,7 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     {
         WinActivate, PLANET
         vl := P6_hent_vl()
+        InputBox, telefon, VL, Skal tlf %telefon% ændres?,, Width, Height, X, Y, Locale, Timeout, %telefon%
         if (telefon = "")
         {
             MsgBox, , Intet indgående telefonnummer, Der er intet indgående telefonnummer, 1
@@ -1137,9 +1138,7 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
                     }
                     IfMsgBox, no
                     {
-                        sleep 100
-                        MsgBox, , , Nej tak,
-
+                        P6_planvindue()
                     }
                 }
             return
