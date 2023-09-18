@@ -87,6 +87,9 @@ Hotkey, % bruger_genvej.32, l_p6_vl_luk ; #F5
 Hotkey, % bruger_genvej.28, l_p6_sygehus_ring_op ; ^+s
 Hotkey, % bruger_genvej.29, l_p6_central_ring_op ; ^+c
 Hotkey, % bruger_genvej.36, l_p6_hastighed ; #½
+Hotkey, % bruger_genvej.37, l_p6_ring_til_kunde ; #½
+Hotkey, % bruger_genvej.38, l_p6_vaelg_vl ; #½
+
 Hotkey, IfWinActive
 
 ; Trio
@@ -618,8 +621,21 @@ P6_vl_luk(ByRef tid:="")
     return
 }
 
-; w::P6_vl_lukketid(1800)
-return
+; P6 ring op til markeret kunde i VL (telefon i bestilling)
+p6_hent_kunde_tlf(ByRef telefon:="")
+{
+    global s
+
+    SendInput, {enter}
+    sleep s * 300
+    SendInput, +{tab 2}
+    sleep s * 100
+    clipboard :=
+    SendInput, ^c
+    ClipWait, 3,
+    telefon := clipboard
+    return
+}
 
 ; ***
 ; Tag skærmprint af aktivt vindue
