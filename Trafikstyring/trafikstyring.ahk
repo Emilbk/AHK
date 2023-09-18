@@ -124,21 +124,21 @@ Hotkey, IfWinActive, ,
 ;; FUNKTIONER
 ;; P6
 
-; ***
-
+; **
+; fix, giver 0-fejl ved esc.
 P6_hastighed()
 {
     global s
     global brugerrække
     keywait, shift
-    InputBox, s, P6-hastighed, Hastighed fra 1-3? `n 1 = hurtig (standard)`,  3 = meget langsom`, kommatal f. eks. = 1.5.`n `n Er nu: %s%
+    InputBox, s, P6-hastighed, Hastighed fra 1-3? `n 1 = hurtig (standard)`, 3 = meget langsom`, kommatal f. eks. = 1.5.`n `n Er nu: %s%
     if (s = "" or s = "0")
-        {
+    {
         sleep 400
         MsgBox, , Fejl, Kan ikke være nul eller intet.
         return
-        }
-    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 35, s) 
+    }
+    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 35, s)
     return
 }
 ; P6 alt menu
@@ -160,7 +160,7 @@ P6_alt_menu()
 P6_planvindue()
 {
     global s
-    
+
     P6_alt_menu()
     SendInput, tp
     sleep s * 100
@@ -172,18 +172,17 @@ P6_planvindue()
 P6_rejsesogvindue()
 {
     global s
-    
+
     P6_alt_menu()
     SendInput rr^t
     sleep s * 100
     Return
 }
 
-
 ;  ***
 ; Vis kørselsaftale for aktivt planbillede
 P6_vis_k()
-{   
+{
     global s
     P6_alt_menu()
     sleep s * 40
@@ -273,7 +272,6 @@ P6_udfyld_vl(vl:="")
     SendInput, {Enter}
 }
 
-
 P6_udfyld_k_og_s(vl:="")
 {
     global s
@@ -289,7 +287,6 @@ P6_udfyld_k_og_s(vl:="")
     sleep s * 100
     SendInput, {Enter}
 }
-
 
 ; ***
 ; åben alarmvinduet, ny liste alle alarmer, blad til første
@@ -504,7 +501,7 @@ P6_initialer()
     SendInput, %A_Space%
     sleep s * 100
     SendInput, !o
-    
+
 }
 
 ; ** kan gemtklip-funktion skrives bedre?
@@ -525,7 +522,6 @@ P6_initialer_skriv()
     ; gemtklip := ""
     return
 }
-
 
 ;  ***
 ; Send tekst til chf
@@ -608,7 +604,7 @@ p6_vl_lukketid()
 P6_vl_luk(ByRef tid:="")
 {
     global s
-    
+
     P6_Planvindue()
     sleep s * 100
     SendInput, ^{F12}
@@ -995,6 +991,8 @@ l_excel_vl_til_P6_A:
 l_excel_vl_til_P6_B:
     {
         vl := Excel_vl_til_udklip()
+        sleep 100
+        SendInput, {esc}
         if vl = 0
         {
             MsgBox, , Klik på vognløb, Du skal klikke på vognløbet,
@@ -1004,47 +1002,46 @@ l_excel_vl_til_P6_B:
         {
             WinActivate, PLANET
             P6_udfyld_vl(vl)
-            input, tast, L1 V T4, {Up}{Down}{tab}
+            input, tast, L1 V T4, {Up}{Down}{tab}{LButton}
             if (tast = chr(27))
-                {
-                    sleep 100 ; forhindrer hop tilbage til P6, hvis infobox
-                    WinActivate, Garantivognsoversigt FG8.xlsm
-                    return
-                }
+            {
+                sleep 100 ; forhindrer hop tilbage til P6, hvis infobox
+                WinActivate, Garantivognsoversigt FG8.xlsm
+                return
+            }
             if ErrorLevel
-                {
-                    return
-                }
+            {
+                return
+            }
         }
         return
     }
 
-
-Excel_vl_til_udklip(vl:="")
-{
-    if (WinActive("Garantivognsoversigt FG8.xlsm"))
+    Excel_vl_til_udklip(vl:="")
     {
-        tast := GetKeyState("ctrl", "P")
-        if tast = 0
+        if (WinActive("Garantivognsoversigt FG8.xlsm"))
+        {
+            tast := GetKeyState("ctrl", "P")
+            if tast = 0
             {
                 SendInput, {AltUp}
                 SendInput, {LButton}
             }
-        clipboard :=
-        sleep 50
-        SendInput, ^c
-        ClipWait, 6
-        vl := clipboard
-        vl := StrReplace(vl, "`n", "")
-        vl := StrReplace(vl, "`r", "")
-        if (StrLen(vl) = 5) ; fem c<ifre plus new-line
-        {
-            return vl
+            clipboard :=
+            sleep 50
+            SendInput, ^c
+            ClipWait, 6
+            vl := clipboard
+            vl := StrReplace(vl, "`n", "")
+            vl := StrReplace(vl, "`r", "")
+            if (StrLen(vl) = 5) ; fem c<ifre plus new-line
+            {
+                return vl
+            }
+            else
+                return 0
         }
-        else
-            return 0
     }
-}
 
 ;; Testknap
 
@@ -1064,7 +1061,7 @@ l_p6_aktiver:
 return
 ;; PLANET
 l_p6_hastighed:
-P6_hastighed()
+    P6_hastighed()
 return
 
 #IfWinActive PLANET
@@ -1089,7 +1086,7 @@ return
 ; ***
 l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     telefon := Trio_hent_tlf()
-    IfWinNotExist, PLANET, , ,
+    If (WinNotExist, PLANET, , ,)
         MsgBox, , PLANET, P6 er ikke åben.,
 Else
 {
@@ -1105,62 +1102,61 @@ Else
         MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
         IfMsgBox, Yes
             P6_ret_tlf_vl(telefon)
-            sleep s * 100
+        sleep s * 100
         Input, næste, L1 V T4
         if (næste = "n")
         {
-        igen:
-        sleep 100
-        MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl% på den efterfølgende dato?,
-        IfMsgBox, Yes
-        {
-        sleep 100
-        P6_tlf_vl_dato_efter(telefon)
-        sleep s * 800
-        Goto, igen
-        }
-        IfMsgBox, no
-        {
-        sleep 100
-        MsgBox, , , Nej tak, 
-         
-        }
-        } 
-        return
-        }
-    return  
-    }
+            luk_igen:
+                sleep 100
+                MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl% på den efterfølgende dato?,
+                IfMsgBox, Yes
+                {
+                    sleep 100
+                    P6_tlf_vl_dato_efter(telefon)
+                    sleep s * 800
+                    Goto, luk_igen
+                }
+                IfMsgBox, no
+                {
+                    sleep 100
+                    MsgBox, , , Nej tak,
 
+                }
+            }
+        return
+    }
+    return
+}
 
 #IfWinActive PLANET
-l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
-    {
-        global s
-        tlf := Trio_hent_tlf()
-        WinActivate, PLANET, , ,
-        sleep s * 40
-        vl := P6_hent_vl_fra_tlf(tlf)
-        if (vl = 0)
+    l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
         {
-            MsgBox, , Tlf ikke registreret , Telefonnummeret er ikke registreret i Ethics., 1
+            global s
+            tlf := Trio_hent_tlf()
             WinActivate, PLANET, , ,
-            SendInput, !tp!l
-
-            return
-        }
-        else
             sleep s * 40
-        P6_udfyld_k_og_s(vl)
-        ; MsgBox, , , % vl.2
-        Return
-    }
+            vl := P6_hent_vl_fra_tlf(tlf)
+            if (vl = 0)
+            {
+                MsgBox, , Tlf ikke registreret , Telefonnummeret er ikke registreret i Ethics., 1
+                WinActivate, PLANET, , ,
+                SendInput, !tp!l
+
+                return
+            }
+            else
+                sleep s * 40
+            P6_udfyld_k_og_s(vl)
+            ; MsgBox, , , % vl.2
+            Return
+        }
 #IfWinActive
 
 ; ***
 l_trio_til_p6: ;træk tlf til rejsesøg
 
     global s
-    IfWinNotActive, PLANET, , ,
+    If (IfWinNotExist, PLANET, , , )
         MsgBox, , PLANET, P6 er ikke åben.,
 Else
 {
@@ -1172,7 +1168,7 @@ Else
     }
     if (telefon = "78410222")
     {
-        
+
         P6_rejsesogvindue()
         sleep s * 40
         SendInput, ^t
@@ -1188,7 +1184,7 @@ Else
 return
 #IfWinActive PLANET
     ; gå i vl
-    ^F4::
+    l_p6_vaelg_vl:
         {
             P6_Planvindue()
             SendInput, !l
@@ -1227,6 +1223,24 @@ return
         }
     Return
 #IfWinActive
+
+; P6 - ring op til kunde markeret i Vl (kræver tlf opsat på kundetilladelse)
+l_p6_ring_til_kunde:
+    {
+        p6_hent_kunde_tlf(telefon)
+        sleep s * 200
+        if (SubStr(telefon, 1, 3) = "888")
+        {
+            MsgBox, , Telefon ikke tilknyttet, Kunden har ikke telefon tilknyttet. 
+            return
+        }
+        Else
+            {
+                Trio_opkald(telefon)
+                return
+            }
+        return
+    }
 
 ; #F5
 l_p6_vl_luk:
