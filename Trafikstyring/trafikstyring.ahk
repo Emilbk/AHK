@@ -808,7 +808,7 @@ Flexfinder_opslag()
         SendInput, {PgUp}
         sleep 200
         WinGetPos, X, Y, , , FlexDanmark FlexFinder, , ,
-        if(x = "1920")
+        if(x = "1920" or x = "-1920")
         {
             PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6CF2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
             sleep 200
