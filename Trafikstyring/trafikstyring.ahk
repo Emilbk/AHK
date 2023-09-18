@@ -1,5 +1,4 @@
 ﻿#NoEnv ; Recommended for performance and compatibility with future AutoHotkey releases.
-#Requires AutoHotkey v1.1.33
 #InstallKeybdHook
 #InstallMouseHook
 ;FileEncoding UTF-8
