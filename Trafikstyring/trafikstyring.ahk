@@ -611,12 +611,31 @@ P6_vl_luk(ByRef tid:="")
     sleep s * 100
     SendInput, ^{F12}
     sleep s * 100
-    SendInput, ^æ{Enter}{Tab}{tab}{tab}
-    SendInput, %tid%
-    SendInput, {tab}{tab}
-    SendInput, %tid%
-    SendInput, {enter}{enter}
-    return
+    SendInput, ^æ
+    sleep s * 40
+    clipboard :=
+    SendInput, +{F10}c
+    ClipWait, 3, 0
+    vl := clipboard
+    if (StrLen(vl) <= 3)
+    {
+        SendInput, Keys{Enter}
+        FormatTime, dato, YYYYMMDDHH24MISS, d
+        SendInput, %dato%
+        SendInput, {tab}
+        SendInput, %tid%
+        SendInput, {enter}{enter}
+        return
+    }
+    Else
+    {
+        SendInput, Keys{Enter}{Tab 3}
+        SendInput, %tid%
+        SendInput, {tab}{tab}
+        SendInput, %tid%
+        SendInput, {enter}{enter}
+        return
+    }
 }
 
 ; P6 ring op til markeret kunde i VL (telefon i bestilling)
