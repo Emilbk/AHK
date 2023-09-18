@@ -1117,7 +1117,7 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
         }
         else
         {
-            InputBox, telefon, VL, Skal tlf %telefon% ændres?,, Width, Height, X, Y, Locale, Timeout, %telefon%
+            InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 120, 160, X, Y, Locale, Timeout, %telefon%
             if (ErrorLevel = 1 or ErrorLevel = 2)
                 return
             MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
@@ -1216,6 +1216,8 @@ return
 #IfWinActive PLANET
     l_p6_vl_ring_op: ;træk tlf fra aktiv planbillede, ring op i Trio
         {
+            P6_planvindue()
+            sleep s * 100
             vl_tlf := P6_hent_vl_tlf()
             sleep 200
             Trio_opkald(vl_tlf)
@@ -1234,6 +1236,8 @@ return
 #IfWinActive PLANET
     l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
         {
+            P6_planvindue()
+            sleep s * 100
             vm_tlf := P6_hent_vm_tlf()
             sleep 500
             Trio_opkald(vm_tlf)
