@@ -1547,7 +1547,7 @@ l_excel_vl_til_P6_B:
     sleep 2000
 Return
 
-^+d::databaseview("%A_linefile%\..\db\bruger_ops.tsv")
+^+a::databaseview("%A_linefile%\..\db\bruger_ops.tsv")
 
 ; ^Numpad9::
 ; {
