@@ -1061,10 +1061,57 @@ Excel_vl_til_udklip()
 
 }
 
+;; System
+
+sys_genveje()
+{
+    global bruger_genvej
+    genvej_ren := []
+    genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 1, ,1) ; brugerens række i databasen
+    for index, genvej in bruger_genvej
+    {
+        genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        ; genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
+        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+        ; MsgBox, , , % genvej
+    }
+    for index, genvej in genvej_ren
+    {
+        ;    genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        ; genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
+        genvej_ren[index] := StrReplace(genvej, "^", "Ctrl + ")
+        ; MsgBox, , , % genvej
+    }
+    for index, genvej in genvej_ren
+        {
+            ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+            genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
+            ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+            ; MsgBox, , , % genvej
+        }
+    for index, genvej in genvej_ren
+        {
+            ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+            genvej_ren[index] := StrReplace(genvej, "#", "Windows + ")
+            ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+            ; MsgBox, , , % genvej
+        }
+    Gui, Genveje:new
+    Gui, Add, Text, , Tekst
+    Gui, Add, Text, R1 , % genvej_navn.3 genvej_ren.3
+    Gui, Add, Text, R2 , % genvej_navn.3 genvej_ren.3
+    Gui, Show, , Genveje
+
+    ; MsgBox,% genvej_navn.4 " - " genvej_ren.4 "`n"  genvej_navn.5 " - " genvej_ren.5
+
+    ; MsgBox, , Genvej, % StrReplace(bruger_genvej.30, "+" , "Shift + ")
+    return
+}
+
 ;; Testknap
 
-; ^+e::
-
+^+e::
+    sys_genveje()
 return
 
 ;; HOTKEYS
@@ -1117,7 +1164,7 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
         }
         else
         {
-            InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 120, 160, X, Y, Locale, Timeout, %telefon%
+            InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 120, 160, X, Y, , Timeout, %telefon%
             if (ErrorLevel = 1 or ErrorLevel = 2)
                 return
             MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
