@@ -1290,7 +1290,8 @@ return
 
 #IfWinActive PLANET
     l_tekst_til_chf: ; Send tekst til aktive vognløb
-        P6_tekstTilChf(tekst) ; tager tekst ("eksempel") som parameter (accepterer variabel)
+        SendInput, {AltUp}{Ctrlup}
+        P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
     return
 #IfWinActive
 
