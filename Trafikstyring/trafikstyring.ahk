@@ -154,6 +154,7 @@ P6_alt_menu()
     keywait ctrl
     keywait alt
     SendInput, {Alt}
+    sleep 200
 }
 
 ; ***
@@ -175,6 +176,7 @@ P6_rejsesogvindue()
     global s
 
     P6_alt_menu()
+    sleep 300
     SendInput rr^t
     sleep s * 100
     Return
