@@ -57,6 +57,8 @@ GroupAdd, gruppe, ahk_class Addressbook
 
 brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
 bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
+genvej_ren := []
+genvej_navn := []
 ;   1       2               3
 s := bruger_genvej.35
 ;   bruger_genvej  telenor_opr     telenor_ahk
@@ -1063,10 +1065,57 @@ Excel_vl_til_udklip()
 
 }
 
+;; System
+
+sys_genveje()
+{
+    global bruger_genvej
+    global genvej_ren := []
+    global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 1, ,1) ; brugerens række i databasen
+    for index, genvej in bruger_genvej
+    {
+        genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        ; genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
+        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+        ; MsgBox, , , % genvej
+    }
+    for index, genvej in genvej_ren
+    {
+        ;    genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        ; genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
+        genvej_ren[index] := StrReplace(genvej, "^", "Ctrl + ")
+        ; MsgBox, , , % genvej
+    }
+    for index, genvej in genvej_ren
+        {
+            ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+            genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
+            ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+            ; MsgBox, , , % genvej
+        }
+    for index, genvej in genvej_ren
+        {
+            ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+            genvej_ren[index] := StrReplace(genvej, "#", "Windows + ")
+            ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+            ; MsgBox, , , % genvej
+        }
+    Gui, Genveje:new
+    Gui, Add, Text, , Tekst
+    Gui, Add, Text, R1 , % genvej_navn.3 genvej_ren.3
+    Gui, Add, Text, R2 , % genvej_navn.3 genvej_ren.3
+    Gui, Show, , Genveje
+
+    ; MsgBox,% genvej_navn.4 " - " genvej_ren.4 "`n"  genvej_navn.5 " - " genvej_ren.5
+
+    ; MsgBox, , Genvej, % StrReplace(bruger_genvej.30, "+" , "Shift + ")
+    return
+}
+
 ;; Testknap
 
-; ^+e::
-
+^+e::
+    sys_genveje()
 return
 
 ;; HOTKEYS
@@ -1119,7 +1168,7 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
         }
         else
         {
-            InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 120, 160, X, Y, Locale, Timeout, %telefon%
+            InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 120, 160, X, Y, , Timeout, %telefon%
             if (ErrorLevel = 1 or ErrorLevel = 2)
                 return
             MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
@@ -1505,8 +1554,137 @@ Return
 
 ^+a::databaseview("%A_linefile%\..\db\bruger_ops.tsv")
 
-
 ; ^Numpad9::
 ; {
 ;     P6_tekstTilChf("Husk at blabla")
 ; }
+
++!e::
+{
+global genvej_ren
+global genvej_navn
+global hk :=
+sys_genveje()
+
+; MsgBox, , , % genvej_navn.3 
+MsgBox, , , % hk
+
+
+Gui Font, s9, Segoe UI
+Gui Color, 0xC0C0C0
+Gui Add, StatusBar,, Status Bar
+Gui Add, Tab3, x0 y0 w748 h642 0x54010240, Hej|Genvejsoversigt 1|Genvejsoversigt 2|Genvejopsætning|Hjælp|Misc
+Gui Tab, Genvejopsætning
+Gui Add, Hotkey, vhk x200 y112 w120 h21
+Gui Tab, Genvejsoversigt
+Gui Font
+Gui Font, s12 Bold
+Gui Add, Text, x0 y0 w748 h642 +0x200, Generelt
+Gui Font
+Gui Font, s9, Segoe UI
+Gui Tab, Genvejsoversigt 1
+Gui Font
+Gui Font, s14 Bold q4, Segoe UI
+Gui Add, Text, x16 y32 w120 h23 +0x200, Generelt
+Gui Font
+Gui Font, s9, Segoe UI
+Gui Add, Text, x16 y56 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x272 y56 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x16 y80 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x272 y80 w227 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x8 y56 w198 h2 +0x10
+Gui Tab, Genvejsoversigt 2
+Gui Font
+Gui Font, s14 Bold q4, Segoe UI
+Gui Add, Text, x16 y32 w120 h23 +0x200, Planet
+Gui Font
+Gui Font, s9, Segoe UI
+Gui Add, Text, x8 y56 w198 h2 +0x10
+Gui Add, Text, x8 y64 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y88 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y112 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y136 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y160 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y184 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y208 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y232 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y256 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y280 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y304 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y328 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y352 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y376 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y400 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x8 y424 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x248 y64 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y88 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y112 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y136 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y160 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y184 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y208 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y232 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y256 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y280 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y304 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y328 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y352 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y376 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y400 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y424 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x8 y448 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x8 y472 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x8 y496 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x8 y520 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x8 y544 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x8 y568 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x8 y592 w260 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x344 y64 w227 h23 +0x200,% genvej_navn.3
+Gui Add, Text, x344 y88 w227 h23 +0x200,% genvej_navn.3
+Gui Add, Text, x344 y112 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y136 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y160 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y184 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y208 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y232 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y256 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y280 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y304 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y328 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y352 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y376 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y400 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y424 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y472 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y496 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y520 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y544 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y568 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y592 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x344 y448 w227 h23 +0x200, % genvej_navn.3
+Gui Add, Text, x248 y448 w97 h23 +0x200,  % genvej_ren.3
+Gui Add, Text, x248 y472 w97 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y496 w97 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y520 w97 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y544 w97 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y568 w97 h23 +0x200, % genvej_ren.3
+Gui Add, Text, x248 y592 w97 h23 +0x200, % genvej_ren.3
+Gui Tab, Hej
+Gui Add, Text, x12 y105 w464 h0 +0x10
+Gui Tab, Misc
+Gui Add, Picture, x38 y130 w640 h360, C:\Users\emilb\Pictures\vlcsnap-2022-03-12-16h57m04s067.png
+Gui Tab
+
+
+Gui Show, w747 h670, AHK
+Return
+
+Return
+gui, Submit, nohide
+
+GuiEscape:
+genvejGuiClose:
+MsgBox, , , % HK 
+    ExitApp
+
+}
