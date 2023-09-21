@@ -9,7 +9,7 @@ SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
 ; type2, type5, ttj_larve, ttj_hjul,variabel_lift,variabel_type2,
 ; variabel_ttj,
 
-aktiv_fil := "gv_alle"
+aktiv_fil := "gv_tripstol"
 FileRead, fil, %A_linefile%\..\ff_vl\%aktiv_fil%.txt
 ; MsgBox, , fil, % fil,
 vl := StrSplit(fil, "`n")
