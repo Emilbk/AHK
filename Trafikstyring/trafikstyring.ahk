@@ -674,18 +674,15 @@ screenshot_aktivt_vindue()
 ; Sæt kopieret tlf i Trio
 Trio_opkald(ByRef telefon)
 {
-    If (WinExist("Trio Attendant"))
-    {
-        WinActivate, ahk_class Addressbook
-        ControlClick, Edit2, ahk_class Addressbook
-        SendInput, ^a{del}
-        sleep 100
-        SendInput, %telefon%
-        sleep 500
-        SendInput, +{enter} ; undgår kobling ved igangværende opkald
-    }
-    Else
-        MsgBox, , Åbn Adressebog, Adressebogen i Trio er ikke åben
+    ControlClick, x360 y17, ahk_class AccessBar
+    sleep 800
+    WinActivate, ahk_class Addressbook
+    ControlClick, Edit2, ahk_class Addressbook
+    SendInput, ^a{del}
+    sleep 200
+    SendInput, %telefon%
+    sleep 500
+    SendInput, +{enter} ; undgår kobling ved igangværende opkald
     Return
 }
 
@@ -1116,9 +1113,10 @@ sys_genveje()
 ;; Testknap
 
 ^+e::
-    sys_genveje()
+{
+    ControlClick, x360 y17, ahk_class AccessBar
 return
-
+}
 ;; HOTKEYS
 
 ;; Global
