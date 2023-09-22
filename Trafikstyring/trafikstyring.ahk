@@ -68,6 +68,7 @@ s := bruger_genvej.35
 ; globale genveje                                           ; Standard-opsætning
 Hotkey, % bruger_genvej.14, l_flexf_fra_p6 ; +^F
 Hotkey, % bruger_genvej.15, l_trio_afslut_opkald ; Numpad -
+Hotkey, % bruger_genvej.39, l_trio_afslut_opkaldB ; Numpad -
 Hotkey, % bruger_genvej.23, l_trio_til_p6 ; +F4
 Hotkey, % bruger_genvej.27, l_escape ; +escape
 Hotkey, % bruger_genvej.26, l_p6_aktiver ; +!p
@@ -1437,7 +1438,6 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
     }
     Else
     {
-        WinActivate, PLANET, , ,
         P6_rejsesog_tlf(telefon)
         return
     }
@@ -1454,6 +1454,7 @@ Return
 ; Minus på numpad afslutter Trioopkald global (Skal der tilbage til P6?)
 ; #IfWinActive PLANET
 l_trio_afslut_opkald:
+l_trio_afslut_opkaldB:
     Trio_afslutopkald()
     sleep 200
     WinActivate, PLANET
