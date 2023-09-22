@@ -1419,19 +1419,17 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
     telefon := Trio_hent_tlf()
     sleep 40
     vl := P6_hent_vl_fra_tlf(telefon)
-    sleep 40
+    WinActivate, PLANET
+    sleep 300 ; sørger for at vinduet kan nå at skifte
     if (vl != 0)
     {
         KeyWait, Alt,
-        WinActivate, PLANET, , ,
         P6_udfyld_k_og_s(vl)
         Return
     }
     if (telefon = "78410222" OR telefon ="78410224")
     {
         ; MsgBox, ,CPR, CPR, 1
-        WinActivate, PLANET
-        sleep 200
         P6_rejsesogvindue()
         sleep 200
         SendInput, ^t
