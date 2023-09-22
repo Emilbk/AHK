@@ -674,6 +674,15 @@ screenshot_aktivt_vindue()
 ; Sæt kopieret tlf i Trio
 Trio_opkald(ByRef telefon)
 {
+
+    ifWinNotExist, ahk_class AccessBar
+        {
+        WinActivate, ahk_class Agent Main GUI
+        sleep 200
+        SendInput, {alt}
+        sleep 100
+        SendInput, v{Down 5}{enter}
+        }
     ControlClick, x360 y17, ahk_class AccessBar
     sleep 800
     WinActivate, ahk_class Addressbook
