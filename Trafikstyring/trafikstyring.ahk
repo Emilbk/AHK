@@ -807,7 +807,6 @@ trio_pauseklar()
 Trio_hent_tlf()
 {
     clipboard := ""
-    WinActivate, ahk_class AccessBar, , ,
     Sendinput !+k
     ClipWait
     Telefon := Clipboard
