@@ -583,7 +583,7 @@ p6_vl_lukketid()
         MsgBox, , Fejl i indtastning, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
         return 0
     }
-    sidste_stop_tjek := "20230916" . sidste_stop
+    sidste_stop_tjek := A_YYYY A_MM A_DD "00" "00" sidste_stop
     if sidste_stop_tjek is not Time
     {
         MsgBox, , Fejl i indtastning , Det indtastede er ikke et klokkeslæt.,
