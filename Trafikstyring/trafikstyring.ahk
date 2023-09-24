@@ -454,9 +454,9 @@ P6_tlf_vl_dato_efter(ByRef telefon:=" ")
 P6_initialer()
 {
     global s
-    FormatTime, Time, ,HHmm tt ;definerer format på tid/dato
-    initialer = /mt%A_userName%%time%
-    initialer_udentid =/mt%A_userName%
+    FormatTime, Time, ,HHmm ;definerer format på tid/dato
+    initialer = /mtebk%time%
+    initialer_udentid =/mtebk
     P6_Planvindue()
     SendInput, {F5} ; for at undgå timeout. Giver det problemer med langsom opdatering?
     sleep s * 40
@@ -465,48 +465,33 @@ P6_initialer()
     clipboard :=
     SendInput, ^a^c
     ClipWait, 1, 0
-    notering := clipboard
-    sleep s * 40
-    ; MsgBox, , notering, %notering%,
-    ; deler notering op i array med ord delt i mellemrum
-    ; notering_array := StrSplit(notering, A_Space)
-    notering_array := StrSplit(notering)
-    sleep s * 400
-    fem = % notering_array.1 notering_array.2 notering_array.3 notering_array.4 notering_array.5 notering_array.6
-    ; MsgBox, , fem, %fem%,
-    ; MsgBox, , udentid, %initialer_udentid%
-    ;tjekker for initialer uden tid i første ord i notering
-    ;falsk positiv, hvis der er skrevet ud i ét, uden mellemrum
-    ; hvis ja, fjerner de første 11 bogstaver (= initialer med tid) ? kan det laves smartere?
-    if InStr(fem, initialer_udentid, 0, 1)
-    {
-        ; MsgBox, , If, Ja, fem er lig uden tid
-        StringTrimLeft, noteringuden, notering, 11
-        If (noteringuden) = ""
-            noteringuden := " "
-        else
-            Clipboard :=
+    notering := Clipboard
+    if (substr(notering,1, 6) = initialer_udentid)
+        {
+        initialer_fjernet := SubStr(notering, 12)
+        If (initialer_fjernet) = ""
+            initialer_fjernet := " "
+        Clipboard :=
         sleep s * 200
-        Clipboard := noteringuden
+        Clipboard := initialer_fjernet
         sendinput ^a^v
         sleep s * 800
         SendInput, !o
-        ; MsgBox, , klippet, %noteringuden%,
         return
-    }
-    ;indsætter initialer med tid
-    Else
-        ; MsgBox, , Else, Nej, det er ikke,
+        }
+    if (substr(notering,1, 6) != initialer_udentid)
+        {
         Clipboard :=
-    sleep s * 40
-    Clipboard := initialer
-    ClipWait, 1, 0
-    SendInput, {Left}
-    Sendinput ^v
-    SendInput, %A_Space%
-    sleep s * 100
-    SendInput, !o
-
+        sleep s * 40
+        result := initialer
+        ClipWait, 1, 0
+        SendInput, {Left}
+        Sendinput ^v
+        SendInput, %A_Space%
+        sleep s * 100
+        SendInput, !o
+        return
+        }
 }
 
 ; ** kan gemtklip-funktion skrives bedre?
