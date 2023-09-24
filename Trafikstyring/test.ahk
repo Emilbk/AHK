@@ -13,7 +13,7 @@ SetWorkingDir, %A_ScriptDir%
         Gui Add, Button, gudklip x144 y88 w80 h23, Til &Udklip
         Gui Add, Text, x72 y24 w120 h23 +0x200, %tid_tekst%
 
-        Gui Show, w260 h125, Window
+        Gui Show, w260 h125, Resultat
         Return
 
         ok:
