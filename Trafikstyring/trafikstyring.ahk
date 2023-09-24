@@ -605,6 +605,64 @@ p6_vl_lukketid()
     return sidste_stop
 }
 
+; læg minuttal til klokkeslæt eller minuttal til minuttal.
+P6_regn_tid()
+{
+    tidA = 1300  ; HHmm, starttid. Enten fire cifre for klokkeslæt, mellem 1 og 3 cifre for minuttal.
+    tidB = 232   ; mm, tillægstid. Minuttal
+    tidC =       ; resultat
+
+    InputBox, tidA, Udgangspunkt, Skriv tiden`, der skal lægges noget til. Klokkeslæt 4 cifre ud i ét`, minuttal 3 til 1 ciffer ud i ét. `n `n F. eks: `n 13:34 skrives 1334 `n 231 minutter skrives 231, , , 240
+    if (ErrorLevel != 0)
+        return
+    InputBox, tidB, Tid `, der skal lægges til., Skriv tid`, der skal lægges til. Minuttal ud i ét.,
+    if (ErrorLevel != 0)
+        return
+    if (StrLen(tida) <= "3")
+        {
+            tid_nul := A_YYYY A_MM A_DD "00" "00"
+            EnvAdd, tid_nul, tida , minutes
+            EnvAdd, tid_nul, tidb, minutes
+            FormatTime, tidC, %tid_nul%, HHmm
+            FormatTime, tid_time, %tid_nul%, H
+            FormatTime, tid_min, %tid_nul%, m
+            if (tid_min = "1" and tid_time = "1")
+                {
+                MsgBox, , , % tid_time " time og " tid_min " minut."
+                return
+                }
+            if (tid_min != "1" and tid_time = "1")
+                {
+                MsgBox, , , % tid_time " time og " tid_min " minutter."
+                return
+                }
+            if (tid_min != "1" and tid_time != "1")
+                {
+                MsgBox, , , % tid_time " timer og " tid_min " minutter."
+                return
+                }
+            if (tid_min = "1" and tid_time != "1")
+                {
+                MsgBox, , , % tid_time " timer og " tid_min " minut."
+                return
+                }
+            }
+    if (StrLen(tida) = "4")
+        {
+        tidA := A_YYYY A_MM A_DD tida "00"
+        ; MsgBox, , , % tidA
+        EnvAdd, tidA, tidB, minutes
+        FormatTime, tid_time, %tidA%, HH
+        FormatTime, tid_min, %tidA%, mm
+        if (tid_time != "00")
+            {
+            MsgBox, , , % tid_time ":" tid_min "."
+            return
+            }
+        }
+    
+    return
+}
 ; luk vl på variabel tid
 P6_vl_luk(ByRef tid:="")
 {
