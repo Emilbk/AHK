@@ -608,9 +608,9 @@ p6_vl_lukketid()
 ; læg minuttal til klokkeslæt eller minuttal til minuttal.
 P6_regn_tid()
 {
-    tidA = 1300  ; HHmm, starttid. Enten fire cifre for klokkeslæt, mellem 1 og 3 cifre for minuttal.
-    tidB = 232   ; mm, tillægstid. Minuttal
-    tidC =       ; resultat
+    tidA =      ; HHmm, starttid. Enten fire cifre for klokkeslæt, mellem 1 og 3 cifre for minuttal.
+    tidB =      ; mm, tillægstid. Minuttal
+    tidC =      ; resultat
 
     InputBox, tidA, Udgangspunkt, Skriv tiden`, der skal lægges noget til. Klokkeslæt 4 cifre ud i ét`, minuttal 3 til 1 ciffer ud i ét. `n `n F. eks: `n 13:34 skrives 1334 `n 231 minutter skrives 231, , , 240
     if (ErrorLevel != 0)
