@@ -454,7 +454,7 @@ P6_tlf_vl_dato_efter(ByRef telefon:=" ")
 P6_initialer()
 {
     global s
-    FormatTime, Time, ,HHmm ;definerer format på tid/dato
+    FormatTime, Time, ,HHmm tt ;definerer format på tid/dato
     initialer = /mt%A_userName%%time%
     initialer_udentid =/mt%A_userName%
     P6_Planvindue()
@@ -470,25 +470,24 @@ P6_initialer()
     ; MsgBox, , notering, %notering%,
     ; deler notering op i array med ord delt i mellemrum
     ; notering_array := StrSplit(notering, A_Space)
-    ; notering_array := StrSplit(notering)
-    ; sleep s * 400
-    ; fem = % notering_array.1 notering_array.2 notering_array.3 notering_array.4 notering_array.5 notering_array.6
+    notering_array := StrSplit(notering)
+    sleep s * 400
+    fem = % notering_array.1 notering_array.2 notering_array.3 notering_array.4 notering_array.5 notering_array.6
     ; MsgBox, , fem, %fem%,
     ; MsgBox, , udentid, %initialer_udentid%
     ;tjekker for initialer uden tid i første ord i notering
     ;falsk positiv, hvis der er skrevet ud i ét, uden mellemrum
     ; hvis ja, fjerner de første 11 bogstaver (= initialer med tid) ? kan det laves smartere?
-    if (substr(notering,1, 6) = initialer_udentid)
+    if InStr(fem, initialer_udentid, 0, 1)
     {
         ; MsgBox, , If, Ja, fem er lig uden tid
-        StringTrimLeft, initialer_fjernet, notering, 11
-        /mtebk1223
-        If (initialer_fjernet) = ""
-            initialer_fjernet := " "
+        StringTrimLeft, noteringuden, notering, 11
+        If (noteringuden) = ""
+            noteringuden := " "
         else
             Clipboard :=
         sleep s * 200
-        Clipboard := initialer_fjernet
+        Clipboard := noteringuden
         sendinput ^a^v
         sleep s * 800
         SendInput, !o
@@ -496,19 +495,18 @@ P6_initialer()
         return
     }
     ;indsætter initialer med tid
-    if (substr(notering,1, 6) != initialer_udentid)
-        {
+    Else
         ; MsgBox, , Else, Nej, det er ikke,
         Clipboard :=
-        sleep s * 40
-        Clipboard := initialer
-        ClipWait, 1, 0
-        SendInput, {Left}
-        Sendinput ^v
-        SendInput, %A_Space%
-        sleep s * 100
-        SendInput, !o
-        }
+    sleep s * 40
+    Clipboard := initialer
+    ClipWait, 1, 0
+    SendInput, {Left}
+    Sendinput ^v
+    SendInput, %A_Space%
+    sleep s * 100
+    SendInput, !o
+
 }
 
 ; ** kan gemtklip-funktion skrives bedre?
@@ -612,7 +610,6 @@ p6_vl_lukketid()
 }
 
 ; læg minuttal til klokkeslæt eller minuttal til minuttal.
-; sæt op, så der kan vælges enten input eller inputbox
 P6_regn_tid()
 {
     tidA =      ; HHmm, starttid. Enten fire cifre for klokkeslæt, mellem 1 og 3 cifre for minuttal.
