@@ -570,7 +570,9 @@ p6_vl_lukketid()
     EnvAdd, nu_plus_5, 5, minutes
     FormatTime, nu_plus_5, %nu_plus_5%, HHmm
     Input, sidste_stop, T5, {Enter}{escape}
-    if (ErrorLevel = "EndKey:Escape") or (ErrorLevel = "Timeout")
+    if (ErrorLevel = "EndKey:Escape")
+        Return
+    if (ErrorLevel = "Timeout")
     {MsgBox, , Timeout , Det tog for lang tid.
         return 0
     }
@@ -583,15 +585,17 @@ p6_vl_lukketid()
         MsgBox, , Fejl i indtastning, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
         return 0
     }
-    sidste_stop_tjek := A_YYYY A_MM A_DD "00" "00" sidste_stop
+    sidste_stop_tjek := A_YYYY A_MM A_DD sidste_stop
     if sidste_stop_tjek is not Time
     {
         MsgBox, , Fejl i indtastning , Det indtastede er ikke et klokkeslæt.,
         return 0
     }
-    sidste_stop := "20030423" . sidste_stop
+    sidste_stop := A_YYYY A_MM A_DD sidste_stop
     Input, tid_til_hjemzone, T5, {enter}{Escape},
-    if (ErrorLevel = "EndKey:Escape") or (ErrorLevel = "Timeout")
+    if (ErrorLevel = "EndKey:Escape")
+        Return
+    if (ErrorLevel = "Timeout")
     {MsgBox, , Timeout , Det tog for lang tid.
         return 0
     }
