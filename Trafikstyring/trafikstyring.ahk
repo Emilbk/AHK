@@ -563,7 +563,7 @@ P6_tekstTilChf(ByRef tekst:=" ")
 ; Hvis tid for sidste stop hjemzone er tom, luk nu + 5 min
 ; hvis tid til hjemzone stop tom luk til udfyldte tid for sidste stop uden ændringer
 ; hvis tid for sidste stop og tid til hjemzone udfyldt, luk til tiden fra sidste stop til hjemzone, plus 2 min
-p6_vl_lukketid()
+P6_regn_tid()
 {
     KeyWait, Ctrl,
     KeyWait, Shift,
@@ -615,6 +615,7 @@ P6_regn_tid()
     tidA :=      ; HHmm, starttid. Enten fire cifre for klokkeslæt, mellem 1 og 3 cifre for minuttertal.
     tidB :=      ; mm, tillægstid. Minuttal
     tidC :=      ; resultat
+    ; skal overføres til database
     p6_regn_tid_ops := 1 ; 1 - med inputbox, 0 med input
     if (p6_regn_tid_ops = 1)
         {
@@ -1485,7 +1486,7 @@ l_p6_ring_til_kunde:
 ; #F5
 l_p6_vl_luk:
     {
-        tid := p6_vl_lukketid()
+        tid := P6_regn_tid()
         if tid = 0
             return
         p6_vl_luk(tid)
