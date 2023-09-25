@@ -18,25 +18,9 @@ GroupAdd, gruppe, ahk_class Addressbook
 
 ;; TODO
 
-; Global læg på ✔️
-; ring op til VM
 ; gemt-klip-funktion ved al brug af clipboard
-; Luk om x antal minutter
 ; Trio gå til linie 1 hvis linie 2 aktiv
-; omskriv initialer
 ; forstå pixelsearch
-
-; Slå tlf op med telenor-genvej
-; !w:: ; lav database over username ift. valgt genvej
-; send rigtig telenor-genvej
-; slå telefon
-; hvis genkendt vl
-;     slå vl op
-; hvis patient/viderestillet
-;     gå i cpr
-; hvis alt andet
-;     slå tlf op i rejsesøg
-
 ; Tilføj kommentar, der vises når VM ringer op
 
 ; hvis vm tlf
@@ -49,9 +33,6 @@ GroupAdd, gruppe, ahk_class Addressbook
 ; klik for åben vl i planet
 
 ;; kendte fejl
-; P6_initialer sletter ikke, hvis initialerne er eneste ord i notering
-
-;; Database
 
 ;; Globale variabler
 
@@ -60,59 +41,59 @@ bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1
 genvej_ren := []
 genvej_navn := []
 ;   1       2               3
-s := bruger_genvej.35
+s := bruger_genvej.41
 ;   bruger_genvej  telenor_opr     telenor_ahk
 
-;; autoexec slut
 ;; hotkeydef.
 ; globale genveje                                           ; Standard-opsætning
-Hotkey, % bruger_genvej.14, l_flexf_fra_p6 ; +^F
-Hotkey, % bruger_genvej.15, l_trio_afslut_opkald ; Numpad -
-Hotkey, % bruger_genvej.39, l_trio_afslut_opkaldB ; Numpad -
-Hotkey, % bruger_genvej.23, l_trio_til_p6 ; +F4
-Hotkey, % bruger_genvej.27, l_escape ; +escape
-Hotkey, % bruger_genvej.26, l_p6_aktiver ; +!p
-Hotkey, % bruger_genvej.3, l_telenor_p6_opslag ; !w
+Hotkey, % bruger_genvej.4, l_telenor_p6_opslag ; !w
+Hotkey, % bruger_genvej.30, l_trio_afslut_opkald ; Numpad -
+Hotkey, % bruger_genvej.31, l_trio_afslut_opkaldB ; Numpad -
+Hotkey, % bruger_genvej.32, l_trio_til_p6 ; +F4
+Hotkey, % bruger_genvej.33, l_quitAHK ; +escape
+Hotkey, % bruger_genvej.34, l_p6_aktiver ; +!p
 
 Hotkey, IfWinActive, PLANET
-Hotkey, % bruger_genvej.4, l_p6_ret_vl_tlf ; +F3
-Hotkey, % bruger_genvej.24, l_p6_søg_vl ; F4
-Hotkey, % bruger_genvej.25, l_p6_initialer ; F2
-Hotkey, % bruger_genvej.30, l_p6_initialer_skriv ; +F2
-Hotkey, % bruger_genvej.31, l_p6_vis_k_aftale ; F3
-Hotkey, % bruger_genvej.18, l_p6_tekst_til_chf ; ^+t
-Hotkey, % bruger_genvej.19, l_p6_udråbsalarmer ; +F7
-Hotkey, % bruger_genvej.20, l_p6_alarmer ; F7
-Hotkey, % bruger_genvej.21, l_p6_vm_ring_op ; ^+F5
-Hotkey, % bruger_genvej.22, l_p6_vl_ring_op ; +F5
-Hotkey, % bruger_genvej.32, l_p6_vl_luk ; #F5
-Hotkey, % bruger_genvej.28, l_p6_sygehus_ring_op ; ^+s
-Hotkey, % bruger_genvej.29, l_p6_central_ring_op ; ^+c
-Hotkey, % bruger_genvej.36, l_p6_hastighed ; #½
-Hotkey, % bruger_genvej.37, l_p6_ring_til_kunde ; #½
-Hotkey, % bruger_genvej.38, l_p6_vaelg_vl ; #½
-Hotkey, % bruger_genvej.40, l_p6_plus_tid ; #½
+Hotkey, % bruger_genvej.5, l_p6_initialer ; F2
+Hotkey, % bruger_genvej.6, l_p6_initialer_skriv ; +F2
+Hotkey, % bruger_genvej.7, l_p6_vis_k_aftale ; F3
+Hotkey, % bruger_genvej.8, l_p6_ret_vl_tlf ; +F3
+Hotkey, % bruger_genvej.9, l_p6_vaelg_vl ; ^F3
+Hotkey, % bruger_genvej.10, l_p6_søg_vl ; F4
+Hotkey, % bruger_genvej.11, l_p6_vl_ring_op ; +F5
+Hotkey, % bruger_genvej.12, l_p6_vm_ring_op ; ^+F5
+Hotkey, % bruger_genvej.13, l_p6_vl_luk ; #F5
+Hotkey, % bruger_genvej.14, l_p6_alarmer ; F7
+Hotkey, % bruger_genvej.15, l_p6_udråbsalarmer ; +F7
+Hotkey, % bruger_genvej.16, l_p6_ring_til_kunde ; +F8
+Hotkey, % bruger_genvej.17, l_p6_plus_tid ; #t
+Hotkey, % bruger_genvej.18, l_p6_sygehus_ring_op ; ^+s
+Hotkey, % bruger_genvej.19, l_p6_central_ring_op ; ^+c
+Hotkey, % bruger_genvej.20, l_p6_tekst_til_chf ; ^+t
+Hotkey, % bruger_genvej.21, l_p6_hastighed ; #½
+Hotkey, % bruger_genvej.36, l_flexf_fra_p6 ; +^F
+Hotkey, % bruger_genvej.43, l_p6_udregn_minut ; #m
 
 Hotkey, IfWinActive
 
 ; Trio
 Hotkey, IfWinActive, ahk_group gruppe
-Hotkey, % bruger_genvej.5, l_trio_klar ; ^1
-Hotkey, % bruger_genvej.6, l_trio_pause ; ^0
-Hotkey, % bruger_genvej.7, l_trio_udenov ; ^2
-Hotkey, % bruger_genvej.8, l_trio_efterbehandling ; ^3
-Hotkey, % bruger_genvej.9, l_trio_alarm ; ^4
-Hotkey, % bruger_genvej.10, l_trio_frokost ; ^5
-Hotkey, % bruger_genvej.11, l_triokald_til_udklip ; #q
-Hotkey, % bruger_genvej.12, l_trio_opkald_markeret ; !q
+Hotkey, % bruger_genvej.22, l_trio_pause ; ^0
+Hotkey, % bruger_genvej.23, l_trio_klar ; ^1
+Hotkey, % bruger_genvej.24, l_trio_udenov ; ^2
+Hotkey, % bruger_genvej.25, l_trio_efterbehandling ; ^3
+Hotkey, % bruger_genvej.26, l_trio_alarm ; ^4
+Hotkey, % bruger_genvej.27, l_trio_frokost ; ^5
+Hotkey, % bruger_genvej.28, l_trio_opkald_markeret ; !q
+Hotkey, % bruger_genvej.29, l_triokald_til_udklip ; #q
 Hotkey, IfWinActive
 
 ; flexfinder
 Hotkey, IfWinActive, FlexDanmark FlexFinder ;
-Hotkey, % bruger_genvej.13, l_flexf_til_p6 ; ~$^LButton
+Hotkey, % bruger_genvej.35, l_flexf_til_p6 ; ~$^LButton
 Hotkey, IfWinActive, ,
 ; outlook
-Hotkey, % bruger_genvej.16, l_outlook_ny_mail ; ^+m
+Hotkey, % bruger_genvej.37, l_outlook_ny_mail ; ^+m
 
 Hotkey, IfWinActive, PLANET
 Hotkey, % bruger_genvej.17, l_outlook_svigt ; +F1
@@ -120,8 +101,8 @@ Hotkey, IfWinActive, ,
 
 ;excel
 Hotkey, ifWinActive, Garantivognsoversigt FG8.xlsm
-Hotkey, % bruger_genvej.33, l_excel_vl_til_P6_A ; !Lbutton
-Hotkey, % bruger_genvej.34, l_excel_vl_til_P6_B ; ^w
+Hotkey, % bruger_genvej.39, l_excel_vl_til_P6_A ; !Lbutton
+Hotkey, % bruger_genvej.40, l_excel_vl_til_P6_B ; ^w
 Hotkey, IfWinActive, ,
 
 ; settings
@@ -143,7 +124,7 @@ P6_hastighed()
         MsgBox, , Fejl, Kan ikke være nul eller intet.
         return
     }
-    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 35, s)
+    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41, s)
     return
 }
 ; P6 alt menu
@@ -563,10 +544,85 @@ P6_tekstTilChf(ByRef tekst:=" ")
 ; hvis tid for sidste stop og tid til hjemzone udfyldt, luk til tiden fra sidste stop til hjemzone, plus 2 min
 P6_input_sluttid()
 {
+    p6_input_sidste_slut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,4)
     KeyWait, Ctrl,
     KeyWait, Shift,
     EnvAdd, nu_plus_5, 5, minutes
     FormatTime, nu_plus_5, %nu_plus_5%, HHmm
+    if (p6_input_sidste_slut_ops  = "1")
+    {
+        InputBox, sidste_stop, Sidste stop, Tast tid for sidste stop (4 cifre)
+        if (ErrorLevel = "1")
+            Return
+        if (sidste_stop = "")
+        {
+            return nu_plus_5
+        }
+        if (StrLen(sidste_stop)!= 4)
+        {
+            MsgBox, , Fejl i indtastning, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
+            return 0
+        }
+        sidste_stop_tjek := A_YYYY A_MM A_DD sidste_stop
+        if sidste_stop_tjek is not Time
+        {
+            MsgBox, , Fejl i indtastning , Det indtastede er ikke et klokkeslæt.,
+            return 0
+        }
+        sidste_stop := A_YYYY A_MM A_DD sidste_stop
+        InputBox, tid_til_hjemzone, Tid til hjemzone, Tid til hjemzone i minutter
+        if (ErrorLevel = "1")
+            Return
+        if (tid_til_hjemzone = "" )
+        {
+            FormatTime, sidste_stop, %sidste_stop%, HHmm
+            return sidste_stop
+        }
+        EnvAdd, sidste_stop, tid_til_hjemzone + 2, minutes
+        FormatTime, sidste_stop, %sidste_stop%, HHmm
+        return sidste_stop
+    }
+    if (p6_input_sidste_slut_ops = "0")
+    {
+        Input, sidste_stop, T5, {Enter}{escape}
+        if (ErrorLevel = "EndKey:Escape")
+            Return
+        if (ErrorLevel = "Timeout")
+        {MsgBox, , Timeout , Det tog for lang tid.
+            return 0
+        }
+        if (sidste_stop = "")
+        {
+            return nu_plus_5
+        }
+        if (StrLen(sidste_stop)!= 4)
+        {
+            MsgBox, , Fejl i indtastning, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
+            return 0
+        }
+        sidste_stop_tjek := A_YYYY A_MM A_DD sidste_stop
+        if sidste_stop_tjek is not Time
+        {
+            MsgBox, , Fejl i indtastning , Det indtastede er ikke et klokkeslæt.,
+            return 0
+        }
+        sidste_stop := A_YYYY A_MM A_DD sidste_stop
+        Input, tid_til_hjemzone, T5, {enter}{Escape},
+        if (ErrorLevel = "EndKey:Escape")
+            Return
+        if (ErrorLevel = "Timeout")
+        {MsgBox, , Timeout , Det tog for lang tid.
+            return 0
+        }
+        if (tid_til_hjemzone = "" )
+        {
+            FormatTime, sidste_stop, %sidste_stop%, HHmm
+            return sidste_stop
+        }
+        EnvAdd, sidste_stop, tid_til_hjemzone + 2, minutes
+        FormatTime, sidste_stop, %sidste_stop%, HHmm
+        return sidste_stop
+    }
     Input, sidste_stop, T5, {Enter}{escape}
     if (ErrorLevel = "EndKey:Escape")
         Return
@@ -608,14 +664,14 @@ P6_input_sluttid()
 }
 
 ; læg minuttal til klokkeslæt eller minuttal til minuttal.
-P6_plus_tid()
+P6_udregn_minut()
 {
     resultat := []
     tidA := ; HHmm, starttid. Enten fire cifre for klokkeslæt, mellem 1 og 3 cifre for minuttertal.
     tidB := ; mm, tillægstid. Minuttal
     tidC := ; resultat
-    p6_regn_tid_ops := 1 ; 1 - med inputbox, 0 med input
-    if (p6_regn_tid_ops = 1)
+    p6_udregn_minut_ops := 1 ; 1 - med inputbox, 0 med input
+    if (p6_udregn_minut_ops = 1)
     {
         InputBox, tidA, Udgangspunkt, Skriv tiden`, der skal lægges noget til. `nKlokkeslæt: 4 cifre ud i ét`, minuttal: 3 til 1 ciffer ud i ét. `n `n F. eks: `n Klokken 13:34 skrives 1334 `n 231 minutter skrives 231, , , 240
         if (ErrorLevel != 0)
@@ -700,7 +756,7 @@ P6_plus_tid()
         }
         return
     }
-    if (p6_regn_tid_ops = 0)
+    if (p6_udregn_minut_ops = 0)
     {
         Input, tida,,{enter}
         if (ErrorLevel = "Match")
@@ -1114,9 +1170,124 @@ Flexfinder_til_p6()
 
 }
 
-; Misc
+;; Outlook
+; ***
+; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script.
+Outlook_nymail()
+{
+    Run, %A_linefile%\..\lib\nymail.lnk, , ,
+    Return
+}
+
+;; Excel
+
+Excel_vl_til_udklip()
+{
+
+    tast := GetKeyState("ctrl", "P")
+    if tast = 0
+    {
+        SendInput, {AltUp}
+        SendInput, {LButton}
+    }
+    clipboard :=
+    sleep 800
+    SendInput, ^c
+    ClipWait, 6
+    sleep 200
+    SendInput, {Esc} ;
+    vl := clipboard
+    vl := StrReplace(vl, "`n", "")
+    vl := StrReplace(vl, "`r", "")
+    if (StrLen(vl) = 5) ; fem c<ifre plus new-line
+    {
+        return vl
+    }
+    else
+        return 0
+
+}
+
+
+Excel_udklip_til_p6(byref vl:="")
+{
+    if vl = 0
+    {
+        MsgBox, , Klik på vognløb, Du skal klikke på vognløbet,
+        return
+    }
+    Else
+    {
+        WinActivate, PLANET
+        P6_udfyld_vl(vl)
+        input, tast, L1 V T4, {Up}{Down}{tab}{LButton}
+        if (tast = chr(27))
+        {
+            sleep 100 ; forhindrer hop tilbage til P6, hvis infobox
+            WinActivate, Garantivognsoversigt FG8.xlsm
+            return
+        }
+        if ErrorLevel
+        {
+            return
+        }
+    }
+    return
+}
+
+;; System
+
 ; *
-;; SygehusGUI
+; færdigskrives
+sys_genveje_opslag()
+{
+    global bruger_genvej
+    global genvej_ren := []
+    global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 1, ,1) ; brugerens række i databasen
+    for index, genvej in bruger_genvej
+    {
+        genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        ; genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
+        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+        ; MsgBox, , , % genvej
+    }
+    for index, genvej in genvej_ren
+    {
+        ;    genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        ; genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
+        genvej_ren[index] := StrReplace(genvej, "^", "Ctrl + ")
+        ; MsgBox, , , % genvej
+    }
+    for index, genvej in genvej_ren
+    {
+        ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
+        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+        ; MsgBox, , , % genvej
+    }
+    for index, genvej in genvej_ren
+    {
+        ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        genvej_ren[index] := StrReplace(genvej, "#", "Windows + ")
+        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+        ; MsgBox, , , % genvej
+    }
+    Gui, Genveje:new
+    Gui, Add, Text, , Tekst
+    Gui, Add, Text, R1 , % genvej_navn.3 genvej_ren.3
+    Gui, Add, Text, R2 , % genvej_navn.3 genvej_ren.3
+    Gui, Show, , Genveje
+
+    ; MsgBox,% genvej_navn.4 " - " genvej_ren.4 "`n"  genvej_navn.5 " - " genvej_ren.5
+
+    ; MsgBox, , Genvej, % StrReplace(bruger_genvej.30, "+" , "Shift + ")
+    return
+}
+
+;; Misc
+; *
+; SygehusGUI
+; omskrives
 l_p6_sygehus_ring_op:
     gui, Sygehus:Default
     Gui,Add,Button,vButton1,&AUH
@@ -1189,116 +1360,6 @@ TaxaGuiEscape:
     Gui, Destroy
 return
 
-;; Outlook
-; ***
-; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script.
-Outlook_nymail()
-{
-    Run, %A_linefile%\..\lib\nymail.lnk, , ,
-    Return
-}
-
-;; Excel
-
-Excel_udklip_til_p6(byref vl:="")
-{
-    if vl = 0
-    {
-        MsgBox, , Klik på vognløb, Du skal klikke på vognløbet,
-        return
-    }
-    Else
-    {
-        WinActivate, PLANET
-        P6_udfyld_vl(vl)
-        input, tast, L1 V T4, {Up}{Down}{tab}{LButton}
-        if (tast = chr(27))
-        {
-            sleep 100 ; forhindrer hop tilbage til P6, hvis infobox
-            WinActivate, Garantivognsoversigt FG8.xlsm
-            return
-        }
-        if ErrorLevel
-        {
-            return
-        }
-    }
-    return
-}
-
-Excel_vl_til_udklip()
-{
-
-    tast := GetKeyState("ctrl", "P")
-    if tast = 0
-    {
-        SendInput, {AltUp}
-        SendInput, {LButton}
-    }
-    clipboard :=
-    sleep 800
-    SendInput, ^c
-    ClipWait, 6
-    sleep 200
-    SendInput, {Esc} ;
-    vl := clipboard
-    vl := StrReplace(vl, "`n", "")
-    vl := StrReplace(vl, "`r", "")
-    if (StrLen(vl) = 5) ; fem c<ifre plus new-line
-    {
-        return vl
-    }
-    else
-        return 0
-
-}
-
-;; System
-
-sys_genveje()
-{
-    global bruger_genvej
-    global genvej_ren := []
-    global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 1, ,1) ; brugerens række i databasen
-    for index, genvej in bruger_genvej
-    {
-        genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
-        ; genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
-        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
-        ; MsgBox, , , % genvej
-    }
-    for index, genvej in genvej_ren
-    {
-        ;    genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
-        ; genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
-        genvej_ren[index] := StrReplace(genvej, "^", "Ctrl + ")
-        ; MsgBox, , , % genvej
-    }
-    for index, genvej in genvej_ren
-    {
-        ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
-        genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
-        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
-        ; MsgBox, , , % genvej
-    }
-    for index, genvej in genvej_ren
-    {
-        ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
-        genvej_ren[index] := StrReplace(genvej, "#", "Windows + ")
-        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
-        ; MsgBox, , , % genvej
-    }
-    Gui, Genveje:new
-    Gui, Add, Text, , Tekst
-    Gui, Add, Text, R1 , % genvej_navn.3 genvej_ren.3
-    Gui, Add, Text, R2 , % genvej_navn.3 genvej_ren.3
-    Gui, Show, , Genveje
-
-    ; MsgBox,% genvej_navn.4 " - " genvej_ren.4 "`n"  genvej_navn.5 " - " genvej_ren.5
-
-    ; MsgBox, , Genvej, % StrReplace(bruger_genvej.30, "+" , "Shift + ")
-    return
-}
 
 ;; Testknap
 
@@ -1310,7 +1371,7 @@ sys_genveje()
 ;; HOTKEYS
 
 ;; Global
-l_escape:
+l_quitAHK:
 ExitApp
 Return
 
@@ -1367,7 +1428,7 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
             Input, næste, L1 V T4
             if (næste = "n")
             {
-                luk_igen:
+                p6_vl_ret_tlf_næste:
                     sleep 100
                     MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl% på den efterfølgende dato?,
                     IfMsgBox, Yes
@@ -1375,7 +1436,7 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
                         sleep 100
                         P6_tlf_vl_dato_efter(telefon)
                         sleep s * 800
-                        Goto, luk_igen
+                        Goto, p6_vl_ret_tlf_næste
                     }
                     IfMsgBox, no
                     {
@@ -1449,11 +1510,11 @@ return
             SendInput, !l
             return
         }
-#IfWinActive
+
 ; *
 
 ; +F5
-#IfWinActive PLANET
+
     l_p6_vl_ring_op: ;træk tlf fra aktiv planbillede, ring op i Trio
         {
             P6_planvindue()
@@ -1466,14 +1527,14 @@ return
             sleep 400
             WinActivate, PLANET
             P6_Planvindue()
+            return
         }
-    Return
-#IfWinActive
+
+
 
 ; ***
 
 ; ^+F5
-#IfWinActive PLANET
     l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
         {
             P6_planvindue()
@@ -1483,9 +1544,8 @@ return
             Trio_opkald(vm_tlf)
             sleep 800
             WinActivate, PLANET
+            Return
         }
-    Return
-#IfWinActive
 
 ; P6 - ring op til kunde markeret i Vl (kræver tlf opsat på kundetilladelse)
 l_p6_ring_til_kunde:
@@ -1515,9 +1575,9 @@ l_p6_vl_luk:
         return
     }
 
-l_p6_plus_tid:
+l_p6_udregn_minut:
     {
-        tid := P6_plus_tid()
+        tid := P6_udregn_minut()
         tid_tekst := tid.1
         gui, plustid:New,
         gui, plustid:Default
@@ -1546,23 +1606,25 @@ l_p6_plus_tid:
         ExitApp
         return
     }
-#IfWinActive PLANET
-    l_p6_alarmer: ;alarmer
+
+    l_p6_alarmer:
+    {
         P6_alarmer()
-    return
-#IfWinActive
-
-#IfWinActive PLANET
-    l_p6_udråbsalarmer: ;udråbsalarmer
+        return
+    }
+    
+    l_p6_udråbsalarmer:
+    {
         P6_udraabsalarmer()
-    return
-#IfWinActive
-
-#IfWinActive PLANET
+        return
+    }
     l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
+    {
         FormatTime, Time, ,HHmm
         initialer = /mt%A_userName%%time%
         initialer_udentid =/mt%A_userName%
+        brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
+        bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 2)
 
         KeyWait Alt
         keywait Ctrl
@@ -1574,8 +1636,6 @@ l_p6_plus_tid:
         }
         if (valgt = "f")
         {
-            brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
-            bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41)
             gui, f_chf:New
             gui, f_chf:Default
             Gui Font, s9, Segoe UI
@@ -1620,29 +1680,27 @@ l_p6_plus_tid:
             return
         }
         if (valgt = "k")
-            {
-                brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
-                bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41)
-                gui, k_chf:New
-                gui, k_chf:Default
-                Gui Font, s9, Segoe UI
-                Gui Add, Edit, vf_stop x15 y29 w120 h21,
-                Gui Add, Text, x16 y7 w120 h23 +0x200, Kvitteret stop
-                Gui Add, Edit, vs_stop x214 y32 w120 h21
-                Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
-                Gui Add, Edit, vk_navn x14 y106 w120 h21
-                Gui Add, Text, x16 y86 w120 h23 +0x200, Evt. navn på kunde
-                Gui Add, Text, x215 y84 w120 h23 +0x200, Evt. navn på kunde
-                Gui Add, Edit, vk_navn2 x216 y103 w120 h21
-                Gui Add, Button, gk_chfok x81 y172 w80 h23 +Default, &OK
-                Gui Add, Button, gk_annuller x216 y171 w80 h23, &Annuller
-                
-                Gui Show, x812 y22 w381 h220, Send tekst om kvittering til chauffør
-                Return
-                
-                k_annuller:
-                k_chfGuiEscape:
-                k_chfGuiClose:
+        {
+            gui, k_chf:New
+            gui, k_chf:Default
+            Gui Font, s9, Segoe UI
+            Gui Add, Edit, vf_stop x15 y29 w120 h21,
+            Gui Add, Text, x16 y7 w120 h23 +0x200, Kvitteret stop
+            Gui Add, Edit, vs_stop x214 y32 w120 h21
+            Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
+            Gui Add, Edit, vk_navn x14 y106 w120 h21
+            Gui Add, Text, x16 y86 w120 h23 +0x200, Evt. navn på kunde
+            Gui Add, Text, x215 y84 w120 h23 +0x200, Evt. navn på kunde
+            Gui Add, Edit, vk_navn2 x216 y103 w120 h21
+            Gui Add, Button, gk_chfok x81 y172 w80 h23 +Default, &OK
+            Gui Add, Button, gk_annuller x216 y171 w80 h23, &Annuller
+
+            Gui Show, x812 y22 w381 h220, Send tekst om kvittering til chauffør
+            Return
+
+            k_annuller:
+            k_chfGuiEscape:
+            k_chfGuiClose:
                 {
                     gui, Cancel
                     return
@@ -1667,10 +1725,10 @@ l_p6_plus_tid:
                 return
             }
         return
-    #IfWinActive
+    }
 
-#IfWinActive PLANET
     l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+    {
         gemtklip := ClipboardAll
         sleep 400
         screenshot_aktivt_vindue()
@@ -1689,57 +1747,43 @@ l_p6_plus_tid:
         ClipWait, 2, 1
         gemtklip :=
     Return
-#IfWinActive
+    }
 
 ;; Trio-Hotkey
-#IfWinActive ahk_group gruppe
-    l_trio_klar: ;Trio klar .bruger5
+    l_trio_klar: ;Trio klar 
         trio_klar()
     Return
-#IfWinActive
 
-#IfWinActive ahk_group gruppe
-    l_trio_pause: ;Trio pause bruger.6
+    l_trio_pause: ;Trio pause 
         trio_pause()
     Return
-#IfWinActive
 
-#IfWinActive ahk_group gruppe
-    l_trio_udenov: ;Trio Midt uden overløb bruger.7
+    l_trio_udenov: ;Trio Midt uden overløb 
         trio_udenov()
     Return
-#IfWinActive
 
-#IfWinActive ahk_group gruppe
-    l_trio_efterbehandling: ;Trio efterbehandling bruger.8
+    l_trio_efterbehandling: ;Trio efterbehandling
         trio_efterbehandling()
         trio_pauseklar()
     Return
-#IfWinActive
 
-#IfWinActive ahk_group gruppe
     l_trio_alarm: ;Trio alarm bruger.9
         trio_alarm()
     Return
-#IfWinActive
 
-#IfWinActive ahk_group gruppe
     l_trio_frokost: ;Trio frokostr. bruger.10
         trio_frokost()
     Return
-#IfWinActive
 
-; fiks
-#IfWinActive ahk_group gruppe
+
     l_triokald_til_udklip: ; trækker indkommende kald til udklip, ringer ikke op.
         clipboard := Trio_hent_tlf()
     Return
-#IfWinActive
 
 ; Telenor accepter indgående kald, søg planet
-
-l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
-    SendInput, % bruger_genvej[2] ; opr telenor-genvej
+l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
+{
+    SendInput, % bruger_genvej[4] ; opr telenor-genvej
     sleep 40
     telefon := Trio_hent_tlf()
     sleep 40
@@ -1776,6 +1820,7 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
         P6_rejsesog_tlf(telefon)
         return
     }
+}
 
 l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     clipboard := ""
@@ -1787,23 +1832,18 @@ l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
 Return
 
 ; Minus på numpad afslutter Trioopkald global (Skal der tilbage til P6?)
-; #IfWinActive PLANET
 l_trio_afslut_opkald:
 l_trio_afslut_opkaldB:
     Trio_afslutopkald()
     sleep 200
     WinActivate, PLANET
 Return
-; #IfWinActive
 
 ;; Flexfinder
-#IfWinActive PLANET
     l_flexf_fra_p6:
         Flexfinder_opslag()
     Return
-#IfWinActive
 
-#IfWinActive PLANET
     l_flexf_til_p6: ; slår valgte FF-bil op i P6. Bruger.13
         KeyWait, ctrl
         sleep 200
@@ -1820,18 +1860,6 @@ Return
             Return
         }
 
-#IfWinActive
-
-;; Telenor
-; !e::
-; {
-;     SendInput, !e
-;     telefon := Trio_hent_tlf()
-;     WinActivate, PLANET, , ,
-;     P6_rejsesog_tlf(telefon)
-; }
-
-;; GUI
 
 ;; HOTSTRINGS
 
@@ -1880,16 +1908,11 @@ l_excel_vl_til_P6_B:
         return
     }
 
-^+r::
+^+r:: ; AHK-reload
     SendInput, {CtrlUp}
     Reload
     sleep 2000
 Return
 
 ^+a::databaseview("%A_linefile%\..\db\bruger_ops.tsv")
-
-; ^Numpad9::
-; {
-;     P6_tekstTilChf("Husk at blabla")
-; }
 

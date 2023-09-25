@@ -1,5 +1,8 @@
-﻿Bruger	Telenor_genvej	AHK_opkald	P6_ret_tlf	Trio_klar	Trio_pause	Trio_midt	Trio_efterb	Trio_alarm	Trio_frokost																																													
+﻿Bruger	Brugernavn	Telenor Genvej	Tag Telefon	P6 - Initialer	P6 - Initialer (skriv)	P6 - Vis K_aftale	P6 - Ret VL-Tlf	P6 - Vælg VL	P6 - Søg Vl	P6 - VL ring op	P6 - VM ring op	P6 - VL sluttid	P6 - Alarm	P6 - Udråbsalarm	P6 - Ring til Kunde	P6 - Minutudregner	P6 - Sygehus ring op	P6 - Central ring op	P6 - Tekst til chf	P6 - Hastighed	Trio - Pause	Trio - Klar	Trio - Midt	Trio - Efterb.	Trio - Alarm	Trio - Frokost	Trio - Ring op markering	Trio - kald til udklip	Trio - Afslut opkaldA	Trio - Afslut OpkaldB	Trio - Kald til P6	Global - Quit AHK	Global - Aktiver P6	FlexFinder til P6	FlexFinder fra P6	Outlook - Ny mail	Outlook - Svigt	Excel - Til P6A	Excel - Til P6B	Sys - Hastighed	Sys - p6_input_sidste_slut_ops	P6_udregn_minut	p6_udregn_minut_ops
 1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31	32	33	34	35	36	37	38	
-ebk	!e	!w	+F3	^1	^0	^2	^3	^4	^5	#q	!q	~$^LButton	^+f	+NumpadSub	^+m	+F1	+^t	+F7	F7	^+F5	+F5	+F4	F4	F2	+!p	+escape	+^s	+^c	+F2	F3	#F5	!LButton	^w	1	#½	#F4	^F3	+ins	^+y	Emil
-oms	!e	!w	+F3	^1	^0	^2	^3	^4	^5	#q	!q	~$^LButton	^+f	+NumpadSub	^+m	+F1	+^t	+F7	F7	^+F5	+F5	+F4	F4	F2	+!p	+escape	+^s	+^c	+F2	F3	#F5	!LButton	^w	1	#½	#F4	^F3	+ins	^+y	Oliver
-aal	^i	!w	+F3	^1	^0	^2	^3	^4	^5	#q	!q	~$^LButton	^+f	+NumpadSub	^+m	+F1	+^t	+F7	F7	^+F5	+F5	+F4	F4	F2	+!p	+escape	+^s	+^c	+F2	F3	#F5	!LButton	^w	1	#½	#F4	^F3	+ins	^+y	Anders
+ebk	Emil	!e	!w	F2	+F2	F3	+F3	^F3	F4	+F5	^+F5	#F5	F7	+F7	+F8	#T	+^s	+^c	+^t	#½	^0	^1	^2	^3	^4	^5	!q	#q	+NumpadSub	+ins	+F4	+Escape	+^P	~$^LButton	+^F	^+m	+F1	!Lbutton	^w	1	0	#m	1
+oms	Oliver	!e	!w	F2	+F2	F3	+F3	^F3	F4	+F5	^+F5	#F5	F7	+F7	+F8	#T	+^s	+^c	+^t	#½	^0	^1	^2	^3	^4	^5	!q	#q	+NumpadSub	+ins	+F4	+Escape	+^P	~$^LButton	+^F	^+m	+F1	!Lbutton	^w	1	0	#m	1
+aal	Anders	^i	!w	F2	+F2	F3	+F3	^F3	F4	+F5	^+F5	#F5	F7	+F7	+F8	#T	+^s	+^c	+^t	#½	^0	^1	^2	^3	^4	^5	!q	#q	+NumpadSub	+ins	+F4	+Escape	+^P	~$^LButton	+^F	^+m	+F1	!Lbutton	^w	1	0	#m	1
+
+
+
