@@ -732,6 +732,8 @@ trio_udenov()
     SendInput, o
     sleep 40
     SendInput, 3
+    sleep 100
+    SendInput, {F4}
     WinActivate, PLANET
     Return
 }
@@ -808,7 +810,7 @@ Trio_hent_tlf()
 {
     clipboard := ""
     Sendinput !+k
-    ClipWait
+    ClipWait, 3
     Telefon := Clipboard
     rentelefon := Substr(Telefon, 4, 8)
     return rentelefon
@@ -1426,24 +1428,35 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
     telefon := Trio_hent_tlf()
     sleep 40
     vl := P6_hent_vl_fra_tlf(telefon)
-    WinActivate, PLANET
-    sleep 300 ; sørger for at vinduet kan nå at skifte
-    if (vl != 0)
-    {
-        KeyWait, Alt,
+    IfWinNotActive, PLANET
+        {
+        WinActivate, PLANET
+        sleep 500 ; sørger for at vinduet kan nå at skifte
+        }
+    SendInput, {AltUp}
+    if (vl != 0) ; giver af og til første VL på listen, når der ikke er ramt et VL. Hvorfor?
+        {
+        sleep 200
         P6_udfyld_k_og_s(vl)
         Return
     }
     if (telefon = "78410222" OR telefon ="78410224")
     {
         ; MsgBox, ,CPR, CPR, 1
+        sleep 200
         P6_rejsesogvindue()
         sleep 200
         SendInput, ^t
         return
     }
+    if (telefon = "")
+        {
+        MsgBox, , , Intet indgående tlf-nr, 
+        return
+        }
     Else
     {
+        sleep 200
         P6_rejsesog_tlf(telefon)
         return
     }
