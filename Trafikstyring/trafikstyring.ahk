@@ -80,7 +80,7 @@ Hotkey, % bruger_genvej.24, l_p6_søg_vl ; F4
 Hotkey, % bruger_genvej.25, l_p6_initialer ; F2
 Hotkey, % bruger_genvej.30, l_p6_initialer_skriv ; +F2
 Hotkey, % bruger_genvej.31, l_p6_vis_k_aftale ; F3
-Hotkey, % bruger_genvej.18, l_tekst_til_chf ; ^+t
+Hotkey, % bruger_genvej.18, l_p6_tekst_til_chf ; ^+t
 Hotkey, % bruger_genvej.19, l_p6_udråbsalarmer ; +F7
 Hotkey, % bruger_genvej.20, l_p6_alarmer ; F7
 Hotkey, % bruger_genvej.21, l_p6_vm_ring_op ; ^+F5
@@ -1550,8 +1550,9 @@ return
 #IfWinActive
 
 #IfWinActive PLANET
-    l_tekst_til_chf: ; Send tekst til aktive vognløb
-        SendInput, {AltUp}{Ctrlup}
+    l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
+        KeyWait Alt
+        keywait Ctrl
         P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
     return
 #IfWinActive
