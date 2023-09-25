@@ -1526,7 +1526,7 @@ l_p6_plus_tid:
         gui, plustid:New, 
         gui, plustid:Default
         Gui Font, s9, Segoe UI
-        Gui Add, Button, gok x24 y88 w80 h23, &OK
+        Gui Add, Button, gok x24 y88 w80 h23 +Default, &OK
         Gui Add, Button, gudklip x144 y88 w80 h23, Til &Udklip
         Gui Add, Text, x72 y24 w120 h23 +0x200 +Center, %tid_tekst%
 
