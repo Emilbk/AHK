@@ -1749,7 +1749,7 @@ l_p6_udregn_minut:
     Return
     }
 
-;; Trio-Hotkey
+;; Trio
     l_trio_klar: ;Trio klar 
         trio_klar()
     Return
@@ -1861,6 +1861,22 @@ Return
         }
 
 
+
+;; Outlook
+l_outlook_ny_mail: ; opretter ny mail. Bruger.16
+    Outlook_nymail()
+Return
+
+;; Excel
+l_excel_vl_til_P6_A:
+l_excel_vl_til_P6_B:
+    {
+        vl := Excel_vl_til_udklip()
+        sleep 400
+        SendInput, {Esc}
+        Excel_udklip_til_p6(vl)
+        return
+    }
 ;; HOTSTRINGS
 
 ; #IfWinActive PLANET
@@ -1892,21 +1908,6 @@ Return
         return
     }
 
-;; Outlook
-l_outlook_ny_mail: ; opretter ny mail. Bruger.16
-    Outlook_nymail()
-Return
-
-;; Excel
-l_excel_vl_til_P6_A:
-l_excel_vl_til_P6_B:
-    {
-        vl := Excel_vl_til_udklip()
-        sleep 400
-        SendInput, {Esc}
-        Excel_udklip_til_p6(vl)
-        return
-    }
 
 ^+r:: ; AHK-reload
     SendInput, {CtrlUp}
