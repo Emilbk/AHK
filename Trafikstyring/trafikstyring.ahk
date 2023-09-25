@@ -564,14 +564,16 @@ P6_tekstTilChf(ByRef tekst:=" ")
 ; Hvis tid for sidste stop hjemzone er tom, luk nu + 5 min
 ; hvis tid til hjemzone stop tom luk til udfyldte tid for sidste stop uden ændringer
 ; hvis tid for sidste stop og tid til hjemzone udfyldt, luk til tiden fra sidste stop til hjemzone, plus 2 min
-p6_vl_lukketid()
+P6_regn_tid()
 {
     KeyWait, Ctrl,
     KeyWait, Shift,
     EnvAdd, nu_plus_5, 5, minutes
     FormatTime, nu_plus_5, %nu_plus_5%, HHmm
     Input, sidste_stop, T5, {Enter}{escape}
-    if (ErrorLevel = "EndKey:Escape") or (ErrorLevel = "Timeout")
+    if (ErrorLevel = "EndKey:Escape")
+        Return
+    if (ErrorLevel = "Timeout")
     {MsgBox, , Timeout , Det tog for lang tid.
         return 0
     }
@@ -584,15 +586,17 @@ p6_vl_lukketid()
         MsgBox, , Fejl i indtastning, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
         return 0
     }
-    sidste_stop_tjek := "20230916" . sidste_stop
+    sidste_stop_tjek := A_YYYY A_MM A_DD sidste_stop
     if sidste_stop_tjek is not Time
     {
         MsgBox, , Fejl i indtastning , Det indtastede er ikke et klokkeslæt.,
         return 0
     }
-    sidste_stop := "20030423" . sidste_stop
+    sidste_stop := A_YYYY A_MM A_DD sidste_stop
     Input, tid_til_hjemzone, T5, {enter}{Escape},
-    if (ErrorLevel = "EndKey:Escape") or (ErrorLevel = "Timeout")
+    if (ErrorLevel = "EndKey:Escape")
+        Return
+    if (ErrorLevel = "Timeout")
     {MsgBox, , Timeout , Det tog for lang tid.
         return 0
     }
@@ -606,6 +610,169 @@ p6_vl_lukketid()
     return sidste_stop
 }
 
+; læg minuttal til klokkeslæt eller minuttal til minuttal.
+P6_regn_tid()
+{
+    tidA :=      ; HHmm, starttid. Enten fire cifre for klokkeslæt, mellem 1 og 3 cifre for minuttertal.
+    tidB :=      ; mm, tillægstid. Minuttal
+    tidC :=      ; resultat
+    ; skal overføres til database
+    p6_regn_tid_ops := 1 ; 1 - med inputbox, 0 med input
+    if (p6_regn_tid_ops = 1)
+        {
+        InputBox, tidA, Udgangspunkt, Skriv tiden`, der skal lægges noget til. `nKlokkeslæt: 4 cifre ud i ét`, minuttal: 3 til 1 ciffer ud i ét. `n `n F. eks: `n Klokken 13:34 skrives 1334 `n 231 minutter skrives 231, , , 240
+        if (ErrorLevel != 0)
+            return
+        if (tida = "")
+            tida := "0"
+        InputBox, tidB, Tid `, der skal lægges til., Skriv tid`, der skal lægges til. Minuttal ud i ét (- foran`, hvis der skal trækkes fra).,
+        if (ErrorLevel != 0)
+            return
+        if (tidb = "")
+            tidb := "0"
+        if (tidb + tida < 0)
+            {
+                MsgBox, , Lad vær', , 
+                return 
+            }
+        if (StrLen(tida) <= "3")
+            {
+                tid_nul := A_YYYY A_MM A_DD "00" "00"
+                EnvAdd, tid_nul, tida , minutes
+                EnvAdd, tid_nul, tidb, minutes
+                FormatTime, tidC, %tid_nul%, HHmm
+                FormatTime, tid_time, %tid_nul%, H
+                FormatTime, tid_min, %tid_nul%, m
+                if (tid_time = "0" and tid_min = "1")
+                    {
+                    MsgBox, , , % tid_min " minut."
+                    return
+                    }
+                if (tid_time = "0" and tid_min >= "1")
+                    {
+                    MsgBox, , , % tid_min " minutter."
+                    return
+                    }
+                if (tid_time = "1" and tid_min = "0")
+                    {
+                    MsgBox, , , % tid_time " time."
+                    return
+                    }
+                if (tid_time > "1" and tid_min = "0")
+                    {
+                    MsgBox, , , % tid_time " timer."
+                    return
+                    }
+                if (tid_time = "1" and tid_min = "1")
+                    {
+                    MsgBox, , , % tid_time " time og " tid_min " minut."
+                    return
+                    }            
+                if (tid_time >= "1" and tid_min = "1")
+                    {
+                    MsgBox, , , % tid_time " timer og " tid_min " minut."
+                    return
+                    }
+                if (tid_time >= "1" and tid_min >= "1")
+                    {
+                    MsgBox, , , % tid_time " timer og " tid_min " minutter."
+                    return
+                    }
+                }
+        if (StrLen(tida) = "4")
+            {
+            tidA := A_YYYY A_MM A_DD tida "00"
+            ; MsgBox, , , % tidA
+            EnvAdd, tidA, tidB, minutes
+            FormatTime, tid_time, %tidA%, HH
+            FormatTime, tid_min, %tidA%, mm
+            if (tid_time != "00")
+                {
+                MsgBox, , , % tid_time ":" tid_min "."
+                return
+                }
+            }
+        
+        return
+        }
+    if (p6_regn_tid_ops = 0)
+        {
+            Input, tida,,{enter}
+            if (ErrorLevel = "Match")
+                return
+            if (tida = "")
+                tida := "0"
+            Input, tidb,,{enter}
+            if (ErrorLevel = "Match")
+                return
+            if (tidb = "")
+                tidb := "0"
+            if (tidb + tida < 0)
+                {
+                    MsgBox, , Lad vær', , 
+                    return 
+                }
+            if (StrLen(tida) <= "3")
+                {
+                    tid_nul := A_YYYY A_MM A_DD "00" "00"
+                    EnvAdd, tid_nul, tida , minutes
+                    EnvAdd, tid_nul, tidb, minutes
+                    FormatTime, tidC, %tid_nul%, HHmm
+                    FormatTime, tid_time, %tid_nul%, H
+                    FormatTime, tid_min, %tid_nul%, m
+                    if (tid_time = "0" and tid_min = "1")
+                        {
+                        MsgBox, , , % tid_min " minut."
+                        return
+                        }
+                    if (tid_time = "0" and tid_min >= "1")
+                        {
+                        MsgBox, , , % tid_min " minutter."
+                        return
+                        }
+                    if (tid_time = "1" and tid_min = "0")
+                        {
+                        MsgBox, , , % tid_time " time."
+                        return
+                        }
+                    if (tid_time > "1" and tid_min = "0")
+                        {
+                        MsgBox, , , % tid_time " timer."
+                        return
+                        }
+                    if (tid_time = "1" and tid_min = "1")
+                        {
+                        MsgBox, , , % tid_time " time og " tid_min " minut."
+                        return
+                        }            
+                    if (tid_time >= "1" and tid_min = "1")
+                        {
+                        MsgBox, , , % tid_time " timer og " tid_min " minut."
+                        return
+                        }
+                    if (tid_time >= "1" and tid_min >= "1")
+                        {
+                        MsgBox, , , % tid_time " timer og " tid_min " minutter."
+                        return
+                        }
+                    }
+            if (StrLen(tida) = "4")
+                {
+                tidA := A_YYYY A_MM A_DD tida "00"
+                ; MsgBox, , , % tidA
+                EnvAdd, tidA, tidB, minutes
+                FormatTime, tid_time, %tidA%, HH
+                FormatTime, tid_min, %tidA%, mm
+                if (tid_time != "00")
+                    {
+                    MsgBox, , , % tid_time ":" tid_min "."
+                    return
+                    }
+                }
+            
+            return
+            }
+} 
 ; luk vl på variabel tid
 P6_vl_luk(ByRef tid:="")
 {
@@ -1328,7 +1495,7 @@ l_p6_ring_til_kunde:
 ; #F5
 l_p6_vl_luk:
     {
-        tid := p6_vl_lukketid()
+        tid := P6_regn_tid()
         if tid = 0
             return
         p6_vl_luk(tid)
