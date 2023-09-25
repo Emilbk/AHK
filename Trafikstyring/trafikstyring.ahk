@@ -14,7 +14,7 @@ GroupAdd, gruppe, ahk_class AccessBar
 GroupAdd, gruppe, ahk_class Agent Main GUI
 GroupAdd, gruppe, ahk_class Addressbook
 ;; lib
-#Include, %A_linefile%\..\..\lib\AHKDb\ahkdb.ahk
+#Include, %A_linefile%\..\lib\AHKDb\ahkdb.ahk
 
 ;; TODO
 
@@ -1013,8 +1013,8 @@ return
 ; ***
 ; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script.
 Outlook_nymail()
-{
-    Run, %A_linefile%\..\..\lib\nymail.lnk, , ,
+{µ
+    Run, %A_linefile%\..\lib\nymail.lnk, , ,
     Return
 }
 
