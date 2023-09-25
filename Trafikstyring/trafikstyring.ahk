@@ -470,7 +470,7 @@ P6_initialer()
     notering := Clipboard
     clipwait 3, 0
     if (substr(notering,1, 6) = initialer_udentid)
-        {
+    {
         initialer_fjernet := SubStr(notering, 12)
         If (initialer_fjernet) = ""
             initialer_fjernet := " "
@@ -482,9 +482,9 @@ P6_initialer()
         sleep s * 200
         SendInput, !o
         return
-        }
+    }
     if (substr(notering,1, 6) != initialer_udentid)
-        {
+    {
         Clipboard :=
         sleep s * 40
         clipboard := initialer
@@ -495,7 +495,7 @@ P6_initialer()
         sleep s * 100
         SendInput, !o
         return
-        }
+    }
 }
 
 ; ** kan gemtklip-funktion skrives bedre?
@@ -847,13 +847,13 @@ Trio_opkald(ByRef telefon)
 {
 
     ifWinNotExist, ahk_class AccessBar
-        {
+    {
         WinActivate, ahk_class Agent Main GUI
         sleep 200
         SendInput, {alt}
         sleep 100
         SendInput, v{Down 5}{enter}
-        }
+    }
     ControlClick, x360 y17, ahk_class AccessBar
     sleep 800
     WinActivate, ahk_class Addressbook
@@ -1266,19 +1266,19 @@ sys_genveje()
         ; MsgBox, , , % genvej
     }
     for index, genvej in genvej_ren
-        {
-            ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
-            genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
-            ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
-            ; MsgBox, , , % genvej
-        }
+    {
+        ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
+        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+        ; MsgBox, , , % genvej
+    }
     for index, genvej in genvej_ren
-        {
-            ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
-            genvej_ren[index] := StrReplace(genvej, "#", "Windows + ")
-            ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
-            ; MsgBox, , , % genvej
-        }
+    {
+        ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        genvej_ren[index] := StrReplace(genvej, "#", "Windows + ")
+        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+        ; MsgBox, , , % genvej
+    }
     Gui, Genveje:new
     Gui, Add, Text, , Tekst
     Gui, Add, Text, R1 , % genvej_navn.3 genvej_ren.3
@@ -1294,10 +1294,10 @@ sys_genveje()
 ;; Testknap
 
 ^+e::
-{
-    ControlClick, x360 y17, ahk_class AccessBar
-return
-}
+    {
+        ControlClick, x360 y17, ahk_class AccessBar
+        return
+    }
 ;; HOTKEYS
 
 ;; Global
@@ -1510,7 +1510,7 @@ l_p6_plus_tid:
     {
         tid := P6_plus_tid()
         tid_tekst := tid.1
-        gui, plustid:New, 
+        gui, plustid:New,
         gui, plustid:Default
         Gui Font, s9, Segoe UI
         Gui Add, Button, gok x24 y88 w80 h23 +Default, &OK
@@ -1535,12 +1535,12 @@ l_p6_plus_tid:
         plustidGuiEscape:
         plustidGuiClose:
         ExitApp
-    return
-    }    
+        return
+    }
 #IfWinActive PLANET
-l_p6_alarmer: ;alarmer
-    P6_alarmer()
-return
+    l_p6_alarmer: ;alarmer
+        P6_alarmer()
+    return
 #IfWinActive
 
 #IfWinActive PLANET
@@ -1553,9 +1553,53 @@ return
     l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         KeyWait Alt
         keywait Ctrl
-        P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
-    return
-#IfWinActive
+        Input valgt, L1 T5, {esc}, TK
+        if (valgt = "t")
+        {
+            P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
+            return
+        }
+        if (valgt = "k")
+        {
+            brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
+            bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41)
+            gui, f_chf:New
+            gui, f_chf:Default
+            Gui Font, s9, Segoe UI
+            Gui Add, Edit, vf_stop x15 y29 w120 h21,
+            Gui Add, Text, x16 y7 w120 h23 +0x200, Forgæves stop
+            Gui Add, Edit, vs_stop x214 y32 w120 h21
+            Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
+            Gui Add, Edit, vk_navn x14 y106 w120 h21
+            Gui Add, Text, x16 y86 w120 h23 +0x200, Evt. navn på kunde
+            Gui Add, Text, x215 y84 w120 h23 +0x200, Evt. navn på kunde
+            Gui Add, Edit, vk_navn2 x216 y103 w120 h21
+            Gui Add, Button, gf_chfok x81 y172 w80 h23 +Default, &OK
+            Gui Add, Button, gannuller x216 y171 w80 h23, &Annuller
+            
+            Gui Show, w381 h220, Sendt tekst om forgæves til chauffør
+            Return
+            
+            annuller:
+            f_chfGuiEscape:
+            f_chfGuiClose:
+            {
+                gui, Cancel
+                return
+            }
+            f_chfok:
+            GuiControlGet, f_stop, , , 
+            GuiControlGet, s_stop, , , 
+            GuiControlGet, k_navn, , , 
+            GuiControlGet, k_navn2, , , 
+            tekst := "Jeg har meldt st. "  f_stop  "`, " . k_navn  " `, forgæves og sendt st. " s_stop " `, "  k_navn2 . " , i stedet. /"  bruger
+            ; MsgBox, , , % tekst, 
+            P6_tekstTilChf("Jeg har meldt st. "  f_stop  "`, " . k_navn "`, forgæves og sendt st. " s_stop " `, "  k_navn2 . ", i stedet. /"  bruger)
+            gui, cancel
+            return
+        }
+        return
+    #IfWinActive
 
 #IfWinActive PLANET
     l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
@@ -1633,13 +1677,13 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
     sleep 40
     vl := P6_hent_vl_fra_tlf(telefon)
     IfWinNotActive, PLANET
-        {
+    {
         WinActivate, PLANET
         sleep 500 ; sørger for at vinduet kan nå at skifte
-        }
+    }
     SendInput, {AltUp}
     if (vl != 0) ; giver af og til første VL på listen, når der ikke er ramt et VL. Hvorfor?
-        {
+    {
         sleep 200
         P6_udfyld_k_og_s(vl)
         Return
@@ -1654,10 +1698,10 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
         return
     }
     if (telefon = "")
-        {
-        MsgBox, , , Intet indgående tlf-nr, 
+    {
+        MsgBox, , , Intet indgående tlf-nr,
         return
-        }
+    }
     Else
     {
         sleep 200
