@@ -1588,12 +1588,12 @@ l_p6_plus_tid:
             Gui Add, Text, x215 y84 w120 h23 +0x200, Evt. navn på kunde
             Gui Add, Edit, vk_navn2 x216 y103 w120 h21
             Gui Add, Button, gf_chfok x81 y172 w80 h23 +Default, &OK
-            Gui Add, Button, gannuller x216 y171 w80 h23, &Annuller
+            Gui Add, Button, gf_annuller x216 y171 w80 h23, &Annuller
             
-            Gui Show, w381 h220, Sendt tekst om forgæves til chauffør
+            Gui Show,x812 y22 w381 h220, Send tekst om forgæves til chauffør
             Return
             
-            annuller:
+            f_annuller:
             f_chfGuiEscape:
             f_chfGuiClose:
             {
@@ -1609,16 +1609,63 @@ l_p6_plus_tid:
             ; MsgBox, , , % tekst, 
             P6_tekstTilChf("Jeg har meldt st. "  f_stop  "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, "  k_navn2 . ", i stedet. /"  bruger)
             sleep 500
-            input, tast, M T3, {esc}, ^s
+            input, tast, M T3, {esc}, p
             if (tast = "p")
                 {
                 sleep 500
-                P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf. " initialer)
+                P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf. " initialer " ")
+                gui, cancel
+                return
                 }
-
-            gui, cancel
             return
         }
+        if (valgt = "k")
+            {
+                brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
+                bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41)
+                gui, k_chf:New
+                gui, k_chf:Default
+                Gui Font, s9, Segoe UI
+                Gui Add, Edit, vf_stop x15 y29 w120 h21,
+                Gui Add, Text, x16 y7 w120 h23 +0x200, Kvitteret stop
+                Gui Add, Edit, vs_stop x214 y32 w120 h21
+                Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
+                Gui Add, Edit, vk_navn x14 y106 w120 h21
+                Gui Add, Text, x16 y86 w120 h23 +0x200, Evt. navn på kunde
+                Gui Add, Text, x215 y84 w120 h23 +0x200, Evt. navn på kunde
+                Gui Add, Edit, vk_navn2 x216 y103 w120 h21
+                Gui Add, Button, gk_chfok x81 y172 w80 h23 +Default, &OK
+                Gui Add, Button, gk_annuller x216 y171 w80 h23, &Annuller
+                
+                Gui Show, x812 y22 w381 h220, Send tekst om kvittering til chauffør
+                Return
+                
+                k_annuller:
+                k_chfGuiEscape:
+                k_chfGuiClose:
+                {
+                    gui, Cancel
+                    return
+                }
+                k_chfok:
+                GuiControlGet, f_stop, , , 
+                GuiControlGet, s_stop, , , 
+                GuiControlGet, k_navn, , , 
+                GuiControlGet, k_navn2, , , 
+                P6_tekstTilChf("Jeg har kvitteret for ankomst v. "  f_stop  "`, " . k_navn  " `, og sendt st. " s_stop "`, "  k_navn2 . "/"  bruger)
+                sleep 500
+                input, tast, M T3, {esc}, ^s
+                if (tast = "^s")
+                    {
+                    sleep 500
+                    P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, " s_stop " og tekst sendt til chf. " initialer " ")
+                    gui, cancel
+                    return
+                    }
+                Else
+                gui, cancel
+                return
+            }
         return
     #IfWinActive
 
