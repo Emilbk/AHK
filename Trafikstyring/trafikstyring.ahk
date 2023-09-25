@@ -1013,7 +1013,7 @@ return
 ; ***
 ; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script.
 Outlook_nymail()
-{µ
+{
     Run, %A_linefile%\..\lib\nymail.lnk, , ,
     Return
 }
