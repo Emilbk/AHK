@@ -561,7 +561,7 @@ P6_tekstTilChf(ByRef tekst:=" ")
 ; Hvis tid for sidste stop hjemzone er tom, luk nu + 5 min
 ; hvis tid til hjemzone stop tom luk til udfyldte tid for sidste stop uden ændringer
 ; hvis tid for sidste stop og tid til hjemzone udfyldt, luk til tiden fra sidste stop til hjemzone, plus 2 min
-P6_regn_tid()
+P6_input_sluttid()
 {
     KeyWait, Ctrl,
     KeyWait, Shift,
@@ -1508,7 +1508,7 @@ l_p6_ring_til_kunde:
 ; #F5
 l_p6_vl_luk:
     {
-        tid := P6_regn_tid()
+        tid := P6_input_sluttid()
         if tid = 0
             return
         p6_vl_luk(tid)
