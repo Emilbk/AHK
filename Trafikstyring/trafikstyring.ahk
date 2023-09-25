@@ -1551,15 +1551,19 @@ l_p6_plus_tid:
 
 #IfWinActive PLANET
     l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
+        FormatTime, Time, ,HHmm
+        initialer = /mt%A_userName%%time%
+        initialer_udentid =/mt%A_userName%
+
         KeyWait Alt
         keywait Ctrl
-        Input valgt, L1 T5, {esc}, TK
+        Input valgt, L1 T5, {esc}, TKF
         if (valgt = "t")
         {
             P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
             return
         }
-        if (valgt = "k")
+        if (valgt = "f")
         {
             brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
             bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41)
@@ -1594,7 +1598,15 @@ l_p6_plus_tid:
             GuiControlGet, k_navn2, , , 
             tekst := "Jeg har meldt st. "  f_stop  "`, " . k_navn  " `, forgæves og sendt st. " s_stop " `, "  k_navn2 . " , i stedet. /"  bruger
             ; MsgBox, , , % tekst, 
-            P6_tekstTilChf("Jeg har meldt st. "  f_stop  "`, " . k_navn "`, forgæves og sendt st. " s_stop " `, "  k_navn2 . ", i stedet. /"  bruger)
+            P6_tekstTilChf("Jeg har meldt st. "  f_stop  "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, "  k_navn2 . ", i stedet. /"  bruger)
+            sleep 500
+            input, tast, M T3, {esc}, ^s
+            if (tast = "p")
+                {
+                sleep 500
+                P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf. " initialer)
+                }
+
             gui, cancel
             return
         }
