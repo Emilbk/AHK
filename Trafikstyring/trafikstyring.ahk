@@ -475,11 +475,11 @@ P6_initialer()
         If (initialer_fjernet) = ""
             initialer_fjernet := " "
         Clipboard :=
-        sleep s * 200
+        sleep 100
         Clipboard := initialer_fjernet
         ClipWait, 1, 0
         sendinput ^a^v
-        sleep s * 800
+        sleep s * 200
         SendInput, !o
         return
         }
