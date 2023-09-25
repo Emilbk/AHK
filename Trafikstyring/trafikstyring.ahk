@@ -124,7 +124,7 @@ P6_hastighed()
         MsgBox, , Fejl, Kan ikke være nul eller intet.
         return
     }
-    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 35, s)
+    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41, s)
     return
 }
 ; P6 alt menu
@@ -1645,7 +1645,7 @@ l_p6_udregn_minut:
         if (valgt = "k")
         {
             brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
-            bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41)
+            bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 2)
             gui, k_chf:New
             gui, k_chf:Default
             Gui Font, s9, Segoe UI
