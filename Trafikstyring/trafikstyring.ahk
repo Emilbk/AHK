@@ -14,7 +14,7 @@ GroupAdd, gruppe, ahk_class AccessBar
 GroupAdd, gruppe, ahk_class Agent Main GUI
 GroupAdd, gruppe, ahk_class Addressbook
 ;; lib
-#Include, %A_linefile%\..\..\lib\AHKDb\ahkdb.ahk
+#Include, %A_linefile%\..\lib\AHKDb\ahkdb.ahk
 
 ;; TODO
 
@@ -68,6 +68,7 @@ s := bruger_genvej.35
 ; globale genveje                                           ; Standard-opsætning
 Hotkey, % bruger_genvej.14, l_flexf_fra_p6 ; +^F
 Hotkey, % bruger_genvej.15, l_trio_afslut_opkald ; Numpad -
+Hotkey, % bruger_genvej.39, l_trio_afslut_opkaldB ; Numpad -
 Hotkey, % bruger_genvej.23, l_trio_til_p6 ; +F4
 Hotkey, % bruger_genvej.27, l_escape ; +escape
 Hotkey, % bruger_genvej.26, l_p6_aktiver ; +!p
@@ -840,18 +841,24 @@ screenshot_aktivt_vindue()
 ; Sæt kopieret tlf i Trio
 Trio_opkald(ByRef telefon)
 {
-    If (WinExist("Trio Attendant"))
-    {
-        WinActivate, ahk_class Addressbook
-        ControlClick, Edit2, ahk_class Addressbook
-        SendInput, ^a{del}
+
+    ifWinNotExist, ahk_class AccessBar
+        {
+        WinActivate, ahk_class Agent Main GUI
+        sleep 200
+        SendInput, {alt}
         sleep 100
-        SendInput, %telefon%
-        sleep 500
-        SendInput, +{enter} ; undgår kobling ved igangværende opkald
-    }
-    Else
-        MsgBox, , Åbn Adressebog, Adressebogen i Trio er ikke åben
+        SendInput, v{Down 5}{enter}
+        }
+    ControlClick, x360 y17, ahk_class AccessBar
+    sleep 800
+    WinActivate, ahk_class Addressbook
+    ControlClick, Edit2, ahk_class Addressbook
+    SendInput, ^a{del}
+    sleep 200
+    SendInput, %telefon%
+    sleep 500
+    SendInput, +{enter} ; undgår kobling ved igangværende opkald
     Return
 }
 
@@ -892,6 +899,8 @@ trio_udenov()
     SendInput, o
     sleep 40
     SendInput, 3
+    sleep 100
+    SendInput, {F4}
     WinActivate, PLANET
     Return
 }
@@ -967,9 +976,8 @@ trio_pauseklar()
 Trio_hent_tlf()
 {
     clipboard := ""
-    WinActivate, ahk_class AccessBar, , ,
     Sendinput !+k
-    ClipWait
+    ClipWait, 3
     Telefon := Clipboard
     rentelefon := Substr(Telefon, 4, 8)
     return rentelefon
@@ -1173,7 +1181,7 @@ return
 ; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script.
 Outlook_nymail()
 {
-    Run, %A_linefile%\..\..\lib\nymail.lnk, , ,
+    Run, %A_linefile%\..\lib\nymail.lnk, , ,
     Return
 }
 
@@ -1282,9 +1290,10 @@ sys_genveje()
 ;; Testknap
 
 ^+e::
-    sys_genveje()
+{
+    ControlClick, x360 y17, ahk_class AccessBar
 return
-
+}
 ;; HOTKEYS
 
 ;; Global
@@ -1586,27 +1595,35 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
     telefon := Trio_hent_tlf()
     sleep 40
     vl := P6_hent_vl_fra_tlf(telefon)
-    sleep 40
-    if (vl != 0)
-    {
-        KeyWait, Alt,
-        WinActivate, PLANET, , ,
+    IfWinNotActive, PLANET
+        {
+        WinActivate, PLANET
+        sleep 500 ; sørger for at vinduet kan nå at skifte
+        }
+    SendInput, {AltUp}
+    if (vl != 0) ; giver af og til første VL på listen, når der ikke er ramt et VL. Hvorfor?
+        {
+        sleep 200
         P6_udfyld_k_og_s(vl)
         Return
     }
     if (telefon = "78410222" OR telefon ="78410224")
     {
         ; MsgBox, ,CPR, CPR, 1
-        WinActivate, PLANET
         sleep 200
         P6_rejsesogvindue()
         sleep 200
         SendInput, ^t
         return
     }
+    if (telefon = "")
+        {
+        MsgBox, , , Intet indgående tlf-nr, 
+        return
+        }
     Else
     {
-        WinActivate, PLANET, , ,
+        sleep 200
         P6_rejsesog_tlf(telefon)
         return
     }
@@ -1623,6 +1640,7 @@ Return
 ; Minus på numpad afslutter Trioopkald global (Skal der tilbage til P6?)
 ; #IfWinActive PLANET
 l_trio_afslut_opkald:
+l_trio_afslut_opkaldB:
     Trio_afslutopkald()
     sleep 200
     WinActivate, PLANET
