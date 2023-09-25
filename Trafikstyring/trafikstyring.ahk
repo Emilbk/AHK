@@ -18,25 +18,9 @@ GroupAdd, gruppe, ahk_class Addressbook
 
 ;; TODO
 
-; Global læg på ✔️
-; ring op til VM
 ; gemt-klip-funktion ved al brug af clipboard
-; Luk om x antal minutter
 ; Trio gå til linie 1 hvis linie 2 aktiv
-; omskriv initialer
 ; forstå pixelsearch
-
-; Slå tlf op med telenor-genvej
-; !w:: ; lav database over username ift. valgt genvej
-; send rigtig telenor-genvej
-; slå telefon
-; hvis genkendt vl
-;     slå vl op
-; hvis patient/viderestillet
-;     gå i cpr
-; hvis alt andet
-;     slå tlf op i rejsesøg
-
 ; Tilføj kommentar, der vises når VM ringer op
 
 ; hvis vm tlf
