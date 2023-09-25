@@ -33,9 +33,6 @@ GroupAdd, gruppe, ahk_class Addressbook
 ; klik for åben vl i planet
 
 ;; kendte fejl
-; P6_initialer sletter ikke, hvis initialerne er eneste ord i notering
-
-;; Database
 
 ;; Globale variabler
 
@@ -547,7 +544,7 @@ P6_tekstTilChf(ByRef tekst:=" ")
 ; hvis tid for sidste stop og tid til hjemzone udfyldt, luk til tiden fra sidste stop til hjemzone, plus 2 min
 p6_input_sidste_slut()
 {
-    p6_input_sidste_slut_ops := "0"
+    p6_input_sidste_slut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,4)
     KeyWait, Ctrl,
     KeyWait, Shift,
     EnvAdd, nu_plus_5, 5, minutes
