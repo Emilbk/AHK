@@ -1652,7 +1652,7 @@ l_p6_plus_tid:
                 GuiControlGet, s_stop, , , 
                 GuiControlGet, k_navn, , , 
                 GuiControlGet, k_navn2, , , 
-                P6_tekstTilChf("Jeg har kvitteret for ankomst v. "  f_stop  "`, " . k_navn  " `, og sendt st. " s_stop "`, "  k_navn2 . "/"  bruger)
+                P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har kvitteret for "  f_stop  "`, " . k_navn  "`, og sendt st. " s_stop "`, "  k_navn2 . "/"  bruger)
                 sleep 500
                 input, tast, M T3, {esc}, ^s
                 if (tast = "^s")
