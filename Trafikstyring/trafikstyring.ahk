@@ -338,6 +338,15 @@ P6_udraabsalarmer()
     return
 }
 
+P6_notat(byref tekst:="")
+{
+    P6_planvindue()
+    SendInput, ^n
+    sleep 500
+    SendInput, %tekst%
+    SendInput, !o
+
+}
 ; ***
 ; gå i rent rejsesøg med karet i telefonfelt
 P6_rejsesog_tlf(ByRef telefon:=" ")
