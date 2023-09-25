@@ -457,8 +457,8 @@ P6_initialer()
 {
     global s
     FormatTime, Time, ,HHmm ;definerer format på tid/dato
-    initialer = /mtebk%time%
-    initialer_udentid =/mtebk
+    initialer = /mt%A_userName%%time%
+    initialer_udentid =/mt%A_userName%
     P6_Planvindue()
     SendInput, {F5} ; for at undgå timeout. Giver det problemer med langsom opdatering?
     sleep s * 40
@@ -468,6 +468,7 @@ P6_initialer()
     SendInput, ^a^c
     ClipWait, 1, 0
     notering := Clipboard
+    clipwait 3, 0
     if (substr(notering,1, 6) = initialer_udentid)
         {
         initialer_fjernet := SubStr(notering, 12)
@@ -476,6 +477,7 @@ P6_initialer()
         Clipboard :=
         sleep s * 200
         Clipboard := initialer_fjernet
+        ClipWait, 1, 0
         sendinput ^a^v
         sleep s * 800
         SendInput, !o
@@ -485,7 +487,7 @@ P6_initialer()
         {
         Clipboard :=
         sleep s * 40
-        result := initialer
+        clipboard := initialer
         ClipWait, 1, 0
         SendInput, {Left}
         Sendinput ^v
