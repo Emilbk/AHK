@@ -561,22 +561,18 @@ P6_tekstTilChf(ByRef tekst:=" ")
 ; Hvis tid for sidste stop hjemzone er tom, luk nu + 5 min
 ; hvis tid til hjemzone stop tom luk til udfyldte tid for sidste stop uden ændringer
 ; hvis tid for sidste stop og tid til hjemzone udfyldt, luk til tiden fra sidste stop til hjemzone, plus 2 min
-P6_regn_tid()
+p6_input_sidste_slut()
 {
-    p6_regn_tid_ops := "0"
+    p6_input_sidste_slut_ops := "0"
     KeyWait, Ctrl,
     KeyWait, Shift,
     EnvAdd, nu_plus_5, 5, minutes
     FormatTime, nu_plus_5, %nu_plus_5%, HHmm
-    if (p6_regn_tid_ops = "0")
+    if (p6_input_sidste_slut_ops  = "0")
     {
         InputBox, sidste_stop, Sidste stop, Tast tid for sidste stop (4 cifre)
-        if (ErrorLevel = "EndKey:Escape")
+        if (ErrorLevel = "1")
             Return
-        if (ErrorLevel = "Timeout")
-        {MsgBox, , Timeout , Det tog for lang tid.
-            return 0
-        }
         if (sidste_stop = "")
         {
             return nu_plus_5
@@ -593,13 +589,9 @@ P6_regn_tid()
             return 0
         }
         sidste_stop := A_YYYY A_MM A_DD sidste_stop
-        Input, tid_til_hjemzone, T5, {enter}{Escape},
-        if (ErrorLevel = "EndKey:Escape")
+        InputBox, tid_til_hjemzone, Tid til hjemzone, Tid til hjemzone i minutter
+        if (ErrorLevel = "1")
             Return
-        if (ErrorLevel = "Timeout")
-        {MsgBox, , Timeout , Det tog for lang tid.
-            return 0
-        }
         if (tid_til_hjemzone = "" )
         {
             FormatTime, sidste_stop, %sidste_stop%, HHmm
@@ -609,7 +601,7 @@ P6_regn_tid()
         FormatTime, sidste_stop, %sidste_stop%, HHmm
         return sidste_stop
     }
-    if (bruger_ops = "1")
+    if (p6_input_sidste_slut_ops = "1")
     {
         Input, sidste_stop, T5, {Enter}{escape}
         if (ErrorLevel = "EndKey:Escape")
@@ -1554,7 +1546,7 @@ l_p6_ring_til_kunde:
 ; #F5
 l_p6_vl_luk:
     {
-        tid := P6_regn_tid()
+        tid := p6_input_sidste_slut()
         if tid = 0
             return
         p6_vl_luk(tid)
