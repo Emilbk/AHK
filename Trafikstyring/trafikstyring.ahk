@@ -456,8 +456,8 @@ P6_tlf_vl_dato_efter(ByRef telefon:=" ")
 P6_initialer()
 {
     global s
-    FormatTime, Time, ,HHmm ;definerer format på tid/dato
-    initialer = /mt%A_userName%%time%
+    FormatTime, tid, ,HHmm ;definerer format på tid/dato
+    initialer = /mt%A_userName%%tid%
     initialer_udentid =/mt%A_userName%
     P6_Planvindue()
     SendInput, {F5} ; for at undgå timeout. Giver det problemer med langsom opdatering?
