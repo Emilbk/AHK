@@ -80,7 +80,7 @@ Hotkey, % bruger_genvej.24, l_p6_søg_vl ; F4
 Hotkey, % bruger_genvej.25, l_p6_initialer ; F2
 Hotkey, % bruger_genvej.30, l_p6_initialer_skriv ; +F2
 Hotkey, % bruger_genvej.31, l_p6_vis_k_aftale ; F3
-Hotkey, % bruger_genvej.18, l_tekst_til_chf ; ^+t
+Hotkey, % bruger_genvej.18, l_p6_tekst_til_chf ; ^+t
 Hotkey, % bruger_genvej.19, l_p6_udråbsalarmer ; +F7
 Hotkey, % bruger_genvej.20, l_p6_alarmer ; F7
 Hotkey, % bruger_genvej.21, l_p6_vm_ring_op ; ^+F5
@@ -338,6 +338,15 @@ P6_udraabsalarmer()
     return
 }
 
+P6_notat(byref tekst:="")
+{
+    P6_planvindue()
+    SendInput, ^n
+    sleep 500
+    SendInput, %tekst%
+    SendInput, !o
+
+}
 ; ***
 ; gå i rent rejsesøg med karet i telefonfelt
 P6_rejsesog_tlf(ByRef telefon:=" ")
@@ -456,8 +465,8 @@ P6_tlf_vl_dato_efter(ByRef telefon:=" ")
 P6_initialer()
 {
     global s
-    FormatTime, Time, ,HHmm ;definerer format på tid/dato
-    initialer = /mt%A_userName%%time%
+    FormatTime, tid, ,HHmm ;definerer format på tid/dato
+    initialer = /mt%A_userName%%tid%
     initialer_udentid =/mt%A_userName%
     P6_Planvindue()
     SendInput, {F5} ; for at undgå timeout. Giver det problemer med langsom opdatering?
@@ -470,7 +479,7 @@ P6_initialer()
     notering := Clipboard
     clipwait 3, 0
     if (substr(notering,1, 6) = initialer_udentid)
-        {
+    {
         initialer_fjernet := SubStr(notering, 12)
         If (initialer_fjernet) = ""
             initialer_fjernet := " "
@@ -482,9 +491,9 @@ P6_initialer()
         sleep s * 200
         SendInput, !o
         return
-        }
+    }
     if (substr(notering,1, 6) != initialer_udentid)
-        {
+    {
         Clipboard :=
         sleep s * 40
         clipboard := initialer
@@ -495,7 +504,7 @@ P6_initialer()
         sleep s * 100
         SendInput, !o
         return
-        }
+    }
 }
 
 ; ** kan gemtklip-funktion skrives bedre?
@@ -554,48 +563,94 @@ P6_tekstTilChf(ByRef tekst:=" ")
 ; hvis tid for sidste stop og tid til hjemzone udfyldt, luk til tiden fra sidste stop til hjemzone, plus 2 min
 P6_regn_tid()
 {
+    p6_regn_tid_ops := "0"
     KeyWait, Ctrl,
     KeyWait, Shift,
     EnvAdd, nu_plus_5, 5, minutes
     FormatTime, nu_plus_5, %nu_plus_5%, HHmm
-    Input, sidste_stop, T5, {Enter}{escape}
-    if (ErrorLevel = "EndKey:Escape")
-        Return
-    if (ErrorLevel = "Timeout")
-    {MsgBox, , Timeout , Det tog for lang tid.
-        return 0
-    }
-    if (sidste_stop = "")
+    if (p6_regn_tid_ops = "0")
     {
-        return nu_plus_5
-    }
-    if (StrLen(sidste_stop)!= 4)
-    {
-        MsgBox, , Fejl i indtastning, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
-        return 0
-    }
-    sidste_stop_tjek := A_YYYY A_MM A_DD sidste_stop
-    if sidste_stop_tjek is not Time
-    {
-        MsgBox, , Fejl i indtastning , Det indtastede er ikke et klokkeslæt.,
-        return 0
-    }
-    sidste_stop := A_YYYY A_MM A_DD sidste_stop
-    Input, tid_til_hjemzone, T5, {enter}{Escape},
-    if (ErrorLevel = "EndKey:Escape")
-        Return
-    if (ErrorLevel = "Timeout")
-    {MsgBox, , Timeout , Det tog for lang tid.
-        return 0
-    }
-    if (tid_til_hjemzone = "" )
-    {
+        InputBox, sidste_stop, Sidste stop, Tast tid for sidste stop (4 cifre)
+        if (ErrorLevel = "EndKey:Escape")
+            Return
+        if (ErrorLevel = "Timeout")
+        {MsgBox, , Timeout , Det tog for lang tid.
+            return 0
+        }
+        if (sidste_stop = "")
+        {
+            return nu_plus_5
+        }
+        if (StrLen(sidste_stop)!= 4)
+        {
+            MsgBox, , Fejl i indtastning, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
+            return 0
+        }
+        sidste_stop_tjek := A_YYYY A_MM A_DD sidste_stop
+        if sidste_stop_tjek is not Time
+        {
+            MsgBox, , Fejl i indtastning , Det indtastede er ikke et klokkeslæt.,
+            return 0
+        }
+        sidste_stop := A_YYYY A_MM A_DD sidste_stop
+        Input, tid_til_hjemzone, T5, {enter}{Escape},
+        if (ErrorLevel = "EndKey:Escape")
+            Return
+        if (ErrorLevel = "Timeout")
+        {MsgBox, , Timeout , Det tog for lang tid.
+            return 0
+        }
+        if (tid_til_hjemzone = "" )
+        {
+            FormatTime, sidste_stop, %sidste_stop%, HHmm
+            return sidste_stop
+        }
+        EnvAdd, sidste_stop, tid_til_hjemzone + 2, minutes
         FormatTime, sidste_stop, %sidste_stop%, HHmm
         return sidste_stop
     }
-    EnvAdd, sidste_stop, tid_til_hjemzone + 2, minutes
-    FormatTime, sidste_stop, %sidste_stop%, HHmm
-    return sidste_stop
+    if (bruger_ops = "1")
+    {
+        Input, sidste_stop, T5, {Enter}{escape}
+        if (ErrorLevel = "EndKey:Escape")
+            Return
+        if (ErrorLevel = "Timeout")
+        {MsgBox, , Timeout , Det tog for lang tid.
+            return 0
+        }
+        if (sidste_stop = "")
+        {
+            return nu_plus_5
+        }
+        if (StrLen(sidste_stop)!= 4)
+        {
+            MsgBox, , Fejl i indtastning, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
+            return 0
+        }
+        sidste_stop_tjek := A_YYYY A_MM A_DD sidste_stop
+        if sidste_stop_tjek is not Time
+        {
+            MsgBox, , Fejl i indtastning , Det indtastede er ikke et klokkeslæt.,
+            return 0
+        }
+        sidste_stop := A_YYYY A_MM A_DD sidste_stop
+        Input, tid_til_hjemzone, T5, {enter}{Escape},
+        if (ErrorLevel = "EndKey:Escape")
+            Return
+        if (ErrorLevel = "Timeout")
+        {MsgBox, , Timeout , Det tog for lang tid.
+            return 0
+        }
+        if (tid_til_hjemzone = "" )
+        {
+            FormatTime, sidste_stop, %sidste_stop%, HHmm
+            return sidste_stop
+        }
+        EnvAdd, sidste_stop, tid_til_hjemzone + 2, minutes
+        FormatTime, sidste_stop, %sidste_stop%, HHmm
+        return sidste_stop
+    }
+
 }
 
 ; læg minuttal til klokkeslæt eller minuttal til minuttal.
@@ -847,13 +902,13 @@ Trio_opkald(ByRef telefon)
 {
 
     ifWinNotExist, ahk_class AccessBar
-        {
+    {
         WinActivate, ahk_class Agent Main GUI
         sleep 200
         SendInput, {alt}
         sleep 100
         SendInput, v{Down 5}{enter}
-        }
+    }
     ControlClick, x360 y17, ahk_class AccessBar
     sleep 800
     WinActivate, ahk_class Addressbook
@@ -1266,19 +1321,19 @@ sys_genveje()
         ; MsgBox, , , % genvej
     }
     for index, genvej in genvej_ren
-        {
-            ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
-            genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
-            ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
-            ; MsgBox, , , % genvej
-        }
+    {
+        ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
+        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+        ; MsgBox, , , % genvej
+    }
     for index, genvej in genvej_ren
-        {
-            ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
-            genvej_ren[index] := StrReplace(genvej, "#", "Windows + ")
-            ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
-            ; MsgBox, , , % genvej
-        }
+    {
+        ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        genvej_ren[index] := StrReplace(genvej, "#", "Windows + ")
+        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+        ; MsgBox, , , % genvej
+    }
     Gui, Genveje:new
     Gui, Add, Text, , Tekst
     Gui, Add, Text, R1 , % genvej_navn.3 genvej_ren.3
@@ -1294,10 +1349,10 @@ sys_genveje()
 ;; Testknap
 
 ^+e::
-{
-    ControlClick, x360 y17, ahk_class AccessBar
-return
-}
+    {
+        ControlClick, x360 y17, ahk_class AccessBar
+        return
+    }
 ;; HOTKEYS
 
 ;; Global
@@ -1510,7 +1565,7 @@ l_p6_plus_tid:
     {
         tid := P6_plus_tid()
         tid_tekst := tid.1
-        gui, plustid:New, 
+        gui, plustid:New,
         gui, plustid:Default
         Gui Font, s9, Segoe UI
         Gui Add, Button, gok x24 y88 w80 h23 +Default, &OK
@@ -1535,12 +1590,12 @@ l_p6_plus_tid:
         plustidGuiEscape:
         plustidGuiClose:
         ExitApp
-    return
-    }    
+        return
+    }
 #IfWinActive PLANET
-l_p6_alarmer: ;alarmer
-    P6_alarmer()
-return
+    l_p6_alarmer: ;alarmer
+        P6_alarmer()
+    return
 #IfWinActive
 
 #IfWinActive PLANET
@@ -1550,11 +1605,115 @@ return
 #IfWinActive
 
 #IfWinActive PLANET
-    l_tekst_til_chf: ; Send tekst til aktive vognløb
-        SendInput, {AltUp}{Ctrlup}
-        P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
-    return
-#IfWinActive
+    l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
+        FormatTime, Time, ,HHmm
+        initialer = /mt%A_userName%%time%
+        initialer_udentid =/mt%A_userName%
+
+        KeyWait Alt
+        keywait Ctrl
+        Input valgt, L1 T5, {esc}, TKF
+        if (valgt = "t")
+        {
+            P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
+            return
+        }
+        if (valgt = "f")
+        {
+            brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
+            bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41)
+            gui, f_chf:New
+            gui, f_chf:Default
+            Gui Font, s9, Segoe UI
+            Gui Add, Edit, vf_stop x15 y29 w120 h21,
+            Gui Add, Text, x16 y7 w120 h23 +0x200, Forgæves stop
+            Gui Add, Edit, vs_stop x214 y32 w120 h21
+            Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
+            Gui Add, Edit, vk_navn x14 y106 w120 h21
+            Gui Add, Text, x16 y86 w120 h23 +0x200, Evt. navn på kunde
+            Gui Add, Text, x215 y84 w120 h23 +0x200, Evt. navn på kunde
+            Gui Add, Edit, vk_navn2 x216 y103 w120 h21
+            Gui Add, Button, gf_chfok x81 y172 w80 h23 +Default, &OK
+            Gui Add, Button, gf_annuller x216 y171 w80 h23, &Annuller
+
+            Gui Show,x812 y22 w381 h220, Send tekst om forgæves til chauffør
+            Return
+
+            f_annuller:
+            f_chfGuiEscape:
+            f_chfGuiClose:
+                {
+                    gui, Cancel
+                    return
+                }
+            f_chfok:
+                GuiControlGet, f_stop, , ,
+                GuiControlGet, s_stop, , ,
+                GuiControlGet, k_navn, , ,
+                GuiControlGet, k_navn2, , ,
+                tekst := "Jeg har meldt st. " f_stop "`, " . k_navn " `, forgæves og sendt st. " s_stop " `, " k_navn2 . " , i stedet. /" bruger
+                ; MsgBox, , , % tekst,
+                P6_tekstTilChf("Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 . ", i stedet. /" bruger)
+                sleep 500
+                input, tast, M T3, {esc}, p
+                if (tast = "p")
+                {
+                    sleep 500
+                    P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf. " initialer " ")
+                    gui, cancel
+                    return
+                }
+            return
+        }
+        if (valgt = "k")
+        {
+            brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
+            bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41)
+            gui, k_chf:New
+            gui, k_chf:Default
+            Gui Font, s9, Segoe UI
+            Gui Add, Edit, vf_stop x15 y29 w120 h21,
+            Gui Add, Text, x16 y7 w120 h23 +0x200, Kvitteret stop
+            Gui Add, Edit, vs_stop x214 y32 w120 h21
+            Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
+            Gui Add, Edit, vk_navn x14 y106 w120 h21
+            Gui Add, Text, x16 y86 w120 h23 +0x200, Evt. navn på kunde
+            Gui Add, Text, x215 y84 w120 h23 +0x200, Evt. navn på kunde
+            Gui Add, Edit, vk_navn2 x216 y103 w120 h21
+            Gui Add, Button, gk_chfok x81 y172 w80 h23 +Default, &OK
+            Gui Add, Button, gk_annuller x216 y171 w80 h23, &Annuller
+
+            Gui Show, x812 y22 w381 h220, Send tekst om kvittering til chauffør
+            Return
+
+            k_annuller:
+            k_chfGuiEscape:
+            k_chfGuiClose:
+                {
+                    gui, Cancel
+                    return
+                }
+            k_chfok:
+                GuiControlGet, f_stop, , ,
+                GuiControlGet, s_stop, , ,
+                GuiControlGet, k_navn, , ,
+                GuiControlGet, k_navn2, , ,
+                P6_tekstTilChf("Jeg har kvitteret for ankomst v. " f_stop "`, " . k_navn " `, og sendt st. " s_stop "`, " k_navn2 . "/" bruger)
+                sleep 500
+                input, tast, M T3, {esc}, ^s
+                if (tast = "^s")
+                {
+                    sleep 500
+                    P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, " s_stop " og tekst sendt til chf. " initialer " ")
+                    gui, cancel
+                    return
+                }
+                Else
+                    gui, cancel
+            return
+        }
+        return
+    #IfWinActive
 
 #IfWinActive PLANET
     l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
@@ -1632,13 +1791,13 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
     sleep 40
     vl := P6_hent_vl_fra_tlf(telefon)
     IfWinNotActive, PLANET
-        {
+    {
         WinActivate, PLANET
         sleep 500 ; sørger for at vinduet kan nå at skifte
-        }
+    }
     SendInput, {AltUp}
     if (vl != 0) ; giver af og til første VL på listen, når der ikke er ramt et VL. Hvorfor?
-        {
+    {
         sleep 200
         P6_udfyld_k_og_s(vl)
         Return
@@ -1653,10 +1812,10 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.3
         return
     }
     if (telefon = "")
-        {
-        MsgBox, , , Intet indgående tlf-nr, 
+    {
+        MsgBox, , , Intet indgående tlf-nr,
         return
-        }
+    }
     Else
     {
         sleep 200
