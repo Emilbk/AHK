@@ -71,6 +71,7 @@ Hotkey, % bruger_genvej.18, l_p6_sygehus_ring_op ; ^+s
 Hotkey, % bruger_genvej.19, l_p6_central_ring_op ; ^+c
 Hotkey, % bruger_genvej.20, l_p6_tekst_til_chf ; ^+t
 Hotkey, % bruger_genvej.36, l_flexf_fra_p6 ; +^F
+Hotkey, % bruger_genvej.45, l_sys_inputbox_til_fra ; ^½
 Hotkey, IfWinActive
 
 ; Trio
@@ -1280,24 +1281,26 @@ sys_genveje_opslag()
     return
 }
 
-sys_inputbox_til_fra()
-{
-    gui, sys:New
-    gui, sys:Default
-    Gui Font, s9, Segoe UI
-    Gui Add, Text, x9 y32 w115 h23 +0x200, P6 - VL Sluttid
-    Gui Add, Text, x8 y64 w123 h23 +0x200, P6 - Minutudregner
-    Gui Add, DropDownList, vp6_vl_slut x144 y32 w120, Med Inputbox||Uden Inputbox|
-    Gui Add, DropDownList, vp6_minut x144 y64 w120, Med Inputbox||Uden Inputbox|
+l_sys_inputbox_til_fra:
+MsgBox, , , test
+    
+gui, sys:New
+gui, sys:Default
+Gui Font, s9, Segoe UI
+Gui Add, Text, x9 y32 w115 h23 +0x200, P6 - VL Sluttid
+Gui Add, Text, x8 y64 w123 h23 +0x200, P6 - Minutudregner
+Gui Add, DropDownList, vp6_vl_slut x144 y32 w120, Med Inputbox||Uden Inputbox|
+Gui Add, DropDownList, vp6_minut x144 y64 w120, Med Inputbox||Uden Inputbox|
 
-    Gui Show, w307 h332, Window
-    Return
+Gui Show, w307 h332, Window
+Return
 
-    sysGuiEscape:
-    sysGuiClose:
-    ExitApp
+sysGuiEscape:
+sysGuiClose:
+ExitApp
 
-}
+return
+
 
 ;; Misc
 ; *
