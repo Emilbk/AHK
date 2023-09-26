@@ -66,7 +66,7 @@ Hotkey, % bruger_genvej.13, l_p6_vl_luk ; #F5
 Hotkey, % bruger_genvej.14, l_p6_alarmer ; F7
 Hotkey, % bruger_genvej.15, l_p6_udråbsalarmer ; +F7
 Hotkey, % bruger_genvej.16, l_p6_ring_til_kunde ; +F8
-Hotkey, % bruger_genvej.17, l_p6_plus_tid ; #t
+Hotkey, % bruger_genvej.17, l_p6_udregn_minut ; #t
 Hotkey, % bruger_genvej.18, l_p6_sygehus_ring_op ; ^+s
 Hotkey, % bruger_genvej.19, l_p6_central_ring_op ; ^+c
 Hotkey, % bruger_genvej.20, l_p6_tekst_til_chf ; ^+t
@@ -1285,6 +1285,8 @@ sys_genveje_opslag()
 
 sys_inputbox_til_fra()
 {
+    gui, sys:New
+    gui, sys:Default
     Gui Font, s9, Segoe UI
     Gui Add, Text, x9 y32 w115 h23 +0x200, P6 - VL Sluttid
     Gui Add, Text, x8 y64 w123 h23 +0x200, P6 - Minutudregner
@@ -1294,8 +1296,8 @@ sys_inputbox_til_fra()
     Gui Show, w307 h332, Window
     Return
 
-    GuiEscape:
-    GuiClose:
+    sysGuiEscape:
+    sysGuiClose:
     ExitApp
 
 }
