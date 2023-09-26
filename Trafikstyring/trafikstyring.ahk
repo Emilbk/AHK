@@ -668,7 +668,8 @@ P6_udregn_minut()
     tidA := ; HHmm, starttid. Enten fire cifre for klokkeslæt, mellem 1 og 3 cifre for minuttertal.
     tidB := ; mm, tillægstid. Minuttal
     tidC := ; resultat
-    p6_udregn_minut_ops := 1 ; 1 - med inputbox, 0 med input
+    brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
+    p6_udregn_minut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,44)
     if (p6_udregn_minut_ops = 1)
     {
         InputBox, tidA, Udgangspunkt, Skriv tiden`, der skal lægges noget til. `nKlokkeslæt: 4 cifre ud i ét`, minuttal: 3 til 1 ciffer ud i ét. `n `n F. eks: `n Klokken 13:34 skrives 1334 `n 231 minutter skrives 231, , , 240
@@ -1282,24 +1283,64 @@ sys_genveje_opslag()
 }
 
 l_sys_inputbox_til_fra:
-MsgBox, , , test
-    
-gui, sys:New
-gui, sys:Default
+
+brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
+p6_udregn_minut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,44)
+p6_vl_slut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,42)
+if (p6_udregn_minut_ops = 0)
+    min_default := 2
+if (p6_udregn_minut_ops = 1)
+    min_default := 1
+if (p6_vl_slut_ops = 0)
+    vl_default := 2
+if (p6_vl_slut_ops = 1)
+    vl_default := 1
+Gui, sys:New
+Gui, sys:default
 Gui Font, s9, Segoe UI
 Gui Add, Text, x9 y32 w115 h23 +0x200, P6 - VL Sluttid
 Gui Add, Text, x8 y64 w123 h23 +0x200, P6 - Minutudregner
-Gui Add, DropDownList, vp6_vl_slut x144 y32 w120, Med Inputbox||Uden Inputbox|
-Gui Add, DropDownList, vp6_minut x144 y64 w120, Med Inputbox||Uden Inputbox|
+Gui Add, DropDownList, vp6_vl_slut x144 y32 w120 Choose%vl_default%, Med Inputbox|Uden Inputbox|
+Gui Add, DropDownList, vp6_minut x144 y64 w120 Choose%min_default%, Med Inputbox|Uden Inputbox|
+Gui Add, Button, gsysok, &OK
 
 Gui Show, w307 h332, Window
 Return
 
+sysok:
+GuiControlGet, p6_vl_slut
+GuiControlGet, p6_minut
+if (p6_vl_slut ="Med Inputbox")
+{
+    p6_vl_ops = 1
+    gui, cancel
+    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 42, p6_vl_ops)
+}
+if (p6_vl_slut ="Uden Inputbox")
+{
+    p6_vl_ops = 0
+    gui, cancel
+    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 42, p6_vl_ops)
+}
+if (p6_minut ="Med Inputbox")
+{
+    p6_minut_ops = 1
+    gui, cancel
+    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 44, p6_minut_ops)
+}
+if (p6_minut ="Uden Inputbox")
+{
+    p6_minut_ops = 0
+    gui, cancel
+    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 44, p6_minut_ops)
+}
+sleep 200
+WinActivate, PLANET
+return
+
 sysGuiEscape:
 sysGuiClose:
-ExitApp
-
-return
+gui, cancel
 
 
 ;; Misc
