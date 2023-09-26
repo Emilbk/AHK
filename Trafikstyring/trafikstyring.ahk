@@ -1619,7 +1619,6 @@ udklip:
         gui, cancel
         return
     }
-; test
 plustidGuiEscape:
 plustidGuiClose:
 ExitApp
@@ -1739,6 +1738,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     }
     return
 #IfWinActive ; udelukkende for at resette indentering i auto-formatering
+; test setsetsetsetset
 
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     gemtklip := ClipboardAll
@@ -1883,27 +1883,21 @@ l_excel_vl_til_P6_B:
 return
 ;; HOTSTRINGS
 
-    ::vllp::Låst, ingen kontakt til chf, privatrejse ikke udråbt
-    ::bsgs::Glemt slettet retur
-    ::rgef::Rejsegaranti, egenbetaling fjernet
-    ::vlaok::Alarm st OK
+::vllp::Låst, ingen kontakt til chf, privatrejse ikke udråbt
+::bsgs::Glemt slettet retur
+::rgef::Rejsegaranti, egenbetaling fjernet
+::vlaok::Alarm st OK
 ::vlik::
     {
         ; hent st og tid - gui
         SendInput, St. %stop% ank. %tid%, ikke kvitteret
     }
 
-::/mt::
-    {
-        initialer = /mt%A_userName%%time% %A_space%
-        gemtklip := Clipboard
-        Clipboard := initialer
-        ClipWait, 1, 0
-        Sendinput ^v
-        sleep s * 800
-        Clipboard := gemtklip
-        return
-    }
+::/in::
+    FormatTime, tid, ,HHmm ;definerer format på tid/dato
+    initialer = /mt%A_userName%%tid%
+    Sendinput %initialer%
+return
 
 ^+r:: ; AHK-reload
     SendInput, {CtrlUp}
