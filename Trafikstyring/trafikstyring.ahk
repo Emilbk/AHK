@@ -1619,7 +1619,6 @@ udklip:
         gui, cancel
         return
     }
-; test
 plustidGuiEscape:
 plustidGuiClose:
 ExitApp
