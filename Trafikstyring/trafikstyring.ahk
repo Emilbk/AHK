@@ -72,7 +72,6 @@ Hotkey, % bruger_genvej.19, l_p6_central_ring_op ; ^+c
 Hotkey, % bruger_genvej.20, l_p6_tekst_til_chf ; ^+t
 Hotkey, % bruger_genvej.21, l_p6_hastighed ; #½
 Hotkey, % bruger_genvej.36, l_flexf_fra_p6 ; +^F
-Hotkey, % bruger_genvej.43, l_p6_udregn_minut ; #m
 
 Hotkey, IfWinActive
 
