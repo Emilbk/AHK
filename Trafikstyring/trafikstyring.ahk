@@ -54,6 +54,7 @@ Hotkey, % bruger_genvej.33, l_quitAHK ; +escape
 Hotkey, % bruger_genvej.34, l_p6_aktiver ; +!p
 
 Hotkey, IfWinActive, PLANET
+Hotkey, % bruger_genvej.46, l_outlook_svigt ; +F1
 Hotkey, % bruger_genvej.5, l_p6_initialer ; F2
 Hotkey, % bruger_genvej.6, l_p6_initialer_skriv ; +F2
 Hotkey, % bruger_genvej.7, l_p6_vis_k_aftale ; F3
@@ -94,7 +95,6 @@ Hotkey, IfWinActive, ,
 Hotkey, % bruger_genvej.37, l_outlook_ny_mail ; ^+m
 
 Hotkey, IfWinActive, PLANET
-Hotkey, % bruger_genvej.17, l_outlook_svigt ; +F1
 Hotkey, IfWinActive, ,
 
 ;excel
