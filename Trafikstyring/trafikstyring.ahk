@@ -549,7 +549,7 @@ P6_input_sluttid()
     KeyWait, Shift,
     EnvAdd, nu_plus_5, 5, minutes
     FormatTime, nu_plus_5, %nu_plus_5%, HHmm
-    if (p6_input_sidste_slut_ops  = "1")
+    if (p6_input_sidste_slut_ops = "1")
     {
         InputBox, sidste_stop, Sidste stop, Tast tid for sidste stop (4 cifre)
         if (ErrorLevel = "1")
@@ -1208,7 +1208,6 @@ Excel_vl_til_udklip()
 
 }
 
-
 Excel_udklip_til_p6(byref vl:="")
 {
     if vl = 0
@@ -1360,7 +1359,6 @@ TaxaGuiEscape:
     Gui, Destroy
 return
 
-
 ;; Testknap
 
 ^+e::
@@ -1383,24 +1381,17 @@ l_p6_hastighed:
     P6_hastighed()
 return
 
-#IfWinActive PLANET
-    l_p6_initialer: ;; Initialer til/fra
-        P6_initialer()
-    Return
-#IfWinActive
+l_p6_initialer: ;; Initialer til/fra
+    P6_initialer()
+Return
 
-#IfWinActive PLANET
-    l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
-        P6_initialer_skriv()
-    return
+l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
+    P6_initialer_skriv()
+return
 
-#IfWinActive
-
-#IfWinActive PLANET
-    l_p6_vis_k_aftale: ;Vis kørselsaftale for aktivt vognløb
-        P6_vis_k()
-    Return
-#IfWinActive
+l_p6_vis_k_aftale: ;Vis kørselsaftale for aktivt vognløb
+    P6_vis_k()
+Return
 
 ; ***
 l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
@@ -1447,35 +1438,33 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
         }
         return
     }
-
-#IfWinActive PLANET
-    l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
+#IfWinActive ; for formateringens skyld
+l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
+    {
+        global s
+        tlf := Trio_hent_tlf()
+        WinActivate, PLANET, , ,
+        sleep s * 40
+        vl := P6_hent_vl_fra_tlf(tlf)
+        if (vl = 0)
         {
-            global s
-            tlf := Trio_hent_tlf()
+            MsgBox, , Tlf ikke registreret , Telefonnummeret er ikke registreret i Ethics., 1
             WinActivate, PLANET, , ,
-            sleep s * 40
-            vl := P6_hent_vl_fra_tlf(tlf)
-            if (vl = 0)
-            {
-                MsgBox, , Tlf ikke registreret , Telefonnummeret er ikke registreret i Ethics., 1
-                WinActivate, PLANET, , ,
-                SendInput, !tp!l
+            SendInput, !tp!l
 
-                return
-            }
-            else
-                sleep s * 40
-            P6_udfyld_k_og_s(vl)
-            ; MsgBox, , , % vl.2
-            Return
+            return
         }
-#IfWinActive
+        else
+            sleep s * 40
+        P6_udfyld_k_og_s(vl)
+        ; MsgBox, , , % vl.2
+        Return
+    }
 
 ; ***
 l_trio_til_p6: ;træk tlf til rejsesøg
-
     global s
+
     If (IfWinNotExist, PLANET, , , )
         MsgBox, , PLANET, P6 er ikke åben.,
     Else
@@ -1502,287 +1491,264 @@ l_trio_til_p6: ;træk tlf til rejsesøg
         }
     }
 return
-#IfWinActive PLANET
-    ; gå i vl
-    l_p6_vaelg_vl:
-        {
-            P6_Planvindue()
-            SendInput, !l
-            return
-        }
+
+; gå i vl
+l_p6_vaelg_vl:
+    P6_Planvindue()
+    SendInput, !l
+return
 
 ; *
 
 ; +F5
 
-    l_p6_vl_ring_op: ;træk tlf fra aktiv planbillede, ring op i Trio
-        {
-            P6_planvindue()
-            sleep s * 100
-            vl_tlf := P6_hent_vl_tlf()
-            sleep 200
-            Trio_opkald(vl_tlf)
-            ; Clipboard = %gemtklip%
-            ; gemtklip :=
-            sleep 400
-            WinActivate, PLANET
-            P6_Planvindue()
-            return
-        }
-
-
+l_p6_vl_ring_op: ;træk tlf fra aktiv planbillede, ring op i Trio
+    P6_planvindue()
+    sleep s * 100
+    vl_tlf := P6_hent_vl_tlf()
+    sleep 200
+    Trio_opkald(vl_tlf)
+    ; Clipboard = %gemtklip%
+    ; gemtklip :=
+    sleep 400
+    WinActivate, PLANET
+    P6_Planvindue()
+return
 
 ; ***
 
 ; ^+F5
-    l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
-        {
-            P6_planvindue()
-            sleep s * 100
-            vm_tlf := P6_hent_vm_tlf()
-            sleep 500
-            Trio_opkald(vm_tlf)
-            sleep 800
-            WinActivate, PLANET
-            Return
-        }
+l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
+    P6_planvindue()
+    sleep s * 100
+    vm_tlf := P6_hent_vm_tlf()
+    sleep 500
+    Trio_opkald(vm_tlf)
+    sleep 800
+    WinActivate, PLANET
+Return
 
 ; P6 - ring op til kunde markeret i Vl (kræver tlf opsat på kundetilladelse)
 l_p6_ring_til_kunde:
+    p6_hent_kunde_tlf(telefon)
+    sleep s * 200
+    if (SubStr(telefon, 1, 3) = "888")
     {
-        p6_hent_kunde_tlf(telefon)
-        sleep s * 200
-        if (SubStr(telefon, 1, 3) = "888")
-        {
-            MsgBox, , Telefon ikke tilknyttet, Kunden har ikke telefon tilknyttet.
-            return
-        }
-        Else
-        {
-            Trio_opkald(telefon)
-            return
-        }
+        MsgBox, , Telefon ikke tilknyttet, Kunden har ikke telefon tilknyttet.
         return
     }
+    Else
+    {
+        Trio_opkald(telefon)
+        return
+    }
+return
 
 ; #F5
 l_p6_vl_luk:
-    {
-        tid := P6_input_sluttid()
-        if tid = 0
-            return
-        p6_vl_luk(tid)
+    tid := P6_input_sluttid()
+    if tid = 0
         return
-    }
+    p6_vl_luk(tid)
+return
 
 l_p6_udregn_minut:
-    {
-        tid := P6_udregn_minut()
-        tid_tekst := tid.1
-        gui, plustid:New,
-        gui, plustid:Default
-        Gui Font, s9, Segoe UI
-        Gui Add, Button, gok x24 y88 w80 h23 +Default, &OK
-        Gui Add, Button, gudklip x144 y88 w80 h23, Til &Udklip
-        Gui Add, Text, x72 y24 w120 h23 +0x200 +Center, %tid_tekst%
+    tid := P6_udregn_minut()
+    tid_tekst := tid.1
+    gui, plustid:New,
+    gui, plustid:Default
+    Gui Font, s9, Segoe UI
+    Gui Add, Button, gok x24 y88 w80 h23 +Default, &OK
+    Gui Add, Button, gudklip x144 y88 w80 h23, Til &Udklip
+    Gui Add, Text, x72 y24 w120 h23 +0x200 +Center, %tid_tekst%
 
-        Gui Show, w260 h125, Resultat
+    Gui Show, w260 h125, Resultat
+Return
+
+ok:
+    {
+        gui, cancel
+        return
+    }
+udklip:
+    {
+        Clipboard := tid.2
+        gui, cancel
+        return
+    }
+
+plustidGuiEscape:
+plustidGuiClose:
+ExitApp
+return
+
+l_p6_alarmer:
+    P6_alarmer()
+return
+
+l_p6_udråbsalarmer:
+    P6_udraabsalarmer()
+return
+l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
+    FormatTime, Time, ,HHmm
+    initialer = /mt%A_userName%%time%
+    initialer_udentid =/mt%A_userName%
+    brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
+    bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 2)
+
+    KeyWait Alt
+    keywait Ctrl
+    Input valgt, L1 T5, {esc}, TKF
+    if (valgt = "t")
+    {
+        P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
+        return
+    }
+    if (valgt = "f")
+    {
+        gui, f_chf:New
+        gui, f_chf:Default
+        Gui Font, s9, Segoe UI
+        Gui Add, Edit, vf_stop x15 y29 w120 h21,
+        Gui Add, Text, x16 y7 w120 h23 +0x200, Forgæves stop
+        Gui Add, Edit, vs_stop x214 y32 w120 h21
+        Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
+        Gui Add, Edit, vk_navn x14 y106 w120 h21
+        Gui Add, Text, x16 y86 w120 h23 +0x200, Evt. navn på kunde
+        Gui Add, Text, x215 y84 w120 h23 +0x200, Evt. navn på kunde
+        Gui Add, Edit, vk_navn2 x216 y103 w120 h21
+        Gui Add, Button, gf_chfok x81 y172 w80 h23 +Default, &OK
+        Gui Add, Button, gf_annuller x216 y171 w80 h23, &Annuller
+
+        Gui Show,x812 y22 w381 h220, Send tekst om forgæves til chauffør
         Return
 
-        ok:
-            {
-                gui, cancel
-                return
-            }
-        udklip:
-            {
-                Clipboard := tid.2
-                gui, cancel
-                return
-            }
-
-        plustidGuiEscape:
-        plustidGuiClose:
-        ExitApp
-        return
-    }
-
-    l_p6_alarmer:
-    {
-        P6_alarmer()
-        return
-    }
-    
-    l_p6_udråbsalarmer:
-    {
-        P6_udraabsalarmer()
-        return
-    }
-    l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
-    {
-        FormatTime, Time, ,HHmm
-        initialer = /mt%A_userName%%time%
-        initialer_udentid =/mt%A_userName%
-        brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
-        bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 2)
-
-        KeyWait Alt
-        keywait Ctrl
-        Input valgt, L1 T5, {esc}, TKF
-        if (valgt = "t")
-        {
-            P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
-            return
-        }
-        if (valgt = "f")
-        {
-            gui, f_chf:New
-            gui, f_chf:Default
-            Gui Font, s9, Segoe UI
-            Gui Add, Edit, vf_stop x15 y29 w120 h21,
-            Gui Add, Text, x16 y7 w120 h23 +0x200, Forgæves stop
-            Gui Add, Edit, vs_stop x214 y32 w120 h21
-            Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
-            Gui Add, Edit, vk_navn x14 y106 w120 h21
-            Gui Add, Text, x16 y86 w120 h23 +0x200, Evt. navn på kunde
-            Gui Add, Text, x215 y84 w120 h23 +0x200, Evt. navn på kunde
-            Gui Add, Edit, vk_navn2 x216 y103 w120 h21
-            Gui Add, Button, gf_chfok x81 y172 w80 h23 +Default, &OK
-            Gui Add, Button, gf_annuller x216 y171 w80 h23, &Annuller
-            
-            Gui Show,x812 y22 w381 h220, Send tekst om forgæves til chauffør
-            Return
-            
-            f_annuller:
-            f_chfGuiEscape:
-            f_chfGuiClose:
+        f_annuller:
+        f_chfGuiEscape:
+        f_chfGuiClose:
             {
                 gui, Cancel
                 return
             }
-            f_chfok:
-            GuiControlGet, f_stop, , , 
-            GuiControlGet, s_stop, , , 
-            GuiControlGet, k_navn, , , 
-            GuiControlGet, k_navn2, , , 
-            tekst := "Jeg har meldt st. "  f_stop  "`, " . k_navn  " `, forgæves og sendt st. " s_stop " `, "  k_navn2 . " , i stedet. /"  bruger
-            ; MsgBox, , , % tekst, 
-            P6_tekstTilChf("Jeg har meldt st. "  f_stop  "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, "  k_navn2 . ", i stedet. /"  bruger)
+        f_chfok:
+            GuiControlGet, f_stop, , ,
+            GuiControlGet, s_stop, , ,
+            GuiControlGet, k_navn, , ,
+            GuiControlGet, k_navn2, , ,
+            tekst := "Jeg har meldt st. " f_stop "`, " . k_navn " `, forgæves og sendt st. " s_stop " `, " k_navn2 . " , i stedet. /" bruger
+            ; MsgBox, , , % tekst,
+            P6_tekstTilChf("Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 . ", i stedet. /" bruger)
             sleep 500
             input, tast, M T3, {esc}, p
             if (tast = "p")
-                {
+            {
                 sleep 500
                 P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf. " initialer " ")
-                gui, cancel
-                return
-                }
-            return
-        }
-        if (valgt = "k")
-        {
-            gui, k_chf:New
-            gui, k_chf:Default
-            Gui Font, s9, Segoe UI
-            Gui Add, Edit, vf_stop x15 y29 w120 h21,
-            Gui Add, Text, x16 y7 w120 h23 +0x200, Kvitteret stop
-            Gui Add, Edit, vs_stop x214 y32 w120 h21
-            Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
-            Gui Add, Edit, vk_navn x14 y106 w120 h21
-            Gui Add, Text, x16 y86 w120 h23 +0x200, Evt. navn på kunde
-            Gui Add, Text, x215 y84 w120 h23 +0x200, Evt. navn på kunde
-            Gui Add, Edit, vk_navn2 x216 y103 w120 h21
-            Gui Add, Button, gk_chfok x81 y172 w80 h23 +Default, &OK
-            Gui Add, Button, gk_annuller x216 y171 w80 h23, &Annuller
-
-            Gui Show, x812 y22 w381 h220, Send tekst om kvittering til chauffør
-            Return
-
-            k_annuller:
-            k_chfGuiEscape:
-            k_chfGuiClose:
-                {
-                    gui, Cancel
-                    return
-                }
-                k_chfok:
-                GuiControlGet, f_stop, , , 
-                GuiControlGet, s_stop, , , 
-                GuiControlGet, k_navn, , , 
-                GuiControlGet, k_navn2, , , 
-                P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har kvitteret for "  f_stop  "`, " . k_navn  "`, og sendt st. " s_stop "`, "  k_navn2 . "/"  bruger)
-                sleep 500
-                input, tast, M T3, {esc}, ^s
-                if (tast = "^s")
-                    {
-                    sleep 500
-                    P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, " s_stop " og tekst sendt til chf. " initialer " ")
-                    gui, cancel
-                    return
-                    }
-                Else
                 gui, cancel
                 return
             }
         return
     }
-
-    l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+    if (valgt = "k")
     {
-        gemtklip := ClipboardAll
-        sleep 400
-        screenshot_aktivt_vindue()
-        Outlook_nymail()
-        sleep 1000
-        SendInput, pl
-        sleep 250
-        SendInput, {Tab}
-        sleep 40
-        SendInput, {Tab}{Tab}{Tab}{Enter}{Enter}
-        sleep 40
-        SendInput, ^v
-        SendInput, {Up}{Up}
-        sleep 2000
-        Clipboard = %gemtklip%
-        ClipWait, 2, 1
-        gemtklip :=
-    Return
+        gui, k_chf:New
+        gui, k_chf:Default
+        Gui Font, s9, Segoe UI
+        Gui Add, Edit, vf_stop x15 y29 w120 h21,
+        Gui Add, Text, x16 y7 w120 h23 +0x200, Kvitteret stop
+        Gui Add, Edit, vs_stop x214 y32 w120 h21
+        Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
+        Gui Add, Edit, vk_navn x14 y106 w120 h21
+        Gui Add, Text, x16 y86 w120 h23 +0x200, Evt. navn på kunde
+        Gui Add, Text, x215 y84 w120 h23 +0x200, Evt. navn på kunde
+        Gui Add, Edit, vk_navn2 x216 y103 w120 h21
+        Gui Add, Button, gk_chfok x81 y172 w80 h23 +Default, &OK
+        Gui Add, Button, gk_annuller x216 y171 w80 h23, &Annuller
+
+        Gui Show, x812 y22 w381 h220, Send tekst om kvittering til chauffør
+        Return
+
+        k_annuller:
+        k_chfGuiEscape:
+        k_chfGuiClose:
+            {
+                gui, Cancel
+                return
+            }
+        k_chfok:
+            GuiControlGet, f_stop, , ,
+            GuiControlGet, s_stop, , ,
+            GuiControlGet, k_navn, , ,
+            GuiControlGet, k_navn2, , ,
+            P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har kvitteret for " f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 . "/" bruger)
+            sleep 500
+            input, tast, M T3, {esc}, ^s
+            if (tast = "^s")
+            {
+                sleep 500
+                P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, " s_stop " og tekst sendt til chf. " initialer " ")
+                gui, cancel
+                return
+            }
+            Else
+                gui, cancel
+        return
     }
+    return
+#IfWinActive ; formatering
+
+l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+    gemtklip := ClipboardAll
+    sleep 400
+    screenshot_aktivt_vindue()
+    Outlook_nymail()
+    sleep 1000
+    SendInput, pl
+    sleep 250
+    SendInput, {Tab}
+    sleep 40
+    SendInput, {Tab}{Tab}{Tab}{Enter}{Enter}
+    sleep 40
+    SendInput, ^v
+    SendInput, {Up}{Up}
+    sleep 2000
+    Clipboard = %gemtklip%
+    ClipWait, 2, 1
+    gemtklip :=
+Return
 
 ;; Trio
-    l_trio_klar: ;Trio klar 
-        trio_klar()
-    Return
+l_trio_klar: ;Trio klar
+    trio_klar()
+Return
 
-    l_trio_pause: ;Trio pause 
-        trio_pause()
-    Return
+l_trio_pause: ;Trio pause
+    trio_pause()
+Return
 
-    l_trio_udenov: ;Trio Midt uden overløb 
-        trio_udenov()
-    Return
+l_trio_udenov: ;Trio Midt uden overløb
+    trio_udenov()
+Return
 
-    l_trio_efterbehandling: ;Trio efterbehandling
-        trio_efterbehandling()
-        trio_pauseklar()
-    Return
+l_trio_efterbehandling: ;Trio efterbehandling
+    trio_efterbehandling()
+    trio_pauseklar()
+Return
 
-    l_trio_alarm: ;Trio alarm bruger.9
-        trio_alarm()
-    Return
+l_trio_alarm: ;Trio alarm bruger.9
+    trio_alarm()
+Return
 
-    l_trio_frokost: ;Trio frokostr. bruger.10
-        trio_frokost()
-    Return
+l_trio_frokost: ;Trio frokostr. bruger.10
+    trio_frokost()
+Return
 
-
-    l_triokald_til_udklip: ; trækker indkommende kald til udklip, ringer ikke op.
-        clipboard := Trio_hent_tlf()
-    Return
+l_triokald_til_udklip: ; trækker indkommende kald til udklip, ringer ikke op.
+    clipboard := Trio_hent_tlf()
+Return
 
 ; Telenor accepter indgående kald, søg planet
 l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
-{
     SendInput, % bruger_genvej[4] ; opr telenor-genvej
     sleep 40
     telefon := Trio_hent_tlf()
@@ -1820,7 +1786,6 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
         P6_rejsesog_tlf(telefon)
         return
     }
-}
 
 l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     clipboard := ""
@@ -1840,27 +1805,25 @@ l_trio_afslut_opkaldB:
 Return
 
 ;; Flexfinder
-    l_flexf_fra_p6:
-        Flexfinder_opslag()
-    Return
+l_flexf_fra_p6:
+    Flexfinder_opslag()
+Return
 
-    l_flexf_til_p6: ; slår valgte FF-bil op i P6. Bruger.13
-        KeyWait, ctrl
-        sleep 200
-        vl :=Flexfinder_til_p6()
-        if (vl = 0)
-            return
-        Else
-        {
-            WinActivate PLANET
-            sleep s * 200
-            P6_udfyld_k_og_s(vl)
-            sleep 400 ; skal optimeres
-            WinActivate, FlexDanmark FlexFinder, , ,
-            Return
-        }
-
-
+l_flexf_til_p6: ; slår valgte FF-bil op i P6. Bruger.13
+    KeyWait, ctrl
+    sleep 200
+    vl :=Flexfinder_til_p6()
+    if (vl = 0)
+        return
+    Else
+    {
+        WinActivate PLANET
+        sleep s * 200
+        P6_udfyld_k_og_s(vl)
+        sleep 400 ; skal optimeres
+        WinActivate, FlexDanmark FlexFinder, , ,
+        Return
+    }
 
 ;; Outlook
 l_outlook_ny_mail: ; opretter ny mail. Bruger.16
@@ -1870,13 +1833,11 @@ Return
 ;; Excel
 l_excel_vl_til_P6_A:
 l_excel_vl_til_P6_B:
-    {
-        vl := Excel_vl_til_udklip()
-        sleep 400
-        SendInput, {Esc}
-        Excel_udklip_til_p6(vl)
-        return
-    }
+    vl := Excel_vl_til_udklip()
+    sleep 400
+    SendInput, {Esc}
+    Excel_udklip_til_p6(vl)
+return
 ;; HOTSTRINGS
 
 ; #IfWinActive PLANET
@@ -1907,7 +1868,6 @@ l_excel_vl_til_P6_B:
         Clipboard := gemtklip
         return
     }
-
 
 ^+r:: ; AHK-reload
     SendInput, {CtrlUp}
