@@ -1632,7 +1632,6 @@ return
 l_p6_udråbsalarmer:
     P6_udraabsalarmer()
 return
-
 l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     FormatTime, Time, ,HHmm
     initialer = /mt%A_userName%%time%
@@ -1877,14 +1876,12 @@ Return
 ;; Excel
 l_excel_vl_til_P6_A:
 l_excel_vl_til_P6_B:
-    {
-        vl := Excel_vl_til_udklip()
-        sleep 400
-        SendInput, {Esc}
-        Excel_udklip_til_p6(vl)
-        return
-    }
-    ;; HOTSTRINGS
+    vl := Excel_vl_til_udklip()
+    sleep 400
+    SendInput, {Esc}
+    Excel_udklip_til_p6(vl)
+return
+;; HOTSTRINGS
 
     ::vllp::Låst, ingen kontakt til chf, privatrejse ikke udråbt
     ::bsgs::Glemt slettet retur
