@@ -1341,6 +1341,7 @@ return
 sysGuiEscape:
 sysGuiClose:
 gui, cancel
+return
 
 
 ;; Misc
