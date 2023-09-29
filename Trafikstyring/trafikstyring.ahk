@@ -1842,6 +1842,11 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     sleep 40
     telefon := Trio_hent_tlf()
     sleep 40
+    if (telefon = "")
+        {
+            MsgBox, , , Intet indgående telefonnummer
+            return
+        }
     vl := P6_hent_vl_fra_tlf(telefon)
     IfWinNotActive, PLANET
     {
