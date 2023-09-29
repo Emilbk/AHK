@@ -380,6 +380,7 @@ P6_hent_vm_tlf()
     Return vm_tlf
 }
 
+; l_telenor_p6_opslag
 P6_hent_vl_fra_tlf(ByRef tlf:="")
 {
     if (tlf = "")
@@ -1798,11 +1799,11 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     sleep 40
     telefon := Trio_hent_tlf()
     sleep 200
-    if (telefon = "")
-        {
-            MsgBox, , , Intet indgående telefonnummer
-            return
-        }
+    ; if (telefon = "")
+    ;     {
+    ;         MsgBox, , , Intet indgående telefonnummer
+    ;         return
+    ;     }
     vl := P6_hent_vl_fra_tlf(telefon)
     IfWinNotActive, PLANET
     {
@@ -1810,7 +1811,7 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
         sleep 500 ; sørger for at vinduet kan nå at Kskifte
     }
     SendInput, {AltUp}
-    if (vl != 0) ; giver af og til første VL på listen, når der ikke er ramt et VL. Hvorfor?
+    if (vl != 0)
     {
         sleep 200
         P6_udfyld_k_og_s(vl)
