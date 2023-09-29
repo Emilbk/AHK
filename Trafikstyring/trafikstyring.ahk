@@ -1794,7 +1794,12 @@ l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     SendInput, % bruger_genvej[3] ; opr telenor-genvej
     sleep 40
     telefon := Trio_hent_tlf()
-    sleep 40
+    sleep 200
+    if (telefon = "")
+        {
+            MsgBox, , , Intet indgående telefonnummer
+            return
+        }
     vl := P6_hent_vl_fra_tlf(telefon)
     IfWinNotActive, PLANET
     {
