@@ -46,7 +46,7 @@ s := bruger_genvej.41
 
 ;; hotkeydef.
 ; globale genveje                                           ; Standard-opsætning
-Hotkey, % bruger_genvej.4, l_telenor_p6_opslag ; !w
+Hotkey, % bruger_genvej.4, l_trio_P6_opslag ; !w
 Hotkey, % bruger_genvej.30, l_trio_afslut_opkald ; Numpad -
 Hotkey, % bruger_genvej.31, l_trio_afslut_opkaldB ; Numpad -
 Hotkey, % bruger_genvej.32, l_trio_til_p6 ; +F4
@@ -1837,7 +1837,7 @@ l_triokald_til_udklip: ; trækker indkommende kald til udklip, ringer ikke op.
 Return
 
 ; Telenor accepter indgående kald, søg planet
-l_telenor_p6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
+l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     SendInput, % bruger_genvej[3] ; opr telenor-genvej
     sleep 40
     telefon := Trio_hent_tlf()
