@@ -382,7 +382,10 @@ P6_hent_vm_tlf()
 
 P6_hent_vl_fra_tlf(ByRef tlf:="")
 {
-
+    if (tlf = "")
+        {
+        return 0
+        }
     række := DataBasefind( "%A_linefile%\..\db\VL_tlf.txt", tlf)
     vl := databaseget("%A_linefile%\..\db\VL_tlf.txt", række.1, 2)
     if (række.1 is number) ; hvorfor virker den ikke med true/false?
