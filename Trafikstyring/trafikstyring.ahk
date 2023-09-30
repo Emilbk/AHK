@@ -1686,7 +1686,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             ; MsgBox, , , % tekst,
             P6_tekstTilChf("Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 . ", i stedet. /" bruger)
             sleep 500
-            MsgBox, , Send til chauffør?, Send tekst til chauffør?, 
+            MsgBox, 4, Send til chauffør?, Send tekst til chauffør?, 
             IfMsgBox, Yes
             {
                 SendInput, ^s
@@ -1695,6 +1695,11 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 gui, cancel
                 return
             }
+            IfMsgBox, No
+                {
+                    MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+                    gui, cancel
+                }
         return
     }
     if (valgt = "k")
@@ -1730,16 +1735,20 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             GuiControlGet, k_navn2, , ,
             P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har kvitteret for " f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 . "/" bruger)
             sleep 500
-            input, tast, M T3, {esc}, ^s
-            if (tast = "^s")
+            MsgBox, 4, Send til chauffør?, Send tekst til chauffør?, 
+            IfMsgBox, Yes
             {
+                SendInput, ^s
                 sleep 500
                 P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, " s_stop " og tekst sendt til chf. " initialer " ")
                 gui, cancel
                 return
             }
-            Else
-                gui, cancel
+            IfMsgBox, No
+                {
+                    MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+                    gui, cancel
+                }
         return
     }
     return
