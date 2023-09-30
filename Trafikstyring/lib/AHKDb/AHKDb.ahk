@@ -1,4 +1,4 @@
-
+﻿
 ; ##############################################################################################################################################################################################
 ; #                                                                                                                                                                                            #
 ; #     AHKDb version 0.1 alpha                                                                                                                                                                #
@@ -19,6 +19,8 @@
 ; #     FUNCTIONS:                                                                                                                                                                             #
 ; #                                                                                                                                                                                            #
 ; ##############################################################################################################################################################################################
+
+FileEncoding, UTF-8
 
 DatabaseAbsoluteValue( db_DatabaseName, db_Row:="", db_Column:="", db_SkipFirstRow:=FALSE ) { ; Turn negative values (from a specified part of the database) into positive
 ; Example: DatabaseAbsoluteValue( "database.txt" )													; turn all negative values in database into positive values

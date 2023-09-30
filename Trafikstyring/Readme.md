@@ -1,6 +1,9 @@
 # Readme
 
-## Tekst til chf
+## Opsætning af valgmenu
 
-- hydra-opsætning
-- skriv stop nummer-box
+- minutudregner - implementeret
+- VL-slut - mangler
+
+
+- skal integreres i samledt GUI
