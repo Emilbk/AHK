@@ -1641,10 +1641,11 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     initialer_udentid =/mt%A_userName%
     brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
     bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 2)
+    ctrl_s := chr(19)
 
     KeyWait Alt
     keywait Ctrl
-    Input valgt, L1 T5, {esc}, TKF
+    Input valgt, L1 T5, {esc},
     if (valgt = "t")
     {
         P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
@@ -1685,9 +1686,10 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             ; MsgBox, , , % tekst,
             P6_tekstTilChf("Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 . ", i stedet. /" bruger)
             sleep 500
-            input, tast, M T3, {esc}, p
-            if (tast = "p")
+            MsgBox, , Send til chauffør?, Send tekst til chauffør?, 
+            IfMsgBox, Yes
             {
+                SendInput, ^s
                 sleep 500
                 P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf. " initialer " ")
                 gui, cancel
