@@ -51,10 +51,11 @@ Hotkey, % bruger_genvej.30, l_trio_afslut_opkald ; Numpad -
 Hotkey, % bruger_genvej.31, l_trio_afslut_opkaldB ; Numpad -
 Hotkey, % bruger_genvej.32, l_trio_til_p6 ; +F4
 Hotkey, % bruger_genvej.33, l_quitAHK ; +escape
+Hotkey, % bruger_genvej.46, l_restartAHK ; +escape
 Hotkey, % bruger_genvej.34, l_p6_aktiver ; +!p
 
 Hotkey, IfWinActive, PLANET
-Hotkey, % bruger_genvej.46, l_outlook_svigt ; +F1
+Hotkey, % bruger_genvej.38, l_outlook_svigt ; +F1
 Hotkey, % bruger_genvej.5, l_p6_initialer ; F2
 Hotkey, % bruger_genvej.6, l_p6_initialer_skriv ; +F2
 Hotkey, % bruger_genvej.7, l_p6_vis_k_aftale ; F3
@@ -1958,7 +1959,7 @@ l_excel_vl_til_P6_B:
         return
     }
 
-^+r:: ; AHK-reload
+l_restartAHK: ; AHK-reload
     SendInput, {CtrlUp}
     Reload
     sleep 2000
