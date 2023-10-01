@@ -1181,6 +1181,7 @@ Flexfinder_til_p6()
 Outlook_nymail()
 {
     Run, %A_linefile%\..\lib\nymail.lnk, , ,
+    WinWaitActive, Ikke-navngivet - Meddelelse (HTML) , , , , 
     Return
 }
 
@@ -1796,25 +1797,6 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     return
 #IfWinActive ; udelukkende for at resette indentering i auto-formatering
 
-l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
-    gemtklip := ClipboardAll
-    sleep 400
-    screenshot_aktivt_vindue()
-    Outlook_nymail()
-    sleep 1000
-    SendInput, pl
-    sleep 250
-    SendInput, {Tab}
-    sleep 40
-    SendInput, {Tab}{Tab}{Tab}{Enter}{Enter}
-    sleep 40
-    SendInput, ^v
-    SendInput, {Up}{Up}
-    sleep 2000
-    Clipboard = %gemtklip%
-    ClipWait, 2, 1
-    gemtklip :=
-Return
 
 ;; Trio
 l_trio_klar: ;Trio klar
@@ -2187,3 +2169,226 @@ databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41, p6_h
 GuiEscape:
 genvejGuiClose:
 gui, destroy
+
+l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+    FormatTime, dato, , d/MM
+    ; FormatTime, tid, , HH:mm
+
+    svigt := []
+    gemtklip := ClipboardAll
+    sleep 400
+    vl := P6_hent_vl()
+    sleep 500
+    skærm := screenshot_aktivt_vindue()
+    sleep 200
+    gui, svigt:new
+gui, svigt:default
+Gui Font, w600
+Gui Add, Text, x16 y0 w120 h23 +0x200, Vognløbs&nummer
+Gui Font
+Gui Add, Edit, vVL x16 y24 w120 h21, %vl%
+Gui Font, s9, Segoe UI
+Gui Font, w600
+Gui Add, Text, x161 y0 w118 h25 +0x200, &Lukket?
+Gui Font
+Gui Font, s9, Segoe UI
+Gui Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
+Gui Add, Edit, vtid x200 y24 w79 h21, klokken
+Gui Add, CheckBox, vhelt x160 y48 w120 h23, Lukket &helt
+Gui Font, s9, Segoe UI
+Gui Font, w600
+Gui Add, Text, x304 y0 w120 h23 +0x200, Garanti eller Var.
+Gui Font
+Gui Font, s9, Segoe UI
+Gui Add, Radio, x304 y24 w120 h16, &Garanti
+Gui Add, Radio, x304 y40 w120 h32, G&arantivognløb i variabel tid
+Gui Add, Radio, vtype x304 y72 w120 h23, &Variabel
+Gui Font, w600
+Gui Add, Text, x16 y48 w120 h23 +0x200, &Årsag
+Gui Font
+Gui Font, s9, Segoe UI
+Gui Add, Edit, vårsag x16 y72 w120 h21
+Gui Font, w600
+Gui Add, Text, x8 y96 h23 +0x200, &Beskrivelse
+Gui Font
+Gui Font, s9, Segoe UI
+Gui Add, Edit, vbeskrivelse x8 y120 w410 h126
+Gui Add, Button, gsvigtok x176 y256 w80 h23, &OK
+
+Gui Show, w448 h297, Svigt
+ControlFocus, Button1, Svigt
+; ^Backspace::Send +^{Left}{Backspace}
+Return
+
+svigtok:
+gui, submit
+; MsgBox, , , % beskrivelse
+; GuiControlGet, tid
+; GuiControlGet, årsag
+; GuiControlGet, beskrivelse
+; GuiControlGet, lukket
+; GuiControlGet, helt
+; GuiControlGet, vl
+beskrivelse := StrReplace(beskrivelse, "`n", " ")
+if (lukket = 1 and StrLen(tid) != 4)
+    {
+    MsgBox, , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
+    sleep 20
+    Gui Show, w448 h297, Svigt
+    SendInput, !l{tab}^a
+    return
+    }
+if (StrLen(tid) = 4)
+    {
+    timer := SubStr(tid, 1, 2)
+    min := SubStr(tid, 3, 2)
+    tid_tjek := A_YYYY A_MM A_DD timer min
+    if tid_tjek is not Time
+        {
+        MsgBox, , , Skal være et gyldigt tidspunkt
+        Gui Show, w448 h297, Svigt
+        SendInput, ^a
+        return
+        }
+    FormatTime, tid, A_YYYY A_MM A_DD , HH:m
+    }
+if (type = 0)
+    {
+    sleep 20
+    MsgBox, , Mangler VL-type, Husk at krydse af i typen af VL.
+    Gui Show, w448 h297, Svigt
+    return
+    }
+if (type = 1)
+    vl_type := "GV"
+if (type = 2)
+    vl_type := "(Variabel tid)"
+if (type = 3)
+    vl_type :=
+if (beskrivelse = "")
+    {
+    MsgBox, , Udfyld beskrivelse, Mangler beskrivelse af svigtet,
+    Gui Show, w448 h297, Svigt
+    SendInput, !b
+    return
+    }
+; MsgBox, , beskrivelse , % beskrivelse 
+; MsgBox, , type , % type 
+; MsgBox, , tid , % tid 
+; MsgBox, , årsag , % årsag 
+; MsgBox, , helt , % helt 
+; MsgBox, , vl , % dato
+if (type = 1 and lukket = 1 and helt = 0 and årsag != "")
+    {
+    emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
+    ; MsgBox, , 1 , % emnefelt, 
+    gui, destroy
+    }
+if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
+    {
+    emnefelt := "Svigt VL" vl " " vl_type " - lukket kl. " tid " d. " dato
+    ; MsgBox, , 2, % emnefelt, 
+    gui, destroy
+    }
+if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
+    {
+    emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - d. " dato
+    ; MsgBox, , 3, % emnefelt, 
+    gui, destroy
+    }
+if (type = 1 and lukket = 0 and helt = 0 and årsag = "")
+    {
+    emnefelt := "Svigt VL" vl " d. " dato
+    gui, destroy
+    }
+if (type = 1 and helt = 1 and årsag = "")
+    {
+    emnefelt := "Svigt VL" vl " " vl_type ": ikke startet op d. " dato
+    ; MsgBox, , 5, % emnefelt, 
+    gui, destroy
+    }
+if (type = 1 and helt = 1 and årsag != "")
+    {
+    emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - ikke startet op d. " dato
+    ; MsgBox, , 5.1, % emnefelt, 
+    gui, destroy
+    }
+if (type = 2 and lukket = 0 and årsag !="")
+    {
+    emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - " dato
+    ; MsgBox, , 6, % emnefelt, 
+    gui, destroy
+    }
+if (type = 2 and lukket = 0 and helt = 0 and årsag = "")
+    {
+    emnefelt := "Svigt VL" vl " " vl_type " " årsag "d. " dato
+    ; MsgBox, , 7, % emnefelt, 
+    gui, destroy
+    }
+if (type = 2 and lukket = 0 and helt = 1 and årsag = "")
+    {
+    emnefelt := "Svigt VL" vl " " vl_type ": ikke startet op d. " dato
+    ; MsgBox, , 7.1, % emnefelt, 
+    gui, destroy
+    }
+if (type = 2 and lukket = 1 and årsag != "")
+    {
+    emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
+    ; MsgBox, , 8, % emnefelt, 
+    gui, destroy
+    }
+if (type = 2 and lukket = 1 and årsag = "")
+    {
+    emnefelt := "Svigt VL" vl " " vl_type " - lukket kl. " tid " d. " dato
+    ; MsgBox, , 9, % emnefelt, 
+    gui, destroy
+    }
+if (type = 3 and årsag != "")
+    {
+    emnefelt := "Svigt VL" vl ": " årsag " - d. " dato
+    ; MsgBox, , 10, % emnefelt, 
+    gui, destroy
+    }
+if (type = 3 and årsag = "")
+    {
+    emnefelt := "Svigt VL" vl " d. " dato
+    ; MsgBox, , 11, % emnefelt, 
+    gui, destroy
+    }
+    Outlook_nymail()
+    sleep 200
+    SendInput, planet
+    sleep 1000
+    SendInput, {enter}
+    sleep 250
+    SendInput, {Tab 2}
+    SendInput, %emnefelt%
+    sleep 400
+    SendInput, {tab} %beskrivelse%
+    sleep 500
+    SendInput, {Enter 2}
+    sleep 40
+    SendInput, ^v
+    SendInput, {Home}
+    ; sleep 2000
+    ; Clipboard = %gemtklip%
+    ; ClipWait, 2, 1
+    ; gemtklip :=
+; MsgBox, , , % emnefelt "`n" beskrivelse
+
+
+
+Return
+
+svigtGuiEscape:
+svigtGuiClose:
+    Gui, destroy
+Return
+
+svigt_gui:
+{
+vl := "31232"
+; MsgBox, , , % tidspunkt, 
+
+
+}
