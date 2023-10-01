@@ -105,7 +105,111 @@ Hotkey, % bruger_genvej.39, l_excel_vl_til_P6_A ; !Lbutton
 Hotkey, % bruger_genvej.40, l_excel_vl_til_P6_B ; ^w
 Hotkey, IfWinActive, ,
 
-; settings
+;; GUI
+
+; gui-definitioner
+
+; Ring til sygehus
+gui sygehus:+Labelsygehus
+Gui sygehus: Font, s9, Segoe UI
+Gui sygehus: Add, Button, gsygehusmenu1 vauh x16 y8 w102 h23, &AUH
+Gui sygehus: Add, Button, gsygehusmenu1 vrhg x16 y32 w102 h23, &RHG
+Gui sygehus: Add, Button, gsygehusmenu1 vrand x16 y56 w102 h23, Ra&nders Sygehus
+Gui sygehus: Add, Button, gsygehusmenu1 vvib x16 y80 w102 h23, &Viborg Sygehus
+Gui sygehus: Add, Button, gsygehusmenu1 vhor x16 y104 w102 h23, &Horsens Sygehus
+Gui sygehus: Add, Button, gsygehusmenu1 vsil x16 y128 w102 h23, &Silkeborg Sygehus
+
+gui sygehusauh:+Labelsygehus
+Gui sygehusauh: Font, s9, Segoe UI
+Gui sygehusauh: Add, Button, gsygehusmenu2 v7845 x16 y8 w102 h23, &Hovednummer
+Gui sygehusauh: Add, Button, gsygehusmenu2 vdialysenummer x16 y32 w102 h23, &Dialyse
+Gui sygehusauh: Add, Button, gsygehusmenu2 vnogetandet x16 y56 w102 h23, &Noget andet
+Gui sygehusauh: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi 
+Gui sygehusauh: Add, Button, gsygehusmenu2 x16 y104 w102 h23, &o
+Gui sygehusauh: Add, Button, gsygehusmenu2 x16 y128 w102 h23, &S
+
+gui sygehusrhg:+Labelsygehus
+Gui sygehusrhg: Font, s9, Segoe UI
+Gui sygehusrhg: Add, Button, gsygehusmenu2 v7845 x16 y8 w102 h23, &Hovednummer
+Gui sygehusrhg: Add, Button, gsygehusmenu2 vdialysenummer x16 y32 w102 h23, &Dialyse
+Gui sygehusrhg: Add, Button, gsygehusmenu2 vnogetandet x16 y56 w102 h23, &Noget andet
+Gui sygehusrhg: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi 
+Gui sygehusrhg: Add, Button, gsygehusmenu2 x16 y104 w102 h23, &o
+Gui sygehusrhg: Add, Button, gsygehusmenu2 x16 y128 w102 h23, &S
+
+gui sygehusrand:+Labelsygehus
+Gui sygehusrand: Font, s9, Segoe UI
+Gui sygehusrand: Add, Button, gsygehusmenu2 v7ran x16 y8 w102 h23, &Hovednummer
+Gui sygehusrand: Add, Button, gsygehusmenu2 vdialysrandr x16 y32 w102 h23, &Dialyse
+Gui sygehusrand: Add, Button, gsygehusmenu2 vnogetandet x16 y56 w102 h23, &Noget andet
+Gui sygehusrand: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi 
+Gui sygehusrand: Add, Button, gsygehusmenu2 x16 y104 w102 h23, &o
+Gui sygehusrand: Add, Button, gsygehusmenu2 x16 y128 w102 h23, &S
+
+gui sygehusvib:+Labelsygehus
+Gui sygehusvib: Font, s9, Segoe UI
+Gui sygehusvib: Add, Button, gsygehusmenu2 v7vib x16 y8 w102 h23, &Hovednummer
+Gui sygehusvib: Add, Button, gsygehusmenu2 v78442343 x16 y32 w102 h23, &Dialyse
+Gui sygehusvib: Add, Button, gsygehusmenu2 vnogetandet x16 y56 w102 h23, &Noget andet
+Gui sygehusvib: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi 
+Gui sygehusvib: Add, Button, gsygehusmenu2 x16 y104 w102 h23, &o
+Gui sygehusvib: Add, Button, gsygehusmenu2 x16 y128 w102 h23, &S
+
+gui sygehussil:+Labelsygehus
+Gui sygehussil: Font, s9, Segoe UI
+Gui sygehussil: Add, Button, gsygehusmenu2 vsil x16 y8 w102 h23, &Hovednummer
+Gui sygehussil: Add, Button, gsygehusmenu2 vdialyesil x16 y32 w102 h23, &Dialyse
+Gui sygehussil: Add, Button, gsygehusmenu2 vnogetandet x16 y56 w102 h23, &Noget andet
+Gui sygehussil: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi 
+Gui sygehussil: Add, Button, gsygehusmenu2 x16 y104 w102 h23, &o
+Gui sygehussil: Add, Button, gsygehusmenu2 x16 y128 w102 h23, &S
+
+gui sygehushor:+Labelsygehus
+Gui sygehushor: Font, s9, Segoe UI
+Gui sygehushor: Add, Button, gsygehusmenu2 vhor x16 y8 w102 h23, &Hovednummer
+Gui sygehushor: Add, Button, gsygehusmenu2 vdihor x16 y32 w102 h23, &Dialyse
+Gui sygehushor: Add, Button, gsygehusmenu2 vnogetandet x16 y56 w102 h23, &Noget andet
+Gui sygehushor: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi 
+Gui sygehushor: Add, Button, gsygehusmenu2 x16 y104 w102 h23, &o
+Gui sygehushor: Add, Button, gsygehusmenu2 x16 y128 w102 h23, &S
+
+vis_sygehus_1()
+{
+    Gui, sygehus:Show, w144 h166, Ring til Sygehus
+Return
+}
+vis_sygehus_2(navn)
+{
+    Gui, sygehus%navn%:Show, w144 h166, AUH
+Return
+}
+
+sygehusmenu1:
+GuiControlGet, navn, sygehus: name , % A_GuiControl
+; navn := SubStr(navn, 2)
+; MsgBox, , , % navn 
+vis_sygehus_2(navn)
+gui cancel
+return
+
+sygehusmenu2:
+GuiControlGet, knap2, sygehus%navn%: name, % a_guicontrol
+; MsgBox, , navn2 på knap , % knap2
+opkald(knap2)
+gui cancel
+return
+
+sygehusEscape:
+sygehusClose:
+    gui cancel
+    return
+
+opkald(p*)
+{
+    MsgBox, , ,% "ringer til " p[1], 
+    return
+}
+
 
 ;; FUNKTIONER
 ;; P6
