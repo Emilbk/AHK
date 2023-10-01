@@ -2174,9 +2174,9 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     FormatTime, dato, , d/MM
     ; FormatTime, tid, , HH:mm
 
-    svigt := []
-    gemtklip := ClipboardAll
-    sleep 400
+    ; svigt := []
+    ; gemtklip := ClipboardAll
+    ; sleep 400
     vl := P6_hent_vl()
     sleep 500
     skærm := screenshot_aktivt_vindue()
