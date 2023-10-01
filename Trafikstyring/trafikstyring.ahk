@@ -118,6 +118,7 @@ Gui sygehus: Add, Button, gsygehusmenu1 vrand x16 y56 w102 h23, Ra&nders Sygehus
 Gui sygehus: Add, Button, gsygehusmenu1 vvib x16 y80 w102 h23, &Viborg Sygehus
 Gui sygehus: Add, Button, gsygehusmenu1 vhor x16 y104 w102 h23, &Horsens Sygehus
 Gui sygehus: Add, Button, gsygehusmenu1 vsil x16 y128 w102 h23, &Silkeborg Sygehus
+Gui sygehus: Add, Button, gsygehusmenu1 vmisc x16 y152 w102 h23, Andr&e
 
 gui sygehusauh:+Labelsygehus
 Gui sygehusauh: Font, s9, Segoe UI
@@ -149,7 +150,7 @@ Gui sygehusrand: Add, Button, gsygehusmenu2 x16 y128 w102 h23, &S
 gui sygehusvib:+Labelsygehus
 Gui sygehusvib: Font, s9, Segoe UI
 Gui sygehusvib: Add, Button, gsygehusmenu2 v7vib x16 y8 w102 h23, &Hovednummer
-Gui sygehusvib: Add, Button, gsygehusmenu2 v78442343 x16 y32 w102 h23, &Dialyse
+Gui sygehusvib: Add, Button, gsygehusmenu2 vvibdia x16 y32 w102 h23, &Dialyse
 Gui sygehusvib: Add, Button, gsygehusmenu2 vnogetandet x16 y56 w102 h23, &Noget andet
 Gui sygehusvib: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi 
 Gui sygehusvib: Add, Button, gsygehusmenu2 x16 y104 w102 h23, &o
@@ -173,14 +174,32 @@ Gui sygehushor: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi
 Gui sygehushor: Add, Button, gsygehusmenu2 x16 y104 w102 h23, &o
 Gui sygehushor: Add, Button, gsygehusmenu2 x16 y128 w102 h23, &S
 
+gui sygehusmisc:+Labelsygehus
+Gui sygehusmisc: Font, s9, Segoe UI
+Gui sygehusmisc: Add, Button, gsygehusmenu2 v78425000 x16 y8 w102 h23, &Brædstrup
+Gui sygehusmisc: Add, Button, gsygehusmenu2 v78420000 x16 y32 w102 h23, &Grenå
+Gui sygehusmisc: Add, Button, gsygehusmenu2 vnogetandet x16 y56 w102 h23, &Holstebro`, Psykiatrien
+Gui sygehusmisc: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi 
+Gui sygehusmisc: Add, Button, gsygehusmenu2 x16 y104 w102 h23, &o
+Gui sygehusmisc: Add, Button, gsygehusmenu2 x16 y128 w102 h23, &S
+
+
+;; autoexec slut
+return
+
+
+
 vis_sygehus_1()
 {
-    Gui, sygehus:Show, w144 h166, Ring til Sygehus
+    Gui, sygehus:Show, w144 h200, Ring til Sygehus
 Return
 }
 vis_sygehus_2(navn)
 {
-    Gui, sygehus%navn%:Show, w144 h166, AUH
+    if (navn = "misc")
+        Gui, sygehus%navn%:Show, w300 h300, AUH
+    else
+        Gui, sygehus%navn%:Show, w144 h166, AUH
 Return
 }
 
@@ -195,7 +214,7 @@ return
 sygehusmenu2:
 GuiControlGet, knap2, sygehus%navn%: name, % a_guicontrol
 ; MsgBox, , navn2 på knap , % knap2
-opkald(knap2)
+opkaldtest(knap2)
 gui cancel
 return
 
@@ -204,12 +223,11 @@ sygehusClose:
     gui cancel
     return
 
-opkald(p*)
+opkaldtest(p*)
 {
-    MsgBox, , ,% "ringer til " p[1], 
+    Trio_opkald(p.1)
     return
 }
-
 
 ;; FUNKTIONER
 ;; P6
@@ -1454,41 +1472,7 @@ return
 ; SygehusGUI
 ; omskrives
 l_p6_sygehus_ring_op:
-    gui, Sygehus:Default
-    Gui,Add,Button,vButton1,&AUH
-    Gui,Add,Button,vButton2,RH&G
-    Gui,Add,Button,vButton3,&Randers Sygehus
-    Gui,Add,Button,vButton4,V&iborg Sygehus
-    Gui,Add,Button,vButton5,&Horsens Sygehus
-    Gui,Add,Button,vButton6,&Silkeborg Sygehus
-    Gui,Show, AutoSize Center , Ring op til sygehus
-    knap1:=Func("opkald").Bind("78450000")
-    knap2:=Func("opkald").Bind("78430000")
-    knap3:=Func("opkald").Bind("78420000")
-    knap4:=Func("opkald").Bind("78440000")
-    knap5:=Func("opkald").Bind("78425000")
-    knap6:=Func("opkald").Bind("78415000")
-    GuiControl,+g,Button1,%knap1%
-    GuiControl,+g,Button2,%knap2%
-    GuiControl,+g,Button3,%knap3%
-    GuiControl,+g,Button4,%knap4%
-    GuiControl,+g,Button5,%knap5%
-    GuiControl,+g,Button6,%knap6%
-
-return
-Opkald(p*){
-    Gui, Sygehus:Destroy
-    telefon := % p.1
-    sleep 100
-    Trio_opkald(telefon)
-    WinActivate, PLANET, , ,
-}
-
-SygehusGuiEscape:
-    Gui, Destroy
-return
-SygehusGuiClose:
-    gui, Destroy
+vis_sygehus_1()
 return
 
 l_p6_central_ring_op:
