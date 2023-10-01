@@ -2250,7 +2250,7 @@ if (StrLen(tid) = 4)
         SendInput, ^a
         return
         }
-    FormatTime, tid, A_YYYY A_MM A_DD , HH:m
+    tid := timer ":" min
     }
 if (type = 0)
     {
