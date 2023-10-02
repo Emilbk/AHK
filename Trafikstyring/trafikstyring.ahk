@@ -247,9 +247,9 @@ P6_aktiver()
 
 P6_alt_menu()
 {
-    keywait Shift ; for ikke at ødelægge shiftgenveje
-    keywait ctrl
-    keywait alt
+    keywait Shift, T0.5 ; for ikke at ødelægge shiftgenveje
+    keywait ctrl, T0.5
+    keywait alt, T0.5
     SendInput, {Alt}
     sleep 200
 }
@@ -1162,6 +1162,7 @@ trio_pauseklar()
 Trio_hent_tlf()
 {
     clipboard := ""
+    sleep 200
     Sendinput !+k
     ClipWait, 3
     Telefon := Clipboard
@@ -1911,7 +1912,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     SendInput, % bruger_genvej[3] ; opr telenor-genvej
     sleep 40
     telefon := Trio_hent_tlf()
-    sleep 200
+    sleep 600
     if (telefon = "")
         {
             MsgBox, , , Intet indgående telefonnummer
@@ -1921,7 +1922,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     IfWinNotActive, PLANET
     {
         WinActivate, PLANET
-        sleep 500 ; sørger for at vinduet kan nå at Kskifte
+        sleep 500 ; sørger for at vinduet kan nå at skifte
     }
     SendInput, {AltUp}
     if (vl != 0)
