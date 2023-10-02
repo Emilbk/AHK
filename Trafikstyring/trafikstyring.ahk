@@ -2248,6 +2248,7 @@ databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41, p6_h
 GuiEscape:
 genvejGuiClose:
 gui, destroy
+return
 
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     FormatTime, dato, , d/MM
