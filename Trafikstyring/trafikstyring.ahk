@@ -148,13 +148,12 @@ Gui sygehusvib: Add, Button, gsygehusmenu2 v78430000 x16 y8 w102 h23, &Viborg sy
 Gui sygehusvib: Add, Button, gsygehusmenu2 v78447720 x16 y32 w102 h23, &Dialyse
 Gui sygehusvib: Add, Button, gsygehusmenu2 v78474000 x16 y56 w102 h23, &Psyk.
 
-
 gui sygehussil:+Labelsygehus
 Gui sygehussil: Font, s9, Segoe UI
 Gui sygehussil: Add, Button, gsygehusmenu2 v78415000 x16 y8 w102 h23, &Silkeborg syg.
 Gui sygehussil: Add, Button, gsygehusmenu2 v78474000 x16 y32 w102 h23, &Psyk.
 ; Gui sygehussil: Add, Button, gsygehusmenu2 vnogetandet x16 y56 w102 h23, &Noget andet
-; Gui sygehussil: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi 
+; Gui sygehussil: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi
 ; Gui sygehussil: Add, Button, gsygehusmenu2 x16 y104 w102 h23, &o
 ; Gui sygehussil: Add, Button, gsygehusmenu2 x16 y128 w102 h23, &S
 
@@ -163,7 +162,7 @@ Gui sygehushor: Font, s9, Segoe UI
 Gui sygehushor: Add, Button, gsygehusmenu2 v78425000 x16 y8 w102 h23, &Horsens syg.
 Gui sygehushor: Add, Button, gsygehusmenu2 v78426160 x16 y32 w102 h23, &Dialyse
 Gui sygehushor: Add, Button, gsygehusmenu2 v78425871 x16 y56 w102 h23, &Røntg. før 09
-; Gui sygehushor: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi 
+; Gui sygehushor: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi
 ; Gui sygehushor: Add, Button, gsygehusmenu2 x16 y104 w102 h23, &o
 ; Gui sygehushor: Add, Button, gsygehusmenu2 x16 y128 w102 h23, &S
 
@@ -176,16 +175,13 @@ Gui sygehusmisc: Add, Button, gsygehusmenu2 v78437463 x16 y80 w102 h23, H&erning
 Gui sygehusmisc: Add, Button, gsygehusmenu2 v78419000 x16 y104 w102 h23, Hammel &Neuro.
 Gui sygehusmisc: Add, Button, gsygehusmenu2 x16 y128 w102 h23, &S
 
-
 ;; autoexec slut
 return
-
-
 
 vis_sygehus_1()
 {
     Gui, sygehus:Show, w144 h200, Ring til Sygehus
-Return
+    Return
 }
 vis_sygehus_2(navn)
 {
@@ -193,31 +189,29 @@ vis_sygehus_2(navn)
         Gui, sygehus%navn%:Show, w300 h300, AUH
     else
         Gui, sygehus%navn%:Show, w144 h166, AUH
-Return
+    Return
 }
 
 sygehusmenu1:
-GuiControlGet, navn, sygehus: name , % A_GuiControl
-; navn := SubStr(navn, 2)
-; MsgBox, , , % navn 
-vis_sygehus_2(navn)
-gui cancel
+    GuiControlGet, navn, sygehus: name , % A_GuiControl
+    ; navn := SubStr(navn, 2)
+    ; MsgBox, , , % navn
+    vis_sygehus_2(navn)
+    gui cancel
 return
 
 sygehusmenu2:
-GuiControlGet, knap2, sygehus%navn%: name, % a_guicontrol
-; MsgBox, , navn2 på knap , % knap2
-Trio_opkald(knap2)
-gui cancel
-WinActivate, PLANET
+    GuiControlGet, knap2, sygehus%navn%: name, % a_guicontrol
+    ; MsgBox, , navn2 på knap , % knap2
+    Trio_opkald(knap2)
+    gui cancel
+    WinActivate, PLANET
 return
 
 sygehusEscape:
 sygehusClose:
     gui cancel
-    return
-
-
+return
 
 ;; FUNKTIONER
 ;; P6
@@ -499,9 +493,9 @@ P6_hent_vm_tlf()
 P6_hent_vl_fra_tlf(ByRef tlf:="")
 {
     if (tlf = "")
-        {
+    {
         return 0
-        }
+    }
     række := DataBasefind( "%A_linefile%\..\db\VL_tlf.txt", tlf)
     vl := databaseget("%A_linefile%\..\db\VL_tlf.txt", række.1, 2)
     if (række.1 is number) ; hvorfor virker den ikke med true/false?
@@ -522,6 +516,21 @@ P6_ret_tlf_vl(ByRef telefon:=" ")
     sleep s * 50
     SendInput ^{F12}
     sleep s * 800
+    sendinput ^æ
+    sleep s * 200
+    SendInput {Enter}{Enter}
+    sleep s * 40
+    SendInput !ø
+    sleep s * 40
+    SendInput {tab}{tab}
+    SendInput, %telefon%
+    SendInput, {enter}
+    return
+}
+; ***
+;indsæt clipboard i vl-tlf
+P6_ret_tlf_vl_efterfølgende(ByRef telefon:=" ")
+{
     sendinput ^æ
     sleep s * 200
     SendInput {Enter}{Enter}
@@ -1455,16 +1464,15 @@ sys_genveje_opslag()
 
 sysGuiEscape:
 sysGuiClose:
-gui, cancel
+    gui, cancel
 return
-
 
 ;; Misc
 ; *
 ; SygehusGUI
 ; omskrives
 l_p6_sygehus_ring_op:
-vis_sygehus_1()
+    vis_sygehus_1()
 return
 
 l_p6_central_ring_op:
@@ -1536,6 +1544,10 @@ l_p6_vis_k_aftale: ;Vis kørselsaftale for aktivt vognløb
 Return
 
 l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
+    faste_dage := ["ma", "ti", "on", "to", "fr", "lø", "sø"]
+    uge_dage := ["faste mandage", "faste tirsdage", "faste onsdage", "faste torsdage", "faste fredage", "faste lørdage", "faste søndage"]
+
+    SendInput, {ShiftUp}{AltUp}{CtrlUp}
     telefon := Trio_hent_tlf()
     If (WinNotExist, PLANET, , ,)
         MsgBox, , PLANET, P6 er ikke åben.,
@@ -1552,39 +1564,102 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
             InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 120, 160, X, Y, , Timeout, %telefon%
             if (ErrorLevel = 1 or ErrorLevel = 2)
                 return
+            sleep 100
             MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
+            IfMsgBox, no
+                return
             IfMsgBox, Yes
                 P6_ret_tlf_vl(telefon)
             sleep s * 100
             Input, næste, L1 V T4
             if (næste = "n")
             {
-                loop:
+                Loop
                 {
-                    gå_til_næste_vl_funktion()
-                    tid_ind := clipboard
-                    dato := SubStr(tid_ind, 1, 2) SubStr(tid_ind, 4, 2)
+                    Clipboard :=
+                    sleep 20
+                    SendInput, !l{tab}
+                    sleep 200
+                    SendInput, !{right}
+                    sleep 400
+                    SendInput, ^c
+                    clipwait 3
+                    if (InStr(clipboard, "eksistere"))
+                        continue
+                    if (ErrorLevel = 1)
+                        SendInput, ^c
+                    clipwait 3
+                    tid_ind := Clipboard
+                    if (InStr(tid_ind, "senare"))
+                    {
+                        SendInput, {enter}
+                        for index, element in faste_dage
+                        {
+                            SendInput, !l
+                            sleep 200
+                            sendinput {tab}
+                            SendInput, %element% {enter}
+                            sleep 200
+                            clipboard :=
+                            SendInput, {tab}
+                            SendInput, ^c
+                            clipwait 3
+                            if (clipboard = element)
+                            {
+                                ; MsgBox, , , match
+                                tid_ind := uge_dage[index]
+                                ramt_dag := index
+                                ; MsgBox, , overført, % tid_ind
+                                Break
+                            }
+                            else
+                            {
+                                ; MsgBox, , ,% clipboard "." element,
+                                SendInput, {enter}
+                                continue
+                            }
+
+                        }
+
+                    }
+                    dato := SubStr(tid_ind, 4, 2) SubStr(tid_ind, 1, 2)
+                    OutputDebug, % dato
                     dato:= A_YYYY dato
-                    FormatTime, dato, %dato%, dddd d. 
+                    FormatTime, dato, %dato%, dddd dd/MM
+                    if (StrLen(clipboard) = 2)
+                    {
+                        StringLower, clipboard, clipboard, ; dage med ø skal være lowercase. Hvorfor?
+                        for index, element in faste_dage
+                        {
+                            if (clipboard = element)
+                            {
+                                ramt_dag := index
+                                ; MsgBox, , , % ramt_dag,
+                            }
+                        }
+                        dato := uge_dage[ramt_dag]
+                        ; MsgBox, , næste dag , % uge_dag[ramt_dag]
+                    }
+                    ; MsgBox, , , % dato,
                     sleep 100
-                    MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl% på %dato%?,
+                    MsgBox, 4, Sikker?, Vil du sætte %telefon% på VL %vl% på %dato%?,
                     IfMsgBox, Yes
                     {
-                        sleep 100
-                        P6_tlf_vl_dato_efter(telefon)
-                        sleep s * 800
-                        Continue
+                        if (ramt_dag = 7)
+                            return
+                        sleep 200
+                        P6_ret_tlf_vl_efterfølgende(telefon)
+                        sleep 200
+                        continue
                     }
-                    IfMsgBox, no
                     {
-                        P6_planvindue()
-                        Break
+                        IfMsgBox, no
+                        return
                     }
+                    
                 }
             }
-            return
         }
-        return
     }
     WinActivate, PLANET
     vl := P6_hent_vl()
@@ -1815,7 +1890,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             ; MsgBox, , , % tekst,
             P6_tekstTilChf("Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 . ", i stedet. /" bruger)
             sleep 500
-            MsgBox, 4, Send til chauffør?, Send tekst til chauffør?, 
+            MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
             IfMsgBox, Yes
             {
                 SendInput, ^s
@@ -1825,10 +1900,10 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 return
             }
             IfMsgBox, No
-                {
-                    MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-                    gui, cancel
-                }
+            {
+                MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+                gui, cancel
+            }
         return
     }
     if (valgt = "k")
@@ -1864,7 +1939,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             GuiControlGet, k_navn2, , ,
             P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har kvitteret for " f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 . "/" bruger)
             sleep 500
-            MsgBox, 4, Send til chauffør?, Send tekst til chauffør?, 
+            MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
             IfMsgBox, Yes
             {
                 SendInput, ^s
@@ -1874,15 +1949,14 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 return
             }
             IfMsgBox, No
-                {
-                    MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-                    gui, cancel
-                }
+            {
+                MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+                gui, cancel
+            }
         return
     }
     return
 #IfWinActive ; udelukkende for at resette indentering i auto-formatering
-
 
 ;; Trio
 l_trio_klar: ;Trio klar
@@ -1921,10 +1995,10 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     telefon := Trio_hent_tlf()
     sleep 600
     if (telefon = "")
-        {
-            MsgBox, , , Intet indgående telefonnummer
-            return
-        }
+    {
+        MsgBox, , , Intet indgående telefonnummer
+        return
+    }
     vl := P6_hent_vl_fra_tlf(telefon)
     IfWinNotActive, PLANET
     {
@@ -2036,225 +2110,221 @@ Return
 
 ^+a::databaseview("%A_linefile%\..\db\bruger_ops.tsv")
 
-
 ;; GUI-hjælp
 
 ;hjælp GUI
 l_gui_hjælp:
-brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
-bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
-p6_udregn_minut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,44)
-p6_vl_slut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,42)
-p6_hastighed_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,41)
-genvej_ren := []
-genvej_navn := []
+    brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
+    bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
+    p6_udregn_minut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,44)
+    p6_vl_slut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,42)
+    p6_hastighed_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,41)
+    genvej_ren := []
+    genvej_navn := []
 
+    global genvej_ren
+    global genvej_navn
+    global hk :=
 
-global genvej_ren
-global genvej_navn
-global hk :=
+    if (p6_udregn_minut_ops = 0)
+        min_default := 2
+    if (p6_udregn_minut_ops = 1)
+        min_default := 1
+    if (p6_vl_slut_ops = 0)
+        vl_default := 2
+    if (p6_vl_slut_ops = 1)
+        vl_default := 1
+    sys_genveje_opslag()
 
+    Gui Font, s9, Segoe UI
+    Gui Color, 0xC0C0C0
+    Gui Add, StatusBar,, Status Bar
+    Gui Add, Tab3, x0 y0 w748 h642 0x54010240, Oversigt|Genvejsoversigt P6|Genvejsoversigt Trio|Opsætning|Hjælp|Misc
+    Gui Tab, Opsætning
+    ; Fix placerinc
+    Gui Add, Text, x285 y32 h23 +0x200, Tilpas efter P6-langsomhed. 1 = hurtigst. Skal bruge punktum (eks. 1.2)
+    Gui Add, Text, x10 y32 w123 h23 +0x200, P6 - Hastighed
+    Gui Add, Text, x8 y64 w123 h23 +0x200, P6 - Minutudregner
+    Gui Add, Text, x285 y64 h23, Vælg om der skal bruges en popup der kan skrives i til funktionen Minutudregner.
+    Gui Add, Text, x8 y96 w123 h23 +0x200, P6 - Minutudregner
+    Gui Add, Text, x285 y96 h23 +0x200, Vælg om der skal bruges en popup der kan skrives i til funktionen Minutudregner.
+    Gui Add, edit, vp6_hastighed_ops x144 y32 w120 , %p6_hastighed_ops%
+    Gui Add, DropDownList, vp6_vl_slut x144 y64 w120 Choose%vl_default%, Med Inputbox|Uden Inputbox|
+    Gui Add, DropDownList, vp6_minut x144 y96 w120 Choose%min_default%, Med Inputbox|Uden Inputbox|
+    Gui Add, Button, gsysok, &OK
+    ; Gui Tab, Genvejsoversigt
+    ; Gui Font
+    ; Gui Font, s12 Bold
+    ; Gui Add, Text, x0 y0 w748 h642 +0x200, Generelt
+    Gui Font
+    Gui Font, s9, Segoe UI
+    Gui Tab, Genvejsoversigt Trio
+    Gui Font
+    Gui Font, s14 Bold q4, Segoe UI
+    Gui Add, Text, x16 y32 w120 h23 +0x200, Trio
+    Gui Font
+    Gui Font, s9, Segoe UI
+    Gui Add, Text, x8 y64 w227 h23 +0x200, % genvej_navn.3
+    Gui Add, Text, x272 y64 w260 h23 +0x200, % genvej_ren.3
+    Gui Add, Text, x8 y88 w227 h23 +0x200, % genvej_navn.22
+    Gui Add, Text, x272 y88 w227 h23 +0x200, % genvej_ren.22
+    Gui Add, Text, x8 y112 w227 h23 +0x200, % genvej_navn.23
+    Gui Add, Text, x272 y112 w227 h23 +0x200, % genvej_ren.23
+    Gui Add, Text, x8 y136 w227 h23 +0x200, % genvej_navn.24
+    Gui Add, Text, x272 y136 w227 h23 +0x200, % genvej_ren.24
+    Gui Add, Text, x8 y160 w227 h23 +0x200, % genvej_navn.25
+    Gui Add, Text, x272 y160 w227 h23 +0x200, % genvej_ren.25
+    Gui Add, Text, x8 y184 w227 h23 +0x200, % genvej_navn.26
+    Gui Add, Text, x272 y184 w227 h23 +0x200, % genvej_ren.26
+    Gui Add, Text, x8 y208 w227 h23 +0x200, % genvej_navn.27
+    Gui Add, Text, x272 y208 w227 h23 +0x200, % genvej_ren.27
+    Gui Add, Text, x8 y232 w227 h23 +0x200, % genvej_navn.28
+    Gui Add, Text, x272 y232 w227 h23 +0x200, % genvej_ren.28
+    Gui Add, Text, x8 y256 w227 h23 +0x200, % genvej_navn.29
+    Gui Add, Text, x272 y256 w227 h23 +0x200, % genvej_ren.29
+    Gui Add, Text, x8 y280 w227 h23 +0x200, % genvej_navn.30
+    Gui Add, Text, x272 y280 w227 h23 +0x200, % genvej_ren.30
+    Gui Add, Text, x8 y304 w227 h23 +0x200, % genvej_navn.31
+    Gui Add, Text, x272 y304 w227 h23 +0x200, % genvej_ren.31
+    Gui Add, Text, x8 y328 w227 h23 +0x200, % genvej_navn.32
+    Gui Add, Text, x272 y328 w227 h23 +0x200, % genvej_ren.32
+    ; Gui Add, Text, x8 y352 w227 h23 +0x200, % genvej_navn.33
+    ; Gui Add, Text, x272 y352 w227 h23 +0x200, % genvej_ren.33
+    Gui Add, Text, x8 y56 w198 h2 +0x10
+    Gui Tab, Genvejsoversigt P6
+    Gui Font
+    Gui Font, s14 Bold q4, Segoe UI
+    Gui Add, Text, x16 y32 w120 h23 +0x200, Planet
+    Gui Font
+    Gui Font, s9, Segoe UI
+    Gui Add, Text, x8 y56 w198 h2 +0x10
+    Gui Add, Text, x8 y64 w227 h23 +0x200, % genvej_navn.4
+    Gui Add, Text, x248 y64 w260 h23 +0x200, % genvej_ren.4
+    Gui Add, Text, x8 y88 w227 h23 +0x200, % genvej_navn.5
+    Gui Add, Text, x248 y88 w260 h23 +0x200, % genvej_ren.5
+    Gui Add, Text, x8 y112 w227 h23 +0x200, % genvej_navn.6
+    Gui Add, Text, x248 y112 w260 h23 +0x200, % genvej_ren.6
+    Gui Add, Text, x8 y136 w227 h23 +0x200, % genvej_navn.7
+    Gui Add, Text, x248 y136 w260 h23 +0x200, % genvej_ren.7
+    Gui Add, Text, x8 y160 w227 h23 +0x200, % genvej_navn.8
+    Gui Add, Text, x248 y160 w260 h23 +0x200, % genvej_ren.8
+    Gui Add, Text, x8 y184 w227 h23 +0x200, % genvej_navn.9
+    Gui Add, Text, x248 y184 w260 h23 +0x200, % genvej_ren.9
+    Gui Add, Text, x8 y208 w227 h23 +0x200, % genvej_navn.10
+    Gui Add, Text, x248 y208 w260 h23 +0x200, % genvej_ren.10
+    Gui Add, Text, x8 y232 w227 h23 +0x200, % genvej_navn.11
+    Gui Add, Text, x248 y232 w260 h23 +0x200, % genvej_ren.11
+    Gui Add, Text, x8 y256 w227 h23 +0x200, % genvej_navn.12
+    Gui Add, Text, x248 y256 w260 h23 +0x200, % genvej_ren.12
+    Gui Add, Text, x8 y280 w227 h23 +0x200, % genvej_navn.13
+    Gui Add, Text, x248 y280 w260 h23 +0x200, % genvej_ren.13
+    Gui Add, Text, x8 y304 w227 h23 +0x200, % genvej_navn.14
+    Gui Add, Text, x248 y304 w260 h23 +0x200, % genvej_ren.14
+    Gui Add, Text, x8 y328 w227 h23 +0x200, % genvej_navn.15
+    Gui Add, Text, x248 y328 w260 h23 +0x200, % genvej_ren.15
+    Gui Add, Text, x8 y352 w227 h23 +0x200, % genvej_navn.16
+    Gui Add, Text, x248 y352 w260 h23 +0x200, % genvej_ren.16
+    Gui Add, Text, x8 y376 w227 h23 +0x200, % genvej_navn.17
+    Gui Add, Text, x248 y376 w260 h23 +0x200, % genvej_ren.17
+    Gui Add, Text, x8 y400 w227 h23 +0x200, % genvej_navn.18
+    Gui Add, Text, x248 y400 w260 h23 +0x200, % genvej_ren.18
+    Gui Add, Text, x8 y424 w227 h23 +0x200, % genvej_navn.32
+    Gui Add, Text, x248 y424 w260 h23 +0x200, % genvej_ren.32
+    Gui Add, Text, x8 y448 w227 h23 +0x200, % genvej_navn.34
+    Gui Add, Text, x248 y448 w260 h23 +0x200, % genvej_ren.34
+    Gui Add, Text, x8 y472 w227 h23 +0x200, % genvej_navn.36
+    Gui Add, Text, x248 y472 w260 h23 +0x200, % genvej_ren.36
+    Gui Add, Text, x8 y496 w227 h23 +0x200, % genvej_navn.38
+    Gui Add, Text, x248 y496 w260 h23 +0x200, % genvej_ren.38
+    ; Gui Add, Text, x8 y520 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x248 y520 w260 h23 +0x200, % genvej_ren.3
+    ; Gui Add, Text, x8 y544 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x248 y544 w260 h23 +0x200, % genvej_ren.3
+    ; Gui Add, Text, x8 y568 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x248 y568 w260 h23 +0x200, % genvej_ren.3
+    ; Gui Add, Text, x8 y592 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x248 y592 w260 h23 +0x200, % genvej_ren.3
+    ; Gui Add, Text, x344 y64 w227 h23 +0x200,% genvej_navn.3
+    ; Gui Add, Text, x344 y88 w227 h23 +0x200,% genvej_navn.3
+    ; Gui Add, Text, x344 y112 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y136 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y160 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y184 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y208 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y232 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y256 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y280 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y304 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y328 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y352 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y376 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y400 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y424 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y472 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y496 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y520 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y544 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y568 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y592 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x344 y448 w227 h23 +0x200, % genvej_navn.3
+    ; Gui Add, Text, x248 y448 w97 h23 +0x200, % genvej_ren.3
+    ; Gui Add, Text, x248 y472 w97 h23 +0x200, % genvej_ren.3
+    ; Gui Add, Text, x248 y496 w97 h23 +0x200, % genvej_ren.3
+    ; Gui Add, Text, x248 y520 w97 h23 +0x200, % genvej_ren.3
+    ; Gui Add, Text, x248 y544 w97 h23 +0x200, % genvej_ren.3
+    ; Gui Add, Text, x248 y568 w97 h23 +0x200, % genvej_ren.3
+    ; Gui Add, Text, x248 y592 w97 h23 +0x200, % genvej_ren.3
+    Gui Tab, Oversigt
+    Gui Font
+    Gui Font, s14 Bold q4, Segoe UI
+    Gui Add, Text, x16 y32 w120 h23 +0x200, Generelt
+    Gui Font
+    Gui Font, s9, Segoe UI
+    Gui Add, Text, x8 y56 w198 h2 +0x10
+    Gui Add, Text, x8 y64 h23 +0x200, Skift mellem faner med pil højre/venstre. Genveje gælder som udgangspunkt kun når vinduet er p6 (ellers anført).
+    Gui Add, Text, x8 y100 w227 h23 +0x200, % genvej_navn.33
+    Gui Add, Text, x248 y100 w260 h23 +0x200, % genvej_ren.33
+    Gui Add, Text, x8 y128 w227 h23 +0x200, % genvej_navn.46
+    Gui Add, Text, x248 y128 w260 h23 +0x200, % genvej_ren.46
+    Gui Tab, Misc
+    Gui Tab
 
-if (p6_udregn_minut_ops = 0)
-    min_default := 2
-if (p6_udregn_minut_ops = 1)
-    min_default := 1
-if (p6_vl_slut_ops = 0)
-    vl_default := 2
-if (p6_vl_slut_ops = 1)
-    vl_default := 1
-sys_genveje_opslag()
-
-Gui Font, s9, Segoe UI
-Gui Color, 0xC0C0C0
-Gui Add, StatusBar,, Status Bar
-Gui Add, Tab3, x0 y0 w748 h642 0x54010240, Oversigt|Genvejsoversigt P6|Genvejsoversigt Trio|Opsætning|Hjælp|Misc
-Gui Tab, Opsætning
-; Fix placerinc
-Gui Add, Text, x285 y32 h23 +0x200, Tilpas efter P6-langsomhed. 1 = hurtigst. Skal bruge punktum (eks. 1.2)
-Gui Add, Text, x10 y32 w123 h23 +0x200, P6 - Hastighed
-Gui Add, Text, x8 y64 w123 h23 +0x200, P6 - Minutudregner
-Gui Add, Text, x285 y64 h23, Vælg om der skal bruges en popup der kan skrives i til funktionen Minutudregner.
-Gui Add, Text, x8 y96 w123 h23 +0x200, P6 - Minutudregner
-Gui Add, Text, x285 y96 h23 +0x200, Vælg om der skal bruges en popup der kan skrives i til funktionen Minutudregner.
-Gui Add, edit, vp6_hastighed_ops x144 y32 w120 , %p6_hastighed_ops%
-Gui Add, DropDownList, vp6_vl_slut x144 y64 w120 Choose%vl_default%, Med Inputbox|Uden Inputbox|
-Gui Add, DropDownList, vp6_minut x144 y96 w120 Choose%min_default%, Med Inputbox|Uden Inputbox|
-Gui Add, Button, gsysok, &OK
-; Gui Tab, Genvejsoversigt 
-; Gui Font
-; Gui Font, s12 Bold
-; Gui Add, Text, x0 y0 w748 h642 +0x200, Generelt
-Gui Font
-Gui Font, s9, Segoe UI
-Gui Tab, Genvejsoversigt Trio
-Gui Font
-Gui Font, s14 Bold q4, Segoe UI
-Gui Add, Text, x16 y32 w120 h23 +0x200, Trio
-Gui Font
-Gui Font, s9, Segoe UI
-Gui Add, Text, x8 y64 w227 h23 +0x200, % genvej_navn.3
-Gui Add, Text, x272 y64 w260 h23 +0x200, % genvej_ren.3
-Gui Add, Text, x8 y88 w227 h23 +0x200, % genvej_navn.22
-Gui Add, Text, x272 y88 w227 h23 +0x200, % genvej_ren.22
-Gui Add, Text, x8 y112 w227 h23 +0x200, % genvej_navn.23
-Gui Add, Text, x272 y112 w227 h23 +0x200, % genvej_ren.23
-Gui Add, Text, x8 y136 w227 h23 +0x200, % genvej_navn.24
-Gui Add, Text, x272 y136 w227 h23 +0x200, % genvej_ren.24
-Gui Add, Text, x8 y160 w227 h23 +0x200, % genvej_navn.25
-Gui Add, Text, x272 y160 w227 h23 +0x200, % genvej_ren.25
-Gui Add, Text, x8 y184 w227 h23 +0x200, % genvej_navn.26
-Gui Add, Text, x272 y184 w227 h23 +0x200, % genvej_ren.26
-Gui Add, Text, x8 y208 w227 h23 +0x200, % genvej_navn.27
-Gui Add, Text, x272 y208 w227 h23 +0x200, % genvej_ren.27
-Gui Add, Text, x8 y232 w227 h23 +0x200, % genvej_navn.28
-Gui Add, Text, x272 y232 w227 h23 +0x200, % genvej_ren.28
-Gui Add, Text, x8 y256 w227 h23 +0x200, % genvej_navn.29
-Gui Add, Text, x272 y256 w227 h23 +0x200, % genvej_ren.29
-Gui Add, Text, x8 y280 w227 h23 +0x200, % genvej_navn.30
-Gui Add, Text, x272 y280 w227 h23 +0x200, % genvej_ren.30
-Gui Add, Text, x8 y304 w227 h23 +0x200, % genvej_navn.31
-Gui Add, Text, x272 y304 w227 h23 +0x200, % genvej_ren.31
-Gui Add, Text, x8 y328 w227 h23 +0x200, % genvej_navn.32
-Gui Add, Text, x272 y328 w227 h23 +0x200, % genvej_ren.32
-; Gui Add, Text, x8 y352 w227 h23 +0x200, % genvej_navn.33
-; Gui Add, Text, x272 y352 w227 h23 +0x200, % genvej_ren.33
-Gui Add, Text, x8 y56 w198 h2 +0x10
-Gui Tab, Genvejsoversigt P6
-Gui Font
-Gui Font, s14 Bold q4, Segoe UI
-Gui Add, Text, x16 y32 w120 h23 +0x200, Planet
-Gui Font
-Gui Font, s9, Segoe UI
-Gui Add, Text, x8 y56 w198 h2 +0x10
-Gui Add, Text, x8 y64 w227 h23 +0x200, % genvej_navn.4
-Gui Add, Text, x248 y64 w260 h23 +0x200, % genvej_ren.4
-Gui Add, Text, x8 y88 w227 h23 +0x200, % genvej_navn.5
-Gui Add, Text, x248 y88 w260 h23 +0x200, % genvej_ren.5
-Gui Add, Text, x8 y112 w227 h23 +0x200, % genvej_navn.6
-Gui Add, Text, x248 y112 w260 h23 +0x200, % genvej_ren.6
-Gui Add, Text, x8 y136 w227 h23 +0x200, % genvej_navn.7
-Gui Add, Text, x248 y136 w260 h23 +0x200, % genvej_ren.7
-Gui Add, Text, x8 y160 w227 h23 +0x200, % genvej_navn.8
-Gui Add, Text, x248 y160 w260 h23 +0x200, % genvej_ren.8
-Gui Add, Text, x8 y184 w227 h23 +0x200, % genvej_navn.9
-Gui Add, Text, x248 y184 w260 h23 +0x200, % genvej_ren.9
-Gui Add, Text, x8 y208 w227 h23 +0x200, % genvej_navn.10
-Gui Add, Text, x248 y208 w260 h23 +0x200, % genvej_ren.10
-Gui Add, Text, x8 y232 w227 h23 +0x200, % genvej_navn.11
-Gui Add, Text, x248 y232 w260 h23 +0x200, % genvej_ren.11
-Gui Add, Text, x8 y256 w227 h23 +0x200, % genvej_navn.12
-Gui Add, Text, x248 y256 w260 h23 +0x200, % genvej_ren.12
-Gui Add, Text, x8 y280 w227 h23 +0x200, % genvej_navn.13
-Gui Add, Text, x248 y280 w260 h23 +0x200, % genvej_ren.13
-Gui Add, Text, x8 y304 w227 h23 +0x200, % genvej_navn.14
-Gui Add, Text, x248 y304 w260 h23 +0x200, % genvej_ren.14
-Gui Add, Text, x8 y328 w227 h23 +0x200, % genvej_navn.15
-Gui Add, Text, x248 y328 w260 h23 +0x200, % genvej_ren.15
-Gui Add, Text, x8 y352 w227 h23 +0x200, % genvej_navn.16
-Gui Add, Text, x248 y352 w260 h23 +0x200, % genvej_ren.16
-Gui Add, Text, x8 y376 w227 h23 +0x200, % genvej_navn.17
-Gui Add, Text, x248 y376 w260 h23 +0x200, % genvej_ren.17
-Gui Add, Text, x8 y400 w227 h23 +0x200, % genvej_navn.18
-Gui Add, Text, x248 y400 w260 h23 +0x200, % genvej_ren.18
-Gui Add, Text, x8 y424 w227 h23 +0x200, % genvej_navn.32
-Gui Add, Text, x248 y424 w260 h23 +0x200, % genvej_ren.32
-Gui Add, Text, x8 y448 w227 h23 +0x200, % genvej_navn.34
-Gui Add, Text, x248 y448 w260 h23 +0x200, % genvej_ren.34
-Gui Add, Text, x8 y472 w227 h23 +0x200, % genvej_navn.36
-Gui Add, Text, x248 y472 w260 h23 +0x200, % genvej_ren.36
-Gui Add, Text, x8 y496 w227 h23 +0x200, % genvej_navn.38
-Gui Add, Text, x248 y496 w260 h23 +0x200, % genvej_ren.38
-; Gui Add, Text, x8 y520 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x248 y520 w260 h23 +0x200, % genvej_ren.3
-; Gui Add, Text, x8 y544 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x248 y544 w260 h23 +0x200, % genvej_ren.3
-; Gui Add, Text, x8 y568 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x248 y568 w260 h23 +0x200, % genvej_ren.3
-; Gui Add, Text, x8 y592 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x248 y592 w260 h23 +0x200, % genvej_ren.3
-; Gui Add, Text, x344 y64 w227 h23 +0x200,% genvej_navn.3
-; Gui Add, Text, x344 y88 w227 h23 +0x200,% genvej_navn.3
-; Gui Add, Text, x344 y112 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y136 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y160 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y184 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y208 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y232 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y256 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y280 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y304 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y328 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y352 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y376 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y400 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y424 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y472 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y496 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y520 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y544 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y568 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y592 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x344 y448 w227 h23 +0x200, % genvej_navn.3
-; Gui Add, Text, x248 y448 w97 h23 +0x200, % genvej_ren.3
-; Gui Add, Text, x248 y472 w97 h23 +0x200, % genvej_ren.3
-; Gui Add, Text, x248 y496 w97 h23 +0x200, % genvej_ren.3
-; Gui Add, Text, x248 y520 w97 h23 +0x200, % genvej_ren.3
-; Gui Add, Text, x248 y544 w97 h23 +0x200, % genvej_ren.3
-; Gui Add, Text, x248 y568 w97 h23 +0x200, % genvej_ren.3
-; Gui Add, Text, x248 y592 w97 h23 +0x200, % genvej_ren.3
-Gui Tab, Oversigt
-Gui Font
-Gui Font, s14 Bold q4, Segoe UI
-Gui Add, Text, x16 y32 w120 h23 +0x200, Generelt
-Gui Font
-Gui Font, s9, Segoe UI
-Gui Add, Text, x8 y56 w198 h2 +0x10
-Gui Add, Text, x8 y64 h23 +0x200, Skift mellem faner med pil højre/venstre. Genveje gælder som udgangspunkt kun når vinduet er p6 (ellers anført).
-Gui Add, Text, x8 y100 w227 h23 +0x200, % genvej_navn.33
-Gui Add, Text, x248 y100 w260 h23 +0x200, % genvej_ren.33
-Gui Add, Text, x8 y128 w227 h23 +0x200, % genvej_navn.46
-Gui Add, Text, x248 y128 w260 h23 +0x200, % genvej_ren.46
-Gui Tab, Misc
-Gui Tab
-
-Gui Show, w747 h670, AHK
+    Gui Show, w747 h670, AHK
 Return
 
 Return
 gui, Submit, nohide
 
 sysok:
-GuiControlGet, p6_vl_slut
-GuiControlGet, p6_minut
-GuiControlGet, p6_hastighed_ops
-gui, destroy
-if (p6_vl_slut ="Med Inputbox")
-{
-    p6_vl_ops = 1
-    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 42, p6_vl_ops)
-}
-if (p6_vl_slut ="Uden Inputbox")
-{
-    p6_vl_ops = 0
-    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 42, p6_vl_ops)
-}
-if (p6_minut ="Med Inputbox")
-{
-    p6_minut_ops = 1
-    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 44, p6_minut_ops)
-}
-if (p6_minut ="Uden Inputbox")
-{
-    p6_minut_ops = 0
-    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 44, p6_minut_ops)
-}
-databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41, p6_hastighed_ops)
-
+    GuiControlGet, p6_vl_slut
+    GuiControlGet, p6_minut
+    GuiControlGet, p6_hastighed_ops
+    gui, destroy
+    if (p6_vl_slut ="Med Inputbox")
+    {
+        p6_vl_ops = 1
+        databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 42, p6_vl_ops)
+    }
+    if (p6_vl_slut ="Uden Inputbox")
+    {
+        p6_vl_ops = 0
+        databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 42, p6_vl_ops)
+    }
+    if (p6_minut ="Med Inputbox")
+    {
+        p6_minut_ops = 1
+        databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 44, p6_minut_ops)
+    }
+    if (p6_minut ="Uden Inputbox")
+    {
+        p6_minut_ops = 0
+        databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 44, p6_minut_ops)
+    }
+    databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41, p6_hastighed_ops)
 
 GuiEscape:
 genvejGuiClose:
-gui, destroy
+    gui, destroy
 return
 
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
@@ -2269,178 +2339,178 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     skærm := screenshot_aktivt_vindue()
     sleep 200
     gui, svigt:new
-gui, svigt:default
-Gui Font, w600
-Gui Add, Text, x16 y0 w120 h23 +0x200, Vognløbs&nummer
-Gui Font
-Gui Add, Edit, vVL x16 y24 w120 h21, %vl%
-Gui Font, s9, Segoe UI
-Gui Font, w600
-Gui Add, Text, x161 y0 w118 h25 +0x200, &Lukket?
-Gui Font
-Gui Font, s9, Segoe UI
-Gui Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
-Gui Add, Edit, vtid x200 y24 w79 h21, klokken
-Gui Add, CheckBox, vhelt x160 y48 w120 h23, Lukket &helt
-Gui Font, s9, Segoe UI
-Gui Font, w600
-Gui Add, Text, x304 y0 w120 h23 +0x200, Garanti eller Var.
-Gui Font
-Gui Font, s9, Segoe UI
-Gui Add, Radio, x304 y24 w120 h16, &Garanti
-Gui Add, Radio, x304 y40 w120 h32, G&arantivognløb i variabel tid
-Gui Add, Radio, vtype x304 y72 w120 h23, &Variabel
-Gui Font, w600
-Gui Add, Text, x16 y48 w120 h23 +0x200, &Årsag
-Gui Font
-Gui Font, s9, Segoe UI
-Gui Add, Edit, vårsag x16 y72 w120 h21
-Gui Font, w600
-Gui Add, Text, x8 y96 h23 +0x200, &Beskrivelse
-Gui Font
-Gui Font, s9, Segoe UI
-Gui Add, Edit, vbeskrivelse x8 y120 w410 h126
-Gui Add, Button, gsvigtok x176 y256 w80 h23, &OK
+    gui, svigt:default
+    Gui Font, w600
+    Gui Add, Text, x16 y0 w120 h23 +0x200, Vognløbs&nummer
+    Gui Font
+    Gui Add, Edit, vVL x16 y24 w120 h21, %vl%
+    Gui Font, s9, Segoe UI
+    Gui Font, w600
+    Gui Add, Text, x161 y0 w118 h25 +0x200, &Lukket?
+    Gui Font
+    Gui Font, s9, Segoe UI
+    Gui Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
+    Gui Add, Edit, vtid x200 y24 w79 h21, klokken
+    Gui Add, CheckBox, vhelt x160 y48 w120 h23, Lukket &helt
+    Gui Font, s9, Segoe UI
+    Gui Font, w600
+    Gui Add, Text, x304 y0 w120 h23 +0x200, Garanti eller Var.
+    Gui Font
+    Gui Font, s9, Segoe UI
+    Gui Add, Radio, x304 y24 w120 h16, &Garanti
+    Gui Add, Radio, x304 y40 w120 h32, G&arantivognløb i variabel tid
+    Gui Add, Radio, vtype x304 y72 w120 h23, &Variabel
+    Gui Font, w600
+    Gui Add, Text, x16 y48 w120 h23 +0x200, &Årsag
+    Gui Font
+    Gui Font, s9, Segoe UI
+    Gui Add, Edit, vårsag x16 y72 w120 h21
+    Gui Font, w600
+    Gui Add, Text, x8 y96 h23 +0x200, &Beskrivelse
+    Gui Font
+    Gui Font, s9, Segoe UI
+    Gui Add, Edit, vbeskrivelse x8 y120 w410 h126
+    Gui Add, Button, gsvigtok x176 y256 w80 h23, &OK
 
-Gui Show, w448 h297, Svigt
-ControlFocus, Button1, Svigt
+    Gui Show, w448 h297, Svigt
+    ControlFocus, Button1, Svigt
 ; ^Backspace::Send +^{Left}{Backspace}
 Return
 
 svigtok:
-gui, submit
-; MsgBox, , , % beskrivelse
-; GuiControlGet, tid
-; GuiControlGet, årsag
-; GuiControlGet, beskrivelse
-; GuiControlGet, lukket
-; GuiControlGet, helt
-; GuiControlGet, vl
-beskrivelse := StrReplace(beskrivelse, "`n", " ")
-if (lukket = 1 and StrLen(tid) != 4)
+    gui, submit
+    ; MsgBox, , , % beskrivelse
+    ; GuiControlGet, tid
+    ; GuiControlGet, årsag
+    ; GuiControlGet, beskrivelse
+    ; GuiControlGet, lukket
+    ; GuiControlGet, helt
+    ; GuiControlGet, vl
+    beskrivelse := StrReplace(beskrivelse, "`n", " ")
+    if (lukket = 1 and StrLen(tid) != 4)
     {
-    MsgBox, , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
-    sleep 20
-    Gui Show, w448 h297, Svigt
-    SendInput, !l{tab}^a
-    return
-    }
-if (StrLen(tid) = 4)
-    {
-    timer := SubStr(tid, 1, 2)
-    min := SubStr(tid, 3, 2)
-    tid_tjek := A_YYYY A_MM A_DD timer min
-    if tid_tjek is not Time
-        {
-        MsgBox, , , Skal være et gyldigt tidspunkt
+        MsgBox, , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
+        sleep 20
         Gui Show, w448 h297, Svigt
-        SendInput, ^a
+        SendInput, !l{tab}^a
         return
+    }
+    if (StrLen(tid) = 4)
+    {
+        timer := SubStr(tid, 1, 2)
+        min := SubStr(tid, 3, 2)
+        tid_tjek := A_YYYY A_MM A_DD timer min
+        if tid_tjek is not Time
+        {
+            MsgBox, , , Skal være et gyldigt tidspunkt
+            Gui Show, w448 h297, Svigt
+            SendInput, ^a
+            return
         }
-    tid := timer ":" min
+        tid := timer ":" min
     }
-if (type = 0)
+    if (type = 0)
     {
-    sleep 20
-    MsgBox, , Mangler VL-type, Husk at krydse af i typen af VL.
-    Gui Show, w448 h297, Svigt
-    return
+        sleep 20
+        MsgBox, , Mangler VL-type, Husk at krydse af i typen af VL.
+        Gui Show, w448 h297, Svigt
+        return
     }
-if (type = 1)
-    vl_type := "GV"
-if (type = 2)
-    vl_type := "(Variabel tid)"
-if (type = 3)
-    vl_type :=
-if (beskrivelse = "")
+    if (type = 1)
+        vl_type := "GV"
+    if (type = 2)
+        vl_type := "(Variabel tid)"
+    if (type = 3)
+        vl_type :=
+    if (beskrivelse = "")
     {
-    MsgBox, , Udfyld beskrivelse, Mangler beskrivelse af svigtet,
-    Gui Show, w448 h297, Svigt
-    SendInput, !b
-    return
+        MsgBox, , Udfyld beskrivelse, Mangler beskrivelse af svigtet,
+        Gui Show, w448 h297, Svigt
+        SendInput, !b
+        return
     }
-; MsgBox, , beskrivelse , % beskrivelse 
-; MsgBox, , type , % type 
-; MsgBox, , tid , % tid 
-; MsgBox, , årsag , % årsag 
-; MsgBox, , helt , % helt 
-; MsgBox, , vl , % dato
-if (type = 1 and lukket = 1 and helt = 0 and årsag != "")
+    ; MsgBox, , beskrivelse , % beskrivelse
+    ; MsgBox, , type , % type
+    ; MsgBox, , tid , % tid
+    ; MsgBox, , årsag , % årsag
+    ; MsgBox, , helt , % helt
+    ; MsgBox, , vl , % dato
+    if (type = 1 and lukket = 1 and helt = 0 and årsag != "")
     {
-    emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
-    ; MsgBox, , 1 , % emnefelt, 
-    gui, destroy
+        emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
+        ; MsgBox, , 1 , % emnefelt,
+        gui, destroy
     }
-if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
+    if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
     {
-    emnefelt := "Svigt VL" vl " " vl_type " - lukket kl. " tid " d. " dato
-    ; MsgBox, , 2, % emnefelt, 
-    gui, destroy
+        emnefelt := "Svigt VL" vl " " vl_type " - lukket kl. " tid " d. " dato
+        ; MsgBox, , 2, % emnefelt,
+        gui, destroy
     }
-if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
+    if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
     {
-    emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - d. " dato
-    ; MsgBox, , 3, % emnefelt, 
-    gui, destroy
+        emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - d. " dato
+        ; MsgBox, , 3, % emnefelt,
+        gui, destroy
     }
-if (type = 1 and lukket = 0 and helt = 0 and årsag = "")
+    if (type = 1 and lukket = 0 and helt = 0 and årsag = "")
     {
-    emnefelt := "Svigt VL" vl " d. " dato
-    gui, destroy
+        emnefelt := "Svigt VL" vl " d. " dato
+        gui, destroy
     }
-if (type = 1 and helt = 1 and årsag = "")
+    if (type = 1 and helt = 1 and årsag = "")
     {
-    emnefelt := "Svigt VL" vl " " vl_type ": ikke startet op d. " dato
-    ; MsgBox, , 5, % emnefelt, 
-    gui, destroy
+        emnefelt := "Svigt VL" vl " " vl_type ": ikke startet op d. " dato
+        ; MsgBox, , 5, % emnefelt,
+        gui, destroy
     }
-if (type = 1 and helt = 1 and årsag != "")
+    if (type = 1 and helt = 1 and årsag != "")
     {
-    emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - ikke startet op d. " dato
-    ; MsgBox, , 5.1, % emnefelt, 
-    gui, destroy
+        emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - ikke startet op d. " dato
+        ; MsgBox, , 5.1, % emnefelt,
+        gui, destroy
     }
-if (type = 2 and lukket = 0 and årsag !="")
+    if (type = 2 and lukket = 0 and årsag !="")
     {
-    emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - " dato
-    ; MsgBox, , 6, % emnefelt, 
-    gui, destroy
+        emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - " dato
+        ; MsgBox, , 6, % emnefelt,
+        gui, destroy
     }
-if (type = 2 and lukket = 0 and helt = 0 and årsag = "")
+    if (type = 2 and lukket = 0 and helt = 0 and årsag = "")
     {
-    emnefelt := "Svigt VL" vl " " vl_type " " årsag "d. " dato
-    ; MsgBox, , 7, % emnefelt, 
-    gui, destroy
+        emnefelt := "Svigt VL" vl " " vl_type " " årsag "d. " dato
+        ; MsgBox, , 7, % emnefelt,
+        gui, destroy
     }
-if (type = 2 and lukket = 0 and helt = 1 and årsag = "")
+    if (type = 2 and lukket = 0 and helt = 1 and årsag = "")
     {
-    emnefelt := "Svigt VL" vl " " vl_type ": ikke startet op d. " dato
-    ; MsgBox, , 7.1, % emnefelt, 
-    gui, destroy
+        emnefelt := "Svigt VL" vl " " vl_type ": ikke startet op d. " dato
+        ; MsgBox, , 7.1, % emnefelt,
+        gui, destroy
     }
-if (type = 2 and lukket = 1 and årsag != "")
+    if (type = 2 and lukket = 1 and årsag != "")
     {
-    emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
-    ; MsgBox, , 8, % emnefelt, 
-    gui, destroy
+        emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
+        ; MsgBox, , 8, % emnefelt,
+        gui, destroy
     }
-if (type = 2 and lukket = 1 and årsag = "")
+    if (type = 2 and lukket = 1 and årsag = "")
     {
-    emnefelt := "Svigt VL" vl " " vl_type " - lukket kl. " tid " d. " dato
-    ; MsgBox, , 9, % emnefelt, 
-    gui, destroy
+        emnefelt := "Svigt VL" vl " " vl_type " - lukket kl. " tid " d. " dato
+        ; MsgBox, , 9, % emnefelt,
+        gui, destroy
     }
-if (type = 3 and årsag != "")
+    if (type = 3 and årsag != "")
     {
-    emnefelt := "Svigt VL" vl ": " årsag " - d. " dato
-    ; MsgBox, , 10, % emnefelt, 
-    gui, destroy
+        emnefelt := "Svigt VL" vl ": " årsag " - d. " dato
+        ; MsgBox, , 10, % emnefelt,
+        gui, destroy
     }
-if (type = 3 and årsag = "")
+    if (type = 3 and årsag = "")
     {
-    emnefelt := "Svigt VL" vl " d. " dato
-    ; MsgBox, , 11, % emnefelt, 
-    gui, destroy
+        emnefelt := "Svigt VL" vl " d. " dato
+        ; MsgBox, , 11, % emnefelt,
+        gui, destroy
     }
     Outlook_nymail()
     sleep 200
@@ -2457,13 +2527,11 @@ if (type = 3 and årsag = "")
     sleep 40
     SendInput, ^v
     SendInput, {Home}
-    ; sleep 2000
-    ; Clipboard = %gemtklip%
-    ; ClipWait, 2, 1
-    ; gemtklip :=
+; sleep 2000
+; Clipboard = %gemtklip%
+; ClipWait, 2, 1
+; gemtklip :=
 ; MsgBox, , , % emnefelt "`n" beskrivelse
-
-
 
 Return
 
@@ -2473,9 +2541,8 @@ svigtGuiClose:
 Return
 
 svigt_gui:
-{
-vl := "31232"
-; MsgBox, , , % tidspunkt, 
+    {
+        vl := "31232"
+        ; MsgBox, , , % tidspunkt,
 
-
-}
+    }
