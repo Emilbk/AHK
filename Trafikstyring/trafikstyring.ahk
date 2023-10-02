@@ -122,11 +122,12 @@ Gui sygehus: Add, Button, gsygehusmenu1 vmisc x16 y152 w102 h23, Andr&e
 
 gui sygehusauh:+Labelsygehus
 Gui sygehusauh: Font, s9, Segoe UI
-Gui sygehusauh: Add, Button, gsygehusmenu2 v78450000 x16 y8 w102 h23, &Horsens syg.
+Gui sygehusauh: Add, Button, gsygehusmenu2 v78450000 x16 y8 w102 h23, &AUH syg.
 Gui sygehusauh: Add, Button, gsygehusmenu2 v78452501 x16 y32 w102 h23, &Dialyse
 Gui sygehusauh: Add, Button, gsygehusmenu2 v78454955 x16 y56 w102 h30, &Kræ.amb. og Kemo
-Gui sygehusauh: Add, Button, gsygehusmenu2 v78454114 x16 y87 w102 h23, &Ortopædkir.
-Gui sygehusauh: Add, Button, gsygehusmenu2 v78471000 x16 y111 w102 h23, &Psyk.
+Gui sygehusauh: Add, Button, gsygehusmenu2 v78454921 x16 y87 w102 h30, &Stråleterapi
+Gui sygehusauh: Add, Button, gsygehusmenu2 v78454114 x16 y111 w102 h23, &Ortopædkir.
+Gui sygehusauh: Add, Button, gsygehusmenu2 v78471000 x16 y135 w102 h23, &Psyk.
 
 gui sygehusrhg:+Labelsygehus
 Gui sygehusrhg: Font, s9, Segoe UI
@@ -184,7 +185,6 @@ return
 vis_sygehus_1()
 {
     Gui, sygehus:Show, w144 h200, Ring til Sygehus
-    SendInput, {alt}
 Return
 }
 vis_sygehus_2(navn)
