@@ -194,7 +194,7 @@ P6_hent_k()
     kørselsaftale := clipboard
     return kørselsaftale
 }
-
+;udfyld kørselsaftale
 P6_udfyld_k(k:="")
 {
     global s
