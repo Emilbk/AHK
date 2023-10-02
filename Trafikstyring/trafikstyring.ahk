@@ -122,7 +122,7 @@ Gui sygehus: Add, Button, gsygehusmenu1 vmisc x16 y152 w102 h23, Andr&e
 
 gui sygehusauh:+Labelsygehus
 Gui sygehusauh: Font, s9, Segoe UI
-Gui sygehusauh: Add, Button, gsygehusmenu2 v78450000 x16 y8 w102 h23, &Hovednummer
+Gui sygehusauh: Add, Button, gsygehusmenu2 v78450000 x16 y8 w102 h23, &Horsens syg.
 Gui sygehusauh: Add, Button, gsygehusmenu2 v78452501 x16 y32 w102 h23, &Dialyse
 Gui sygehusauh: Add, Button, gsygehusmenu2 v78454955 x16 y56 w102 h30, &Kræ.amb. og Kemo
 Gui sygehusauh: Add, Button, gsygehusmenu2 v78454114 x16 y87 w102 h23, &Ortopædkir.
@@ -130,27 +130,27 @@ Gui sygehusauh: Add, Button, gsygehusmenu2 v78471000 x16 y111 w102 h23, &Psyk.
 
 gui sygehusrhg:+Labelsygehus
 Gui sygehusrhg: Font, s9, Segoe UI
-Gui sygehusrhg: Add, Button, gsygehusmenu2 v78430000 x16 y8 w102 h23, &Hovednummer
+Gui sygehusrhg: Add, Button, gsygehusmenu2 v78430000 x16 y8 w102 h23, &RHG syg.
 Gui sygehusrhg: Add, Button, gsygehusmenu2 v78736760 x16 y32 w102 h23, &Dialyse
 Gui sygehusrhg: Add, Button, gsygehusmenu2 v78474500 x16 y56 w102 h23, &Psyk.
 Gui sygehusrhg: Add, Button, gsygehusmenu2 v78437463 x16 y80 w102 h23, H&erning Stråle.
 
 gui sygehusrand:+Labelsygehus
 Gui sygehusrand: Font, s9, Segoe UI
-Gui sygehusrand: Add, Button, gsygehusmenu2 v78420000 x16 y8 w102 h23, &Hovednummer
+Gui sygehusrand: Add, Button, gsygehusmenu2 v78420000 x16 y8 w102 h23, &Randers syg.
 Gui sygehusrand: Add, Button, gsygehusmenu2 v78421590 x16 y32 w102 h23, &Dialyse
 Gui sygehusrand: Add, Button, gsygehusmenu2 v78475300 x16 y56 w102 h23, &Psyk.
 
 gui sygehusvib:+Labelsygehus
 Gui sygehusvib: Font, s9, Segoe UI
-Gui sygehusvib: Add, Button, gsygehusmenu2 v78430000 x16 y8 w102 h23, &Hovednummer
+Gui sygehusvib: Add, Button, gsygehusmenu2 v78430000 x16 y8 w102 h23, &Viborg syg.
 Gui sygehusvib: Add, Button, gsygehusmenu2 v78447720 x16 y32 w102 h23, &Dialyse
 Gui sygehusvib: Add, Button, gsygehusmenu2 v78474000 x16 y56 w102 h23, &Psyk.
 
 
 gui sygehussil:+Labelsygehus
 Gui sygehussil: Font, s9, Segoe UI
-Gui sygehussil: Add, Button, gsygehusmenu2 v78415000 x16 y8 w102 h23, &Hovednummer
+Gui sygehussil: Add, Button, gsygehusmenu2 v78415000 x16 y8 w102 h23, &Silkeborg syg.
 Gui sygehussil: Add, Button, gsygehusmenu2 v78474000 x16 y32 w102 h23, &Psyk.
 ; Gui sygehussil: Add, Button, gsygehusmenu2 vnogetandet x16 y56 w102 h23, &Noget andet
 ; Gui sygehussil: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi 
@@ -159,7 +159,7 @@ Gui sygehussil: Add, Button, gsygehusmenu2 v78474000 x16 y32 w102 h23, &Psyk.
 
 gui sygehushor:+Labelsygehus
 Gui sygehushor: Font, s9, Segoe UI
-Gui sygehushor: Add, Button, gsygehusmenu2 v78425000 x16 y8 w102 h23, &Hovednummer
+Gui sygehushor: Add, Button, gsygehusmenu2 v78425000 x16 y8 w102 h23, &Horsens syg.
 Gui sygehushor: Add, Button, gsygehusmenu2 v78426160 x16 y32 w102 h23, &Dialyse
 Gui sygehushor: Add, Button, gsygehusmenu2 v78425871 x16 y56 w102 h23, &Røntg. før 09
 ; Gui sygehushor: Add, Button, gsygehusmenu2 x16 y80 w102 h23, &Vi 
@@ -172,7 +172,7 @@ Gui sygehusmisc: Add, Button, gsygehusmenu2 v78425000 x16 y8 w102 h23, &Brædstr
 Gui sygehusmisc: Add, Button, gsygehusmenu2 v78420000 x16 y32 w102 h23, &Grenå
 Gui sygehusmisc: Add, Button, gsygehusmenu2 vnogetandet x16 y56 w102 h23, &Holstebro`, Psykiatrien
 Gui sygehusmisc: Add, Button, gsygehusmenu2 v78437463 x16 y80 w102 h23, H&erning Stråle.
-Gui sygehusmisc: Add, Button, gsygehusmenu2 x16 y104 w102 h23, &o
+Gui sygehusmisc: Add, Button, gsygehusmenu2 v78419000 x16 y104 w102 h23, Hammel &Neuro.
 Gui sygehusmisc: Add, Button, gsygehusmenu2 x16 y128 w102 h23, &S
 
 
