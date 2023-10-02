@@ -1545,8 +1545,7 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
         vl := P6_hent_vl()
         if (telefon = "")
         {
-            MsgBox, , Intet indgående telefonnummer, Der er intet indgående telefonnummer, 1
-            return
+            telefon := "Ikke registreret"
         }
         else
         {
@@ -1560,21 +1559,29 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
             Input, næste, L1 V T4
             if (næste = "n")
             {
-                luk_igen:
+                loop:
+                {
+                    gå_til_næste_vl_funktion()
+                    tid_ind := clipboard
+                    dato := SubStr(tid_ind, 1, 2) SubStr(tid_ind, 4, 2)
+                    dato:= A_YYYY dato
+                    FormatTime, dato, %dato%, dddd d. 
                     sleep 100
-                    MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl% på den efterfølgende dato?,
+                    MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl% på %dato%?,
                     IfMsgBox, Yes
                     {
                         sleep 100
                         P6_tlf_vl_dato_efter(telefon)
                         sleep s * 800
-                        Goto, luk_igen
+                        Continue
                     }
                     IfMsgBox, no
                     {
                         P6_planvindue()
+                        Break
                     }
                 }
+            }
             return
         }
         return
