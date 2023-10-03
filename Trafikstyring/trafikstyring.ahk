@@ -1050,8 +1050,8 @@ Trio_opkald(ByRef telefon)
     WinActivate, ahk_class Addressbook
     ControlClick, Edit2, ahk_class Addressbook
     SendInput, ^a{del}
-    sleep 200
-    SendInput, {NumpadSub}
+    ; sleep 200
+    ; SendInput, {NumpadSub}
     sleep 200
     SendInput, %telefon%
     sleep 500
