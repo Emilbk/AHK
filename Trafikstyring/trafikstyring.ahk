@@ -1051,6 +1051,8 @@ Trio_opkald(ByRef telefon)
     ControlClick, Edit2, ahk_class Addressbook
     SendInput, ^a{del}
     sleep 200
+    SendInput, {NumpadSub}
+    sleep 200
     SendInput, %telefon%
     sleep 500
     SendInput, +{enter} ; undgår kobling ved igangværende opkald
