@@ -1305,7 +1305,7 @@ Flexfinder_til_p6()
 Outlook_nymail()
 {
     Run, %A_linefile%\..\lib\nymail.lnk, , ,
-    WinWaitActive, Ikke-navngivet - Meddelelse (HTML) , , , , 
+    WinWaitActive, Ikke-navngivet - Meddelelse (HTML) , , , ,
     Return
 }
 
@@ -1551,9 +1551,6 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
 
     SendInput, {ShiftUp}{AltUp}{CtrlUp}
     telefon := Trio_hent_tlf()
-    If (WinNotExist, PLANET, , ,)
-        MsgBox, , PLANET, P6 er ikke åben.,
-    Else
     {
         WinActivate, PLANET
         vl := P6_hent_vl()
@@ -1654,14 +1651,13 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
                         sleep 200
                         continue
                     }
-                    {
-                        IfMsgBox, no
+                    IfMsgBox, no
                         return
-                    }
-                    
                 }
+
             }
         }
+        return
     }
     WinActivate, PLANET
     vl := P6_hent_vl()
