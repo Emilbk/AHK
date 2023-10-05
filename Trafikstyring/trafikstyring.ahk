@@ -1889,7 +1889,9 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             IfMsgBox, Yes
             {
                 SendInput, ^s
-                sleep 500
+                ; KeyWait, Ctrl
+                sleep 2000
+                SendInput, {enter}
                 P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf. " initialer " ")
                 gui, cancel
                 return
@@ -1938,7 +1940,8 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             IfMsgBox, Yes
             {
                 SendInput, ^s
-                sleep 500
+                sleep 2000
+                SendInput, {enter}
                 P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, " s_stop " og tekst sendt til chf. " initialer " ")
                 gui, cancel
                 return
