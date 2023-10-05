@@ -2383,8 +2383,9 @@ svigtok:
     beskrivelse := StrReplace(beskrivelse, "`n", " ")
     if (lukket = 1 and StrLen(tid) != 4)
     {
+        sleep 100
         MsgBox, , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
-        sleep 20
+        sleep 100
         Gui Show, w448 h297, Svigt
         SendInput, !l{tab}^a
         return
@@ -2396,7 +2397,9 @@ svigtok:
         tid_tjek := A_YYYY A_MM A_DD timer min
         if tid_tjek is not Time
         {
+            sleep 100
             MsgBox, , , Skal være et gyldigt tidspunkt
+            sleep 100
             Gui Show, w448 h297, Svigt
             SendInput, ^a
             return
@@ -2405,8 +2408,9 @@ svigtok:
     }
     if (type = 0)
     {
-        sleep 20
+        sleep 100
         MsgBox, , Mangler VL-type, Husk at krydse af i typen af VL.
+        sleep 100
         Gui Show, w448 h297, Svigt
         return
     }
@@ -2418,7 +2422,9 @@ svigtok:
         vl_type :=
     if (beskrivelse = "")
     {
+        sleep 100
         MsgBox, , Udfyld beskrivelse, Mangler beskrivelse af svigtet,
+        sleep 100
         Gui Show, w448 h297, Svigt
         SendInput, !b
         return
