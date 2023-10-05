@@ -1020,14 +1020,6 @@ p6_hent_kunde_tlf(ByRef telefon:="")
     return
 }
 
-; ***
-; Tag skærmprint af aktivt vindue
-screenshot_aktivt_vindue()
-{
-    SendInput, !{PrintScreen}
-    ClipWait, 3, 1
-    Return
-}
 
 ;; Telenor
 
@@ -2336,11 +2328,10 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
 
     ; svigt := []
     gemtklip := ClipboardAll
-    sleep 500
     vl := P6_hent_vl()
-    sleep 100
-    skærm := screenshot_aktivt_vindue()
-    sleep 200
+    clipboard :=
+    sleep 500
+    SendInput, !{PrintScreen}
     gui, svigt:new
     gui, svigt:default
     Gui Font, w600
@@ -2373,14 +2364,13 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     Gui Font
     Gui Font, s9, Segoe UI
     Gui Add, Edit, vbeskrivelse x8 y120 w410 h126
-    Gui Add, CheckBox, vgemt_ja x20 y261, Brug &tidligere skærmklip
+    Gui Add, CheckBox, vgemt_ja x20 y261, Brug &forrige skærmklip
     Gui Add, Button, gsvigtok x176 y256 w80 h23, &OK
 
     Gui Show, w448 h297, Svigt
     ControlFocus, Button1, Svigt
 ; ^Backspace::Send +^{Left}{Backspace}
 Return
-
 svigtok:
     gui, submit
     ; MsgBox, , , % beskrivelse
@@ -2532,9 +2522,10 @@ svigtok:
     if (gemt_ja = 1)
     {
         clipboard := gemtklip
+        sleep 200
         SendInput, ^v
     }
-    else
+    if (gemt_ja = 0)
     {
         SendInput, ^v
     }
