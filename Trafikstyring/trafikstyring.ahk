@@ -2544,8 +2544,8 @@ svigtok:
 ; ClipWait, 2, 1
 ; gemtklip :=
 ; MsgBox, , , % emnefelt "`n" beskrivelse
-
-Return
+    gemtklip :=
+    Return
 
 svigtGuiEscape:
 svigtGuiClose:
