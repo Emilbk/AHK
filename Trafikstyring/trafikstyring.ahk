@@ -1176,6 +1176,11 @@ Trio_hent_tlf()
     sleep 200
     Sendinput !+k
     ClipWait, 3
+    if (clipboard = "")
+    {
+        SendInput, !+k
+        ClipWait, 3
+    }
     Telefon := Clipboard
     rentelefon := Substr(Telefon, 4, 8)
     return rentelefon
@@ -1994,7 +1999,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     sleep 600
     if (telefon = "")
     {
-        MsgBox, , , Intet indgående telefonnummer
+        MsgBox, , , Intet indgående telefonnummer el. hemmeligt nummer
         return
     }
     vl := P6_hent_vl_fra_tlf(telefon)
