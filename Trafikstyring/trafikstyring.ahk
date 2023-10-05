@@ -2335,10 +2335,10 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     ; FormatTime, tid, , HH:mm
 
     ; svigt := []
-    ; gemtklip := ClipboardAll
-    ; sleep 400
-    vl := P6_hent_vl()
+    gemtklip := ClipboardAll
     sleep 500
+    vl := P6_hent_vl()
+    sleep 100
     skærm := screenshot_aktivt_vindue()
     sleep 200
     gui, svigt:new
@@ -2373,6 +2373,7 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     Gui Font
     Gui Font, s9, Segoe UI
     Gui Add, Edit, vbeskrivelse x8 y120 w410 h126
+    Gui Add, CheckBox, vgemt_ja x20 y261, Brug &tidligere skærmklip
     Gui Add, Button, gsvigtok x176 y256 w80 h23, &OK
 
     Gui Show, w448 h297, Svigt
@@ -2528,7 +2529,15 @@ svigtok:
     sleep 500
     SendInput, {Enter 2}
     sleep 40
-    SendInput, ^v
+    if (gemt_ja = 1)
+    {
+        clipboard := gemtklip
+        SendInput, ^v
+    }
+    else
+    {
+        SendInput, ^v
+    }
     SendInput, {Home}
 ; sleep 2000
 ; Clipboard = %gemtklip%
@@ -2543,9 +2552,3 @@ svigtGuiClose:
     Gui, destroy
 Return
 
-svigt_gui:
-    {
-        vl := "31232"
-        ; MsgBox, , , % tidspunkt,
-
-    }
