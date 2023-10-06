@@ -1880,9 +1880,8 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             GuiControlGet, s_stop, , ,
             GuiControlGet, k_navn, , ,
             GuiControlGet, k_navn2, , ,
-            tekst := "Jeg har meldt st. " f_stop "`, " . k_navn " `, forgæves og sendt st. " s_stop " `, " k_navn2 . " , i stedet. /" bruger
             ; MsgBox, , , % tekst,
-            P6_tekstTilChf("Jeg har meldt st. " f_stop "`, " . k_navn "P`, forgæves og sendt st. " s_stop "`, " k_navn2 . ", i stedet. /" bruger)
+            P6_tekstTilChf("Jeg kan ikke ringe dig op. Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 . ", i stedet. /" bruger)
             sleep 500
             MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
             IfMsgBox, Yes
@@ -1897,6 +1896,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             }
             IfMsgBox, No
             {
+                sleep 200
                 MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
                 gui, cancel
             }
@@ -1947,6 +1947,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             }
             IfMsgBox, No
             {
+                sleep 200
                 MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
                 gui, cancel
             }
@@ -1970,6 +1971,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         }
         IfMsgBox, No
         {
+            sleep 200
             MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
             gui, cancel
         }
@@ -1993,6 +1995,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         }
         IfMsgBox, No
         {
+            sleep 200
             MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
             gui, cancel
         }
