@@ -1943,7 +1943,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 SendInput, ^s
                 sleep 2000
                 SendInput, {enter}
-                P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, " s_stop " og tekst sendt til chf. " initialer " ")
+                P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, " s_stop " og tekst sendt til chf. " initialer)
                 gui, cancel
                 return
             }
@@ -1967,7 +1967,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, ^s
             sleep 2000
             SendInput, {enter}
-            P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. VL låst" initialer " ")
+            P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. VL låst" initialer)
             gui, cancel
             return
         }
@@ -1991,7 +1991,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, ^s
             sleep 2000
             SendInput, {enter}
-            P6_notat("WakeUp sendt" initialer " ")
+            P6_notat("WakeUp sendt" initialer)
             gui, cancel
             return
         }
