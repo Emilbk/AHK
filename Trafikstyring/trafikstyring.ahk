@@ -1860,8 +1860,8 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         Gui Add, Edit, vs_stop x214 y32 w120 h21
         Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
         Gui Add, Edit, vk_navn x14 y106 w120 h21
-        Gui Add, Text, x16 y86 w120 h23 +0x200, Evt. navn på kunde
-        Gui Add, Text, x215 y84 w120 h23 +0x200, Evt. navn på kunde
+        Gui Add, Text, x16 y86 w120 h23 +0x200, Navn på kunde forg.
+        Gui Add, Text, x215 y84 w120 h23 +0x200, Navn på kunde sendt
         Gui Add, Edit, vk_navn2 x216 y103 w120 h21
         Gui Add, Button, gf_chfok x81 y172 w80 h23 +Default, &OK
         Gui Add, Button, gf_annuller x216 y171 w80 h23, &Annuller
@@ -1883,7 +1883,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             GuiControlGet, k_navn2, , ,
             tekst := "Jeg har meldt st. " f_stop "`, " . k_navn " `, forgæves og sendt st. " s_stop " `, " k_navn2 . " , i stedet. /" bruger
             ; MsgBox, , , % tekst,
-            P6_tekstTilChf("Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 . ", i stedet. /" bruger)
+            P6_tekstTilChf("Jeg har meldt st. " f_stop "`, " . k_navn "P`, forgæves og sendt st. " s_stop "`, " k_navn2 . ", i stedet. /" bruger)
             sleep 500
             MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
             IfMsgBox, Yes
@@ -1913,8 +1913,8 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         Gui Add, Edit, vs_stop x214 y32 w120 h21
         Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
         Gui Add, Edit, vk_navn x14 y106 w120 h21
-        Gui Add, Text, x16 y86 w120 h23 +0x200, Evt. navn på kunde
-        Gui Add, Text, x215 y84 w120 h23 +0x200, Evt. navn på kunde
+        Gui Add, Text, x16 y86 w120 h23 +0x200, Navn på kunde kvit.
+        Gui Add, Text, x215 y84 w120 h23 +0x200, Navn på kunde sendt
         Gui Add, Edit, vk_navn2 x216 y103 w120 h21
         Gui Add, Button, gk_chfok x81 y172 w80 h23 +Default, &OK
         Gui Add, Button, gk_annuller x216 y171 w80 h23, &Annuller
@@ -1934,7 +1934,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             GuiControlGet, s_stop, , ,
             GuiControlGet, k_navn, , ,
             GuiControlGet, k_navn2, , ,
-            P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har kvitteret for " f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 . "/" bruger)
+            P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st." f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 . "/" bruger)
             sleep 500
             MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
             IfMsgBox, Yes
