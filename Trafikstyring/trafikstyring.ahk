@@ -1020,7 +1020,6 @@ p6_hent_kunde_tlf(ByRef telefon:="")
     return
 }
 
-
 ;; Telenor
 
 ;; Trio
@@ -1953,6 +1952,52 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             }
         return
     }
+    if (valgt = "p")
+    {
+
+        P6_tekstTilChf("Jeg kan ikke ringe dig op, din privatrejse er ikke kvitteret. Vognløbet er låst, ring til driften, hvis du er ude at køre.")
+        sleep 500
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 2000
+            SendInput, {enter}
+            P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. VL låst" initialer " ")
+            gui, cancel
+            return
+        }
+        IfMsgBox, No
+        {
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+        }
+        return
+    }
+    if (valgt = "w")
+    {
+
+        P6_tekstTilChf("Jeg kan ikke ringe dig op, der er ikke bedt om vognløb start. Ring til driften, hvis du er ude at køre, ellers bliver vognløbet lukket.")
+        sleep 500
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør? Husk at låse VL,
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 2000
+            SendInput, {enter}
+            P6_notat("WakeUp sendt" initialer " ")
+            gui, cancel
+            return
+        }
+        IfMsgBox, No
+        {
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+        }
+        return
+    }
     return
 #IfWinActive ; udelukkende for at resette indentering i auto-formatering
 
@@ -2539,13 +2584,13 @@ svigtok:
         SendInput, ^v
     }
     SendInput, {Home}
-; sleep 2000
-; Clipboard = %gemtklip%
-; ClipWait, 2, 1
-; gemtklip :=
-; MsgBox, , , % emnefelt "`n" beskrivelse
+    ; sleep 2000
+    ; Clipboard = %gemtklip%
+    ; ClipWait, 2, 1
+    ; gemtklip :=
+    ; MsgBox, , , % emnefelt "`n" beskrivelse
     gemtklip :=
-    Return
+Return
 
 svigtGuiEscape:
 svigtGuiClose:
