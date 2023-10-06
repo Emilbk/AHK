@@ -2027,6 +2027,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             return
         }
         return
+    }
     #IfWinActive ; udelukkende for at resette indentering i auto-formatering
 
     ;; Trio
