@@ -42,6 +42,7 @@ genvej_ren := []
 genvej_navn := []
 ;   1       2               3
 s := bruger_genvej.41
+tlf :=
 ;   bruger_genvej  telenor_opr     telenor_ahk
 
 ;; hotkeydef.
@@ -106,7 +107,6 @@ Hotkey, % bruger_genvej.40, l_excel_vl_til_P6_B ; ^w
 Hotkey, IfWinActive, ,
 
 ;; GUI
-
 ; gui-definitioner
 
 ; Ring til sygehus
@@ -175,8 +175,51 @@ Gui sygehusmisc: Add, Button, gsygehusmenu2 v78437463 x16 y80 w102 h23, H&erning
 Gui sygehusmisc: Add, Button, gsygehusmenu2 v78419000 x16 y104 w102 h23, Hammel &Neuro.
 Gui sygehusmisc: Add, Button, gsygehusmenu2 x16 y128 w102 h23, &S
 
+; Trio_tlf_knap
+; Trio_tlf_knap
+Gui tlf: +Labeltlf
+Gui tlf: -MinimizeBox -MaximizeBox  +AlwaysOnTop  +Owner -Caption +ToolWindow +hwndhGui
+Gui tlf: Font, s12, Segoe UI
+Gui tlf: Add, Button, vtlfKopi gtlfKopi x0 y0 w120 h23, Tlf: %tlf_knap%
+
+Gui tlf: Show, x995 y3 w120 h23 NA, Tlf
+
+
+
 ;; autoexec slut
-return
++e::
+{
+    if WinExist("Tlf" , "", "", "")
+        gui tlf: hide
+    Else
+        gui tlf: show, NA
+    return
+}
+
+^e::
+{
+    ; global tlf_knap
+    global tlf
+
+    ; SendInput, +!k
+    ; tlf := "test
+    tlf := "+4512345678"
+    if (SubStr(tlf, 1, 1) = "+")
+        tlf_knap := SubStr(tlf, 4, 4) . " " . (SubStr(tlf, 8, 4))
+    else
+        tlf_knap := SubStr(tlf, 1, 4) . " " . SubStr(tlf, 5, 4)
+    
+    sleep 100
+    GuiControl, tlf:text, Button1, Tlf: %tlf_knap% 
+    return
+}
+
+tlfKopi:
+{
+    Clipboard := tlf
+    return
+}
+
 
 vis_sygehus_1()
 {
@@ -1506,6 +1549,7 @@ return
 TaxaGuiEscape:
     Gui, Destroy
 return
+
 
 ;; Testknap
 
