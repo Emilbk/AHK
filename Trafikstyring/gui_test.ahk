@@ -5,20 +5,20 @@ SetWorkingDir %A_ScriptDir%
 SetBatchLines -1
 
 tlf := "98900423"
+tlf_knap := SubStr(tlf, 1, 4) . " " . SubStr(tlf, 5, 4)
+SysGet, primær_skærm, monitorPrimary
+; MsgBox, , , % primær_skærm, 
 
-Gui -MinimizeBox -MaximizeBox  +AlwaysOnTop  +Owner 
-Gui Font, s9, Segoe UI
-Gui Add, Button, vtlfKopi gtlfKopi x0 y0 w80 h23, %tlf%
+Gui tlf: +Labeltlf
+Gui tlf: -MinimizeBox -MaximizeBox  +AlwaysOnTop  +Owner -Caption +ToolWindow +hwndhGui
+Gui tlf: Font, s12, Segoe UI
+Gui tlf: Add, Button, vtlfKopi gtlfKopi x0 y0 w120 h23, Tlf: %tlf_knap%
 
-Gui Show, x5122 y505 w81 h23
+Gui tlf: Show, x995 y3 w120 h23 NA, Tlf
 Return
 
 GuiSize:
-    If (A_EventInfo == 1) {
-        Return
-    }
 
-Return
 
 GuiContextMenu:
 Return
@@ -27,16 +27,32 @@ GuiEscape:
 GuiClose:
     ExitApp
 
++e::
+{
+    if WinExist("Tlf" , "", "", "")
+        gui tlf: hide
+    Else
+        gui tlf: show, NA
+    return
+}
+
 ^e::
 {
-    InputBox, tlf, Tlf, , , , , , , , ,
-    GuiControl, text, Button1, %tlf% 
+    ; global tlf_knap
+    ; global tlf
+
+    ; SendInput, +!k
+    ; tlf := "test
+    tlf := "12345678"
+    tlf_knap := SubStr(tlf, 1, 4) . " " . SubStr(tlf, 5, 4)
+    
+    sleep 100
+    GuiControl, tlf:text, Button1, Tlf: %tlf_knap% 
     return
 }
 
 tlfKopi:
 {
     Clipboard := tlf
-    MsgBox, %tlf% er kopieret til udklipsholderen
     return
 }
