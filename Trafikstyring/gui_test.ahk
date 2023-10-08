@@ -4,9 +4,11 @@
 SetWorkingDir %A_ScriptDir%
 SetBatchLines -1
 
-Gui -MinimizeBox -MaximizeBox  +AlwaysOnTop  +Owner
+tlf := "98900423"
+
+Gui -MinimizeBox -MaximizeBox  +AlwaysOnTop  +Owner 
 Gui Font, s9, Segoe UI
-Gui Add, Button, x0 y0 w80 h23, 98900423
+Gui Add, Button, vtlfKopi gtlfKopi x0 y0 w80 h23, %tlf%
 
 Gui Show, x5122 y505 w81 h23
 Return
@@ -24,3 +26,17 @@ Return
 GuiEscape:
 GuiClose:
     ExitApp
+
+^e::
+{
+    InputBox, tlf, Tlf, , , , , , , , ,
+    GuiControl, text, Button1, %tlf% 
+    return
+}
+
+tlfKopi:
+{
+    Clipboard := tlf
+    MsgBox, %tlf% er kopieret til udklipsholderen
+    return
+}
