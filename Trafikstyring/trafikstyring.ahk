@@ -185,55 +185,18 @@ Gui tlf: Add, Button, vtlfKopi gtlfKopi x0 y0 w120 h23, Tlf: %tlf_knap%
 Gui tlf: Show, x995 y3 w120 h23 NA, Tlf
 
 
-
-;; autoexec slut
-+e::
-{
-    if WinExist("Tlf" , "", "", "")
-        gui tlf: hide
-    Else
-        gui tlf: show, NA
-    return
-}
-
-^e::
-{
-    ; global tlf_knap
-    global tlf
-
-    ; SendInput, +!k
-    ; tlf := "test
-    tlf := "+4512345678"
-    if (SubStr(tlf, 1, 1) = "+")
-        tlf_knap := SubStr(tlf, 4, 4) . " " . (SubStr(tlf, 8, 4))
-    else
-        tlf_knap := SubStr(tlf, 1, 4) . " " . SubStr(tlf, 5, 4)
-    
-    sleep 100
-    GuiControl, tlf:text, Button1, Tlf: %tlf_knap% 
-    return
-}
-
 tlfKopi:
 {
+    clipboard :=
+    tlf := Trio_hent_tlf()
     Clipboard := tlf
+    ClipWait, 3, 
     return
 }
 
 
-vis_sygehus_1()
-{
-    Gui, sygehus:Show, w144 h200, Ring til Sygehus
-    Return
-}
-vis_sygehus_2(navn)
-{
-    if (navn = "misc")
-        Gui, sygehus%navn%:Show, w300 h300, AUH
-    else
-        Gui, sygehus%navn%:Show, w144 h166, AUH
-    Return
-}
+
+;; GUI-labels
 
 sygehusmenu1:
     GuiControlGet, navn, sygehus: name , % A_GuiControl
@@ -1216,9 +1179,27 @@ Trio_hent_tlf()
         ClipWait, 3
     }
     Telefon := Clipboard
+    trio_tlf_knap(Telefon)
     rentelefon := Substr(Telefon, 4, 8)
     return rentelefon
 }
+
+
+trio_tlf_knap(ByRef tlf := "")
+{
+    ; global tlf
+    ; SendInput, +!k
+    ; tlf := "test
+    ; tlf := "+4512345678"
+    if (SubStr(tlf, 1, 1) = "+")
+        tlf_knap := SubStr(tlf, 4, 4) . " " . (SubStr(tlf, 8, 4))
+    else
+        tlf_knap := SubStr(tlf, 1, 4) . " " . SubStr(tlf, 5, 4) 
+    sleep 100
+    GuiControl, tlf:text, Button1, Tlf: %tlf_knap% 
+    return
+}
+
 
 ;; Flexfinder
 
@@ -1549,6 +1530,20 @@ return
 TaxaGuiEscape:
     Gui, Destroy
 return
+
+vis_sygehus_1()
+{
+    Gui, sygehus:Show, w144 h200, Ring til Sygehus
+    Return
+}
+vis_sygehus_2(navn)
+{
+    if (navn = "misc")
+        Gui, sygehus%navn%:Show, w300 h300, AUH
+    else
+        Gui, sygehus%navn%:Show, w144 h166, AUH
+    Return
+}
 
 
 ;; Testknap
