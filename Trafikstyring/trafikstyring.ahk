@@ -185,6 +185,8 @@ Gui tlf: Add, Button, vtlfKopi gtlfKopi x0 y0 w120 h23, Tlf: %tlf_knap%
 Gui tlf: Show, x995 y3 w120 h23 NA, Tlf
 
 
+;; GUI-labels
+
 tlfKopi:
 {
     clipboard :=
@@ -196,7 +198,6 @@ tlfKopi:
 
 
 
-;; GUI-labels
 
 sygehusmenu1:
     GuiControlGet, navn, sygehus: name , % A_GuiControl
@@ -684,7 +685,7 @@ P6_input_sluttid()
     {
         InputBox, sidste_stop, Sidste stop, Tast tid for sidste stop (4 cifre)
         if (ErrorLevel = "1")
-            Return
+            Return 0
         if (sidste_stop = "")
         {
             return nu_plus_5
@@ -756,7 +757,7 @@ P6_input_sluttid()
     }
     Input, sidste_stop, T5, {Enter}{escape}
     if (ErrorLevel = "EndKey:Escape")
-        Return
+        Return 0
     if (ErrorLevel = "Timeout")
     {MsgBox, , Timeout , Det tog for lang tid.
         return 0
@@ -1847,7 +1848,8 @@ l_p6_udregn_minut:
     Gui Add, Button, gok x24 y88 w80 h23 +Default, &OK
     Gui Add, Button, gudklip x144 y88 w80 h23, Til &Udklip
     Gui Add, Text, x72 y24 w120 h23 +0x200 +Center, %tid_tekst%
-
+    
+    sleep 100
     Gui Show, w260 h125, Resultat
 Return
 
