@@ -1,4 +1,4 @@
-#Requires AutoHotkey v1.1
+﻿#Requires AutoHotkey v1.1
 
 ; Version: 2023.07.05.2
 ; https://gist.github.com/e6062286ac7f4c35b612d3a53535cc2a
