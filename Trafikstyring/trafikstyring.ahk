@@ -132,7 +132,7 @@ Gui sygehusauh: Add, Button, gsygehusmenu2 v78471000 x16 y135 w102 h23, &Psyk.
 gui sygehusrhg:+Labelsygehus
 Gui sygehusrhg: Font, s9, Segoe UI
 Gui sygehusrhg: Add, Button, gsygehusmenu2 v78430000 x16 y8 w102 h23, &RHG syg.
-Gui sygehusrhg: Add, Button, gsygehusmenu2 v78736760 x16 y32 w102 h23, &Dialyse
+Gui sygehusrhg: Add, Button, gsygehusmenu2 v78436760 x16 y32 w102 h23, &Dialyse
 Gui sygehusrhg: Add, Button, gsygehusmenu2 v78474500 x16 y56 w102 h23, &Psyk.
 Gui sygehusrhg: Add, Button, gsygehusmenu2 v78437463 x16 y80 w102 h23, H&erning Stråle.
 
