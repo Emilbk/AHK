@@ -35,7 +35,6 @@ json_str := JSON.Dump(parsed)
 
 parsed := JSON.Load(json_str)
 
-
 InputBox, gade, Gadenavn og nr
 ; InputBox, postnr, Postnr
 ; InputBox, kommune, Kommune
@@ -87,15 +86,16 @@ for h, r in knudepunkt.ind
         if (h2 = 2)
         {
             knudepunkt.resultat[h][h2] := r2 - knudepunkt.ValgtLat[1]
+
         }
-        if (h2 = 3)
+        else if (h2 = 3)
         {
             knudepunkt.resultat[h][3] := r2 - knudepunkt.ValgtLong[1]
         }
     }
 
 knudepunkt.udvalg := []
-antal_udvalg := 20
+antal_udvalg := 40
 antal := 0
 y := 0.05
 x := -0.05
@@ -177,9 +177,10 @@ igen:
     ;         MsgBox, , , r2,
 
     for h, r in knudepunkt.udvalg
-    {
-        knudepunkt.udvalg[h].Push(knudepunkt.udvalg[h][3] "," knudepunkt.udvalg[h][2])
-    }
+        if (h = 98)
+        {
+            knudepunkt.udvalg[h].Push(knudepunkt.udvalg[h][3] "," knudepunkt.udvalg[h][2])
+        }
 
     ; json_str = "{""locations"":[[9.70093,48.477473],[9.207916,49.153868],[37.573242,55.801281],[115.663757,38.106467]],""metrics"":[""distance""],""sources"":[0],""units":""km""}"
 
@@ -220,10 +221,9 @@ igen:
     ; str.sources := [0]
     ; str.units := "km"
 
-
     json_str := JSON.Dump(str)
-    
-    MsgBox, , , % json_str, 
+
+    MsgBox, , , % json_str,
 
     ; {"locations":[[9.70093,48.477473],[9.207916,49.153868],[37.573242,55.801281],[115.663757,38.106467]],"metrics":["distance"],"sources":[0],"units":"km"}
 
@@ -253,51 +253,57 @@ igen:
     ; test := [{"geocoding":{"version":"0.2","attribution":"https://openrouteservice.org/terms-of-service/#attribution-geocode","query":{"text":"møllevangen 23 8310 Århus","size":10,"private":false,"boundary.country":["DNK"],"lang":{"name":"English","iso6391":"en","iso6393":"eng","via":"default","defaulted":true},"querySize":20,"parser":"libpostal","parsed_text":{"street":"møllevangen","housenumber":"23","postalcode":"8310","city":"århus"}},"engine":{"name":"Pelias","author":"Mapzen","version":"1.0"},"timestamp":1696963717687},"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[10.151441,56.102406]},"properties":{"id":"node/5665485241","gid":"openstreetmap:address:node/5665485241","layer":"address","source":"openstreetmap","source_id":"node/5665485241","name":"Møllevangen 23","housenumber":"23","street":"Møllevangen","postalcode":"8310","confidence":1,"match_type":"exact","accuracy":"point","country":"Denmark","country_gid":"whosonfirst:country:85633121","country_a":"DNK","region":"Central Jutland","region_gid":"whosonfirst:region:85682597","region_a":"MJ","localadmin":"Aarhus","localadmin_gid":"whosonfirst:localadmin:1394013977","locality":"Aarhus","locality_gid":"whosonfirst:locality:101749163","continent":"Europe","continent_gid":"whosonfirst:continent:102191581","label":"Møllevangen 23, Aarhus, MJ, Denmark"}}],"bbox":[10.151441,56.102406,10.151441,56.102406]}]
     ; MsgBox, 0x40040, "Get",% response.text,
     MsgBox, 0x40040, "Get",% response_matrix.text,
-; OutputDebug, % response.text
-; geo := SubStr(response.Text, -2, -11)
-; MsgBox, , , % geo,
+    ; OutputDebug, % response.text
+    ; geo := SubStr(response.Text, -2, -11)
+    ; MsgBox, , , % geo,
 
-; {"geocoding":{"version":"0.2","attribution":"https://openrouteservice.org/terms-of-service/#attribution-geocode","query":{"text":"møllevangen 23 8310 Århus","size":10,"private":false,"boundary.country":["DNK"],"lang":{"name":"English","iso6391":"en","iso6393":"eng","via":"default","defaulted":true},"querySize":20,"parser":"libpostal","parsed_text":{"street":"møllevangen","housenumber":"23","postalcode":"8310","city":"århus"}},"engine":{"name":"Pelias","author":"Mapzen","version":"1.0"},"timestamp":1696964025721},"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[10.151441,56.102406]},"properties":{"id":"node/5665485241","gid":"openstreetmap:address:node/5665485241","layer":"address","source":"openstreetmap","source_id":"node/5665485241","name":"Møllevangen 23","housenumber":"23","street":"Møllevangen","postalcode":"8310","confidence":1,"match_type":"exact","accuracy":"point","country":"Denmark","country_gid":"whosonfirst:country:85633121","country_a":"DNK","region":"Central Jutland","region_gid":"whosonfirst:region:85682597","region_a":"MJ","localadmin":"Aarhus","localadmin_gid":"whosonfirst:localadmin:1394013977","locality":"Aarhus","locality_gid":"whosonfirst:locality:101749163","continent":"Europe","continent_gid":"whosonfirst:continent:102191581","label":"Møllevangen 23, Aarhus, MJ, Denmark"}}],"bbox":[10.151441,56.102406,10.151441,56.102406]}
-knudepunkt.valgt := []
-knudepunkt.valgt.Push(gade)
-knudepunkt.valgt.Push(parsed_matrix.distances[1])
-for h, r in parsed_matrix.distances
-    for h2, r2 in r
-        if (h >= 2)
-        knudepunkt.udvalg[h - 1].Push(r2)
+    ; {"geocoding":{"version":"0.2","attribution":"https://openrouteservice.org/terms-of-service/#attribution-geocode","query":{"text":"møllevangen 23 8310 Århus","size":10,"private":false,"boundary.country":["DNK"],"lang":{"name":"English","iso6391":"en","iso6393":"eng","via":"default","defaulted":true},"querySize":20,"parser":"libpostal","parsed_text":{"street":"møllevangen","housenumber":"23","postalcode":"8310","city":"århus"}},"engine":{"name":"Pelias","author":"Mapzen","version":"1.0"},"timestamp":1696964025721},"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[10.151441,56.102406]},"properties":{"id":"node/5665485241","gid":"openstreetmap:address:node/5665485241","layer":"address","source":"openstreetmap","source_id":"node/5665485241","name":"Møllevangen 23","housenumber":"23","street":"Møllevangen","postalcode":"8310","confidence":1,"match_type":"exact","accuracy":"point","country":"Denmark","country_gid":"whosonfirst:country:85633121","country_a":"DNK","region":"Central Jutland","region_gid":"whosonfirst:region:85682597","region_a":"MJ","localadmin":"Aarhus","localadmin_gid":"whosonfirst:localadmin:1394013977","locality":"Aarhus","locality_gid":"whosonfirst:locality:101749163","continent":"Europe","continent_gid":"whosonfirst:continent:102191581","label":"Møllevangen 23, Aarhus, MJ, Denmark"}}],"bbox":[10.151441,56.102406,10.151441,56.102406]}
+    knudepunkt.valgt := []
+    knudepunkt.valgt.Push(gade)
+    ; knudepunkt.valgt.Push(parsed_matrix.sources[2].snapped_distance)
+    for h, r in parsed_matrix.sources
+        for h2, r2 in r
+            if (h >= 2)
+                if (h2 = "snapped_distance")
+                    knudepunkt.udvalg[h -1].Push(parsed_matrix.sources[h].snapped_distance)
+    if (h = parsed_matrix.sources.MaxIndex())
+        knudepunkt.udvalg[h].Push(parsed_matrix.sources[h].snapped_distance)
 
-sorteringsarray := []
-for h, r in knudepunkt.udvalg
-    for h2, r2 in r
-        if (h2 = 5)
-            sorteringsarray.Push(r2)
-
-mindre := []
-ligmed := []
-større := []
-
-if (sorteringsarray.length() > 1)
-    {
-        pivot := sorteringsarray[1]
-        for h, x in sorteringsarray
-            {
-            if (x < pivot)
-                {
-                    mindre.Push(sorteringsarray[h])
-                    sorteringsarray.RemoveAt(h)
-                } 
-            if (x = pivot)
-                {
-                    ligmed.Push(sorteringsarray[h])
-                    sorteringsarray.RemoveAt(h)
-                } 
-            if (x > pivot)
-                {
-                    større.Push(sorteringsarray[h])
-                    sorteringsarray.RemoveAt(h)
-                } 
-            }
-    }
+    sorteringsarray := []
+    for h, r in knudepunkt.udvalg
+        for h2, r2 in r
+            if (h2 = 4)
+                sorteringsarray.Push(r2)
+knudepunkt.sorteret := []
+knudepunkt.sorteret := quicksort(sorteringsarray)
 
 
-            MsgBox, , , slut, ½
+
+quicksort(arr)
+{
+    if (arr.MaxIndex() <= 1)
+        return arr
+    mindre := [], samme := [], mere := []
+    Pivot := arr[1]
+    for k, v in arr
+        {
+            if (v < Pivot)
+                mindre.push(v)
+            else if (v > Pivot)
+                mere.push(v)
+            Else
+                samme.push(v)
+        }
+    mindre := quicksort(mindre)
+    ud := quicksort(mere)
+    if (samme.MaxIndex())
+        ud.InsertAt(1, samme*)
+    if (mindre.MaxIndex())
+        ud.InsertAt(1, mindre*)
+    return ud
+}
+
+for h, r in knudepunkt.sorteret
+
+
+    MsgBox, , , slut, ½
