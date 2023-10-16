@@ -478,14 +478,32 @@ P6_rejsesog_tlf(ByRef telefon:=" ")
 }
 ; ***
 ;
+
 P6_hent_vl_tlf()
 {
     global s
     P6_Planvindue()
     SendInput ^{F12}
-    sleep s * 1500
+    sleep 1500 + s * 100
+    clipboard :=
+    SendInput, ^c
+    clipwait 0.5
+    if (InStr(clipboard, "opdateringern"))
+        {
+        SendInput, !y
+        }
     sendinput ^æ
     sleep s * 200
+    clipboard :=
+    SendInput, ^c
+    clipwait 0.5
+    if (InStr(clipboard, A_Year))
+        {
+        SendInput, ^a
+        sleep 100
+        MsgBox, , Ikke muligt at ringe op , VL er afsluttet, 1
+        return 0
+        } 
     SendInput {Enter}{Enter}
     sleep s * 40
     SendInput !ø
