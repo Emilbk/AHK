@@ -758,7 +758,7 @@ P6_input_sluttid()
     {
         Input, sidste_stop, T5, {Enter}{escape}
         if (ErrorLevel = "EndKey:Escape")
-            Return
+            Return 0
         if (ErrorLevel = "Timeout")
         {MsgBox, , Timeout , Det tog for lang tid.
             return 0
@@ -820,7 +820,7 @@ P6_input_sluttid()
     sidste_stop := A_YYYY A_MM A_DD sidste_stop
     Input, tid_til_hjemzone, T5, {enter}{Escape},
     if (ErrorLevel = "EndKey:Escape")
-        Return
+        Return 0
     if (ErrorLevel = "Timeout")
     {MsgBox, , Timeout , Det tog for lang tid.
         return 0
