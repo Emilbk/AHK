@@ -1043,6 +1043,14 @@ P6_vl_luk(ByRef tid:="")
     sleep s * 100
     SendInput, ^{F12}
     sleep s * 100
+    clipboard :=
+    ClipWait, 0.5, 
+    if (InStr(clipboard, "opdateringern"))
+    {
+        SendInput, !y
+        clipboard :=
+    }
+    sleep 100
     SendInput, ^æ
     sleep s * 40
     clipboard :=
@@ -1857,6 +1865,8 @@ l_p6_vl_ring_op: ;træk tlf fra aktiv planbillede, ring op i Trio
     P6_planvindue()
     sleep s * 100
     vl_tlf := P6_hent_vl_tlf()
+    if (vl_tlf = 0)
+        return
     sleep 200
     Trio_opkald(vl_tlf)
     ; Clipboard = %gemtklip%
