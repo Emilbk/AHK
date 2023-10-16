@@ -1387,6 +1387,13 @@ Excel_udklip_til_p6(byref vl:="")
 
 ;; System
 
+; asd
+mod_ophæv()
+{
+    SendInput, {AltUp}{ShiftUp}{CtrlUp}
+}
+
+
 ; *
 ; færdigskrives
 sys_genveje_opslag()
@@ -2441,6 +2448,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     return
 
     l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+        mod_ophæv()
         FormatTime, dato, , d/MM
         ; FormatTime, tid, , HH:mm
 
@@ -2463,7 +2471,8 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         Gui Font, s9, Segoe UI
         Gui Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
         Gui Add, Edit, vtid x200 y24 w79 h21, klokken
-        Gui Add, CheckBox, vhelt x160 y48 w120 h23, Lukket &helt
+        Gui Add, CheckBox, vhelt x160 y48 w120 h23, VL &slettet
+        ; Gui Add, CheckBox, vhelt2 x160 y72 w120, GV garanti &slettet i variabel tid ; nødvendig?
         Gui Font, s9, Segoe UI
         Gui Font, w600
         Gui Add, Text, x304 y0 w120 h23 +0x200, Garanti eller Var.
