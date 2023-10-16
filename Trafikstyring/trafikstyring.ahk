@@ -835,6 +835,25 @@ P6_input_sluttid()
     return sidste_stop
 }
 
+
+; skal kun sende, hvis der er en tom køreordre. 
+P6_send_slut()
+{
+    P6_planvindue()
+    SendInput, ^{F11}
+    sleep 100
+    clipboard := 
+    SendInput, ^c
+    ClipWait, 1 
+    if (clipboard = "")
+        {
+        MsgBox, , , ja,
+        } 
+    SendInput, !s{F5}
+}
+
+^e::P6_send_slut()
+
 ; læg minuttal til klokkeslæt eller minuttal til minuttal.
 P6_udregn_minut()
 {
