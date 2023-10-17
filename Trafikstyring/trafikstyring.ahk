@@ -2358,13 +2358,13 @@ l_gui_hjælp:
     Gui Add, Tab3, x0 y0 w748 h642 0x54010240, Oversigt|Genvejsoversigt P6|Genvejsoversigt Trio|Opsætning|Hjælp|Misc
     Gui Tab, Opsætning
     ; Fix placerinc
+    Gui Add, edit, vp6_hastighed_ops x144 y32 w120, %p6_hastighed_ops%
     Gui Add, Text, x285 y32 h23 +0x200, Tilpas efter P6-langsomhed. 1 = hurtigst. Skal bruge punktum (eks. 1.2)
-    Gui Add, Text, x10 y32 w123 h23 +0x200, P6 - Hastighed
-    Gui Add, Text, x8 y64 w123 h23 +0x200, P6 - Minutudregner
-    Gui Add, Text, x285 y64 h23, Vælg om der skal bruges en popup der kan skrives i til funktionen Minutudregner.
-    Gui Add, Text, x8 y96 w123 h23 +0x200, P6 - Minutudregner
+    Gui Add, Text, x10 y32 h23 +0x200, P6 - Hastighed
+    Gui Add, Text, x12 y64 h23 +0x200, P6 - Luk VL
+    Gui Add, Text, x285 y64 h23 +0x200 , AVælg om der skal bruges en popup der kan skrives i til funktionen Luk VL.
     Gui Add, Text, x285 y96 h23 +0x200, Vælg om der skal bruges en popup der kan skrives i til funktionen Minutudregner.
-    Gui Add, edit, vp6_hastighed_ops x144 y32 w120 , %p6_hastighed_ops%
+    Gui Add, Text, x10 y96 h23 +0x200, P6 - Minutudregner
     Gui Add, DropDownList, vp6_vl_slut x144 y64 w120 Choose%vl_default%, Med Inputbox|Uden Inputbox|
     Gui Add, DropDownList, vp6_minut x144 y96 w120 Choose%min_default%, Med Inputbox|Uden Inputbox|
     Gui Add, Button, gsysok, &OK
@@ -2522,7 +2522,7 @@ sysok:
         databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 42, p6_vl_ops)
     }
     if (p6_vl_slut ="Uden Inputbox")
-    {
+    {   
         p6_vl_ops = 0
         databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 42, p6_vl_ops)
     }
