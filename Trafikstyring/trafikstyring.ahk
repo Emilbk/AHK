@@ -1003,6 +1003,7 @@ P6_vl_luk(ByRef tid:="")
     SendInput, ^{F12}
     sleep s * 100
     clipboard :=
+    SendInput, ^c
     ClipWait, 0.5,
     if (InStr(clipboard, "opdateringern"))
     {
