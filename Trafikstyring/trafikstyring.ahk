@@ -1859,6 +1859,14 @@ l_p6_vl_ring_op: ;træk tlf fra aktiv planbillede, ring op i Trio
     vl_tlf := P6_hent_vl_tlf()
     if (vl_tlf = 0)
         return
+    if (vl_tlf = "")
+        {
+            MsgBox, 4, Prøv igen?, Tlf-nr ikke opfanget. Prøv igen?
+            IfMsgBox, yes
+                Goto, l_p6_vl_ring_op
+            IfMsgBox, no
+                return
+        }
     sleep 200
     Trio_opkald(vl_tlf)
     ; Clipboard = %gemtklip%
