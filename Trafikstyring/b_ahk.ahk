@@ -1,4 +1,4 @@
-Versionsdato = 24/06-2020
+﻿Versionsdato = 24/06-2020
 Genveje =  Ctrl+Numpad+: Vis version `n Ctrl+Numpad-: Vis genveje `n`n Ctrl+Numpad1: Indsæt "Fak OK" i notat`n Ctrl+Numpad2: Indsæt (IR) i notat `n Ctrl+Numpad3: Ringer til aktive vognløb `n Ctrl+Numpad4: Registrerer svigt `n Ctrl+Numpad5: Tilføjer 3 i bagage på aktive bestilling `n Ctrl+Numpad6: Udruller fast mandag til tirsdag-fredag `n Ctrl+Numpad7: Indsætter "ok bagsæde og faktura" `n Ctrl+Numpad9: Meld tur forgæves `n`n Pause: Stopper scriptet
 #NoEnv
 SendMode Input
@@ -807,4 +807,3 @@ while (getKeyState("MButton", "P"))
 sleep, 100
 }
 Send, ^+{M}
-returnPAD
