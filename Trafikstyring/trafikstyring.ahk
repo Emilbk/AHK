@@ -747,11 +747,11 @@ P6_input_sluttid()
             FormatTime, sidste_stop, %sidste_stop%, HHmm
             return sidste_stop
         }
-        EnvAdd, sidste_stop, tid_til_hjemzone + 2, minutes
+        EnvAdd, sidste_stop, tid_til_hjemzone + 5, minutes
         FormatTime, sidste_stop, %sidste_stop%, HHmm
         return sidste_stop
     }
-    if (p6_input_sidste_slut_ops.4 = "0")
+    if (p6_input_sidste_slut_ops = "0")
     {
         Input, sidste_stop, T5, {Enter}{escape}
         if (ErrorLevel = "EndKey:Escape")
@@ -788,48 +788,10 @@ P6_input_sluttid()
             FormatTime, sidste_stop, %sidste_stop%, HHmm
             return sidste_stop
         }
-        EnvAdd, sidste_stop, tid_til_hjemzone + 2, minutes
+        EnvAdd, sidste_stop, tid_til_hjemzone + 5, minutes
         FormatTime, sidste_stop, %sidste_stop%, HHmm
         return sidste_stop
     }
-    Input, sidste_stop, T5, {Enter}{escape}
-    if (ErrorLevel = "EndKey:Escape")
-        Return 0
-    if (ErrorLevel = "Timeout")
-    {MsgBox, , Timeout , Det tog for lang tid.
-        return 0
-    }
-    if (sidste_stop = "")
-    {
-        return nu_plus_5
-    }
-    if (StrLen(sidste_stop)!= 4)
-    {
-        MsgBox, , Fejl i indtastning, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
-        return 0
-    }
-    sidste_stop_tjek := A_YYYY A_MM A_DD sidste_stop
-    if sidste_stop_tjek is not Time
-    {
-        MsgBox, , Fejl i indtastning , Det indtastede er ikke et klokkeslæt.,
-        return 0
-    }
-    sidste_stop := A_YYYY A_MM A_DD sidste_stop
-    Input, tid_til_hjemzone, T5, {enter}{Escape},
-    if (ErrorLevel = "EndKey:Escape")
-        Return 0
-    if (ErrorLevel = "Timeout")
-    {MsgBox, , Timeout , Det tog for lang tid.
-        return 0
-    }
-    if (tid_til_hjemzone = "" )
-    {
-        FormatTime, sidste_stop, %sidste_stop%, HHmm
-        return sidste_stop
-    }
-    EnvAdd, sidste_stop, tid_til_hjemzone + 2, minutes
-    FormatTime, sidste_stop, %sidste_stop%, HHmm
-    return sidste_stop
 }
 
 ; skal kun sende, hvis der er en tom køreordre.
@@ -846,6 +808,7 @@ P6_send_slut()
         MsgBox, , , ja,
     }
     SendInput, !s{F5}
+    return
 }
 
 ^e::P6_send_slut()
