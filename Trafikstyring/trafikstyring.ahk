@@ -1452,7 +1452,7 @@ Excel_udklip_til_p6(byref vl:="")
 
 mod_up()
 {
-    SendInput, {AltUp}{ShiftUp}{CtrlUp}
+    SendInput, {AltUp}{ShiftUp}{CtrlUp}{LWinUp}{RWinUp}
 }
 
 ; *
@@ -1918,19 +1918,19 @@ return
 
 ; #F5
 l_p6_vl_luk:
-    mod_up()
+    ; mod_up()
     tid := P6_input_sluttid()
     if tid = 0
         return
     p6_vl_luk(tid)
-    sleep 100
+    sleep 300
     P6_planvindue()
     sleep 200
     SendInput, {F5}
 return
 
 l_p6_udregn_minut:
-    mod_up()
+    ; mod_up()
     tid := P6_udregn_minut()
     tid_tekst := tid.1
     if (tid = "fejl")
