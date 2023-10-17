@@ -712,7 +712,8 @@ P6_tekstTilChf(ByRef tekst:=" ")
 ; hvis tid for sidste stop og tid til hjemzone udfyldt, luk til tiden fra sidste stop til hjemzone, plus 2 min
 P6_input_sluttid()
 {
-    p6_input_sidste_slut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,4)
+    brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
+    p6_input_sidste_slut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,42)
     KeyWait, Ctrl,
     KeyWait, Shift,
     EnvAdd, nu_plus_5, 5, minutes
