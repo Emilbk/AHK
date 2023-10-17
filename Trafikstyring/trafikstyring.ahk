@@ -2562,7 +2562,7 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     Gui Font, s9, Segoe UI
     Gui Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
     Gui Add, Edit, vtid x200 y24 w79 h21, klokken
-    Gui Add, CheckBox, vhelt x160 y48 w120 h23, VL &slettet
+    Gui Add, CheckBox, vhelt x160 y48 w120 h23, Ja, og VL &slettet
     ; Gui Add, CheckBox, vhelt2 x160 y72 w120, GV garanti &slettet i variabel tid ; nødvendig?
     Gui Font, s9, Segoe UI
     Gui Font, w600
