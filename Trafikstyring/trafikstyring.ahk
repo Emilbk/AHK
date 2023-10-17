@@ -751,7 +751,7 @@ P6_input_sluttid()
         FormatTime, sidste_stop, %sidste_stop%, HHmm
         return sidste_stop
     }
-    if (p6_input_sidste_slut_ops = "0")
+    if (p6_input_sidste_slut_ops.4 = "0")
     {
         Input, sidste_stop, T5, {Enter}{escape}
         if (ErrorLevel = "EndKey:Escape")
@@ -2206,7 +2206,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     sleep 600
     if (telefon = "")
     {
-        MsgBox, , , Intet indgående telefonnummer el. hemmeligt nummer
+        MsgBox, , , Intet indgående telefonnummer el. hemmeligt nummer, 2
         return
     }
     vl := P6_hent_vl_fra_tlf(telefon)
@@ -2222,18 +2222,13 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
         P6_udfyld_k_og_s(vl)
         Return
     }
-    if (telefon = "78410222" OR telefon ="78410224")
+    if (telefon = "78410222" OR telefon ="78410224") ; mangler yderligere?
     {
         ; MsgBox, ,CPR, CPR, 1
         sleep 200
         P6_rejsesogvindue()
         sleep 200
         SendInput, ^t
-        return
-    }
-    if (telefon = "")
-    {
-        MsgBox, , , Intet indgående tlf-nr,
         return
     }
     Else
@@ -2772,3 +2767,8 @@ svigtGuiClose:
     Gui, destroy
 Return
 
+test()
+{
+    WinGetTitle, tlf, ahk_exe Miralix OfficeClient.exe
+    MsgBox, , , % tlf, 
+}
