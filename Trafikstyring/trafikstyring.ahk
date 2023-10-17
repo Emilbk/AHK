@@ -485,21 +485,21 @@ P6_hent_vl_tlf()
     SendInput, ^c
     clipwait 0.5
     if (InStr(clipboard, "opdateringern"))
-        {
+    {
         SendInput, !y
-        }
+    }
     sendinput ^æ
     sleep s * 200
     clipboard :=
     SendInput, ^c
     clipwait 0.5
     if (InStr(clipboard, A_Year))
-        {
+    {
         SendInput, ^a
         sleep 100
         MsgBox, , Ikke muligt at ringe op , VL er afsluttet, 1
         return 0
-        } 
+    }
     SendInput {Enter}{Enter}
     sleep s * 40
     SendInput !ø
@@ -831,20 +831,19 @@ P6_input_sluttid()
     return sidste_stop
 }
 
-
-; skal kun sende, hvis der er en tom køreordre. 
+; skal kun sende, hvis der er en tom køreordre.
 P6_send_slut()
 {
     P6_planvindue()
     SendInput, ^{F11}
     sleep 100
-    clipboard := 
+    clipboard :=
     SendInput, ^c
-    ClipWait, 1 
+    ClipWait, 1
     if (clipboard = "")
-        {
+    {
         MsgBox, , , ja,
-        } 
+    }
     SendInput, !s{F5}
 }
 
@@ -1040,7 +1039,7 @@ P6_vl_luk(ByRef tid:="")
     SendInput, ^{F12}
     sleep s * 100
     clipboard :=
-    ClipWait, 0.5, 
+    ClipWait, 0.5,
     if (InStr(clipboard, "opdateringern"))
     {
         SendInput, !y
@@ -1449,7 +1448,8 @@ Excel_udklip_til_p6(byref vl:="")
 ;; System
 
 ; asd
-mod_ophæv()
+
+mod_up()
 {
     SendInput, {AltUp}{ShiftUp}{CtrlUp}
 }
@@ -1563,6 +1563,7 @@ return
 ; omskrives
 l_p6_sygehus_ring_op:
     vis_sygehus_1()
+    mod_up()
 return
 
 l_p6_central_ring_op:
@@ -1636,18 +1637,22 @@ l_p6_hastighed:
 return
 
 l_p6_initialer: ;; Initialer til/fra
+    mod_up()
     P6_initialer()
 Return
 
 l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
+    mod_up()
     P6_initialer_skriv()
 return
 
 l_p6_vis_k_aftale: ;Vis kørselsaftale for aktivt vognløb
+    mod_up()
     P6_vis_k()
 Return
 
 l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
+    mod_up()
     faste_dage := ["ma", "ti", "on", "to", "fr", "lø", "sø"]
     uge_dage := ["faste mandage", "faste tirsdage", "faste onsdage", "faste torsdage", "faste fredage", "faste lørdage", "faste søndage"]
 
@@ -1797,6 +1802,7 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
 #IfWinActive ; for at resette indent
 ; ***
 l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
+    mod_up()
     global s
     tlf := Trio_hent_tlf()
     WinActivate, PLANET, , ,
@@ -1813,12 +1819,12 @@ l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
     else
         sleep s * 40
     P6_udfyld_k_og_s(vl)
-; MsgBox, , , % vl.2
 Return
 
 ; ***r
 l_trio_til_p6: ;træk tlf til rejsesøg
     global s
+    mod_up()
 
     If (IfWinNotExist, PLANET, , , )
         MsgBox, , PLANET, P6 er ikke åben.,
@@ -1849,24 +1855,26 @@ return
 
 ; gå i vl
 l_p6_vaelg_vl:
+    mod_up()
     P6_Planvindue()
     SendInput, !l
 return
 
 l_p6_vl_ring_op: ;træk tlf fra aktiv planbillede, ring op i Trio
+    mod_up()
     P6_planvindue()
     sleep s * 100
     vl_tlf := P6_hent_vl_tlf()
     if (vl_tlf = 0)
         return
     if (vl_tlf = "")
-        {
-            MsgBox, 4, Prøv igen?, Tlf-nr ikke opfanget. Prøv igen?
-            IfMsgBox, yes
-                Goto, l_p6_vl_ring_op
-            IfMsgBox, no
-                return
-        }
+    {
+        MsgBox, 4, Prøv igen?, Tlf-nr ikke opfanget. Prøv igen?
+        IfMsgBox, yes
+            Goto, l_p6_vl_ring_op
+        IfMsgBox, no
+            return
+    }
     sleep 200
     Trio_opkald(vl_tlf)
     ; Clipboard = %gemtklip%
@@ -1880,6 +1888,7 @@ return
 
 ; ^+F5
 l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
+    mod_up()
     P6_planvindue()
     sleep s * 100
     vm_tlf := P6_hent_vm_tlf()
@@ -1891,6 +1900,7 @@ Return
 
 ; P6 - ring op til kunde markeret i Vl (kræver tlf opsat på kundetilladelse)
 l_p6_ring_til_kunde:
+    mod_up()
     p6_hent_kunde_tlf(telefon)
     sleep s * 200
     if (SubStr(telefon, 1, 3) = "888")
@@ -1907,6 +1917,7 @@ return
 
 ; #F5
 l_p6_vl_luk:
+    mod_up()
     tid := P6_input_sluttid()
     if tid = 0
         return
@@ -1918,6 +1929,7 @@ l_p6_vl_luk:
 return
 
 l_p6_udregn_minut:
+    mod_up()
     tid := P6_udregn_minut()
     tid_tekst := tid.1
     if (tid = "fejl")
@@ -1950,13 +1962,16 @@ plustidGuiClose:
 return
 
 l_p6_alarmer:
+    mod_up()
     P6_alarmer()
 return
 
 l_p6_udråbsalarmer:
+    mod_up()
     P6_udraabsalarmer()
 return
 l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
+    mod_up()
     FormatTime, Time, ,HHmm
     initialer = /mt%A_userName%%time%
     initialer_udentid =/mt%A_userName%
@@ -2183,6 +2198,7 @@ Return
 
 ; Telenor accepter indgående kald, søg planet
 l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
+    mod_up()
     SendInput, % bruger_genvej[3] ; opr telenor-genvej
     sleep 40
     telefon := Trio_hent_tlf()
@@ -2227,6 +2243,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     }
 
 l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
+    mod_up()
     clipboard := ""
     SendInput, ^c
     ClipWait, 2, 0
@@ -2238,6 +2255,7 @@ Return
 ; Minus på numpad afslutter Trioopkald global (Skal der tilbage til P6?)
 l_trio_afslut_opkald:
 l_trio_afslut_opkaldB:
+    mod_up()
     Trio_afslutopkald()
     sleep 200
     WinActivate, PLANET
@@ -2245,10 +2263,12 @@ Return
 
 ;; Flexfinder
 l_flexf_fra_p6:
+    mod_up()
     Flexfinder_opslag()
 Return
 
 l_flexf_til_p6: ; slår valgte FF-bil op i P6. Bruger.13
+    mod_up()
     KeyWait, ctrl
     sleep 200
     vl :=Flexfinder_til_p6()
@@ -2266,12 +2286,14 @@ l_flexf_til_p6: ; slår valgte FF-bil op i P6. Bruger.13
 
 ;; Outlook
 l_outlook_ny_mail: ; opretter ny mail. Bruger.16
+    mod_up()
     Outlook_nymail()
 Return
 
 ;; Excel
 l_excel_vl_til_P6_A:
 l_excel_vl_til_P6_B:
+    mod_up()
     vl := Excel_vl_til_udklip()
     sleep 400
     SendInput, {Esc}
@@ -2521,7 +2543,7 @@ genvejGuiClose:
 return
 
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
-    mod_ophæv()
+    mod_up()
     FormatTime, dato, , d/MM
     ; FormatTime, tid, , HH:mm
 
