@@ -536,6 +536,7 @@ P6_hent_vl_tlf()
         SendInput, ^a
         sleep 100
         MsgBox, , Ikke muligt at ringe op , VL er afsluttet, 1
+        trio_genvej_opr()
         return 0
     }
     SendInput {Enter}{Enter}
@@ -1874,6 +1875,7 @@ l_p6_vl_ring_op:
     sleep s * 100
     vl_tlf := P6_hent_vl_tlf()
     if (vl_tlf = 0)
+        trio_genvej_opr()
         return
     if (vl_tlf = "")
     {
@@ -1881,6 +1883,7 @@ l_p6_vl_ring_op:
         IfMsgBox, yes
             Goto, l_p6_vl_ring_op
         IfMsgBox, no
+            trio_genvej_opr()
             return
     }
     sleep 200
