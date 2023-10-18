@@ -532,7 +532,7 @@ return
 P6_hent_vm_tlf()
 {
     global s
-    P6_vis_k()()
+    P6_vis_k()
     sleep * 200
     sendinput ^æ
     sleep * 200
