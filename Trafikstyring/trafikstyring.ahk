@@ -480,8 +480,22 @@ P6_hent_vl_tlf()
 {
     global s
     P6_Planvindue()
+    SendInput, !l
+    sleep 100
+    clipboard :=
+    SendInput, +{F10}c
+    clipwait 2
+    vl := clipboard
     SendInput ^{F12}
-    sleep 1500 + s * 100
+    clipboard :=
+    while (clipboard != vl)
+        {
+        clipboard :=
+        Send, +{F10}c
+        sleep 100
+        }
+    ; MsgBox, , , ja, 
+    ; sleep 1000 + s * 100
     clipboard :=
     SendInput, ^c
     clipwait 0.5
