@@ -740,6 +740,7 @@ P6_input_sluttid()
             return 0
         }
         sidste_stop := A_YYYY A_MM A_DD sidste_stop
+        sleep 200
         InputBox, tid_til_hjemzone, Tid til hjemzone, Tid til hjemzone i minutter
         if (ErrorLevel = "1")
             Return 0
@@ -2462,6 +2463,8 @@ l_gui_hjælp:
     Gui Add, Text, x248 y100 w260 h23 +0x200, % genvej_ren.33
     Gui Add, Text, x8 y128 w227 h23 +0x200, % genvej_navn.46
     Gui Add, Text, x248 y128 w260 h23 +0x200, % genvej_ren.46
+    Gui Add, Text, x8 y156 w227 h23 +0x200, % genvej_navn.47
+    Gui Add, Text, x248 y156 w260 h23 +0x200, % genvej_ren.47
     Gui Tab, Misc
     Gui Tab
 
