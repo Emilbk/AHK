@@ -488,6 +488,13 @@ P6_hent_vl_tlf()
     vl := clipboard
     SendInput ^{F12}
     clipboard :=
+    SendInput, ^c
+    clipwait 0.5
+    if (InStr(clipboard, "opdateringern"))
+    {
+        SendInput, !y
+    }
+    clipboard :=
     while (clipboard != vl)
         {
         clipboard :=
@@ -496,13 +503,7 @@ P6_hent_vl_tlf()
         }
     ; MsgBox, , , ja, 
     ; sleep 1000 + s * 100
-    clipboard :=
-    SendInput, ^c
-    clipwait 0.5
-    if (InStr(clipboard, "opdateringern"))
-    {
-        SendInput, !y
-    }
+
     sendinput ^æ
     sleep s * 200
     clipboard :=
