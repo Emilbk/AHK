@@ -75,6 +75,7 @@ Hotkey, % bruger_genvej.18, l_p6_sygehus_ring_op ; ^+s
 Hotkey, % bruger_genvej.19, l_p6_central_ring_op ; ^+c
 Hotkey, % bruger_genvej.20, l_p6_tekst_til_chf ; ^+t
 Hotkey, % bruger_genvej.36, l_flexf_fra_p6 ; +^F
+Hotkey, % bruger_genvej.48, l_p6_rejsesog ; F1
 ; Hotkey, % bruger_genvej.45, l_sys_inputbox_til_fra ; ^½
 Hotkey, IfWinActive
 
@@ -2736,3 +2737,7 @@ test()
     WinGetTitle, tlf, ahk_exe Miralix OfficeClient.exe
     MsgBox, , , % tlf, 
 }
+
+l_p6_rejsesog:
+P6_rejsesogvindue()
+return
