@@ -2171,7 +2171,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     sleep 600
     if (telefon = "")
     {
-        MsgBox, , , Intet indgående telefonnummer el. hemmeligt nummer, 2
+        MsgBox, , , Intet indgående telefonnummer el. hemmeligt nummer, 1
         return
     }
     vl := P6_hent_vl_fra_tlf(telefon)
@@ -2209,7 +2209,7 @@ l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     SendInput, ^c
     ClipWait, 2, 0
     telefon := clipboard
-    sleep 200
+    sleep 300
     Trio_opkald(telefon)
 Return
 
