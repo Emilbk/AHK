@@ -1442,7 +1442,7 @@ sys_genveje_opslag()
 {
     global bruger_genvej
     global genvej_ren := []
-    global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 1, ,1) ; brugerens række i databasen
+    global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 1, ,1)
     for index, genvej in bruger_genvej
     {
         genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
@@ -2000,7 +2000,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             GuiControlGet, k_navn, , ,
             GuiControlGet, k_navn2, , ,
             ; MsgBox, , , % tekst,
-            P6_tekstTilChf("Jeg kan ikke ringe dig op. Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 . ", i stedet. /" bruger)
+            P6_tekstTilChf("Jeg kan ikke ringe dig op. Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 . ", i stedet. Mvh Midttrafik")
             sleep 500
             MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
             IfMsgBox, Yes
@@ -2009,7 +2009,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 ; KeyWait, Ctrl
                 sleep 2000
                 SendInput, {enter}
-                P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf. " initialer " ")
+                P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf." initialer)
                 gui, cancel
                 return
             }
@@ -2052,7 +2052,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             GuiControlGet, s_stop, , ,
             GuiControlGet, k_navn, , ,
             GuiControlGet, k_navn2, , ,
-            P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st." f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 . "/" bruger)
+            P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st." f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 . "Mvh)
             sleep 500
             MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
             IfMsgBox, Yes
