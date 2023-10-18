@@ -43,6 +43,14 @@ genvej_navn := []
 ;   1       2               3
 s := bruger_genvej.41
 tlf :=
+trio_genvej := "Genvejsoversigt"
+
+trio_genvej_opr()
+{
+    trio_genvej_opr := "Genvejsoversigt"
+    GuiControl, trio_genvej:text, Button1, %trio_genvej_opr%
+    return
+}
 ;   bruger_genvej  telenor_opr     telenor_ahk
 
 ;; hotkeydef.
@@ -201,6 +209,17 @@ Gui tlf: Add, Button, vtlfKopi gtlfKopi x0 y0 w120 h23, Tlf: %tlf_knap%
 
 Gui tlf: Show, x995 y3 w120 h23 NA, Tlf
 
+; Trio-genvej
+Gui trio_genvej: +Labeltrio_genvej
+Gui trio_genvej: -MinimizeBox -MaximizeBox +AlwaysOnTop +Owner -Caption +ToolWindow +hwndhGui
+Gui trio_genvej: Font, s12, Segoe UI
+Gui trio_genvej: Add, Button, vtrio_genvej gtrio_genvej x0 y0 h42 w240, %trio_genvej%
+
+Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
+
+trio_genvej:
+
+return
 ;; GUI-labels
 
 tlfKopi:
@@ -409,10 +428,11 @@ P6_udfyld_k_og_s(vl:="")
 }
 
 ; ***
-; åben alarmvinduet, ny liste alle alarmer, blad til første
+; åben alarmvinduet, ny liste alle alarmer, blad til første, col 14
 P6_alarmer()
 {
     global s
+
     P6_alt_menu()
     sendinput ta
     sleep s * 40
@@ -431,10 +451,11 @@ P6_alarmer()
 }
 
 ; ***
-; åben alarmvinduet, ny liste alle udråbsalarmer, blad til første
+; åben alarmvinduet, ny liste alle udråbsalarmer, blad til første, col 15
 P6_udraabsalarmer()
 {
     global s
+
     P6_alt_menu()
     sendinput ta
     sleep s * 40
@@ -448,6 +469,7 @@ P6_udraabsalarmer()
     P6_Planvindue()
     sleep s * 200
     SendInput, !{Down}
+
     return
 }
 
@@ -496,12 +518,12 @@ P6_hent_vl_tlf()
     }
     clipboard :=
     while (clipboard != vl)
-        {
+    {
         clipboard :=
         Send, +{F10}c
         sleep 100
-        }
-    ; MsgBox, , , ja, 
+    }
+    ; MsgBox, , , ja,
     ; sleep 1000 + s * 100
 
     sendinput ^æ
@@ -1442,7 +1464,7 @@ sys_genveje_opslag()
 {
     global bruger_genvej
     global genvej_ren := []
-    global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 1, ,1)
+    global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 1)
     for index, genvej in bruger_genvej
     {
         genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
@@ -1841,8 +1863,13 @@ l_p6_vaelg_vl:
     P6_Planvindue()
     SendInput, !l
 return
+;træk tlf fra aktiv planbillede, ring op i Trio. Col 11
+l_p6_vl_ring_op:
+    global trio_genvej
 
-l_p6_vl_ring_op: ;træk tlf fra aktiv planbillede, ring op i Trio
+    trio_genvej := global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 11)
+    GuiControl, trio_genvej:text, Button1, %trio_genvej%
+
     mod_up()
     sleep s * 100
     vl_tlf := P6_hent_vl_tlf()
@@ -1863,12 +1890,16 @@ l_p6_vl_ring_op: ;træk tlf fra aktiv planbillede, ring op i Trio
     sleep 400
     WinActivate, PLANET
     P6_Planvindue()
+    trio_genvej_opr()
 return
 
 ; ***
 
-; ^+F5
+; ^+F5 col 12
 l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
+    trio_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 12)
+    GuiControl, trio_genvej:text, Button1, %trio_genvej%
+
     mod_up()
     P6_planvindue()
     sleep s * 100
@@ -1877,6 +1908,8 @@ l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
     Trio_opkald(vm_tlf)
     sleep 800
     WinActivate, PLANET
+
+    trio_genvej_opr()
 Return
 
 ; P6 - ring op til kunde markeret i Vl (kræver tlf opsat på kundetilladelse)
@@ -1896,17 +1929,24 @@ l_p6_ring_til_kunde:
     }
 return
 
-; #F5
+; #F5, col 13
 l_p6_vl_luk:
     ; mod_up()
+    trio_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 13)
+    GuiControl, trio_genvej:text, Button1, %trio_genvej%
+
     tid := P6_input_sluttid()
     if tid = 0
+        {
+        trio_genvej_opr()
         return
+        }
     p6_vl_luk(tid)
     sleep 300
     P6_planvindue()
     sleep 200
     SendInput, {F5}
+    trio_genvej_opr()
 return
 
 l_p6_udregn_minut:
@@ -1944,12 +1984,19 @@ return
 
 l_p6_alarmer:
     mod_up()
+    trio_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 14)
+    GuiControl, trio_genvej:text, Button1, %trio_genvej%
     P6_alarmer()
+    trio_genvej_opr()
 return
 
 l_p6_udråbsalarmer:
     mod_up()
+    trio_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 15)
+    GuiControl, trio_genvej:text, Button1, %trio_genvej%
+    
     P6_udraabsalarmer()
+    trio_genvej_opr()
 return
 l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     mod_up()
@@ -1960,12 +2007,16 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 2)
     ctrl_s := chr(19)
 
+    trio_genvej := global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 20)
+    GuiControl, trio_genvej:text, Button1, %trio_genvej%
+
     KeyWait Alt
     keywait Ctrl
     Input valgt, L1 T5, {esc},
     if (valgt = "t")
     {
         P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
+        trio_genvej_opr()
         return
     }
     if (valgt = "f")
@@ -1992,6 +2043,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         f_chfGuiClose:
             {
                 gui, Cancel
+                trio_genvej_opr()
                 return
             }
         f_chfok:
@@ -2000,7 +2052,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             GuiControlGet, k_navn, , ,
             GuiControlGet, k_navn2, , ,
             ; MsgBox, , , % tekst,
-            P6_tekstTilChf("Jeg kan ikke ringe dig op. Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 . ", i stedet. Mvh Midttrafik")
+            P6_tekstTilChf("Jeg kan ikke ringe dig op. Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 . ", i stedet. Mvh. Midttrafik")
             sleep 500
             MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
             IfMsgBox, Yes
@@ -2011,6 +2063,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 SendInput, {enter}
                 P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf." initialer)
                 gui, cancel
+                trio_genvej_opr()
                 return
             }
             IfMsgBox, No
@@ -2019,6 +2072,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
                 gui, cancel
             }
+            trio_genvej_opr()
         return
     }
     if (valgt = "k")
@@ -2045,6 +2099,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         k_chfGuiClose:
             {
                 gui, Cancel
+                trio_genvej_opr()
                 return
             }
         k_chfok:
@@ -2052,7 +2107,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             GuiControlGet, s_stop, , ,
             GuiControlGet, k_navn, , ,
             GuiControlGet, k_navn2, , ,
-            P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st." f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 . "Mvh)
+            P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st." f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 . "Mvh. Midttrafik")
             sleep 500
             MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
             IfMsgBox, Yes
@@ -2062,6 +2117,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 SendInput, {enter}
                 P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, " s_stop " og tekst sendt til chf. " initialer)
                 gui, cancel
+                trio_genvej_opr()
                 return
             }
             IfMsgBox, No
@@ -2070,6 +2126,33 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
                 gui, cancel
             }
+            trio_genvej_opr()
+        return
+    }
+    if (valgt = "å")
+    {
+
+        P6_tekstTilChf("Er der blevet glemt at kvittere for privatrejsen? Mvh. Midttrafik")
+        sleep 500
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 2000
+            SendInput, {enter}
+            P6_notat("Priv. ikke kvitteret, tekst sendt til chf." initialer)
+            gui, cancel
+            trio_genvej_opr()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+        }
+        trio_genvej_opr()
         return
     }
     if (valgt = "p")
@@ -2086,6 +2169,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, {enter}
             P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. VL låst" initialer)
             gui, cancel
+            trio_genvej_opr()
             return
         }
         IfMsgBox, No
@@ -2094,6 +2178,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
             gui, cancel
         }
+        trio_genvej_opr()
         return
     }
     if (valgt = "w")
@@ -2110,6 +2195,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, {enter}
             P6_notat("WakeUp sendt" initialer)
             gui, cancel
+            trio_genvej_opr()
             return
         }
         IfMsgBox, No
@@ -2118,6 +2204,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
             gui, cancel
         }
+        trio_genvej_opr()
         return
         if (valgt = "a")
         {
@@ -2133,6 +2220,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 SendInput, {enter}
                 P6_notat("Tal forgæves" initialer)
                 gui, cancel
+                trio_genvej_opr()
                 return
             }
             IfMsgBox, No
@@ -2141,8 +2229,10 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
                 gui, cancel
             }
+            trio_genvej_opr()
             return
         }
+        trio_genvej_opr()
         return
     }
 #IfWinActive ; udelukkende for at resette indentering i auto-formatering
@@ -2181,6 +2271,8 @@ Return
 l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     mod_up()
     SendInput, % bruger_genvej[3] ; opr telenor-genvej
+    sleep 40
+    SendInput, % bruger_genvej[3] ; Misser den af og til?
     sleep 40
     telefon := Trio_hent_tlf()
     sleep 600
@@ -2499,7 +2591,7 @@ sysok:
         databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 42, p6_vl_ops)
     }
     if (p6_vl_slut ="Uden Inputbox")
-    {   
+    {
         p6_vl_ops = 0
         databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 42, p6_vl_ops)
     }
@@ -2524,6 +2616,9 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     mod_up()
     FormatTime, dato, , d/MM
     ; FormatTime, tid, , HH:mm
+
+    trio_genvej := global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 38)
+    GuiControl, trio_genvej:text, Button1, %trio_genvej%
 
     ; svigt := []
     gemtklip := ClipboardAll
@@ -2637,78 +2732,78 @@ svigtok:
     ; MsgBox, , vl , % dato
     if (type = 1 and lukket = 1 and helt = 0 and årsag != "")
     {
-        emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
+        emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 1 , % emnefelt,
         gui, destroy
     }
     if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
     {
-        emnefelt := "Svigt VL" vl " " vl_type " - lukket kl. " tid " d. " dato
+        emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 2, % emnefelt,
         gui, destroy
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
     {
-        emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - d. " dato
+        emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - d. " dato
         ; MsgBox, , 3, % emnefelt,
         gui, destroy
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag = "")
     {
-        emnefelt := "Svigt VL" vl " d. " dato
+        emnefelt := "Svigt VL " vl " d. " dato
         gui, destroy
     }
     if (type = 1 and helt = 1 and årsag = "")
     {
-        emnefelt := "Svigt VL" vl " " vl_type ": ikke startet op d. " dato
+        emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 5, % emnefelt,
         gui, destroy
     }
     if (type = 1 and helt = 1 and årsag != "")
     {
-        emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - ikke startet op d. " dato
+        emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
         ; MsgBox, , 5.1, % emnefelt,
         gui, destroy
     }
     if (type = 2 and lukket = 0 and årsag !="")
     {
-        emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - " dato
+        emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - " dato
         ; MsgBox, , 6, % emnefelt,
         gui, destroy
     }
     if (type = 2 and lukket = 0 and helt = 0 and årsag = "")
     {
-        emnefelt := "Svigt VL" vl " " vl_type " " årsag "d. " dato
+        emnefelt := "Svigt VL " vl " " vl_type " " årsag "d. " dato
         ; MsgBox, , 7, % emnefelt,
         gui, destroy
     }
     if (type = 2 and lukket = 0 and helt = 1 and årsag = "")
     {
-        emnefelt := "Svigt VL" vl " " vl_type ": ikke startet op d. " dato
+        emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 7.1, % emnefelt,
         gui, destroy
     }
     if (type = 2 and lukket = 1 and årsag != "")
     {
-        emnefelt := "Svigt VL" vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
+        emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 8, % emnefelt,
         gui, destroy
     }
     if (type = 2 and lukket = 1 and årsag = "")
     {
-        emnefelt := "Svigt VL" vl " " vl_type " - lukket kl. " tid " d. " dato
+        emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 9, % emnefelt,
         gui, destroy
     }
     if (type = 3 and årsag != "")
     {
-        emnefelt := "Svigt VL" vl ": " årsag " - d. " dato
+        emnefelt := "Svigt VL " vl ": " årsag " - d. " dato
         ; MsgBox, , 10, % emnefelt,
         gui, destroy
     }
     if (type = 3 and årsag = "")
     {
-        emnefelt := "Svigt VL" vl " d. " dato
+        emnefelt := "Svigt VL " vl " d. " dato
         ; MsgBox, , 11, % emnefelt,
         gui, destroy
     }
@@ -2742,19 +2837,21 @@ svigtok:
     ; gemtklip :=
     ; MsgBox, , , % emnefelt "`n" beskrivelse
     gemtklip :=
+    trio_genvej_opr()
 Return
 
 svigtGuiEscape:
 svigtGuiClose:
+    trio_genvej_opr()   
     Gui, destroy
 Return
 
 test()
 {
     WinGetTitle, tlf, ahk_exe Miralix OfficeClient.exe
-    MsgBox, , , % tlf, 
+    MsgBox, , , % tlf,
 }
 
 l_p6_rejsesog:
-P6_rejsesogvindue()
+    P6_rejsesogvindue()
 return
