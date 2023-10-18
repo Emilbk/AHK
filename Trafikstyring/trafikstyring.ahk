@@ -1844,7 +1844,6 @@ return
 
 l_p6_vl_ring_op: ;træk tlf fra aktiv planbillede, ring op i Trio
     mod_up()
-    P6_planvindue()
     sleep s * 100
     vl_tlf := P6_hent_vl_tlf()
     if (vl_tlf = 0)
