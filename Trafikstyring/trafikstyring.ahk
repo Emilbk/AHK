@@ -63,7 +63,7 @@ Hotkey, % bruger_genvej.6, l_p6_initialer_skriv ; +F2
 Hotkey, % bruger_genvej.7, l_p6_vis_k_aftale ; F3
 Hotkey, % bruger_genvej.8, l_p6_ret_vl_tlf ; +F3
 Hotkey, % bruger_genvej.9, l_p6_vaelg_vl ; ^F3
-Hotkey, % bruger_genvej.10, l_p6_søg_vl ; F4
+Hotkey, % bruger_genvej.10, l_p6_vaelg_vl ; F4
 Hotkey, % bruger_genvej.11, l_p6_vl_ring_op ; +F5
 Hotkey, % bruger_genvej.12, l_p6_vm_ring_op ; ^+F5
 Hotkey, % bruger_genvej.13, l_p6_vl_luk ; #F5
