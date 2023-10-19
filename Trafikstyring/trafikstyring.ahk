@@ -221,7 +221,6 @@ return
 
 tlfKopi:
     {
-        MsgBox, , , ?, 
         clipboard :=
         tlf := Trio_hent_tlf()
         Clipboard := tlf
