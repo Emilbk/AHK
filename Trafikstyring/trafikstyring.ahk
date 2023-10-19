@@ -260,6 +260,13 @@ afslut_genvej()
     mod_up()
     return
 }
+
+genvej_beskrivelse(kolonne)
+{
+    trio_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, kolonne)
+    GuiControl, trio_genvej:text, Button1, %trio_genvej%
+    return trio_genvej
+}
 ; **
 ; fix, giver 0-fejl ved esc.
 P6_hastighed()
@@ -401,10 +408,11 @@ P6_hent_vl()
 p6_vl_vindue()
 {
     P6_planvindue()
-    sleep 100
+    sleep 30
     vl := P6_hent_vl()
-    sleep 100
-    sleep 400
+    sleep 30
+    SendInput, ^{F12}
+    sleep 250
     clipboard :=
     SendInput, ^c
     clipwait 0.5
@@ -437,7 +445,6 @@ p6_vl_vindue()
 p6_vl_vindue_edit()
 {
     sendinput ^æ
-    sleep s * 200
     clipboard :=
     SendInput, ^c
     clipwait 0.5
@@ -448,7 +455,7 @@ p6_vl_vindue_edit()
     }
     clipboard :=
     SendInput, +{F10}c
-    clipwait 10
+    clipwait 2
     k_aftale := clipboard
     return k_aftale
 }
@@ -1076,10 +1083,11 @@ P6_vl_luk(ByRef tid:="")
 
     vl := p6_vl_vindue()
     k_aftale := p6_vl_vindue_edit()
-    sleep 200
+    sleep 40
     if (k_aftale = 1)
         {  
             MsgBox, , VL afsluttet, VL er allerede afsluttet
+            SendInput, ^a
             afslut_genvej()
             return 0
         }
@@ -1483,6 +1491,7 @@ Excel_udklip_til_p6(byref vl:="")
 mod_up()
 {
     SendInput, {AltUp}{ShiftUp}{CtrlUp}{LWinUp}{RWinUp}
+    return
 }
 
 ; *
@@ -1688,6 +1697,8 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     faste_dage := ["ma", "ti", "on", "to", "fr", "lø", "sø"]
     uge_dage := ["faste mandage", "faste tirsdage", "faste onsdage", "faste torsdage", "faste fredage", "faste lørdage", "faste søndage"]
 
+    genvej_beskrivelse(8)
+
     SendInput, {ShiftUp}{AltUp}{CtrlUp}
     telefon := Trio_hent_tlf()
     {
@@ -1874,11 +1885,7 @@ l_p6_vaelg_vl:
 return
 ;træk tlf fra aktiv planbillede, ring op i Trio. Col 11
 l_p6_vl_ring_op:
-    global trio_genvej
-    genvej_kolonne := 11
-
-    trio_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, genvej_kolonne)
-    GuiControl, trio_genvej:text, Button1, %trio_genvej%
+    genvej_beskrivelse(11)
 
     sleep s * 100
     vl_tlf := P6_hent_vl_tlf()
@@ -1910,10 +1917,8 @@ return
 
 ; ^+F5 col 12
 l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
-    trio_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 12)
-    GuiControl, trio_genvej:text, Button1, %trio_genvej%
-
-    mod_up()
+    genvej_beskrivelse(12)
+    
     P6_planvindue()
     sleep s * 100
     vm_tlf := P6_hent_vm_tlf()
@@ -1927,7 +1932,6 @@ Return
 
 ; P6 - ring op til kunde markeret i Vl (kræver tlf opsat på kundetilladelse)
 l_p6_ring_til_kunde:
-    mod_up()
     p6_hent_kunde_tlf(telefon)
     sleep s * 200
     if (SubStr(telefon, 1, 3) = "888")
@@ -1946,9 +1950,7 @@ return
 
 ; #F5, col 13
 l_p6_vl_luk:
-    ; mod_up()
-    trio_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 13)
-    GuiControl, trio_genvej:text, Button1, %trio_genvej%
+    genvej_beskrivelse(13)
 
     tid := P6_input_sluttid()
     if tid = 0
@@ -1957,7 +1959,7 @@ l_p6_vl_luk:
         return
     }
     p6_vl_luk(tid)
-    sleep 300
+    sleep 100
     P6_planvindue()
     sleep 200
     SendInput, {F5}
@@ -2004,17 +2006,13 @@ plustidGuiClose:
 return
 
 l_p6_alarmer:
-    mod_up()
-    trio_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 14)
-    GuiControl, trio_genvej:text, Button1, %trio_genvej%
+    genvej_beskrivelse(14)
     P6_alarmer()
     afslut_genvej()
 return
 
 l_p6_udråbsalarmer:
-    mod_up()
-    trio_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 15)
-    GuiControl, trio_genvej:text, Button1, %trio_genvej%
+    genvej_beskrivelse(15)
 
     P6_udraabsalarmer()
     afslut_genvej()
@@ -2026,10 +2024,9 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     initialer_udentid =/mt%A_userName%
     brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
     bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 2)
-    ctrl_s := chr(19)
+    ; ctrl_s := chr(19)
 
-    trio_genvej := global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 20)
-    GuiControl, trio_genvej:text, Button1, %trio_genvej%
+    genvej_beskrivelse(20)
 
     KeyWait Alt
     keywait Ctrl
