@@ -57,7 +57,7 @@ Hotkey, % bruger_genvej.32, l_trio_til_p6 ; +F4
 Hotkey, % bruger_genvej.33, l_quitAHK ; +escape
 Hotkey, % bruger_genvej.46, l_restartAHK ; +escape
 Hotkey, % bruger_genvej.34, l_p6_aktiver ; +!p
-Hotkey, % bruger_genvej.47, l_gui_hjælp ; +!p
+Hotkey, % bruger_genvej.47, l_gui_hjælp ; ^½
 
 Hotkey, IfWinActive, PLANET
 Hotkey, % bruger_genvej.38, l_outlook_svigt ; +F1
@@ -212,18 +212,23 @@ Gui trio_genvej: Add, Button, vtrio_genvej gtrio_genvej x0 y0 h42 w240, %trio_ge
 
 Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 
-trio_genvej:
 return
 ;; GUI-labels
+trio_genvej:
+; Goto, l_gui_hjælp 
+MsgBox, , Tillykke!, Du har trykket på knappen!, 
+return
 
 tlfKopi:
     {
+        MsgBox, , , ?, 
         clipboard :=
         tlf := Trio_hent_tlf()
         Clipboard := tlf
         ClipWait, 3,
         return
     }
+
 
 sygehusmenu1:
     GuiControlGet, navn, sygehus: name , % A_GuiControl
@@ -284,6 +289,8 @@ P6_hastighed()
     databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41, s)
     return
 }
+
+
 ; P6 alt menu
 P6_aktiver()
 {
@@ -2266,6 +2273,7 @@ Return
 
 l_trio_udenov: ;Trio Midt uden overløb
     trio_udenov()
+    trio_klar()
 Return
 
 l_trio_efterbehandling: ;Trio efterbehandling
@@ -2283,6 +2291,7 @@ Return
 
 l_triokald_til_udklip: ; trækker indkommende kald til udklip, ringer ikke op.
     clipboard := Trio_hent_tlf()
+    afslut_genvej()
 Return
 
 ; Telenor accepter indgående kald, søg planet
@@ -2457,7 +2466,7 @@ l_gui_hjælp:
     Gui Add, Text, x285 y32 h23 +0x200, Tilpas efter P6-langsomhed. 1 = hurtigst. Skal bruge punktum (eks. 1.2)
     Gui Add, Text, x10 y32 h23 +0x200, P6 - Hastighed
     Gui Add, Text, x12 y64 h23 +0x200, P6 - Luk VL
-    Gui Add, Text, x285 y64 h23 +0x200 , AVælg om der skal bruges en popup der kan skrives i til funktionen Luk VL.
+    Gui Add, Text, x285 y64 h23 +0x200 , Vælg om der skal bruges en popup der kan skrives i til funktionen Luk VL.
     Gui Add, Text, x285 y96 h23 +0x200, Vælg om der skal bruges en popup der kan skrives i til funktionen Minutudregner.
     Gui Add, Text, x10 y96 h23 +0x200, P6 - Minutudregner
     Gui Add, DropDownList, vp6_vl_slut x144 y64 w120 Choose%vl_default%, Med Inputbox|Uden Inputbox|
