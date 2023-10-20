@@ -58,6 +58,8 @@ Hotkey, % bruger_genvej.33, l_quitAHK ; +escape
 Hotkey, % bruger_genvej.46, l_restartAHK ; +escape
 Hotkey, % bruger_genvej.34, l_p6_aktiver ; +!p
 Hotkey, % bruger_genvej.47, l_gui_hjælp ; ^½
+Hotkey, % bruger_genvej.28, l_trio_opkald_markeret ; !q
+
 
 Hotkey, IfWinActive, PLANET
 Hotkey, % bruger_genvej.38, l_outlook_svigt ; +F1
@@ -90,7 +92,6 @@ Hotkey, % bruger_genvej.24, l_trio_udenov ; ^2
 Hotkey, % bruger_genvej.25, l_trio_efterbehandling ; ^3
 Hotkey, % bruger_genvej.26, l_trio_alarm ; ^4
 Hotkey, % bruger_genvej.27, l_trio_frokost ; ^5
-Hotkey, % bruger_genvej.28, l_trio_opkald_markeret ; !q
 Hotkey, % bruger_genvej.29, l_triokald_til_udklip ; #q
 Hotkey, IfWinActive
 
