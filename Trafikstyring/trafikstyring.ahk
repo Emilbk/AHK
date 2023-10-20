@@ -60,7 +60,6 @@ Hotkey, % bruger_genvej.34, l_p6_aktiver ; +!p
 Hotkey, % bruger_genvej.47, l_gui_hjælp ; ^½
 Hotkey, % bruger_genvej.28, l_trio_opkald_markeret ; !q
 
-
 Hotkey, IfWinActive, PLANET
 Hotkey, % bruger_genvej.38, l_outlook_svigt ; +F1
 Hotkey, % bruger_genvej.5, l_p6_initialer ; F2
@@ -680,7 +679,6 @@ P6_ret_tlf_vl_efterfølgende(ByRef telefon:=" ")
 P6_tlf_vl_dato_efter(ByRef telefon:=" ")
 {
     global s
-    WinActivate PLANET version 6 Jylland-Fyn DRIFT
     SendInput, {Tab}
     sleep s * 200
     SendInput, !{right}{AltUp}
@@ -769,7 +767,7 @@ P6_initialer_skriv()
 P6_tekstTilChf(ByRef tekst:=" ")
 {
     global s
-    WinActivate PLANET
+    P6_planvindue()
     kørselsaftale := P6_hent_k()
     styresystem := P6_hent_s()
     sleep s * 200
@@ -1146,7 +1144,8 @@ Trio_opkald(ByRef telefon)
     ifWinNotExist, ahk_class AccessBar
     {
         WinActivate, ahk_class Agent Main GUI
-        sleep 200
+        WinWaitActive, ahk_class Agent Main GUI
+        sleep 100
         SendInput, {alt}
         sleep 100
         SendInput, v{Down 5}{enter}
@@ -1154,6 +1153,7 @@ Trio_opkald(ByRef telefon)
     ControlClick, x360 y17, ahk_class AccessBar
     sleep 800
     WinActivate, ahk_class Addressbook
+    WinwaitActive, ahk_class Addressbook
     ControlClick, Edit2, ahk_class Addressbook
     SendInput, ^a{del}
     ; sleep 200
@@ -1170,6 +1170,7 @@ Trio_opkald(ByRef telefon)
 Trio_afslutopkald()
 {
     WinActivate, ahk_class AccessBar
+    winwaitactive, ahk_class AccessBar
     sleep 40
     SendInput, {NumpadSub}
 
@@ -1181,6 +1182,7 @@ Trio_afslutopkald()
 trio_efterbehandling()
 {
     WinActivate, ahk_class Agent Main GUI
+    winwaitactive, ahk_class Agent Main GUI
     sleep 40
     SendInput, !f
     sleep 40
@@ -1188,6 +1190,7 @@ trio_efterbehandling()
     sleep 40
     SendInput, 8
     WinActivate, PLANET
+    winwaitactive, PLANET
     Return
 }
 
@@ -1196,6 +1199,7 @@ trio_efterbehandling()
 trio_udenov()
 {
     WinActivate, ahk_class Agent Main GUI
+    winwaitactive, ahk_class Agent Main GUI
     sleep 40
     SendInput, !f
     sleep 40
@@ -1205,6 +1209,7 @@ trio_udenov()
     sleep 100
     SendInput, {F4}
     WinActivate, PLANET
+    winwaitactive, PLANET
     Return
 }
 
@@ -1213,6 +1218,7 @@ trio_udenov()
 trio_alarm()
 {
     WinActivate, ahk_class Agent Main GUI
+    winwaitactive, ahk_class Agent Main GUI
     sleep 40
     SendInput, !f
     sleep 40
@@ -1220,6 +1226,7 @@ trio_alarm()
     sleep 40
     SendInput, 7
     WinActivate, PLANET
+    winwaitactive, PLANET
     Return
 }
 
@@ -1228,9 +1235,11 @@ trio_alarm()
 trio_pause()
 {
     WinActivate, ahk_class AccessBar
+    winwaitactive, ahk_class AccessBar
     sleep 100
     SendInput, {F3}
     WinActivate, PLANET
+    winwaitactive, PLANET
     Return
 }
 
@@ -1239,9 +1248,11 @@ trio_pause()
 trio_klar()
 {
     WinActivate, ahk_class AccessBar
+    winwaitactive, ahk_class AccessBar
     Sleep 100
     SendInput, {F4}
     WinActivate, PLANET
+    winwaitactive, PLANET
     Return
 }
 
@@ -1250,6 +1261,7 @@ trio_klar()
 trio_frokost()
 {
     WinActivate, ahk_class Agent Main GUI
+    winwaitactive, ahk_class Agent Main GUI
     sleep 40
     SendInput, !f
     sleep 40
@@ -1257,6 +1269,7 @@ trio_frokost()
     sleep 40
     SendInput, 9
     WinActivate, PLANET
+    winwaitactive, PLANET
     Return
 }
 
@@ -1265,11 +1278,13 @@ trio_frokost()
 trio_pauseklar()
 {
     WinActivate, ahk_class AccessBar
+    winwaitactive, ahk_class AccessBar
     Sleep 200
     SendInput, {F3}
     sleep 400
     SendInput, {F4}
     WinActivate, PLANET
+    winwaitactive, PLANET
 
     Return
 }
@@ -1324,6 +1339,7 @@ Flexfinder_opslag()
         ; MsgBox, , er 4 , % k_aftale
         sleep 200
         WinActivate, FlexDanmark FlexFinder
+        winwaitactive, FlexDanmark FlexFinder
         sleep 40
         SendInput, {Home}
         sleep 400
@@ -2301,7 +2317,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     SendInput, % bruger_genvej[3] ; Misser den af og til?
     sleep 40
     telefon := Trio_hent_tlf()
-    sleep 600
+    sleep 40
     if (telefon = "")
     {
         MsgBox, , , Intet indgående telefonnummer el. hemmeligt nummer, 1
@@ -2313,7 +2329,8 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     IfWinNotActive, PLANET
     {
         WinActivate, PLANET
-        sleep 500 ; sørger for at vinduet kan nå at skifte
+        WinWaitActive, PLANET
+        sleep 200 ;   sørger for at vinduet kan nå at skifte
     }
     SendInput, {AltUp}
     if (vl != 0)
