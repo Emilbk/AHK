@@ -287,17 +287,17 @@ P6_hastighed()
     return
 }
 
-; P6 alt menu
+; True hvis skiftet til P6
 P6_aktiver()
 {
-    if IfWinNotActive, PLANET
+    IfWinNotActive, PLANET
     {
         WinActivate, PLANET
         WinWaitActive, PLANET
         SendInput, {alt} ; registrerer ikke første tryk, når der skiftes til vindue
-        return
+        return 1
     }
-    return
+    return 0
 }
 
 P6_alt_menu()
@@ -645,9 +645,7 @@ P6_hent_vl_fra_tlf(ByRef tlf:="")
         vl := StrSplit(vl, "_") ;vl.1 k, vl.2 s
         Return vl
     }
-    else
-        vl = 0
-    Return vl
+    return 0
 }
 
 ; ***
@@ -1700,6 +1698,7 @@ l_quitAHK:
 ExitApp
 Return
 
+
 l_p6_aktiver:
     p6_aktiver()
     afslut_genvej()
@@ -1985,7 +1984,7 @@ l_p6_vl_luk:
     genvej_beskrivelse(13)
 
     tid := P6_input_sluttid()
-    if tid = 0
+    if !tid
     {
         afslut_genvej()
         return
@@ -2321,6 +2320,7 @@ Return
 
 ; Telenor accepter indgående kald, søg planet
 l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
+    genvej_beskrivelse(3)
     SendInput, % bruger_genvej[3] ; opr telenor-genvej
     sleep 40
     SendInput, % bruger_genvej[3] ; Misser den af og til?
@@ -2335,15 +2335,10 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
         afslut_genvej()
         return
     }
+    P6_aktiver()
     vl := P6_hent_vl_fra_tlf(telefon)
-    IfWinNotActive, PLANET
-    {
-        P6_aktiver()
-        sleep 200
-        SendInput, {alt} ; vindue registrerer ikke første alt, når der skiftes til
-    }
     SendInput, {AltUp}
-    if (vl != 0)
+    if vl
     {
         sleep 200
         P6_udfyld_k_og_s(vl)
@@ -2397,7 +2392,7 @@ l_flexf_til_p6: ; slår valgte FF-bil op i P6. Bruger.13
     KeyWait, ctrl
     sleep 200
     vl :=Flexfinder_til_p6()
-    if (vl = 0)
+    if !vl
     {
         afslut_genvej()
         return
@@ -2415,8 +2410,9 @@ l_flexf_til_p6: ; slår valgte FF-bil op i P6. Bruger.13
 
 ;; Outlook
 l_outlook_ny_mail: ; opretter ny mail. Bruger.16
-    mod_up()
+    genvej_beskrivelse(37)
     Outlook_nymail()
+    afslut_genvej()
 Return
 
 ;; Excel
