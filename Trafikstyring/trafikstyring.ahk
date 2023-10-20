@@ -72,7 +72,7 @@ Hotkey, % bruger_genvej.11, l_p6_vl_ring_op ; +F5
 Hotkey, % bruger_genvej.12, l_p6_vm_ring_op ; ^+F5
 Hotkey, % bruger_genvej.13, l_p6_vl_luk ; #F5
 Hotkey, % bruger_genvej.14, l_p6_alarmer ; F7
-Hotkey, % bruger_genvej.15, l_p6_udråbsalarmer ; +F7
+Hotkey, % bruger_genvej.15, l_p6_udraabsalarmer ; +F7
 Hotkey, % bruger_genvej.16, l_p6_ring_til_kunde ; +F8
 Hotkey, % bruger_genvej.17, l_p6_udregn_minut ; #t
 Hotkey, % bruger_genvej.18, l_p6_sygehus_ring_op ; ^+s
@@ -294,6 +294,8 @@ P6_hastighed()
 P6_aktiver()
 {
     WinActivate, PLANET
+    WinWaitActive, PLANET
+    SendInput, {alt} ; registrerer ikke første tryk, når der skiftes til vindue
 }
 
 P6_alt_menu()
@@ -302,16 +304,14 @@ P6_alt_menu()
     keywait ctrl, T0.5
     keywait alt, T0.5
     SendInput, {Alt}
-    sleep 200
 }
-
 ; ***
 ; Åben planbillede
 P6_planvindue()
 {
     global s
-
     P6_alt_menu()
+    sleep 200
     SendInput, tp
     sleep s * 100
     return
@@ -319,14 +319,21 @@ P6_planvindue()
 
 ; ***
 ; Åben renset rejsesøg
-P6_rejsesogvindue()
+P6_rejsesogvindue(byref telefon := "")
 {
     global s
 
     P6_alt_menu()
-    sleep 300
-    SendInput rr^t
+    sleep 200
+    SendInput rr
+    sleep 200
+    SendInput, ^t
     sleep s * 100
+    if (telefon = "")
+        return
+    SendInput {tab}{tab}
+    SendInput, %telefon%
+    SendInput, ^r
     Return
 }
 
@@ -2034,7 +2041,7 @@ l_p6_alarmer:
     afslut_genvej()
 return
 
-l_p6_udråbsalarmer:
+l_p6_udraabsalarmer:
     genvej_beskrivelse(15)
 
     P6_udraabsalarmer()
@@ -2321,6 +2328,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     if (telefon = "")
     {
         MsgBox, , , Intet indgående telefonnummer el. hemmeligt nummer, 1
+        P6_aktiver()
         p6_vaelg_vl()
         afslut_genvej()
         return
@@ -2328,9 +2336,9 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     vl := P6_hent_vl_fra_tlf(telefon)
     IfWinNotActive, PLANET
     {
-        WinActivate, PLANET
-        WinWaitActive, PLANET
-        sleep 200 ;   sørger for at vinduet kan nå at skifte
+        P6_aktiver()
+        sleep 200
+        SendInput, {alt} ; vindue registrerer ikke første alt, når der skiftes til
     }
     SendInput, {AltUp}
     if (vl != 0)
@@ -2345,15 +2353,13 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
         ; MsgBox, ,CPR, CPR, 1
         sleep 200
         P6_rejsesogvindue()
-        sleep 200
-        SendInput, ^t
         afslut_genvej()
         return
     }
     Else
     {
         sleep 200
-        P6_rejsesog_tlf(telefon)
+        P6_rejsesogvindue(telefon)
         afslut_genvej()
         return
     }
