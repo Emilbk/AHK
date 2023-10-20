@@ -45,7 +45,6 @@ s := bruger_genvej.41
 tlf :=
 trio_genvej := "Genvejsoversigt"
 
-
 ;   bruger_genvej  telenor_opr     telenor_ahk
 
 ;; hotkeydef.
@@ -215,8 +214,8 @@ Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 return
 ;; GUI-labels
 trio_genvej:
-; Goto, l_gui_hjælp 
-MsgBox, , Tillykke!, Du har trykket på knappen!, 
+    ; Goto, l_gui_hjælp
+    MsgBox, , Tillykke!, Du har trykket på knappen!,
 return
 
 tlfKopi:
@@ -227,7 +226,6 @@ tlfKopi:
         ClipWait, 3,
         return
     }
-
 
 sygehusmenu1:
     GuiControlGet, navn, sygehus: name , % A_GuiControl
@@ -289,13 +287,17 @@ P6_hastighed()
     return
 }
 
-
 ; P6 alt menu
 P6_aktiver()
 {
-    WinActivate, PLANET
-    WinWaitActive, PLANET
-    SendInput, {alt} ; registrerer ikke første tryk, når der skiftes til vindue
+    if IfWinNotActive, PLANET
+    {
+        WinActivate, PLANET
+        WinWaitActive, PLANET
+        SendInput, {alt} ; registrerer ikke første tryk, når der skiftes til vindue
+        return
+    }
+    return
 }
 
 P6_alt_menu()
@@ -1097,12 +1099,12 @@ P6_vl_luk(ByRef tid:="")
     k_aftale := p6_vl_vindue_edit()
     sleep 40
     if (k_aftale = 1)
-        {  
-            MsgBox, , VL afsluttet, VL er allerede afsluttet
-            SendInput, ^a
-            afslut_genvej()
-            return 0
-        }
+    {
+        MsgBox, , VL afsluttet, VL er allerede afsluttet
+        SendInput, ^a
+        afslut_genvej()
+        return 0
+    }
     if (StrLen(k_aftale) <= 3)
     {
         SendInput, Keys{Enter}
@@ -1742,17 +1744,17 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
         {
             InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 120, 160, X, Y, , Timeout, %telefon%
             if (ErrorLevel = 1 or ErrorLevel = 2)
-                {
-                    afslut_genvej()
-                    return
-                }
+            {
+                afslut_genvej()
+                return
+            }
             sleep 100
             MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
             IfMsgBox, no
-                {
-                    afslut_genvej()
-                    return
-                }
+            {
+                afslut_genvej()
+                return
+            }
             IfMsgBox, Yes
                 P6_ret_tlf_vl(telefon)
             sleep s * 100
@@ -1831,20 +1833,20 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
                     IfMsgBox, Yes
                     {
                         if (ramt_dag = 7)
-                            {
-                                afslut_genvej()
-                                return
-                            }
+                        {
+                            afslut_genvej()
+                            return
+                        }
                         sleep 200
                         P6_ret_tlf_vl_efterfølgende(telefon)
                         sleep 200
                         continue
                     }
                     IfMsgBox, no
-                        {
-                            afslut_genvej()
-                            return
-                        }
+                    {
+                        afslut_genvej()
+                        return
+                    }
                 }
 
             }
@@ -1948,7 +1950,7 @@ return
 ; ^+F5 col 12
 l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
     genvej_beskrivelse(12)
-    
+
     P6_planvindue()
     sleep s * 100
     vm_tlf := P6_hent_vm_tlf()
@@ -2001,10 +2003,10 @@ l_p6_udregn_minut:
     tid := P6_udregn_minut()
     tid_tekst := tid.1
     if (tid = "fejl")
-        {
-            afslut_genvej()
-            return
-        }
+    {
+        afslut_genvej()
+        return
+    }
     gui, plustid:New,
     gui, plustid:Default
     Gui Font, s9, Segoe UI
@@ -2390,20 +2392,19 @@ l_flexf_fra_p6:
     Flexfinder_opslag()
     afslut_genvej()
 Return
-
 l_flexf_til_p6: ; slår valgte FF-bil op i P6. Bruger.13
     mod_up()
     KeyWait, ctrl
     sleep 200
     vl :=Flexfinder_til_p6()
     if (vl = 0)
-        {
-            afslut_genvej()
-            return
-        }
+    {
+        afslut_genvej()
+        return
+    }
     Else
     {
-        WinActivate PLANET
+        P6_aktiver()
         sleep s * 200
         P6_udfyld_k_og_s(vl)
         sleep 400 ; skal optimeres
