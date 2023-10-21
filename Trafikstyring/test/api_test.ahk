@@ -14,11 +14,11 @@ SetWorkingDir, %A_ScriptDir%
 
 http := WinHttpRequest(oOptions)
 knudepunkt := []
-gade := 
+gade :=
 
 ^e::
     {
-                
+
         InputBox, gade, Gadenavn og nr
         StringUpper, gade, gade, T
         adresse_geocode_lookup(gade)
@@ -26,10 +26,13 @@ gade :=
         MsgBox, , , % knudepunkt.søgt_adresse.lat,
         lav_udvalg()
         adresse_matrix(geo)
-
+        
+        for k, v in knudepunkt
+            for k2, v2 in v
+                for k3, v3 in v2
+            MsgBox, , , % knudepunkt[k][k2][k3]
         return
     }
-
 
     adresse_geocode_lookup(gade)
     {
@@ -102,17 +105,15 @@ gade :=
     {
         global knudepunkt
 
-
-
         knudepunkt.options := [[]]
         ; knudepunkt.udvalg[1].InsertAt(1, gade, knudepunkt.ValgtLat[1], knudepunkt.ValgtLong[1])
         knudepunkt.options.endeligt_antal := []
         knudepunkt.options.søgt_antal := []
-        knudepunkt.options.endeligt_antal := 10
+        knudepunkt.options.endeligt_antal := 30
         knudepunkt.options.søgt_antal := knudepunkt.options.endeligt_antal * 2
         antal := 0
-        y := 0.05
-        x := -0.05
+        knudepunkt.options.y := 0.05
+        knudepunkt.options.x := -0.05
         StartTime := A_TickCount
         knudepunkt.options.tid := []
         knudepunkt.options.tid.tid := []
@@ -123,8 +124,8 @@ gade :=
                 for h2, r2 in r
                     if (h2 = "lat" and knudepunkt.adresser[h].navn != knudepunkt.søgt_adresse.navn and antal < knudepunkt.options.søgt_antal and knudepunkt.adresser[h].udvalgt != "ja")
                     {
-                        if (knudepunkt.adresser[h].forskel_lat >= x and knudepunkt.adresser[h].forskel_lat <= y)
-                            if (knudepunkt.adresser[h].forskel_long >= x and knudepunkt.adresser[h].forskel_long <= y)
+                        if (knudepunkt.adresser[h].forskel_lat >= knudepunkt.options.x and knudepunkt.adresser[h].forskel_lat <= knudepunkt.options.y)
+                            if (knudepunkt.adresser[h].forskel_long >= knudepunkt.options.x and knudepunkt.adresser[h].forskel_long <= knudepunkt.options.y)
                             {
                                 knudepunkt.udvalg.Push(knudepunkt.adresser[h])
                                 knudepunkt.adresser[h].udvalgt := "ja"
@@ -133,8 +134,8 @@ gade :=
                             }
 
                     }
-            y := y + 0.05
-            x := x - 0.05
+            knudepunkt.options.y := knudepunkt.options.y + 0.05
+            knudepunkt.options.x := knudepunkt.options.x - 0.05
             knudepunkt.options.tid.omgang[1]++
             ElapsedTime := A_TickCount - StartTime
             knudepunkt.options.tid.tid.Push(ElapsedTime)
@@ -142,15 +143,15 @@ gade :=
 
         return
     }
-;; nået hertil
-adresse_matrix(geo)
-{
-    global http
+    ;; nået hertil
+    adresse_matrix(geo)
+    {
+        global http
 
-    ; knudepunkt.resultat := []
-    ; knudepunkt.resultat := objFullyClone(knudepunkt.ind)
+        ; knudepunkt.resultat := []
+        ; knudepunkt.resultat := objFullyClone(knudepunkt.ind)
 
-}
+    }
 
 ;     json_str =
 ; (
