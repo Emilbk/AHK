@@ -326,6 +326,7 @@ P6_rejsesogvindue(byref telefon := "")
     sleep s * 100
     if (telefon = "")
         return
+    SendInput, ^t
     SendInput {tab}{tab}
     SendInput, %telefon%
     SendInput, ^r
