@@ -436,7 +436,7 @@ p6_vl_vindue()
         sleep 100
         tid_nu := A_TickCount - tid_start
         brugt_tid += tid_nu
-        if (brugt_tid > 8000)
+        if (brugt_tid > 12000)
         {
             return 0
         }
