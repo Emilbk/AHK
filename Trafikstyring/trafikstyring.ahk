@@ -649,7 +649,7 @@ P6_ret_tlf_vl(ByRef telefon:=" ")
 }
 ; ***
 ;indsæt clipboard i vl-tlf
-P6_ret_tlf_vl_efterfølgende(ByRef telefon:=" ")
+P6_ret_tlf_vl_efterfølgende(ByRef telefon:="")
 {
     sendinput ^æ
     sleep s * 200
@@ -1713,6 +1713,8 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     genvej_beskrivelse(8)
 
     SendInput, {ShiftUp}{AltUp}{CtrlUp}
+    klip := clipboard
+    sleep 100
     telefon := Trio_hent_tlf()
     {
         WinActivate, PLANET
@@ -1723,6 +1725,7 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
         }
         else
         {
+            clipboard := klip
             InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 120, 160, X, Y, , Timeout, %telefon%
             if (ErrorLevel = 1 or ErrorLevel = 2)
             {
@@ -1815,6 +1818,7 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
                     {
                         if (ramt_dag = 7)
                         {
+                            P6_ret_tlf_vl_efterfølgende(telefon)
                             afslut_genvej()
                             return
                         }
