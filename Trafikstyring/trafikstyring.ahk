@@ -2336,6 +2336,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
         ; MsgBox, ,CPR, CPR, 1
         sleep 200
         P6_rejsesogvindue()
+        SendInput, ^t
         afslut_genvej()
         return
     }
