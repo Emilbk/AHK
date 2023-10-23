@@ -294,18 +294,19 @@ P6_aktiver()
     {
         WinActivate, PLANET
         WinWaitActive, PLANET
-        SendInput, {alt} ; registrerer ikke første tryk, når der skiftes til vindue
+        SendInput, {esc} ; registrerer ikke første tryk, når der skiftes til vindue
         sleep 200
         return 1
     }
     return 0
 }
 
-P6_alt_menu(byref tast := "")
+P6_alt_menu(byref tast1 := "", byref tast2 := "")
 {
     keywait ctrl, T0.5
     keywait alt, T0.5
-    SendInput, %tast%
+    SendInput, %tast1%
+    SendInput, %tast2%
     sleep 200
 }
 ; ***
