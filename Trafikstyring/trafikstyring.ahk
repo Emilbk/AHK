@@ -314,7 +314,7 @@ P6_alt_menu(byref tast1 := "", byref tast2 := "")
 P6_planvindue()
 {
     global s
-    P6_alt_menu("!tp")
+    P6_alt_menu("{alt}", "tp")
 }
 
 ; ***
@@ -323,7 +323,7 @@ P6_rejsesogvindue(byref telefon := "")
 {
     global s
 
-    P6_alt_menu("!rr")
+    P6_alt_menu("{alt}", "rr")
     sleep s * 100
     if (telefon = "")
         return
@@ -437,8 +437,7 @@ p6_vl_vindue()
         vl_opslag := clipboard
         sleep 100
         tid_nu := A_TickCount - tid_start
-        brugt_tid += tid_nu
-        if (brugt_tid > 12000)
+        if (tid_nu > 6000)
         {
             return 0
         }
@@ -2315,6 +2314,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     sleep 40
     telefon := Trio_hent_tlf()
     sleep 40
+    P6_aktiver()
     if (telefon = "")
     {
         MsgBox, , , Intet indgående telefonnummer el. hemmeligt nummer, 1
@@ -2323,7 +2323,6 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
         afslut_genvej()
         return
     }
-    P6_aktiver()
     vl := P6_hent_vl_fra_tlf(telefon)
     if vl
     {
