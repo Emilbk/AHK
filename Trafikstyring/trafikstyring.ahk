@@ -295,28 +295,25 @@ P6_aktiver()
         WinActivate, PLANET
         WinWaitActive, PLANET
         SendInput, {alt} ; registrerer ikke første tryk, når der skiftes til vindue
+        sleep 200
         return 1
     }
     return 0
 }
 
-P6_alt_menu()
+P6_alt_menu(byref tast := "")
 {
-    keywait Shift, T0.5 ; for ikke at ødelægge shiftgenveje
     keywait ctrl, T0.5
     keywait alt, T0.5
-    SendInput, {Alt}
+    SendInput, %tast%
+    sleep 200
 }
 ; ***
 ; Åben planbillede
 P6_planvindue()
 {
     global s
-    P6_alt_menu()
-    sleep 200
-    SendInput, tp
-    sleep s * 100
-    return
+    P6_alt_menu("!tp")
 }
 
 ; ***
@@ -325,11 +322,7 @@ P6_rejsesogvindue(byref telefon := "")
 {
     global s
 
-    P6_alt_menu()
-    sleep 200
-    SendInput rr
-    sleep 200
-    SendInput, ^t
+    P6_alt_menu("!rr")
     sleep s * 100
     if (telefon = "")
         return
@@ -344,9 +337,7 @@ P6_rejsesogvindue(byref telefon := "")
 P6_vis_k()
 {
     global s
-    P6_alt_menu()
-    sleep s * 40
-    SendInput, tk
+    P6_alt_menu("!tk")
     sleep s * 40
     SendInput !{F5}
     return
@@ -514,19 +505,15 @@ P6_alarmer()
 {
     global s
 
-    P6_alt_menu()
-    sendinput ta
-    sleep s * 40
-    SendInput, !k
-    SendInput, ^{Delete}
-    sleep s * 100
-    SendInput, {PgUp}
+    P6_alt_menu("!ta!k")
+    SendInput, ^{up}
     SendInput, +^{Down}
     sleep s * 200
+    SendInput, ^{delete}
     SendInput, ^l
-    P6_Planvindue()
-    sleep s * 200
-    SendInput, !{Down}
+    SendInput, ^{up}
+    sleep 100 + s * 10
+    SendInput, ^{F10}
 
     return
 }
@@ -537,19 +524,14 @@ P6_udraabsalarmer()
 {
     global s
 
-    P6_alt_menu()
-    sendinput ta
-    sleep s * 40
-    SendInput, !u
-    SendInput, ^{Delete}
+    P6_alt_menu("!ta!u")
     sleep s * 200
-    SendInput, {PgUp}
+    SendInput, ^{Up}
     SendInput, +^{Down}
     sleep s * 40
     SendInput, ^l
-    P6_Planvindue()
-    sleep s * 200
-    SendInput, !{Down}
+    SendInput, ^{Up}
+    SendInput, ^{F10}
 
     return
 }
