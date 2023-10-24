@@ -588,9 +588,17 @@ P6_hent_vl_tlf()
     SendInput !ø
     sleep s * 40
     Clipboard :=
-    SendInput {tab}{tab}^c{enter}
-    ClipWait, 2, 0
+    SendInput {tab}{tab}
+    while (StrLen(clipboard) != 8)
+    {
+        clipboard :=
+        SendInput ^c
+        ClipWait, 1
+        sleep 100
+    }
+    SendInput {enter}
     vl_tlf := Clipboard
+    clipboard := gemt_klip
     Return vl_tlf
 
 }
@@ -608,10 +616,18 @@ P6_hent_vm_tlf()
     SendInput !a
     ; sleep * 40
     Clipboard :=
-    SendInput {tab}{tab}{tab}{tab}^c{enter}
-    ClipWait, 2, 0
+    SendInput {tab}{tab}{tab}{tab}
+    while (StrLen(clipboard) != 8)
+        {
+            clipboard :=
+            SendInput ^c
+            ClipWait, 1
+            sleep 100
+        }
+    SendInput, {enter}
     SendInput ^a
     vm_tlf := Clipboard
+    clipboard := gemtklip
     Return vm_tlf
 }
 
