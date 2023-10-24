@@ -339,6 +339,7 @@ P6_rejsesogvindue(byref telefon := "")
 P6_vis_k()
 {
     global s
+    P6_planvindue()
     P6_alt_menu("!tk")
     sleep s * 40
     SendInput !{F5}
