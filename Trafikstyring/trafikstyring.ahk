@@ -567,6 +567,8 @@ P6_hent_vl_tlf()
 {
 
     global s
+    gemt_klip := clipboard
+
     vl_tilstand := p6_vl_vindue()
     if (vl_tilstand = 0)
     {
@@ -606,6 +608,7 @@ P6_hent_vl_tlf()
 ; P6 hent VM tlf
 P6_hent_vm_tlf()
 {
+    gemtklip := clipboard
     global s
     P6_vis_k()
     sleep * 200
