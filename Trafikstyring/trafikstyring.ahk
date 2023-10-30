@@ -2683,7 +2683,6 @@ genvejGuiClose:
 return
 
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
-    mod_up()
     FormatTime, dato, , d/MM
     ; FormatTime, tid, , HH:mm
 
@@ -2694,8 +2693,9 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     gemtklip := ClipboardAll
     vl := P6_hent_vl()
     clipboard :=
-    sleep 500
     SendInput, !{PrintScreen}
+    sleep 500
+    clipwait 3, 1 ;; bedre løsning?
     gui, svigt:new
     gui, svigt:default
     Gui Font, w600
@@ -2804,12 +2804,14 @@ svigtok:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 1 , % emnefelt,
+        ; beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
         gui, destroy
     }
     if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
     {
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 2, % emnefelt,
+        beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
         gui, destroy
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
