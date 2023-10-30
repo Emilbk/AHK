@@ -817,6 +817,7 @@ P6_input_sluttid()
     FormatTime, nu_plus_5, %nu_plus_5%, HHmm
     if (p6_input_sidste_slut_ops = "1")
     {
+        sleep 100
         InputBox, sidste_stop, Sidste stop, Tast tid for sidste stop (4 cifre)
         if (ErrorLevel = "1")
             Return 0
@@ -922,11 +923,13 @@ P6_udregn_minut()
     p6_udregn_minut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,44)
     if (p6_udregn_minut_ops = 1)
     {
+        sleep 100
         InputBox, tidA, Udgangspunkt, Skriv tiden`, der skal lægges noget til. `nKlokkeslæt: 4 cifre ud i ét`, minuttal: 3 til 1 ciffer ud i ét. `n `n F. eks: `n Klokken 13:34 skrives 1334 `n 231 minutter skrives 231, , , 240
         if (ErrorLevel != 0)
             return "fejl"
         if (tida = "")
             tida := "0"
+        sleep 100
         InputBox, tidB, Tid `, der skal lægges til., Skriv tid`, der skal lægges til. Minuttal ud i ét (- foran`, hvis der skal trækkes fra).,
         if (ErrorLevel != 0)
             return "fejl"
