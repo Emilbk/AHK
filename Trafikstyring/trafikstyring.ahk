@@ -2341,6 +2341,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     {
         MsgBox, , , Intet indgående telefonnummer el. hemmeligt nummer, 1
         P6_aktiver()
+        sleep 100
         p6_vaelg_vl()
         afslut_genvej()
         return
