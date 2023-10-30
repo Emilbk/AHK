@@ -2903,6 +2903,7 @@ svigtok:
     }
     if (gemt_ja = 0)
     {
+        clipboard := klip
         SendInput, ^v
     }
     SendInput, {Home}
