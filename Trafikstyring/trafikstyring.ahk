@@ -2693,9 +2693,12 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     gemtklip := ClipboardAll
     vl := P6_hent_vl()
     clipboard :=
+    sleep 500
     SendInput, !{PrintScreen}
     sleep 500
-    clipwait 3, 1 ;; bedre løsning?
+    ; ClipWait, 3, 
+    klip := ClipboardAll
+    ; clipwait 3, 1 ;; bedre løsning?
     gui, svigt:new
     gui, svigt:default
     Gui Font, w600
