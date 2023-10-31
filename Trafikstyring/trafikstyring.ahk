@@ -2264,15 +2264,16 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sleep 200
             MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
             gui, cancel
-        }
-        afslut_genvej()
+            afslut_genvej()
         return
+        }
+    }
         if (valgt = "a")
         {
 
-            P6_tekstTilChf("Jeg kan ikke ringe dig op. Tryk for opkald igen, hvis du stadig gerne vil ringes op")
+            P6_tekstTilChf("Jeg kan ikke ringe dig op. Tryk for opkald igen, hvis du stadig gerne vil ringes op. Mvh. Midttrafik")
             sleep 500
-            MsgBox, 4, Send til chauffør?, Send tekst til chauffør? Husk at låse VL,
+            MsgBox, 4, Send til chauffør?, Send tekst til chauffør?
             IfMsgBox, Yes
             {
                 sleep 200
@@ -2295,7 +2296,6 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         }
         afslut_genvej()
         return
-    }
 #IfWinActive ; udelukkende for at resette indentering i auto-formatering
 
 ;; Trio
