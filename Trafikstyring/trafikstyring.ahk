@@ -409,6 +409,7 @@ P6_hent_vl()
 {
     global s
     clipboard := ""
+    P6_planvindue()
     SendInput, !l
     sleep 20 ; ikke P6-afhængig
     SendInput, +{F10}c
@@ -541,6 +542,7 @@ P6_udraabsalarmer()
 
     P6_alt_menu("!ta!u")
     sleep s * 200
+    SendInput, ^{Delete}
     SendInput, ^{Up}
     SendInput, +^{Down}
     sleep s * 40
@@ -2704,6 +2706,7 @@ return
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     FormatTime, dato, , d/MM
     ; FormatTime, tid, , HH:mm
+    SendInput, {Shift}
 
     trio_genvej := global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 38)
     GuiControl, trio_genvej:text, Button1, %trio_genvej%
@@ -2726,12 +2729,13 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     Gui Add, Edit, vVL x16 y24 w120 h21, %vl%
     Gui Font, s9, Segoe UI
     Gui Font, w600
-    Gui Add, Text, x161 y0 w118 h25 +0x200, &Lukket?
+    Gui Add, Text, x161 y0 w118 h25 +0x200, &Lukket (Vælg én)?
     Gui Font
     Gui Font, s9, Segoe UI
     Gui Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
     Gui Add, Edit, vtid x200 y24 w79 h21, klokken
-    Gui Add, CheckBox, vhelt x160 y48 w120 h23, Ja, og VL &slettet
+    Gui Add, CheckBox, vhelt x160 y48 w120 h23, Ja, og VL &slettet:
+    Gui Add, Edit, vtid_slet x170 y68  h21,  Åbningstid garanti  
     ; Gui Add, CheckBox, vhelt2 x160 y72 w120, GV garanti &slettet i variabel tid ; nødvendig?
     Gui Font, s9, Segoe UI
     Gui Font, w600
@@ -2767,11 +2771,21 @@ svigtok:
     ; GuiControlGet, lukket
     ; GuiControlGet, helt
     ; GuiControlGet, vl
+    MsgBox, , lukket, % lukket, 
+    MsgBox, , slettet, % helt, 
     beskrivelse := StrReplace(beskrivelse, "`n", " ")
+    if (lukket = 1 and helt = 1)
+        {
+            sleep 100
+            MsgBox, 48 , Vælg kun én, Vælg enten lukket eller slettet VL
+            sleep 100
+            Gui Show, w448 h297, Svigt
+            return
+        }
     if (lukket = 1 and StrLen(tid) != 4)
     {
         sleep 100
-        MsgBox, , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
+        MsgBox, 48 , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
         sleep 100
         Gui Show, w448 h297, Svigt
         SendInput, !l{tab}^a
@@ -2785,7 +2799,7 @@ svigtok:
         if tid_tjek is not Time
         {
             sleep 100
-            MsgBox, , , Skal være et gyldigt tidspunkt
+            MsgBox, 48 , Klokkeslæt ikke gyldigt , Skal være et gyldigt tidspunkt
             sleep 100
             Gui Show, w448 h297, Svigt
             SendInput, ^a
@@ -2793,10 +2807,35 @@ svigtok:
         }
         tid := timer ":" min
     }
+    if (helt = 1 and StrLen(tid_slet) != 4)
+        {
+            sleep 100
+            MsgBox, 48 , Klokkeslæt for åbningstid skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
+            sleep 100
+            Gui Show, w448 h297, Svigt
+            SendInput, !s{space}{tab}
+            return
+        }
+        if (StrLen(tid_slet) = 4)
+        {
+            timer := SubStr(tid_slet, 1, 2)
+            min := SubStr(tid_slet, 3, 2)
+            tid_tjek := A_YYYY A_MM A_DD timer min
+            if tid_tjek is not Time
+            {
+                sleep 100
+                MsgBox, 48 , Åbningstid ikke korrekt , Klokkeslæt for åbningstid skal være et gyldigt tidspunkt
+                sleep 100
+                Gui Show, w448 h297, Svigt
+                SendInput, !s{space}{tab}
+                return
+            }
+            tid_slet := timer ":" min
+        }
     if (type = 0)
     {
         sleep 100
-        MsgBox, , Mangler VL-type, Husk at krydse af i typen af VL.
+        MsgBox, 48 , Mangler VL-type, Husk at krydse af i typen af VL.
         sleep 100
         Gui Show, w448 h297, Svigt
         return
@@ -2810,7 +2849,7 @@ svigtok:
     if (beskrivelse = "")
     {
         sleep 100
-        MsgBox, , Udfyld beskrivelse, Mangler beskrivelse af svigtet,
+        MsgBox, 48 , Udfyld beskrivelse, Mangler beskrivelse af svigtet,
         sleep 100
         Gui Show, w448 h297, Svigt
         SendInput, !b
@@ -2852,12 +2891,15 @@ svigtok:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 5, % emnefelt,
+        beskrivelse := "garantitid start:  " tid_slet " - " . beskrivelse
+
         gui, destroy
     }
     if (type = 1 and helt = 1 and årsag != "")
     {
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
         ; MsgBox, , 5.1, % emnefelt,
+        beskrivelse := "garantitid start:  " tid_slet " - " . beskrivelse
         gui, destroy
     }
     if (type = 2 and lukket = 0 and årsag !="")
@@ -2876,18 +2918,21 @@ svigtok:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 7.1, % emnefelt,
+        beskrivelse := "garantitid start: " tid_slet " - " . beskrivelse
         gui, destroy
     }
     if (type = 2 and lukket = 1 and årsag != "")
     {
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 8, % emnefelt,
+        beskrivelse := "Variabel kørsel, lukket kl. " tid " - " . beskrivelse
         gui, destroy
     }
     if (type = 2 and lukket = 1 and årsag = "")
     {
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 9, % emnefelt,
+        beskrivelse := "Variabel kørsel, lukket kl. " tid " - " . beskrivelse
         gui, destroy
     }
     if (type = 3 and årsag != "")
