@@ -2827,6 +2827,7 @@ svigtok:
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 1 , % emnefelt,
         ; beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
+        beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
         gui, destroy
     }
     if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
