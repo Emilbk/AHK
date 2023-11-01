@@ -2196,7 +2196,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 SendInput, ^s
                 sleep 2000
                 SendInput, {enter}
-                P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. " k_tid initialer)
+                P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. " k_tid initialer " ")
                 afslut_genvej()
                 return
             }
@@ -2221,7 +2221,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, ^s
             sleep 2000
             SendInput, {enter}
-            P6_notat("Priv. ikke kvitteret, tekst sendt til chf" initialer)
+            P6_notat("Priv. ikke kvitteret, tekst sendt til chf" initialer " ")
             gui, cancel
             afslut_genvej()
             return
@@ -2247,7 +2247,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, ^s
             sleep 2000
             SendInput, {enter}
-            P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. VL låst" initialer)
+            P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. VL låst" initialer " ")
             gui, cancel
             afslut_genvej()
             return
@@ -2273,7 +2273,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, ^s
             sleep 2000
             SendInput, {enter}
-            P6_notat("WakeUp sendt" initialer)
+            P6_notat("WakeUp sendt" initialer " ")
             gui, cancel
             afslut_genvej()
             return
@@ -2299,7 +2299,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 SendInput, ^s
                 sleep 2000
                 SendInput, {enter}
-                P6_notat("Tal forgæves" initialer)
+                P6_notat("Tal forgæves" initialer " ")
                 gui, cancel
                 afslut_genvej()
                 return
