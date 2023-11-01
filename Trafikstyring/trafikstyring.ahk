@@ -452,6 +452,9 @@ p6_vl_vindue()
 
 p6_vl_vindue_edit()
 {
+    k_aftale := []
+    gemtklip := ClipboardAll
+
     sendinput ^æ
     clipboard :=
     SendInput, ^c
@@ -464,7 +467,15 @@ p6_vl_vindue_edit()
     clipboard :=
     SendInput, +{F10}c
     clipwait 2
-    k_aftale := clipboard
+    k_aftale.1 := clipboard
+    clipboard :=
+    SendInput, {tab 2}
+    sleep 40
+    SendInput, +{F10}c
+    clipwait 0.5
+    k_aftale.2 := clipboard
+    clipboard := gemtklip
+    gemtklip :=
     return k_aftale
 }
 P6_udfyld_vl(vl:="")
@@ -1102,16 +1113,16 @@ P6_vl_luk(ByRef tid:="")
     vl := p6_vl_vindue()
     k_aftale := p6_vl_vindue_edit()
     sleep 40
-    if (k_aftale = 1)
+    if (k_aftale.1 = 1)
     {
         MsgBox, , VL afsluttet, VL er allerede afsluttet
         SendInput, ^a
         afslut_genvej()
         return 0
     }
-    if (StrLen(k_aftale) <= 3)
+    if (k_aftale.2 != "") ; Skandstat er 7-serien. Ingen driftsVL?
     {
-        SendInput, Keys{Enter}
+        SendInput, {Enter}
         FormatTime, dato, YYYYMMDDHH24MISS, d
         SendInput, %dato%
         SendInput, {tab}
@@ -1121,7 +1132,7 @@ P6_vl_luk(ByRef tid:="")
     }
     Else
     {
-        SendInput, Keys{Enter}{Tab 3}
+        SendInput, {Enter}{Tab 3}
         SendInput, %tid%
         SendInput, {tab}{tab}
         SendInput, %tid%
@@ -1991,6 +2002,7 @@ return
 ; #F5, col 13
 l_p6_vl_luk:
     genvej_beskrivelse(13)
+    gemtklip := ClipboardAll
 
     tid := P6_input_sluttid()
     if !tid
@@ -2004,6 +2016,9 @@ l_p6_vl_luk:
     sleep 200
     SendInput, {F5}
     afslut_genvej()
+
+    clipboard := gemtklip
+    gemtklip :=
 return
 
 l_p6_udregn_minut:
