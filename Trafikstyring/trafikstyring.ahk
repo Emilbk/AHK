@@ -2771,8 +2771,6 @@ svigtok:
     ; GuiControlGet, lukket
     ; GuiControlGet, helt
     ; GuiControlGet, vl
-    MsgBox, , lukket, % lukket, 
-    MsgBox, , slettet, % helt, 
     beskrivelse := StrReplace(beskrivelse, "`n", " ")
     if (lukket = 1 and helt = 1)
         {
