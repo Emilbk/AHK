@@ -241,17 +241,20 @@ sygehusmenu2:
     Trio_opkald(knap2)
     gui cancel
     WinActivate, PLANET
+    afslut_genvej()
 return
 
 sygehusEscape:
 sygehusClose:
     gui cancel
+    afslut_genvej()
 return
 
 sygehus2Escape:
 sygehus2Close:
     vis_sygehus_1()
     gui Cancel
+    afslut_genvej()
 return
 
 ;; FUNKTIONER
@@ -1649,11 +1652,13 @@ return
 ; SygehusGUI
 ; omskrives
 l_p6_sygehus_ring_op:
+    genvej_beskrivelse(18)
     vis_sygehus_1()
     mod_up()
 return
 
 l_p6_central_ring_op:
+    genvej_beskrivelse(19)
     gui, Taxa:Default
     Gui,Add,Button,vtaxa1,&Århus Taxa
     Gui,Add,Button,vtaxa2,Århus Taxa Sk&ole
@@ -2192,7 +2197,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 SendInput, ^s
                 sleep 2000
                 SendInput, {enter}
-                P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, " s_stop " og tekst sendt til chf. Oprindeligt kvitt. " k_tid initialer)
+                P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. " k_tid initialer)
                 afslut_genvej()
                 return
             }
