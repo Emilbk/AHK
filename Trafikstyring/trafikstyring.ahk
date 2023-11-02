@@ -2706,7 +2706,7 @@ return
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     FormatTime, dato, , d/MM
     ; FormatTime, tid, , HH:mm
-    SendInput, {Shift}
+    mod_up()
 
     trio_genvej := global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 38)
     GuiControl, trio_genvej:text, Button1, %trio_genvej%
