@@ -4,6 +4,28 @@
 SetWorkingDir %A_ScriptDir%
 SetBatchLines -1
 
+---------------------------
+Planet Version 6
+---------------------------
+Ny  vognløb: 31204 031123 Statistikgruppe:ÅRH_GV_0US
+
+
+---------------------------
+OK   
+---------------------------
+
+---------------------------
+Planet Version 6
+---------------------------
+Ny  vognløb:  3302 031123 Statistikgruppe:ÅRH_VO_2US
+
+
+---------------------------
+OK   
+---------------------------
+
+
+
 vl := []
 
 +^e::
@@ -22,11 +44,11 @@ InputBox, vl_input
 if ErrorLevel = 1
     return
 vl.Push(vl_input)
-}
+
 vl_liste := ""
 for k, v in vl
     vl_liste .= vl[k] . "|"
-
+}
 ; vl_liste := vl_liste . "|"
 ; MsgBox, , , % vl_liste
 Gui repl: Font, s9, Segoe UI

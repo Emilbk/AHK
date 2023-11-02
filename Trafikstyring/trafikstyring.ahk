@@ -44,7 +44,7 @@ genvej_navn := []
 s := bruger_genvej.41
 tlf :=
 trio_genvej := "Genvejsoversigt"
-
+vl_repl := []
 ;   bruger_genvej  telenor_opr     telenor_ahk
 
 ;; hotkeydef.
@@ -212,6 +212,13 @@ Gui trio_genvej: Add, Button, vtrio_genvej gtrio_genvej x0 y0 h42 w240, %trio_ge
 Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 
 return
+; gui repl
+Gui repl: Font, s9, Segoe UI
+Gui repl: Add, ListBox, x78 y21 w120 h364 vvalg Choose1, %vl_liste%
+Gui repl: Add, Button, x359 y239 w80 h23 Default gguireplok, &OK
+Gui repl: Add, Button, x359 y270 w80 h23 gguireplslet, &Slet
+Gui repl: Show, w620 h420, Window
+
 ;; GUI-labels
 trio_genvej:
     ; Goto, l_gui_hjælp
@@ -255,6 +262,24 @@ sygehus2Close:
     vis_sygehus_1()
     gui Cancel
     afslut_genvej()
+return
+; GUI repl
+GuireplEscape:
+GuireplClose:
+    ExitApp
+
+GuireplOK:
+Gui, Submit
+gui Destroy
+MsgBox, , , % valg
+return
+
+Guisrepllet:
+Gui, Submit
+gui Destroy
+for k, v in vl
+    if (valg = v)
+        vl.Pop(k)
 return
 
 ;; FUNKTIONER
@@ -1159,6 +1184,38 @@ p6_hent_kunde_tlf(ByRef telefon:="")
     ClipWait, 3,
     telefon := clipboard
     return
+}
+
+p6_replaner_gem_vl()
+{
+    vl := []
+    gemtklip := ClipboardAll
+
+    clipboard :=
+    SendInput, ^c
+    clipwait 2
+    repl_besked := StrSplit(clipboard, " ")
+    SendInput, {enter}
+    if (repl_besked.MaxIndex() = 11)
+        vl.Push(repl_besked.6)
+    if (repl_besked.MaxIndex() = 12)
+    vl.Push(repl_besked.7)
+
+    clipboard := gemtklip
+    return vl
+    
+}
+
++enter:: 
+{
+vl := p6_replaner_gem_vl()
+msgbox % vl.1
+Gui repl: Font, s9, Segoe UI
+Gui repl: Add, ListBox, x78 y21 w120 h364 vvalg Choose1, %vl_liste%
+Gui repl: Add, Button, x359 y239 w80 h23 Default gguireplok, &OK
+Gui repl: Add, Button, x359 y270 w80 h23 gguireplslet, &Slet
+Gui repl: Show, w620 h420, Window
+Return
 }
 
 ;; Telenor
@@ -2319,6 +2376,30 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         return
 #IfWinActive ; udelukkende for at resette indentering i auto-formatering
 
+; P6-repl
+^e::
+{
+InputBox, vl_input
+if ErrorLevel = 1
+    return
+vl.Push(vl_input)
+
+vl_liste := ""
+for k, v in vl
+    vl_liste .= vl[k] . "|"
+}
+
+; p6-repl-liste
++^e::
+{ 
+    Gui repl: Font, s9, Segoe UI
+    Gui repl: Add, ListBox, x78 y21 w120 h364 vvalg Choose1, %vl_liste%
+    Gui repl: Add, Button, x359 y239 w80 h23 Default gguiok, &OK
+    Gui repl: Add, Button, x359 y270 w80 h23 gguislet, &Slet
+    Gui repl: Show, w620 h420, Window
+    return
+}
+
 ;; Trio
 l_trio_klar: ;Trio klar
     trio_klar()
@@ -2939,7 +3020,7 @@ svigtok:
         if (tid_slet != "Åbningstid garanti")
             beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
         Else
-        beskrivelse := "Variabel kørsel, lukket kl. " tid " — ". beskrivelse
+        beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, destroy
     }
     if (type = 3 and årsag != "")
