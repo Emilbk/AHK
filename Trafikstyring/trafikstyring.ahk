@@ -2733,7 +2733,7 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     Gui Font
     Gui Font, s9, Segoe UI
     Gui Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
-    Gui Add, Edit, vtid x200 y24 w79 h21, klokken
+    Gui Add, Edit, vtid x200 y24 w79 h21, Hjemzone kl.
     Gui Add, CheckBox, vhelt x160 y48 w120 h23, Ja, og VL &slettet:
     Gui Add, Edit, vtid_slet x170 y68  h21,  Åbningstid garanti  
     ; Gui Add, CheckBox, vhelt2 x160 y72 w120, GV garanti &slettet i variabel tid ; nødvendig?
@@ -2892,7 +2892,7 @@ svigtok:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 5, % emnefelt,
-        beskrivelse := "Vl lukket. Garantitid start:  " tid_slet " — " . beskrivelse
+        beskrivelse := "Vl slettet. Garantitid start:  " tid_slet " — " . beskrivelse
 
         gui, destroy
     }
@@ -2900,7 +2900,7 @@ svigtok:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
         ; MsgBox, , 5.1, % emnefelt,
-        beskrivelse := "Vl lukket. Garantitid start:  " tid_slet " — " . beskrivelse
+        beskrivelse := "Vl slettet. Garantitid start:  " tid_slet " — " . beskrivelse
         gui, destroy
     }
     if (type = 2 and lukket = 0 and helt = 0 and årsag !="")
@@ -2911,7 +2911,7 @@ svigtok:
     }
     if (type = 2 and lukket = 0 and helt = 0 and årsag = "")
     {
-        emnefelt := "Svigt VL " vl " " vl_type " " årsag "d. " dato
+        emnefelt := "Svigt VL " vl " " vl_type " d. " dato
         ; MsgBox, , 7, % emnefelt,
         gui, destroy
     }
@@ -2919,7 +2919,7 @@ svigtok:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 7.1, % emnefelt,
-        beskrivelse := "Garantitid start: " tid_slet " - " . beskrivelse
+        beskrivelse := "GV slettet i variabel kørsel. Garantitid start: " tid_slet " - " . beskrivelse
         gui, destroy
     }
     if (type = 2 and lukket = 1 and årsag != "")
