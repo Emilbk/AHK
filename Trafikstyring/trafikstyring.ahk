@@ -1541,7 +1541,7 @@ Excel_udklip_til_p6(byref vl:="")
 
 mod_up()
 {
-    SendInput, {AltUp}{ShiftUp}{CtrlUp}{LWinUp}{RWinUp}
+    SendInput, {LShift}{RShift}{AltUp}{ShiftUp}{CtrlUp}{LWinUp}{RWinUp}
     return
 }
 
