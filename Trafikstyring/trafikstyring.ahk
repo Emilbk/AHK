@@ -241,17 +241,20 @@ sygehusmenu2:
     Trio_opkald(knap2)
     gui cancel
     WinActivate, PLANET
+    afslut_genvej()
 return
 
 sygehusEscape:
 sygehusClose:
     gui cancel
+    afslut_genvej()
 return
 
 sygehus2Escape:
 sygehus2Close:
     vis_sygehus_1()
     gui Cancel
+    afslut_genvej()
 return
 
 ;; FUNKTIONER
@@ -406,6 +409,7 @@ P6_hent_vl()
 {
     global s
     clipboard := ""
+    P6_planvindue()
     SendInput, !l
     sleep 20 ; ikke P6-afhængig
     SendInput, +{F10}c
@@ -452,11 +456,13 @@ p6_vl_vindue()
 
 p6_vl_vindue_edit()
 {
+    k_aftale := []
+    gemtklip := ClipboardAll
+
     sendinput ^æ
     clipboard :=
     SendInput, ^c
     clipwait 0.5
-    vl := clipboard
     if (InStr(clipboard, A_Year))
     {
         return 1 ; VL lukket
@@ -464,7 +470,15 @@ p6_vl_vindue_edit()
     clipboard :=
     SendInput, +{F10}c
     clipwait 2
-    k_aftale := clipboard
+    k_aftale.1 := clipboard
+    clipboard :=
+    SendInput, {tab 2}
+    sleep 40
+    SendInput, +{F10}c
+    clipwait 0.5
+    k_aftale.2 := clipboard
+    clipboard := gemtklip
+    gemtklip :=
     return k_aftale
 }
 P6_udfyld_vl(vl:="")
@@ -528,6 +542,7 @@ P6_udraabsalarmer()
 
     P6_alt_menu("!ta!u")
     sleep s * 200
+    SendInput, ^{Delete}
     SendInput, ^{Up}
     SendInput, +^{Down}
     sleep s * 40
@@ -1102,16 +1117,16 @@ P6_vl_luk(ByRef tid:="")
     vl := p6_vl_vindue()
     k_aftale := p6_vl_vindue_edit()
     sleep 40
-    if (k_aftale = 1)
+    if (k_aftale.1 = 1)
     {
         MsgBox, , VL afsluttet, VL er allerede afsluttet
         SendInput, ^a
         afslut_genvej()
         return 0
     }
-    if (StrLen(k_aftale) <= 3)
+    if (k_aftale.2 != "") ; Skandstat er 7-serien. Ingen driftsVL?
     {
-        SendInput, Keys{Enter}
+        SendInput, {Enter}
         FormatTime, dato, YYYYMMDDHH24MISS, d
         SendInput, %dato%
         SendInput, {tab}
@@ -1121,7 +1136,7 @@ P6_vl_luk(ByRef tid:="")
     }
     Else
     {
-        SendInput, Keys{Enter}{Tab 3}
+        SendInput, {Enter}{Tab 3}
         SendInput, %tid%
         SendInput, {tab}{tab}
         SendInput, %tid%
@@ -1526,7 +1541,7 @@ Excel_udklip_til_p6(byref vl:="")
 
 mod_up()
 {
-    SendInput, {AltUp}{ShiftUp}{CtrlUp}{LWinUp}{RWinUp}
+    SendInput, {LShift}{RShift}{AltUp}{ShiftUp}{CtrlUp}{LWinUp}{RWinUp}
     return
 }
 
@@ -1638,11 +1653,13 @@ return
 ; SygehusGUI
 ; omskrives
 l_p6_sygehus_ring_op:
+    genvej_beskrivelse(18)
     vis_sygehus_1()
     mod_up()
 return
 
 l_p6_central_ring_op:
+    genvej_beskrivelse(19)
     gui, Taxa:Default
     Gui,Add,Button,vtaxa1,&Århus Taxa
     Gui,Add,Button,vtaxa2,Århus Taxa Sk&ole
@@ -1991,6 +2008,7 @@ return
 ; #F5, col 13
 l_p6_vl_luk:
     genvej_beskrivelse(13)
+    gemtklip := ClipboardAll
 
     tid := P6_input_sluttid()
     if !tid
@@ -2004,6 +2022,9 @@ l_p6_vl_luk:
     sleep 200
     SendInput, {F5}
     afslut_genvej()
+
+    clipboard := gemtklip
+    gemtklip :=
 return
 
 l_p6_udregn_minut:
@@ -2177,7 +2198,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 SendInput, ^s
                 sleep 2000
                 SendInput, {enter}
-                P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, " s_stop " og tekst sendt til chf. Oprindeligt kvitt. " k_tid initialer)
+                P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. " k_tid initialer " ")
                 afslut_genvej()
                 return
             }
@@ -2202,7 +2223,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, ^s
             sleep 2000
             SendInput, {enter}
-            P6_notat("Priv. ikke kvitteret, tekst sendt til chf" initialer)
+            P6_notat("Priv. ikke kvitteret, tekst sendt til chf" initialer " ")
             gui, cancel
             afslut_genvej()
             return
@@ -2228,7 +2249,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, ^s
             sleep 2000
             SendInput, {enter}
-            P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. VL låst" initialer)
+            P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. VL låst" initialer " ")
             gui, cancel
             afslut_genvej()
             return
@@ -2254,7 +2275,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, ^s
             sleep 2000
             SendInput, {enter}
-            P6_notat("WakeUp sendt" initialer)
+            P6_notat("WakeUp sendt" initialer " ")
             gui, cancel
             afslut_genvej()
             return
@@ -2264,22 +2285,23 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sleep 200
             MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
             gui, cancel
-        }
-        afslut_genvej()
+            afslut_genvej()
         return
+        }
+    }
         if (valgt = "a")
         {
 
-            P6_tekstTilChf("Jeg kan ikke ringe dig op. Tryk for opkald igen, hvis du stadig gerne vil ringes op")
+            P6_tekstTilChf("Jeg kan ikke ringe dig op. Tryk for opkald igen, hvis du stadig gerne vil ringes op. Mvh. Midttrafik")
             sleep 500
-            MsgBox, 4, Send til chauffør?, Send tekst til chauffør? Husk at låse VL,
+            MsgBox, 4, Send til chauffør?, Send tekst til chauffør?
             IfMsgBox, Yes
             {
                 sleep 200
                 SendInput, ^s
                 sleep 2000
                 SendInput, {enter}
-                P6_notat("Tal forgæves" initialer)
+                P6_notat("Tal forgæves" initialer " ")
                 gui, cancel
                 afslut_genvej()
                 return
@@ -2295,7 +2317,6 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         }
         afslut_genvej()
         return
-    }
 #IfWinActive ; udelukkende for at resette indentering i auto-formatering
 
 ;; Trio
@@ -2685,6 +2706,7 @@ return
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     FormatTime, dato, , d/MM
     ; FormatTime, tid, , HH:mm
+    mod_up()
 
     trio_genvej := global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 38)
     GuiControl, trio_genvej:text, Button1, %trio_genvej%
@@ -2693,9 +2715,12 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     gemtklip := ClipboardAll
     vl := P6_hent_vl()
     clipboard :=
+    sleep 500
     SendInput, !{PrintScreen}
     sleep 500
-    clipwait 3, 1 ;; bedre løsning?
+    ; ClipWait, 3, 
+    klip := ClipboardAll
+    ; clipwait 3, 1 ;; bedre løsning?
     gui, svigt:new
     gui, svigt:default
     Gui Font, w600
@@ -2704,12 +2729,13 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     Gui Add, Edit, vVL x16 y24 w120 h21, %vl%
     Gui Font, s9, Segoe UI
     Gui Font, w600
-    Gui Add, Text, x161 y0 w118 h25 +0x200, &Lukket?
+    Gui Add, Text, x161 y0 w118 h25 +0x200, &Lukket? (Vælg én)
     Gui Font
     Gui Font, s9, Segoe UI
     Gui Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
-    Gui Add, Edit, vtid x200 y24 w79 h21, klokken
-    Gui Add, CheckBox, vhelt x160 y48 w120 h23, Ja, og VL &slettet
+    Gui Add, Edit, vtid x200 y24 w79 h21, Hjemzone kl.
+    Gui Add, CheckBox, vhelt x160 y48 w120 h23, Ja, og VL &slettet:
+    Gui Add, Edit, vtid_slet x170 y68  h21,  Åbningstid garanti  
     ; Gui Add, CheckBox, vhelt2 x160 y72 w120, GV garanti &slettet i variabel tid ; nødvendig?
     Gui Font, s9, Segoe UI
     Gui Font, w600
@@ -2734,6 +2760,7 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
 
     Gui Show, w448 h297, Svigt
     ControlFocus, Button1, Svigt
+    mod_up()
 ; ^Backspace::Send +^{Left}{Backspace}
 Return
 svigtok:
@@ -2745,11 +2772,21 @@ svigtok:
     ; GuiControlGet, lukket
     ; GuiControlGet, helt
     ; GuiControlGet, vl
+    ; MsgBox, , Lukket kl, % tid
+    ; MsgBox, , Garantitid, % tid_slet 
     beskrivelse := StrReplace(beskrivelse, "`n", " ")
+    if (lukket = 1 and helt = 1)
+        {
+            sleep 100
+            MsgBox, 48 , Vælg kun én, Vælg enten lukket eller slettet VL
+            sleep 100
+            Gui Show, w448 h297, Svigt
+            return
+        }
     if (lukket = 1 and StrLen(tid) != 4)
     {
         sleep 100
-        MsgBox, , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
+        MsgBox, 48 , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
         sleep 100
         Gui Show, w448 h297, Svigt
         SendInput, !l{tab}^a
@@ -2763,7 +2800,7 @@ svigtok:
         if tid_tjek is not Time
         {
             sleep 100
-            MsgBox, , , Skal være et gyldigt tidspunkt
+            MsgBox, 48 , Klokkeslæt ikke gyldigt , Skal være et gyldigt tidspunkt
             sleep 100
             Gui Show, w448 h297, Svigt
             SendInput, ^a
@@ -2771,10 +2808,35 @@ svigtok:
         }
         tid := timer ":" min
     }
+    if (helt = 1 and StrLen(tid_slet) != 4)
+        {
+            sleep 100
+            MsgBox, 48 , Klokkeslæt for åbningstid skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
+            sleep 100
+            Gui Show, w448 h297, Svigt
+            SendInput, !s{space}{tab}
+            return
+        }
+        if (StrLen(tid_slet) = 4)
+        {
+            timer := SubStr(tid_slet, 1, 2)
+            min := SubStr(tid_slet, 3, 2)
+            tid_tjek := A_YYYY A_MM A_DD timer min
+            if tid_tjek is not Time
+            {
+                sleep 100
+                MsgBox, 48 , Åbningstid ikke korrekt , Klokkeslæt for åbningstid skal være et gyldigt tidspunkt
+                sleep 100
+                Gui Show, w448 h297, Svigt
+                SendInput, !s{space}{tab}
+                return
+            }
+            tid_slet := timer ":" min
+        }
     if (type = 0)
     {
         sleep 100
-        MsgBox, , Mangler VL-type, Husk at krydse af i typen af VL.
+        MsgBox, 48 , Mangler VL-type, Husk at krydse af i typen af VL.
         sleep 100
         Gui Show, w448 h297, Svigt
         return
@@ -2788,7 +2850,7 @@ svigtok:
     if (beskrivelse = "")
     {
         sleep 100
-        MsgBox, , Udfyld beskrivelse, Mangler beskrivelse af svigtet,
+        MsgBox, 48 , Udfyld beskrivelse, Mangler beskrivelse af svigtet,
         sleep 100
         Gui Show, w448 h297, Svigt
         SendInput, !b
@@ -2805,13 +2867,14 @@ svigtok:
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 1 , % emnefelt,
         ; beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
+        beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
         gui, destroy
     }
     if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
     {
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 2, % emnefelt,
-        beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
+        beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
         gui, destroy
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
@@ -2829,15 +2892,18 @@ svigtok:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 5, % emnefelt,
+        beskrivelse := "Vl slettet. Garantitid start:  " tid_slet " — " . beskrivelse
+
         gui, destroy
     }
     if (type = 1 and helt = 1 and årsag != "")
     {
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
         ; MsgBox, , 5.1, % emnefelt,
+        beskrivelse := "Vl slettet. Garantitid start:  " tid_slet " — " . beskrivelse
         gui, destroy
     }
-    if (type = 2 and lukket = 0 and årsag !="")
+    if (type = 2 and lukket = 0 and helt = 0 and årsag !="")
     {
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - " dato
         ; MsgBox, , 6, % emnefelt,
@@ -2845,7 +2911,7 @@ svigtok:
     }
     if (type = 2 and lukket = 0 and helt = 0 and årsag = "")
     {
-        emnefelt := "Svigt VL " vl " " vl_type " " årsag "d. " dato
+        emnefelt := "Svigt VL " vl " " vl_type " d. " dato
         ; MsgBox, , 7, % emnefelt,
         gui, destroy
     }
@@ -2853,18 +2919,27 @@ svigtok:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 7.1, % emnefelt,
+        beskrivelse := "GV slettet i variabel kørsel. Garantitid start: " tid_slet " — " . beskrivelse
         gui, destroy
     }
     if (type = 2 and lukket = 1 and årsag != "")
     {
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 8, % emnefelt,
+        if (tid_slet != "Åbningstid garanti")
+            beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
+        Else
+        beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, destroy
     }
     if (type = 2 and lukket = 1 and årsag = "")
     {
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 9, % emnefelt,
+        if (tid_slet != "Åbningstid garanti")
+            beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
+        Else
+        beskrivelse := "Variabel kørsel, lukket kl. " tid " — ". beskrivelse
         gui, destroy
     }
     if (type = 3 and årsag != "")
@@ -2900,6 +2975,7 @@ svigtok:
     }
     if (gemt_ja = 0)
     {
+        clipboard := klip
         SendInput, ^v
     }
     SendInput, {Home}
