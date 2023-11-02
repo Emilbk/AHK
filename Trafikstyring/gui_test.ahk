@@ -6,9 +6,21 @@ SetBatchLines -1
 
 vl := []
 
++^e::
+{ 
+    Gui repl: Font, s9, Segoe UI
+    Gui repl: Add, ListBox, x78 y21 w120 h364 vvalg Choose1, %vl_liste%
+    Gui repl: Add, Button, x359 y239 w80 h23 Default gguiok, &OK
+    Gui repl: Add, Button, x359 y270 w80 h23 gguislet, &Slet
+    Gui repl: Show, w620 h420, Window
+    return
+}
+
 ^e::
 {
 InputBox, vl_input
+if ErrorLevel = 1
+    return
 vl.Push(vl_input)
 }
 vl_liste := ""
@@ -17,21 +29,22 @@ for k, v in vl
 
 ; vl_liste := vl_liste . "|"
 ; MsgBox, , , % vl_liste
-Gui Font, s9, Segoe UI
-Gui Add, ListBox, x78 y21 w120 h364 vvalg, %vl_liste%
-Gui Add, Button, x359 y239 w80 h23 Default gguiok, &OK
-Gui Add, Button, x359 y270 w80 h23 gguislet, &Slet
-Gui Show, w620 h420, Window
+Gui repl: Font, s9, Segoe UI
+Gui repl: Add, ListBox, x78 y21 w120 h364 vvalg Choose1, %vl_liste%
+Gui repl: Add, Button, x359 y239 w80 h23 Default gguiok, &OK
+Gui repl: Add, Button, x359 y270 w80 h23 gguislet, &Slet
+Gui repl: Show, w620 h420, Window
 Return
 
-GuiEscape:
-GuiClose:
+GuisletEscape:
+GuisletClose:
     ExitApp
 
 GuiOK:
 Gui, Submit
 gui Destroy
 MsgBox, , , % valg
+return
 
 Guislet:
 Gui, Submit
@@ -39,6 +52,7 @@ gui Destroy
 for k, v in vl
     if (valg = v)
         vl.Pop(k)
+return
 
 ; Gui Show, w620 h420, Window
 ; ---------------------------
