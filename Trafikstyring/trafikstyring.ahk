@@ -2729,7 +2729,7 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     Gui Add, Edit, vVL x16 y24 w120 h21, %vl%
     Gui Font, s9, Segoe UI
     Gui Font, w600
-    Gui Add, Text, x161 y0 w118 h25 +0x200, &Lukket (Vælg én)?
+    Gui Add, Text, x161 y0 w118 h25 +0x200, &Lukket? (Vælg én)
     Gui Font
     Gui Font, s9, Segoe UI
     Gui Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
