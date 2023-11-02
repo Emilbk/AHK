@@ -2760,6 +2760,7 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
 
     Gui Show, w448 h297, Svigt
     ControlFocus, Button1, Svigt
+    mod_up()
 ; ^Backspace::Send +^{Left}{Backspace}
 Return
 svigtok:
@@ -2771,6 +2772,8 @@ svigtok:
     ; GuiControlGet, lukket
     ; GuiControlGet, helt
     ; GuiControlGet, vl
+    ; MsgBox, , Lukket kl, % tid
+    ; MsgBox, , Garantitid, % tid_slet 
     beskrivelse := StrReplace(beskrivelse, "`n", " ")
     if (lukket = 1 and helt = 1)
         {
@@ -2889,7 +2892,7 @@ svigtok:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 5, % emnefelt,
-        beskrivelse := "garantitid start:  " tid_slet " - " . beskrivelse
+        beskrivelse := "Vl lukket. Garantitid start:  " tid_slet " — " . beskrivelse
 
         gui, destroy
     }
@@ -2897,10 +2900,10 @@ svigtok:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
         ; MsgBox, , 5.1, % emnefelt,
-        beskrivelse := "garantitid start:  " tid_slet " - " . beskrivelse
+        beskrivelse := "Vl lukket. Garantitid start:  " tid_slet " — " . beskrivelse
         gui, destroy
     }
-    if (type = 2 and lukket = 0 and årsag !="")
+    if (type = 2 and lukket = 0 and helt = 0 and årsag !="")
     {
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - " dato
         ; MsgBox, , 6, % emnefelt,
@@ -2916,13 +2919,16 @@ svigtok:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 7.1, % emnefelt,
-        beskrivelse := "garantitid start: " tid_slet " - " . beskrivelse
+        beskrivelse := "Garantitid start: " tid_slet " - " . beskrivelse
         gui, destroy
     }
     if (type = 2 and lukket = 1 and årsag != "")
     {
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 8, % emnefelt,
+        if (tid_slet != "Åbningstid garanti")
+            beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
+        Else
         beskrivelse := "Variabel kørsel, lukket kl. " tid " - " . beskrivelse
         gui, destroy
     }
@@ -2930,6 +2936,9 @@ svigtok:
     {
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 9, % emnefelt,
+        if (tid_slet != "Åbningstid garanti")
+            beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
+        Else
         beskrivelse := "Variabel kørsel, lukket kl. " tid " - " . beskrivelse
         gui, destroy
     }
