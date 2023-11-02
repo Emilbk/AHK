@@ -2867,14 +2867,14 @@ svigtok:
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 1 , % emnefelt,
         ; beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
-        beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
+        beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
         gui, destroy
     }
     if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
     {
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 2, % emnefelt,
-        beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
+        beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
         gui, destroy
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
@@ -2919,7 +2919,7 @@ svigtok:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 7.1, % emnefelt,
-        beskrivelse := "GV slettet i variabel kørsel. Garantitid start: " tid_slet " - " . beskrivelse
+        beskrivelse := "GV slettet i variabel kørsel. Garantitid start: " tid_slet " — " . beskrivelse
         gui, destroy
     }
     if (type = 2 and lukket = 1 and årsag != "")
@@ -2929,7 +2929,7 @@ svigtok:
         if (tid_slet != "Åbningstid garanti")
             beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
         Else
-        beskrivelse := "Variabel kørsel, lukket kl. " tid " - " . beskrivelse
+        beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, destroy
     }
     if (type = 2 and lukket = 1 and årsag = "")
@@ -2939,7 +2939,7 @@ svigtok:
         if (tid_slet != "Åbningstid garanti")
             beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
         Else
-        beskrivelse := "Variabel kørsel, lukket kl. " tid " - " . beskrivelse
+        beskrivelse := "Variabel kørsel, lukket kl. " tid " — ". beskrivelse
         gui, destroy
     }
     if (type = 3 and årsag != "")
