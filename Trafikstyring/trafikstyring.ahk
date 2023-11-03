@@ -2148,7 +2148,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
 
     ; KeyWait Alt
     ; keywait Ctrl
-    Input valgt, L1 T5, {esc},
+    Input valgt, L1 T5 C, {esc},
     if (valgt = "t")
     {
         P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
@@ -2320,10 +2320,36 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         afslut_genvej()
         return
     }
-    if (valgt = "w")
+    if (valgt == "w")
+        {
+    
+            P6_tekstTilChf("Der er ikke bedt om vognløb start. Huske at bede om første køreordre ved opstart, uanset om der ligger ture eller ej. Mvh. Midttrafik")
+            sleep 500
+            MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+            IfMsgBox, Yes
+            {
+                sleep 200
+                SendInput, ^s
+                sleep 2000
+                SendInput, {enter}
+                P6_notat("WakeUp sendt" initialer " ")
+                gui, cancel
+                afslut_genvej()
+                return
+            }
+            IfMsgBox, No
+            {
+                sleep 200
+                MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+                gui, cancel
+                afslut_genvej()
+            return
+            }
+        }
+    if (valgt == "W")
     {
 
-        P6_tekstTilChf("Jeg kan ikke ringe dig op, der er ikke bedt om vognløb start. Ring til driften, hvis du er ude at køre, ellers bliver vognløbet lukket.")
+        P6_tekstTilChf("Jeg kan ikke ringe dig op, der trykket for første køreordre. Ring til driften, hvis du er ude at køre, ellers bliver vognløbet lukket.")
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør? Husk at låse VL,
         IfMsgBox, Yes
@@ -2332,7 +2358,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, ^s
             sleep 2000
             SendInput, {enter}
-            P6_notat("WakeUp sendt" initialer " ")
+            P6_notat("Ingen kontakt til chf, tekst sendt" initialer " ")
             gui, cancel
             afslut_genvej()
             return
