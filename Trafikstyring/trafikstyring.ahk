@@ -1,6 +1,7 @@
 ﻿#NoEnv ; Recommended for performance and compatibility with future AutoHotkey releases.
 #InstallKeybdHook
 #InstallMouseHook
+#MenuMaskKey vkE8
 ;FileEncoding UTF-8
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input ; Recommended for new scripts due to its superior speed and reliability.
@@ -294,6 +295,8 @@ replvl:
 
 ;; FUNKTIONER
 ;; P6
+
+
 afslut_genvej()
 {
     GuiControl, trio_genvej:text, Button1, Genvejsoversigt
@@ -1236,7 +1239,7 @@ p6_replaner_gem_vl()
     if (repl_besked.MaxIndex() = 12)
         vl_repl.Push(repl_besked.7)
 
-    vl_repl_liste := ""
+    vl_repl_liste := "|"
     for k, v in vl_repl
         vl_repl_liste .= vl_repl[k] . "|"
 
@@ -1640,7 +1643,7 @@ p6_replaner_gem_vl()
 
     mod_up()
     {
-        SendInput, {LShift}{RShift}{AltUp}{ShiftUp}{CtrlUp}{LWinUp}{RWinUp}{RAlt}{LAlt}{RControl}{LControl}
+        SendInput, {AltUp}{ShiftUp}{CtrlUp}{LWinUp}
         return
     }
 
@@ -2267,7 +2270,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         Gui Add, Text, x215 y86 w120 h23 +0x200, Navn på kunde sendt
         Gui Add, Text, x120 y137 w120 h23 +0x200, Evt. kvitteret tid.
         Gui Add, Edit, vk_navn2 x216 y103 w120 h21
-        Gui Add, Edit, vk_tid x120 y157 w120 h21
+        Gui Add, Edit, vk_tid x120 y157 w120 h21, Oprindelig kvittering
         Gui Add, Button, gk_chfok x81 y200 w80 h23 +Default, &OK
         Gui Add, Button, gk_annuller x216 y200 w80 h23, &Annuller
 
@@ -2297,7 +2300,13 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 SendInput, ^s
                 sleep 2000
                 SendInput, {enter}
-                P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. " k_tid initialer " ")
+                if (k_tid != "Oprindelig kvittering")
+                    {
+                        P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. tid " k_tid initialer " ")
+                        return
+                    }
+                else
+                    P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. " initialer " ")
                 afslut_genvej()
                 return
             }
