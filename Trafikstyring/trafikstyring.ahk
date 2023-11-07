@@ -484,9 +484,6 @@ p6_vl_vindue()
             return 0
         }
     }
-    clipboard :=
-    SendInput, +{F10}c
-    ClipWait, 3
     vl := clipboard
     return vl
 }
@@ -514,6 +511,10 @@ p6_vl_vindue_edit()
     SendInput, +{F10}c
     clipwait 0.5
     k_aftale.2 := clipboard
+    if (k_aftale.1 = k_aftale.2)
+        {
+            k_aftale.2 := "drift"
+        }
     clipboard := gemtklip
     gemtklip :=
     return k_aftale
@@ -676,11 +677,9 @@ P6_hent_vm_tlf()
     gemtklip := clipboard
     global s
     P6_vis_k()
-    sleep * 200
+    sleep s * 40
     sendinput ^æ
-    sleep * 200
-    SendInput {Enter}
-    ; sleep * 40
+    sleep s * 40
     SendInput !a
     ; sleep * 40
     Clipboard :=
@@ -854,6 +853,7 @@ P6_tekstTilChf(ByRef tekst:=" ")
     Sendinput %kørselsaftale%
     sleep s * 100
     SendInput, {tab}
+    sleep 40
     Sendinput %styresystem%
     SendInput, {tab}
     sleep s * 100
@@ -1174,6 +1174,15 @@ P6_vl_luk(ByRef tid:="")
         afslut_genvej()
         return 0
     }
+    if (k_aftale.2 = "drift")
+    {
+        SendInput, {Enter}{Tab 3}
+        SendInput, %tid%
+        SendInput, {tab}{tab}
+        SendInput, %tid%
+        SendInput, {enter}{enter}
+        return
+    }
     if (k_aftale.2 != "") ; Skandstat er 7-serien. Ingen driftsVL?
     {
         SendInput, {Enter}
@@ -1235,13 +1244,14 @@ p6_replaner_gem_vl()
     return vl_repl
 
 }
-
+#IfWinActive, Planet ; er ikke med stort i repl.vindue
 +enter::
     {
         p6_replaner_gem_vl()
         Return
     }
-
+#IfWinActive
+#IfWinActive PLANET
 +^l::
     {
         ; MsgBox, , , Text, 
@@ -1249,7 +1259,7 @@ p6_replaner_gem_vl()
         Gui repl: Show, w620 h420, Window
         return
     }
-
+#IfWinActive
     ;; Telenor
 
     ;; Trio
@@ -1630,7 +1640,7 @@ p6_replaner_gem_vl()
 
     mod_up()
     {
-        SendInput, {LShift}{RShift}{AltUp}{ShiftUp}{CtrlUp}{LWinUp}{RWinUp}
+        SendInput, {LShift}{RShift}{AltUp}{ShiftUp}{CtrlUp}{LWinUp}{RWinUp}{RAlt}{LAlt}{RControl}{LControl}
         return
     }
 
@@ -2279,7 +2289,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             GuiControlGet, k_navn2, , ,
             GuiControlGet, k_tid, , ,
             gui, cancel
-            P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st. " f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 . " - Mvh. Midttrafik")
+            P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st. " f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2  " - Mvh. Midttrafik")
             sleep 500
             MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
             IfMsgBox, Yes
