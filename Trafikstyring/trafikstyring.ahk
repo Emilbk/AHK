@@ -1572,9 +1572,11 @@ Flexfinder_til_p6()
 
 ;; Outlook
 ; ***
-; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script.
+; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script. Kolonne 37
 Outlook_nymail()
 {
+    genvej_mod := sys_genvej_til_ahk_tast(37)
+    sys_genvej_keywait(genvej_mod)
     Run, %A_linefile%\..\lib\nymail.lnk, , ,
     WinWaitActive, Ikke-navngivet - Meddelelse (HTML) , , , ,
     Return
@@ -1689,7 +1691,35 @@ sys_genveje_opslag()
     ; MsgBox, , Genvej, % StrReplace(bruger_genvej.30, "+" , "Shift + ")
     return
 }
+; omdan genvejstaster til AHK-key. Tager genvejens kolonnenummer
+sys_genvej_til_ahk_tast(byref kolonne := "")
+{
+    global bruger_genvej
 
+    genvej_mod := StrSplit(bruger_genvej[kolonne])
+    
+    for i, e in genvej_mod
+        {
+        genvej_mod[i] := StrReplace(genvej_mod[i], "!", "alt")
+        genvej_mod[i] := StrReplace(genvej_mod[i], "^", "control")
+        genvej_mod[i] := StrReplace(genvej_mod[i], "+", "shift")
+        genvej_mod[i] := StrReplace(genvej_mod[i], "#", "lwin")
+        }
+        return genvej_mod   
+    ; genvej_mod := StrReplace(genvej_mod, "+", "shift")
+    ; genvej_mod := StrReplace(genvej_mod, "^", "control")
+    ; win skal være enten left/right - hvordan?
+    ; MsgBox, , , % genvej_mod
+    ; KeyWait, %genvej_mod%
+}
+sys_genvej_keywait(byref genvej_mod := "")
+{
+    genvej_mod1 := genvej_mod.1
+    genvej_mod2 := genvej_mod.2
+    KeyWait, %genvej_mod1%,
+    if (genvej_mod2 = "shift" or genvej_mod2 = "alt" or genvej_mod2 = "control" genvej_mod2 = "lwin")
+        keywait, %genvej_mod2%
+}
 ; l_sys_inputbox_til_fra:
 
 ; brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
@@ -1833,13 +1863,17 @@ l_p6_hastighed:
     P6_hastighed()
     afslut_genvej()
 return
-
+; skriv/fjern initialer. Kolonne 5
 l_p6_initialer: ;; Initialer til/fra
+    genvej_mod := sys_genvej_til_ahk_tast(5)
+    sys_genvej_keywait(genvej_mod)
     P6_initialer()
     afslut_genvej()
 Return
-
+; skriv initialer, fortsæt notat. Kolonne 6
 l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
+    genvej_mod := sys_genvej_til_ahk_tast(6)
+    sys_genvej_keywait(genvej_mod)
     P6_initialer_skriv()
     afslut_genvej()
 return
@@ -1854,6 +1888,8 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     uge_dage := ["faste mandage", "faste tirsdage", "faste onsdage", "faste torsdage", "faste fredage", "faste lørdage", "faste søndage"]
 
     genvej_beskrivelse(8)
+    genvej_mod := sys_genvej_til_ahk_tast(8)
+    sys_genvej_keywait(genvej_mod)
 
     SendInput, {ShiftUp}{AltUp}{CtrlUp}
     klip := clipboard
@@ -2050,7 +2086,8 @@ return
 ;træk tlf fra aktiv planbillede, ring op i Trio. Col 11
 l_p6_vl_ring_op:
     genvej_beskrivelse(11)
-
+    genvej_mod := sys_genvej_til_ahk_tast(11)
+    sys_genvej_keywait(genvej_mod)
     sleep s * 100
     vl_tlf := P6_hent_vl_tlf()
     if (vl_tlf = 0)
@@ -2082,6 +2119,8 @@ return
 ; ^+F5 col 12
 l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
     genvej_beskrivelse(12)
+    genvej_mod := sys_genvej_til_ahk_tast(12)
+    sys_genvej_keywait(genvej_mod)
 
     P6_planvindue()
     sleep s * 100
@@ -2115,6 +2154,8 @@ return
 ; #F5, col 13
 l_p6_vl_luk:
     genvej_beskrivelse(13)
+    genvej_mod := sys_genvej_til_ahk_tast(13)
+    sys_genvej_keywait(genvej_mod)
     gemtklip := ClipboardAll
 
     tid := P6_input_sluttid()
@@ -2186,7 +2227,8 @@ l_p6_udraabsalarmer:
     afslut_genvej()
 return
 l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
-    mod_up()
+    genvej_mod := sys_genvej_til_ahk_tast(20)
+    sys_genvej_keywait(genvej_mod)
     FormatTime, Time, ,HHmm
     initialer = /mt%A_userName%%time%
     initialer_udentid =/mt%A_userName%
@@ -2543,6 +2585,8 @@ Return
 ; Telenor accepter indgående kald, søg planet
 l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     genvej_beskrivelse(3)
+    genvej_mod := sys_genvej_til_ahk_tast(4)
+    sys_genvej_keywait(genvej_mod)
     mod_up()
     SendInput, % bruger_genvej[3] ; opr telenor-genvej
     sleep 40
@@ -2584,9 +2628,10 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
         afslut_genvej()
         return
     }
-
+; Opkald på markeret tekst. Kolonne 28
 l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
-    mod_up()
+    genvej_mod := sys_genvej_til_ahk_tast(28)
+    sys_genvej_keywait(genvej_mod)
     clipboard := ""
     SendInput, ^c
     ClipWait, 2, 0
@@ -2611,9 +2656,10 @@ l_flexf_fra_p6:
     Flexfinder_opslag()
     afslut_genvej()
 Return
-l_flexf_til_p6: ; slår valgte FF-bil op i P6. Bruger.13
-    mod_up()
-    KeyWait, ctrl
+; slå VL op i FF. Kolonne 36
+l_flexf_til_p6:
+    genvej_mod := sys_genvej_til_ahk_tast(36)
+    sys_genvej_keywait(genvej_mod)
     sleep 200
     vl :=Flexfinder_til_p6()
     if !vl
@@ -2892,17 +2938,15 @@ GuiEscape:
 genvejGuiClose:
     gui, destroy
 return
-
+; Opret svigt på VL. Kolonne 38
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     FormatTime, dato, , d/MM
     ; FormatTime, tid, , HH:mm
-    ;mod_up()
-
     trio_genvej := global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 38)
     GuiControl, trio_genvej:text, Button1, %trio_genvej%
-    mod_up()
-    
     ; svigt := []
+    genvej_mod := sys_genvej_til_ahk_tast(38)
+    sys_genvej_keywait(genvej_mod)
     gemtklip := ClipboardAll
     vl := P6_hent_vl()
     clipboard :=
