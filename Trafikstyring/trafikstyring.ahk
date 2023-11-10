@@ -1918,132 +1918,131 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     klip := clipboard
     sleep 100
     telefon := Trio_hent_tlf()
-        WinActivate, PLANET
-        vl := P6_hent_vl()
-        if (telefon = "")
+
+    WinActivate, PLANET
+    vl := P6_hent_vl()
+    ; if (telefon = "")
+    ; {
+    ;     telefon := "Ikke registreret"
+    ; }
+    ; else
+    ; {
         clipboard := klip
         if (telefon = "")
             telefon := "ikke registreret"
         InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 160, 180, X, Y, , Timeout, %telefon%
         if (ErrorLevel = 1 or ErrorLevel = 2)
         {
+            afslut_genvej()
+            return
         }
-        else
+        sleep 100
+        MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
+        IfMsgBox, no
         {
-            clipboard := klip
-            InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 120, 160, X, Y, , Timeout, %telefon%
-            if (ErrorLevel = 1 or ErrorLevel = 2)
+            afslut_genvej()
+            return
+        }
+        IfMsgBox, Yes
+            P6_ret_tlf_vl(telefon)
+        sleep s * 100
+        Input, næste, L1 V T4
+        if (næste = "n")
+        {
+            Loop
             {
-                afslut_genvej()
-                return
-            }
-            sleep 100
-            MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
-            IfMsgBox, no
-            {
-                afslut_genvej()
-                return
-            }
-            IfMsgBox, Yes
-                P6_ret_tlf_vl(telefon)
-            sleep s * 100
-            Input, næste, L1 V T4
-            if (næste = "n")
-            {
-                Loop
-                {
-                    Clipboard :=
-                    sleep 20
-                    SendInput, !l{tab}
-                    sleep 200
-                    SendInput, !{right}
-                    sleep 400
+                Clipboard :=
+                sleep 20
+                SendInput, !l{tab}
+                sleep 200
+                SendInput, !{right}
+                sleep 400
+                SendInput, ^c
+                clipwait 3
+                if (InStr(clipboard, "eksistere"))
+                    continue
+                if (ErrorLevel = 1)
                     SendInput, ^c
-                    clipwait 3
-                    if (InStr(clipboard, "eksistere"))
-                        continue
-                    if (ErrorLevel = 1)
+                clipwait 3
+                tid_ind := Clipboard
+                if (InStr(tid_ind, "senare"))
+                {
+                    SendInput, {enter}
+                    for index, element in faste_dage
+                    {
+                        SendInput, !l
+                        sleep 200
+                        sendinput {tab}
+                        SendInput, %element% {enter}
+                        sleep 200
+                        clipboard :=
+                        SendInput, {tab}
                         SendInput, ^c
-                    clipwait 3
-                    tid_ind := Clipboard
-                    if (InStr(tid_ind, "senare"))
-                    {
-                        SendInput, {enter}
-                        for index, element in faste_dage
+                        clipwait 3
+                        if (clipboard = element)
                         {
-                            SendInput, !l
-                            sleep 200
-                            sendinput {tab}
-                            SendInput, %element% {enter}
-                            sleep 200
-                            clipboard :=
-                            SendInput, {tab}
-                            SendInput, ^c
-                            clipwait 3
-                            if (clipboard = element)
-                            {
-                                ; MsgBox, , , match
-                                tid_ind := uge_dage[index]
-                                ramt_dag := index
-                                ; MsgBox, , overført, % tid_ind
-                                Break
-                            }
-                            else
-                            {
-                                ; MsgBox, , ,% clipboard "." element,
-                                SendInput, {enter}
-                                continue
-                            }
-
+                            ; MsgBox, , , match
+                            tid_ind := uge_dage[index]
+                            ramt_dag := index
+                            ; MsgBox, , overført, % tid_ind
+                            Break
+                        }
+                        else
+                        {
+                            ; MsgBox, , ,% clipboard "." element,
+                            SendInput, {enter}
+                            continue
                         }
 
                     }
-                    dato := SubStr(tid_ind, 4, 2) SubStr(tid_ind, 1, 2)
-                    OutputDebug, % dato
-                    dato:= A_YYYY dato
-                    FormatTime, dato, %dato%, dddd dd/MM
-                    if (StrLen(clipboard) = 2)
+
+                }
+                dato := SubStr(tid_ind, 4, 2) SubStr(tid_ind, 1, 2)
+                OutputDebug, % dato
+                dato:= A_YYYY dato
+                FormatTime, dato, %dato%, dddd dd/MM
+                if (StrLen(clipboard) = 2)
+                {
+                    StringLower, clipboard, clipboard, ; dage med ø skal være lowercase. Hvorfor?
+                    for index, element in faste_dage
                     {
-                        StringLower, clipboard, clipboard, ; dage med ø skal være lowercase. Hvorfor?
-                        for index, element in faste_dage
+                        if (clipboard = element)
                         {
-                            if (clipboard = element)
-                            {
-                                ramt_dag := index
-                                ; MsgBox, , , % ramt_dag,
-                            }
+                            ramt_dag := index
+                            ; MsgBox, , , % ramt_dag,
                         }
-                        dato := uge_dage[ramt_dag]
-                        ; MsgBox, , næste dag , % uge_dag[ramt_dag]
                     }
-                    ; MsgBox, , , % dato,
-                    sleep 100
-                    MsgBox, 4, Sikker?, Vil du sætte %telefon% på VL %vl% på %dato%?,
-                    IfMsgBox, Yes
+                    dato := uge_dage[ramt_dag]
+                    ; MsgBox, , næste dag , % uge_dag[ramt_dag]
+                }
+                ; MsgBox, , , % dato,
+                sleep 100
+                MsgBox, 4, Sikker?, Vil du sætte %telefon% på VL %vl% på %dato%?,
+                IfMsgBox, Yes
+                {
+                    if (ramt_dag = 7)
                     {
-                        if (ramt_dag = 7)
-                        {
-                            P6_ret_tlf_vl_efterfølgende(telefon)
-                            afslut_genvej()
-                            return
-                        }
-                        sleep 200
                         P6_ret_tlf_vl_efterfølgende(telefon)
-                        sleep 200
-                        continue
-                    }
-                    IfMsgBox, no
-                    {
                         afslut_genvej()
                         return
                     }
+                    sleep 200
+                    P6_ret_tlf_vl_efterfølgende(telefon)
+                    sleep 200
+                    continue
                 }
-
+                IfMsgBox, no
+                {
+                    afslut_genvej()
+                    return
+                }
             }
+
         }
-        afslut_genvej()
-        return
-    }
+    ; }
+    afslut_genvej()
+return
+
 #IfWinActive ; for at resette indent
 ; ***
 l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
@@ -2551,30 +2550,6 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     return
 #IfWinActive ; udelukkende for at resette indentering i auto-formatering
 
-; P6-repl
-^e::
-    {
-        InputBox, vl_input
-        if ErrorLevel = 1
-            return
-        vl.Push(vl_input)
-
-        vl_liste := ""
-        for k, v in vl
-            vl_liste .= vl[k] . "|"
-    }
-
-; p6-repl-liste
-+^e::
-    {
-        Gui repl: Font, s9, Segoe UI
-        Gui repl: Add, ListBox, x78 y21 w120 h364 vvalg Choose1, %vl_liste%
-        Gui repl: Add, Button, x359 y239 w80 h23 Default gguiok, &OK
-        Gui repl: Add, Button, x359 y270 w80 h23 gguislet, &Slet
-        Gui repl: Show, w620 h420, Window
-        return
-    }
-
 ;; Trio
 l_trio_klar: ;Trio klar
     trio_klar()
@@ -2710,7 +2685,7 @@ l_outlook_ny_mail: ; opretter ny mail. Bruger.16
     afslut_genvej()
 Return
 
-;; Excel
+;; Excel til vl. 
 l_excel_vl_til_P6_A:
 l_excel_vl_til_P6_B:
     mod_up()
