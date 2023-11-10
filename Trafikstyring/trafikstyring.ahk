@@ -1224,19 +1224,32 @@ p6_hent_kunde_tlf(ByRef telefon:="")
 p6_replaner_gem_vl()
 {
     gemtklip := ClipboardAll
-    global vl_repl
-    global vl_repl_liste
-
+    ; global vl_repl
+    ; global vl_repl_liste
     clipboard :=
     SendInput, ^c
     clipwait 2
     repl_besked := StrSplit(clipboard, " ")
     SendInput, {enter}
     if (repl_besked.MaxIndex() = 11)
-        vl_repl.Push(repl_besked.6)
+        vl := repl_besked.6
+    ; vl_repl.Push(repl_besked.6)
     if (repl_besked.MaxIndex() = 12)
-        vl_repl.Push(repl_besked.7)
+        vl := repl_besked.7
+    ; vl_repl.Push(repl_besked.7)
 
+    clipboard := gemtklip
+    return vl
+
+}
+
+p6_liste_vl(byref vl := "")
+{
+    gemtklip := ClipboardAll
+    global vl_repl
+    global vl_repl_liste
+
+    vl_repl.Push(vl)
     vl_repl_liste := "|"
     for k, v in vl_repl
         vl_repl_liste .= vl_repl[k] . "|"
