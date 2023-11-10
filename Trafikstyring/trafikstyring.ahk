@@ -225,7 +225,6 @@ trio_genvej:
     ; Goto, l_gui_hjælp
     MsgBox, , Tillykke!, Du har trykket på knappen!,
 
-
 tlfKopi:
     {
         clipboard :=
@@ -274,7 +273,7 @@ replOK:
     Gui, Submit
     gui, hide
     p6_vaelg_vl(valg)
-    ; MsgBox, , , % valg
+; MsgBox, , , % valg
 return
 
 replslet:
@@ -290,11 +289,10 @@ replvl:
     gui Hide
     P6_planvindue()
     p6_vaelg_vl(%valg%)
-    return
+return
 
 ;; FUNKTIONER
 ;; P6
-
 
 afslut_genvej()
 {
@@ -451,7 +449,7 @@ P6_hent_vl()
     clipboard := ""
     P6_planvindue()
     SendInput, !l
-    sleep 20 ; ikke P6-afhængig
+    sleep 100 ; ikke P6-afhængig
     SendInput, +{F10}c
     ClipWait, 2, 0
     vl := Clipboard
@@ -515,9 +513,9 @@ p6_vl_vindue_edit()
     clipwait 0.5
     k_aftale.2 := clipboard
     if (k_aftale.1 = k_aftale.2)
-        {
-            k_aftale.2 := "drift"
-        }
+    {
+        k_aftale.2 := "drift"
+    }
     clipboard := gemtklip
     gemtklip :=
     return k_aftale
@@ -541,11 +539,11 @@ p6_vaelg_vl(byref vl := "")
     P6_Planvindue()
     SendInput, !l
     if (vl != "")
-        {
-            SendInput, %vl%
-            sleep 100
-            SendInput, {enter}
-        }
+    {
+        SendInput, %vl%
+        sleep 100
+        SendInput, {enter}
+    }
     return
 }
 
@@ -1248,398 +1246,398 @@ p6_replaner_gem_vl()
 
 }
 #IfWinActive, Planet ; er ikke med stort i repl.vindue
-+enter::
-    {
-        p6_replaner_gem_vl()
-        Return
-    }
+    +enter::
+        {
+            p6_replaner_gem_vl()
+            Return
+        }
 #IfWinActive
 #IfWinActive PLANET
-+^l::
-    {
-        ; MsgBox, , , Text, 
-        GuiControl, repl: , listbox1 , %vl_repl_liste%
-        Gui repl: Show, w620 h420, Window
-        return
-    }
+    +^l::
+        {
+            ; MsgBox, , , Text,
+            GuiControl, repl: , listbox1 , %vl_repl_liste%
+            Gui repl: Show, w620 h420, Window
+            return
+        }
 #IfWinActive
-    ;; Telenor
+;; Telenor
 
-    ;; Trio
-    ; ***
-    ; Sæt kopieret tlf i Trio
-    Trio_opkald(ByRef telefon)
-    {
+;; Trio
+; ***
+; Sæt kopieret tlf i Trio
+Trio_opkald(ByRef telefon)
+{
 
-        ifWinNotExist, ahk_class AccessBar
-        {
-            WinActivate, ahk_class Agent Main GUI
-            WinWaitActive, ahk_class Agent Main GUI
-            sleep 100
-            SendInput, {alt}
-            sleep 100
-            SendInput, v{Down 5}{enter}
-        }
-        ControlClick, x360 y17, ahk_class AccessBar
-        sleep 800
-        WinActivate, ahk_class Addressbook
-        WinwaitActive, ahk_class Addressbook
-        ControlClick, Edit2, ahk_class Addressbook
-        SendInput, ^a{del}
-        ; sleep 200
-        ; SendInput, {NumpadSub}
-        sleep 200
-        SendInput, %telefon%
-        sleep 500
-        SendInput, +{enter} ; undgår kobling ved igangværende opkald
-        Return
-    }
-
-    ; ***
-    ; Læg på i Trio
-    Trio_afslutopkald()
-    {
-        WinActivate, ahk_class AccessBar
-        winwaitactive, ahk_class AccessBar
-        sleep 40
-        SendInput, {NumpadSub}
-
-        return
-    }
-
-    ; **
-    ; Trio hop til efterbehandling
-    trio_efterbehandling()
+    ifWinNotExist, ahk_class AccessBar
     {
         WinActivate, ahk_class Agent Main GUI
-        winwaitactive, ahk_class Agent Main GUI
-        sleep 40
-        SendInput, !f
-        sleep 40
-        SendInput, o
-        sleep 40
-        SendInput, 8
-        WinActivate, PLANET
-        winwaitactive, PLANET
-        Return
-    }
-
-    ; **
-    ; Trio hop til midt uden overløb
-    trio_udenov()
-    {
-        WinActivate, ahk_class Agent Main GUI
-        winwaitactive, ahk_class Agent Main GUI
-        sleep 40
-        SendInput, !f
-        sleep 40
-        SendInput, o
-        sleep 40
-        SendInput, 3
+        WinWaitActive, ahk_class Agent Main GUI
         sleep 100
-        SendInput, {F4}
-        WinActivate, PLANET
-        winwaitactive, PLANET
-        Return
-    }
-
-    ; **
-    ; Trio hop til alarm
-    trio_alarm()
-    {
-        WinActivate, ahk_class Agent Main GUI
-        winwaitactive, ahk_class Agent Main GUI
-        sleep 40
-        SendInput, !f
-        sleep 40
-        SendInput, o
-        sleep 40
-        SendInput, 7
-        WinActivate, PLANET
-        winwaitactive, PLANET
-        Return
-    }
-
-    ; **
-    ; Trio hop til pause
-    trio_pause()
-    {
-        WinActivate, ahk_class AccessBar
-        winwaitactive, ahk_class AccessBar
+        SendInput, {alt}
         sleep 100
-        SendInput, {F3}
-        WinActivate, PLANET
-        winwaitactive, PLANET
-        Return
+        SendInput, v{Down 5}{enter}
     }
+    ControlClick, x360 y17, ahk_class AccessBar
+    sleep 800
+    WinActivate, ahk_class Addressbook
+    WinwaitActive, ahk_class Addressbook
+    ControlClick, Edit2, ahk_class Addressbook
+    SendInput, ^a{del}
+    ; sleep 200
+    ; SendInput, {NumpadSub}
+    sleep 200
+    SendInput, %telefon%
+    sleep 500
+    SendInput, +{enter} ; undgår kobling ved igangværende opkald
+    Return
+}
 
-    ; **
-    ; Trio hop til klar
-    trio_klar()
+; ***
+; Læg på i Trio
+Trio_afslutopkald()
+{
+    WinActivate, ahk_class AccessBar
+    winwaitactive, ahk_class AccessBar
+    sleep 40
+    SendInput, {NumpadSub}
+
+    return
+}
+
+; **
+; Trio hop til efterbehandling
+trio_efterbehandling()
+{
+    WinActivate, ahk_class Agent Main GUI
+    winwaitactive, ahk_class Agent Main GUI
+    sleep 40
+    SendInput, !f
+    sleep 40
+    SendInput, o
+    sleep 40
+    SendInput, 8
+    WinActivate, PLANET
+    winwaitactive, PLANET
+    Return
+}
+
+; **
+; Trio hop til midt uden overløb
+trio_udenov()
+{
+    WinActivate, ahk_class Agent Main GUI
+    winwaitactive, ahk_class Agent Main GUI
+    sleep 40
+    SendInput, !f
+    sleep 40
+    SendInput, o
+    sleep 40
+    SendInput, 3
+    sleep 100
+    SendInput, {F4}
+    WinActivate, PLANET
+    winwaitactive, PLANET
+    Return
+}
+
+; **
+; Trio hop til alarm
+trio_alarm()
+{
+    WinActivate, ahk_class Agent Main GUI
+    winwaitactive, ahk_class Agent Main GUI
+    sleep 40
+    SendInput, !f
+    sleep 40
+    SendInput, o
+    sleep 40
+    SendInput, 7
+    WinActivate, PLANET
+    winwaitactive, PLANET
+    Return
+}
+
+; **
+; Trio hop til pause
+trio_pause()
+{
+    WinActivate, ahk_class AccessBar
+    winwaitactive, ahk_class AccessBar
+    sleep 100
+    SendInput, {F3}
+    WinActivate, PLANET
+    winwaitactive, PLANET
+    Return
+}
+
+; **
+; Trio hop til klar
+trio_klar()
+{
+    WinActivate, ahk_class AccessBar
+    winwaitactive, ahk_class AccessBar
+    Sleep 100
+    SendInput, {F4}
+    WinActivate, PLANET
+    winwaitactive, PLANET
+    Return
+}
+
+; **
+; Trio hop til frokost
+trio_frokost()
+{
+    WinActivate, ahk_class Agent Main GUI
+    winwaitactive, ahk_class Agent Main GUI
+    sleep 40
+    SendInput, !f
+    sleep 40
+    SendInput, o
+    sleep 40
+    SendInput, 9
+    WinActivate, PLANET
+    winwaitactive, PLANET
+    Return
+}
+
+; Trio skift mellem pause og klar
+
+trio_pauseklar()
+{
+    WinActivate, ahk_class AccessBar
+    winwaitactive, ahk_class AccessBar
+    Sleep 200
+    SendInput, {F3}
+    sleep 400
+    SendInput, {F4}
+    WinActivate, PLANET
+    winwaitactive, PLANET
+
+    Return
+}
+
+;  ***
+;Træk tlf fra Trio indkomne kald
+Trio_hent_tlf()
+{
+    clipboard := ""
+    sleep 200
+    Sendinput !+k
+    ClipWait, 3
+    if (clipboard = "")
     {
-        WinActivate, ahk_class AccessBar
-        winwaitactive, ahk_class AccessBar
-        Sleep 100
-        SendInput, {F4}
-        WinActivate, PLANET
-        winwaitactive, PLANET
-        Return
-    }
-
-    ; **
-    ; Trio hop til frokost
-    trio_frokost()
-    {
-        WinActivate, ahk_class Agent Main GUI
-        winwaitactive, ahk_class Agent Main GUI
-        sleep 40
-        SendInput, !f
-        sleep 40
-        SendInput, o
-        sleep 40
-        SendInput, 9
-        WinActivate, PLANET
-        winwaitactive, PLANET
-        Return
-    }
-
-    ; Trio skift mellem pause og klar
-
-    trio_pauseklar()
-    {
-        WinActivate, ahk_class AccessBar
-        winwaitactive, ahk_class AccessBar
-        Sleep 200
-        SendInput, {F3}
-        sleep 400
-        SendInput, {F4}
-        WinActivate, PLANET
-        winwaitactive, PLANET
-
-        Return
-    }
-
-    ;  ***
-    ;Træk tlf fra Trio indkomne kald
-    Trio_hent_tlf()
-    {
-        clipboard := ""
-        sleep 200
-        Sendinput !+k
+        SendInput, !+k
         ClipWait, 3
-        if (clipboard = "")
-        {
-            SendInput, !+k
-            ClipWait, 3
-        }
-        Telefon := Clipboard
-        trio_tlf_knap(Telefon)
-        rentelefon := Substr(Telefon, 4, 8)
-        return rentelefon
     }
+    Telefon := Clipboard
+    trio_tlf_knap(Telefon)
+    rentelefon := Substr(Telefon, 4, 8)
+    return rentelefon
+}
 
-    trio_tlf_knap(ByRef tlf := "")
+trio_tlf_knap(ByRef tlf := "")
+{
+    ; global tlf
+    ; SendInput, +!k
+    ; tlf := "test
+    ; tlf := "+4512345678"
+    if (SubStr(tlf, 1, 1) = "+")
+        tlf_knap := SubStr(tlf, 4, 4) . " " . (SubStr(tlf, 8, 4))
+    else
+        tlf_knap := SubStr(tlf, 1, 4) . " " . SubStr(tlf, 5, 4)
+    sleep 100
+    GuiControl, tlf:text, Button1, Tlf: %tlf_knap%
+    return
+}
+
+;; Flexfinder
+
+; *
+; Kørselsaftale til flexfinder
+; 244,215
+Flexfinder_opslag()
+{
+    KeyWait, Shift,
+    KeyWait, Ctrl
+    If (WinExist("FlexDanmark FlexFinder"))
     {
-        ; global tlf
-        ; SendInput, +!k
-        ; tlf := "test
-        ; tlf := "+4512345678"
-        if (SubStr(tlf, 1, 1) = "+")
-            tlf_knap := SubStr(tlf, 4, 4) . " " . (SubStr(tlf, 8, 4))
-        else
-            tlf_knap := SubStr(tlf, 1, 4) . " " . SubStr(tlf, 5, 4)
-        sleep 100
-        GuiControl, tlf:text, Button1, Tlf: %tlf_knap%
-        return
-    }
-
-    ;; Flexfinder
-
-    ; *
-    ; Kørselsaftale til flexfinder
-    ; 244,215
-    Flexfinder_opslag()
-    {
-        KeyWait, Shift,
-        KeyWait, Ctrl
-        If (WinExist("FlexDanmark FlexFinder"))
-        {
-            k_aftale := P6_hent_k()
-            k_aftale := SubStr("000" . k_aftale, -3) ; indsætter nuller og tager sidste fire cifre i strengen.
-            ; MsgBox, , er 4 , % k_aftale
-            sleep 200
-            WinActivate, FlexDanmark FlexFinder
-            winwaitactive, FlexDanmark FlexFinder
-            sleep 40
-            SendInput, {Home}
-            sleep 400
-            SendInput, {PgUp}
-            sleep 200
-            WinGetPos, X, Y, , , FlexDanmark FlexFinder, , ,
-            if(x = "1920" or x = "-1920")
-            {
-                PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6CF2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
-                sleep 200
-                click %Px% %Py%
-                sleep 200
-                ControlClick, x322 y100, FlexDanmark FlexFinder
-                sleep 40
-                SendInput, +{tab}{up}{tab}
-                sleep 200
-                SendInput, %k_aftale%
-                KeyWait, Enter, D, T7
-                sleep 200
-                WinActivate, PLANET
-            }
-            Else
-            {
-                PixelSearch, Px, Py, 90, 190, 1250, 250, 0x5E6FF2, 0, Fast
-                sleep 200
-                click %Px% %Py%
-                sleep 200
-                ControlClick, x244 y215, FlexDanmark FlexFinder
-                sleep 40
-                SendInput, +{tab}{up}{tab}
-                sleep 200
-                SendInput, %k_aftale%
-                KeyWait, Enter, D, T7
-                sleep 200
-                WinActivate, PLANET
-            }
-            ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
-        }
-        Else
-            MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den forreste fane)
-        Return
-    }
-
-    ; Klik VL i FlexFinder, slår op i p6
-    ; skal tilpasse Edge også
-    Flexfinder_til_p6()
-    {
-
-        vl := {}
+        k_aftale := P6_hent_k()
+        k_aftale := SubStr("000" . k_aftale, -3) ; indsætter nuller og tager sidste fire cifre i strengen.
+        ; MsgBox, , er 4 , % k_aftale
+        sleep 200
+        WinActivate, FlexDanmark FlexFinder
+        winwaitactive, FlexDanmark FlexFinder
         sleep 40
         SendInput, {Home}
         sleep 400
         SendInput, {PgUp}
-        BlockInput, Mouse
-        WinGetPos, X, Y, , , FlexDanmark FlexFinder, , ,
-        if(x = "0")
-            PixelGetColor, pixel, 281, 155
-        if (pixel = 0xFCFBFB)
-        {
-            MsgBox, , FlexFinder, Fanenerne "Grupper" og "Tid" i FlexFinder skal være lukket.
-            return 0
-        }
-        if (x = 0)
-        {
-            ; PixelSearch, Px, Py, 90, 190, 1062, 621, 0x7E7974, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
-            ; click %Px%, %Py%
-            ; click %Px%, %Py%
-            ControlClick, x281 y155, FlexDanmark FlexFinder
-            ControlClick, x281 y155, FlexDanmark FlexFinder
-            BlockInput, MouseMoveOff
-            SendInput, ^c
-            sleep 400
-            ff_opslag := clipboard
-            vl.1 := SubStr(ff_opslag, 1, 4)
-            vl.2 := SubStr(ff_opslag, 6, 4)
-            vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
-            return vl
-        }
-        else
-            PixelGetColor, pixel, 236, 262
-        if (pixel = 0xFBFBFB)
-        {
-            MsgBox, , FlexFinder, Fanenerne "Grupper" og "Tid" i FlexFinder skal være lukket.
-            return 0
-        }
-        Else
-        {
-            ControlClick, x236 y262, FlexDanmark FlexFinder
-            ControlClick, x236 y262, FlexDanmark FlexFinder
-            BlockInput, MouseMoveOff
-            SendInput, ^c
-            sleep 400
-            ClipWait, 2, 0
-            ff_opslag := clipboard
-            vl.1 := SubStr(ff_opslag, 1, 4)
-            vl.2 := SubStr(ff_opslag, 6, 4)
-            vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
-            return vl
-        }
-
-    }
-
-    ;; Outlook
-    ; ***
-    ; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script.
-    Outlook_nymail()
-    {
-        Run, %A_linefile%\..\lib\nymail.lnk, , ,
-        WinWaitActive, Ikke-navngivet - Meddelelse (HTML) , , , ,
-        Return
-    }
-
-    ;; Excel
-
-    Excel_vl_til_udklip()
-    {
-
-        tast := GetKeyState("ctrl", "P")
-        if tast = 0
-        {
-            SendInput, {AltUp}
-            SendInput, {LButton}
-        }
-        clipboard :=
-        sleep 800
-        SendInput, ^c
-        ClipWait, 6
         sleep 200
-        SendInput, {Esc} ;
-        vl := clipboard
-        vl := StrReplace(vl, "`n", "")
-        vl := StrReplace(vl, "`r", "")
-        if (StrLen(vl) = 5) ; fem c<ifre plus new-line
+        WinGetPos, X, Y, , , FlexDanmark FlexFinder, , ,
+        if(x = "1920" or x = "-1920")
         {
-            return vl
-        }
-        else
-            return 0
-
-    }
-
-    Excel_udklip_til_p6(byref vl:="")
-    {
-        if vl = 0
-        {
-            MsgBox, , Klik på vognløb, Du skal klikke på vognløbet,
-            return
+            PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6CF2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
+            sleep 200
+            click %Px% %Py%
+            sleep 200
+            ControlClick, x322 y100, FlexDanmark FlexFinder
+            sleep 40
+            SendInput, +{tab}{up}{tab}
+            sleep 200
+            SendInput, %k_aftale%
+            KeyWait, Enter, D, T7
+            sleep 200
+            WinActivate, PLANET
         }
         Else
         {
+            PixelSearch, Px, Py, 90, 190, 1250, 250, 0x5E6FF2, 0, Fast
+            sleep 200
+            click %Px% %Py%
+            sleep 200
+            ControlClick, x244 y215, FlexDanmark FlexFinder
+            sleep 40
+            SendInput, +{tab}{up}{tab}
+            sleep 200
+            SendInput, %k_aftale%
+            KeyWait, Enter, D, T7
+            sleep 200
             WinActivate, PLANET
-            P6_udfyld_vl(vl)
-            input, tast, L1 V T4, {Up}{Down}{tab}{LButton}
-            if (tast = chr(27))
-            {
-                sleep 100 ; forhindrer hop tilbage til P6, hvis infobox
-                WinActivate, Garantivognsoversigt FG8.xlsm
-                return
-            }
-            if ErrorLevel
-            {
-                return
-            }
         }
+        ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
+    }
+    Else
+        MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den forreste fane)
+    Return
+}
+
+; Klik VL i FlexFinder, slår op i p6
+; skal tilpasse Edge også
+Flexfinder_til_p6()
+{
+
+    vl := {}
+    sleep 40
+    SendInput, {Home}
+    sleep 400
+    SendInput, {PgUp}
+    BlockInput, Mouse
+    WinGetPos, X, Y, , , FlexDanmark FlexFinder, , ,
+    if(x = "0")
+        PixelGetColor, pixel, 281, 155
+    if (pixel = 0xFCFBFB)
+    {
+        MsgBox, , FlexFinder, Fanenerne "Grupper" og "Tid" i FlexFinder skal være lukket.
+    return 0
+}
+    if (x = 0)
+    {
+        ; PixelSearch, Px, Py, 90, 190, 1062, 621, 0x7E7974, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
+        ; click %Px%, %Py%
+        ; click %Px%, %Py%
+        ControlClick, x281 y155, FlexDanmark FlexFinder
+        ControlClick, x281 y155, FlexDanmark FlexFinder
+        BlockInput, MouseMoveOff
+        SendInput, ^c
+        sleep 400
+        ff_opslag := clipboard
+        vl.1 := SubStr(ff_opslag, 1, 4)
+        vl.2 := SubStr(ff_opslag, 6, 4)
+        vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
+        return vl
+    }
+    else
+        PixelGetColor, pixel, 236, 262
+    if (pixel = 0xFBFBFB)
+    {
+        MsgBox, , FlexFinder, Fanenerne "Grupper" og "Tid" i FlexFinder skal være lukket.
+        return 0
+    }
+    Else
+    {
+        ControlClick, x236 y262, FlexDanmark FlexFinder
+        ControlClick, x236 y262, FlexDanmark FlexFinder
+        BlockInput, MouseMoveOff
+        SendInput, ^c
+        sleep 400
+        ClipWait, 2, 0
+        ff_opslag := clipboard
+        vl.1 := SubStr(ff_opslag, 1, 4)
+        vl.2 := SubStr(ff_opslag, 6, 4)
+        vl.2 := StrReplace(vl.2, 0, , , Limit := -1)
+        return vl
+    }
+
+}
+
+;; Outlook
+; ***
+; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script.
+Outlook_nymail()
+{
+    Run, %A_linefile%\..\lib\nymail.lnk, , ,
+    WinWaitActive, Ikke-navngivet - Meddelelse (HTML) , , , ,
+    Return
+}
+
+;; Excel
+
+Excel_vl_til_udklip()
+{
+
+    tast := GetKeyState("ctrl", "P")
+    if tast = 0
+    {
+        SendInput, {AltUp}
+        SendInput, {LButton}
+    }
+    clipboard :=
+    sleep 800
+    SendInput, ^c
+    ClipWait, 6
+    sleep 200
+    SendInput, {Esc} ;
+    vl := clipboard
+    vl := StrReplace(vl, "`n", "")
+    vl := StrReplace(vl, "`r", "")
+    if (StrLen(vl) = 5) ; fem c<ifre plus new-line
+    {
+        return vl
+    }
+    else
+        return 0
+
+}
+
+Excel_udklip_til_p6(byref vl:="")
+{
+    if vl = 0
+    {
+        MsgBox, , Klik på vognløb, Du skal klikke på vognløbet,
         return
     }
+    Else
+    {
+        WinActivate, PLANET
+        P6_udfyld_vl(vl)
+        input, tast, L1 V T4, {Up}{Down}{tab}{LButton}
+        if (tast = chr(27))
+        {
+            sleep 100 ; forhindrer hop tilbage til P6, hvis infobox
+            WinActivate, Garantivognsoversigt FG8.xlsm
+            return
+        }
+        if ErrorLevel
+        {
+            return
+        }
+    }
+    return
+}
 
-    ;; System
+;; System
 
-    ; asd
+; asd
 
 mod_up()
 {
@@ -1650,52 +1648,47 @@ mod_up()
     Return
 }
 
+; *
+; færdigskrives
+sys_genveje_opslag()
+{
+    global bruger_genvej
+    global genvej_ren := []
+    global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 1)
+    for index, genvej in bruger_genvej
     {
-        SendInput, {AltUp}{ShiftUp}{CtrlUp}{LWinUp}
-        return
+        genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        ; genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
+        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+        ; MsgBox, , , % genvej
+    }
+    for index, genvej in genvej_ren
+    {
+        ;    genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        ; genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
+        genvej_ren[index] := StrReplace(genvej, "^", "Ctrl + ")
+        ; MsgBox, , , % genvej
+    }
+    for index, genvej in genvej_ren
+    {
+        ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
+        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+        ; MsgBox, , , % genvej
+    }
+    for index, genvej in genvej_ren
+    {
+        ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
+        genvej_ren[index] := StrReplace(genvej, "#", "Windows + ")
+        ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
+        ; MsgBox, , , % genvej
     }
 
-    ; *
-    ; færdigskrives
-    sys_genveje_opslag()
-    {
-        global bruger_genvej
-        global genvej_ren := []
-        global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 1)
-        for index, genvej in bruger_genvej
-        {
-            genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
-            ; genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
-            ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
-            ; MsgBox, , , % genvej
-        }
-        for index, genvej in genvej_ren
-        {
-            ;    genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
-            ; genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
-            genvej_ren[index] := StrReplace(genvej, "^", "Ctrl + ")
-            ; MsgBox, , , % genvej
-        }
-        for index, genvej in genvej_ren
-        {
-            ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
-            genvej_ren[index] := StrReplace(genvej, "!", "Alt + ")
-            ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
-            ; MsgBox, , , % genvej
-        }
-        for index, genvej in genvej_ren
-        {
-            ; genvej_ren[index] := StrReplace(genvej, "+", "Shift + ")
-            genvej_ren[index] := StrReplace(genvej, "#", "Windows + ")
-            ; genvej_ren[index] := StrReplace(genvej, "^", "Control + ")
-            ; MsgBox, , , % genvej
-        }
+    ; MsgBox,% genvej_navn.4 " - " genvej_ren.4 "`n"  genvej_navn.5 " - " genvej_ren.5
 
-        ; MsgBox,% genvej_navn.4 " - " genvej_ren.4 "`n"  genvej_navn.5 " - " genvej_ren.5
-
-        ; MsgBox, , Genvej, % StrReplace(bruger_genvej.30, "+" , "Shift + ")
-        return
-    }
+    ; MsgBox, , Genvej, % StrReplace(bruger_genvej.30, "+" , "Shift + ")
+    return
+}
 
 ; l_sys_inputbox_til_fra:
 
