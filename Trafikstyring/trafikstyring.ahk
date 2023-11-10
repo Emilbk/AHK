@@ -1863,8 +1863,10 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
         WinActivate, PLANET
         vl := P6_hent_vl()
         if (telefon = "")
+        clipboard := klip
+        InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 160, 180, X, Y, , Timeout, %telefon%
+        if (ErrorLevel = 1 or ErrorLevel = 2)
         {
-            telefon := "Ikke registreret"
         }
         else
         {
