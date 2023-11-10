@@ -334,8 +334,9 @@ P6_aktiver()
     {
         WinActivate, PLANET
         WinWaitActive, PLANET
+        sleep 100
         SendInput, {esc} ; registrerer ikke første tryk, når der skiftes til vindue
-        sleep 200
+        sleep 300
         return 1
     }
     return 0
