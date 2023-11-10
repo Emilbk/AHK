@@ -1424,11 +1424,11 @@ Trio_hent_tlf()
     clipboard := ""
     sleep 200
     Sendinput !+k
-    ClipWait, 3
+    ClipWait, 1
     if (clipboard = "")
     {
         SendInput, !+k
-        ClipWait, 3
+        ClipWait, 1
     }
     Telefon := Clipboard
     trio_tlf_knap(Telefon)
