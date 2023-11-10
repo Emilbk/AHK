@@ -1775,7 +1775,7 @@ l_p6_central_ring_op:
     Gui,Add,Button,vtaxa2,Århus Taxa Sk&ole
     Gui,Add,Button,vtaxa3,&Dantaxi
     Gui,Add,Button,vtaxa4,Taxa &Midt
-    Gui,Add,Button,vtaxa5,&DK Taxi
+    Gui,Add,Button,vtaxa5,D&K Taxi
     Gui,Show, AutoSize Center , Ring op til central
     taxaknap1:=Func("opkaldtaxa").Bind("89484892")
     taxaknap2:=Func("opkaldtaxa").Bind("89484837")
