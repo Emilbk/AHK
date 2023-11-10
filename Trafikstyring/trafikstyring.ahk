@@ -1864,6 +1864,8 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
         vl := P6_hent_vl()
         if (telefon = "")
         clipboard := klip
+        if (telefon = "")
+            telefon := "ikke registreret"
         InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 160, 180, X, Y, , Timeout, %telefon%
         if (ErrorLevel = 1 or ErrorLevel = 2)
         {
