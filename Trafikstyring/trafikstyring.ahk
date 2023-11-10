@@ -2288,7 +2288,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             {
                 SendInput, ^s
                 ; KeyWait, Ctrl
-                sleep 2000
+                sleep 1000
                 SendInput, {enter}
                 P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf." initialer)
                 afslut_genvej()
@@ -2345,7 +2345,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             IfMsgBox, Yes
             {
                 SendInput, ^s
-                sleep 2000
+                sleep 1000
                 SendInput, {enter}
                 if (k_tid != "Oprindelig kvittering")
                 {
@@ -2376,7 +2376,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         {
             sleep 200
             SendInput, ^s
-            sleep 2000
+            sleep 1000
             SendInput, {enter}
             P6_notat("Priv. ikke kvitteret, tekst sendt til chf" initialer " ")
             gui, cancel
@@ -2402,7 +2402,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         {
             sleep 200
             SendInput, ^s
-            sleep 2000
+            sleep 1000
             SendInput, {enter}
             P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. Tekst sendt om VL-lås" initialer " ")
             gui, cancel
@@ -2428,8 +2428,11 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         {
             sleep 200
             SendInput, ^s
-            sleep 2000
+            sleep 1000
             SendInput, {enter}
+            P6_planvindue()
+            vl := P6_hent_vl()
+            p6_liste_vl(vl)
             P6_notat("WakeUp sendt" initialer " ")
             gui, cancel
             afslut_genvej()
@@ -2454,7 +2457,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         {
             sleep 200
             SendInput, ^s
-            sleep 2000
+            sleep 1000
             SendInput, {enter}
             P6_notat("Ingen kontakt til chf, tekst sendt, VL låst" initialer " ")
             gui, cancel
@@ -2480,7 +2483,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         {
             sleep 200
             SendInput, ^s
-            sleep 2000
+            sleep 1000
             SendInput, {enter}
             P6_notat("Ingen kontakt til chf, tekst sendt (ring til driften)" initialer " ")
             gui, cancel
@@ -2506,7 +2509,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         {
             sleep 200
             SendInput, ^s
-            sleep 2000
+            sleep 1000
             SendInput, {enter}
             P6_notat("Tal forgæves, tekst sendt" initialer " ")
             gui, cancel
