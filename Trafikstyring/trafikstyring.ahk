@@ -1641,7 +1641,15 @@ p6_replaner_gem_vl()
 
     ; asd
 
-    mod_up()
+mod_up()
+{
+    ; SendInput, {AltUp}{ShiftUp}{CtrlUp}{LWinUp}
+    Loop, 0xFF
+        IF GetKeyState(Key:=Format("VK{:X}",A_Index))
+            SendInput, {%Key% up}
+    Return
+}
+
     {
         SendInput, {AltUp}{ShiftUp}{CtrlUp}{LWinUp}
         return
