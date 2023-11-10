@@ -1261,17 +1261,27 @@ p6_liste_vl(byref vl := "")
 #IfWinActive, Planet ; er ikke med stort i repl.vindue
     +enter::
         {
-            p6_replaner_gem_vl()
+            vl := p6_replaner_gem_vl()
+            p6_liste_vl(vl)
             Return
         }
 #IfWinActive
 #IfWinActive PLANET
     +^l::
         {
+            KeyWait, control
+            KeyWait, shift
             ; MsgBox, , , Text,
             GuiControl, repl: , listbox1 , %vl_repl_liste%
             Gui repl: Show, w620 h420, Window
             return
+        }
+
+    ^l::
+        {
+            vl := P6_hent_vl()
+            sleep 200
+            p6_liste_vl(vl)
         }
 #IfWinActive
 ;; Telenor
