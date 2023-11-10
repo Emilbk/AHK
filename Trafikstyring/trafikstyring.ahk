@@ -2300,7 +2300,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             GuiControlGet, k_navn2, , ,
             GuiControlGet, k_tid, , ,
             gui, cancel
-            P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st. " f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2  " - Mvh. Midttrafik")
+            P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st. " f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 " - Mvh. Midttrafik")
             sleep 500
             MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
             IfMsgBox, Yes
@@ -2309,10 +2309,10 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 sleep 2000
                 SendInput, {enter}
                 if (k_tid != "Oprindelig kvittering")
-                    {
-                        P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. tid " k_tid initialer " ")
-                        return
-                    }
+                {
+                    P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. tid " k_tid initialer " ")
+                    return
+                }
                 else
                     P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. " initialer " ")
                 afslut_genvej()
@@ -2365,7 +2365,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, ^s
             sleep 2000
             SendInput, {enter}
-            P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. VL låst" initialer " ")
+            P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. Tekst sendt om VL-lås" initialer " ")
             gui, cancel
             afslut_genvej()
             return
@@ -2408,7 +2408,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     if (valgt == "W")
     {
 
-        P6_tekstTilChf("Jeg kan ikke ringe dig op, der trykket for første køreordre. Ring til driften, hvis du er ude at køre, ellers bliver vognløbet lukket.")
+        P6_tekstTilChf("Jeg kan ikke ringe dig op, der er ikke trykket for første køreordre. Ring til driften, hvis du er ude at køre, ellers bliver vognløbet lukket.")
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør? Husk at låse VL,
         IfMsgBox, Yes
@@ -2417,7 +2417,33 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, ^s
             sleep 2000
             SendInput, {enter}
-            P6_notat("Ingen kontakt til chf, tekst sendt" initialer " ")
+            P6_notat("Ingen kontakt til chf, tekst sendt, VL låst" initialer " ")
+            gui, cancel
+            afslut_genvej()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+            afslut_genvej()
+            return
+        }
+    }
+    if (valgt == "r")
+    {
+        tlf := P6_hent_vl_tlf()
+        P6_tekstTilChf("Jeg kan ikke ringe dig op på telefonnummer " tlf ". Ring til driften, 70112210. Mvh Midttrafik.")
+        sleep 500
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør? Husk at låse VL,
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 2000
+            SendInput, {enter}
+            P6_notat("Ingen kontakt til chf, tekst sendt (ring til driften)" initialer " ")
             gui, cancel
             afslut_genvej()
             return
@@ -2443,7 +2469,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, ^s
             sleep 2000
             SendInput, {enter}
-            P6_notat("Tal forgæves" initialer " ")
+            P6_notat("Tal forgæves, tekst sendt" initialer " ")
             gui, cancel
             afslut_genvej()
             return
