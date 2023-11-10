@@ -1666,11 +1666,11 @@ Excel_udklip_til_p6(byref vl:="")
 
 mod_up()
 {
-    ; SendInput, {AltUp}{ShiftUp}{CtrlUp}{LWinUp}
-    Loop, 0xFF
-        IF GetKeyState(Key:=Format("VK{:X}",A_Index))
-            SendInput, {%Key% up}
-    Return
+    SendInput, {AltUp}{ShiftUp}{CtrlUp}{LWinUp}{RWinUp}
+    ; Loop, 0xFF
+    ;     IF GetKeyState(Key:=Format("VK{:X}",A_Index))
+    ;         SendInput, {%Key% up}
+    ; Return
 }
 
 ; *
@@ -1914,11 +1914,10 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     genvej_mod := sys_genvej_til_ahk_tast(8)
     sys_genvej_keywait(genvej_mod)
 
-    SendInput, {ShiftUp}{AltUp}{CtrlUp}
+    ; SendInput, {ShiftUp}{AltUp}{CtrlUp}
     klip := clipboard
     sleep 100
     telefon := Trio_hent_tlf()
-    {
         WinActivate, PLANET
         vl := P6_hent_vl()
         if (telefon = "")
