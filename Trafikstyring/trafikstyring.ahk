@@ -116,8 +116,8 @@ Hotkey, IfWinActive, ,
 gui sygehus:+Labelsygehus
 Gui sygehus: Font, s9, Segoe UI
 Gui sygehus: Add, Button, gsygehusmenu1 vauh x16 y8 w115 h23, &AUH
-Gui sygehus: Add, Button, gsygehusmenu1 vrhg x16 y32 w115 h23, &RHG
-Gui sygehus: Add, Button, gsygehusmenu1 vrand x16 y56 w115 h23, Ra&nders Sygehus
+Gui sygehus: Add, Button, gsygehusmenu1 vrhg x16 y32 w115 h23, RH&G
+Gui sygehus: Add, Button, gsygehusmenu1 vrand x16 y56 w115 h23, &Randers Sygehus
 Gui sygehus: Add, Button, gsygehusmenu1 vvib x16 y80 w115 h23, &Viborg Sygehus
 Gui sygehus: Add, Button, gsygehusmenu1 vhor x16 y104 w115 h23, &Horsens Sygehus
 Gui sygehus: Add, Button, gsygehusmenu1 vsil x16 y128 w115 h23, &Silkeborg Sygehus
@@ -146,14 +146,14 @@ Gui sygehuspsyk: Add, Button, gsygehusmenu2 v78474000 x16 y111 w115, &Viborg, Si
 
 gui sygehusrhg:+Labelsygehus2
 Gui sygehusrhg: Font, s9, Segoe UI
-Gui sygehusrhg: Add, Button, gsygehusmenu2 v78430000 x16 y8 w115 h23, &RHG syg.
+Gui sygehusrhg: Add, Button, gsygehusmenu2 v78430000 x16 y8 w115 h23, RH&G syg.
 Gui sygehusrhg: Add, Button, gsygehusmenu2 v78436760 x16 y32 w115 h23, &Dialyse
 Gui sygehusrhg: Add, Button, gsygehusmenu2 v78474500 x16 y56 w115 h23, &Psyk.
 Gui sygehusrhg: Add, Button, gsygehusmenu2 v78437463 x16 y80 w115 h23, H&erning Stråle.
 
 gui sygehusrand:+Labelsygehus2
 Gui sygehusrand: Font, s9, Segoe UI
-Gui sygehusrand: Add, Button, gsygehusmenu2 v78420000 x16 y8 w115 h23, Ra&nders syg.
+Gui sygehusrand: Add, Button, gsygehusmenu2 v78420000 x16 y8 w115 h23, &Randers syg.
 Gui sygehusrand: Add, Button, gsygehusmenu2 v78421590 x16 y32 w115 h23, &Dialyse
 Gui sygehusrand: Add, Button, gsygehusmenu2 v78475300 x16 y56 w115 h23, &Psyk.
 
@@ -268,6 +268,7 @@ return
 replguiEscape:
 replguiClose:
     gui, hide
+    return
 
 replOK:
     Gui, Submit
