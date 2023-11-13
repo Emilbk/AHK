@@ -2939,7 +2939,7 @@ svigtok:
         if (tid_slet != "Åbningstid garanti")
             beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
         Else
-        beskrivelse := "Variabel kørsel, lukket kl. " tid " — ". beskrivelse
+        beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, destroy
     }
     if (type = 3 and årsag != "")
