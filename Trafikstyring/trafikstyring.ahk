@@ -79,9 +79,14 @@ Hotkey, % bruger_genvej.19, l_p6_central_ring_op ; ^+c
 Hotkey, % bruger_genvej.20, l_p6_tekst_til_chf ; ^+t
 Hotkey, % bruger_genvej.36, l_flexf_fra_p6 ; +^F
 Hotkey, % bruger_genvej.48, l_p6_rejsesog ; F1
+Hotkey, % bruger_genvej.50, l_p6_liste_vl ; F1
+Hotkey, % bruger_genvej.51, l_p6_vis_liste_vl ; F1
 ; Hotkey, % bruger_genvej.45, l_sys_inputbox_til_fra ; ^½
 Hotkey, IfWinActive
 
+Hotkey, IfWinActive, Planet ; specifikt alarmrepl-infobox
+Hotkey, % bruger_genvej.49, l_p6_replaner ; F1
+Hotkey, IfWinActive
 ; Trio
 Hotkey, IfWinActive, ahk_group gruppe
 Hotkey, % bruger_genvej.22, l_trio_pause ; ^0
