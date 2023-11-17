@@ -1238,7 +1238,6 @@ P6_vl_luk(tid:="")
     {
         SendInput, {Enter}{Tab}
         SendInput, % tid.1
-        SendInput, {enter}{enter}
         return
     }
     if (k_aftale.2 != "") ; Skandstat er 7-serien. Ingen driftsVL?
