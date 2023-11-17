@@ -4,55 +4,85 @@
 SetWorkingDir %A_ScriptDir%
 SetBatchLines -1
 
-tlf := "98900423"
-tlf_knap := SubStr(tlf, 1, 4) . " " . SubStr(tlf, 5, 4)
-SysGet, primær_skærm, monitorPrimary
-; MsgBox, , , % primær_skærm, 
-
-Gui tlf: +Labeltlf
-Gui tlf: -MinimizeBox -MaximizeBox  +AlwaysOnTop  +Owner -Caption +ToolWindow +hwndhGui
-Gui tlf: Font, s12, Segoe UI
-Gui tlf: Add, Button, vtlfKopi gtlfKopi x0 y0 w120 h23, Tlf: %tlf_knap%
-
-Gui tlf: Show, x995 y3 w120 h23 NA, Tlf
-Return
-
-GuiSize:
+---------------------------
+Planet Version 6
+---------------------------
+Ny  vognløb: 31204 031123 Statistikgruppe:ÅRH_GV_0US
 
 
-GuiContextMenu:
-Return
+---------------------------
+OK   
+---------------------------
 
-GuiEscape:
-GuiClose:
-    ExitApp
+---------------------------
+Planet Version 6
+---------------------------
+Ny  vognløb:  3302 031123 Statistikgruppe:ÅRH_VO_2US
 
-+e::
-{
-    if WinExist("Tlf" , "", "", "")
-        gui tlf: hide
-    Else
-        gui tlf: show, NA
+
+---------------------------
+OK   
+---------------------------
+
+
+
+vl := []
+
++^e::
+{ 
+    Gui repl: Font, s9, Segoe UI
+    Gui repl: Add, ListBox, x78 y21 w120 h364 vvalg Choose1, %vl_liste%
+    Gui repl: Add, Button, x359 y239 w80 h23 Default gguiok, &OK
+    Gui repl: Add, Button, x359 y270 w80 h23 gguislet, &Slet
+    Gui repl: Show, w620 h420, Window
     return
 }
 
 ^e::
 {
-    ; global tlf_knap
-    ; global tlf
-
-    ; SendInput, +!k
-    ; tlf := "test
-    tlf := "12345678"
-    tlf_knap := SubStr(tlf, 1, 4) . " " . SubStr(tlf, 5, 4)
-    
-    sleep 100
-    GuiControl, tlf:text, Button1, Tlf: %tlf_knap% 
+InputBox, vl_input
+if ErrorLevel = 1
     return
-}
+vl.Push(vl_input)
 
-tlfKopi:
-{
-    Clipboard := tlf
-    return
+vl_liste := ""
+for k, v in vl
+    vl_liste .= vl[k] . "|"
 }
+; vl_liste := vl_liste . "|"
+; MsgBox, , , % vl_liste
+Gui repl: Font, s9, Segoe UI
+Gui repl: Add, ListBox, x78 y21 w120 h364 vvalg Choose1, %vl_liste%
+Gui repl: Add, Button, x359 y239 w80 h23 Default gguiok, &OK
+Gui repl: Add, Button, x359 y270 w80 h23 gguislet, &Slet
+Gui repl: Show, w620 h420, Window
+Return
+
+GuisletEscape:
+GuisletClose:
+    ExitApp
+
+GuiOK:
+Gui, Submit
+gui Destroy
+MsgBox, , , % valg
+return
+
+Guislet:
+Gui, Submit
+gui Destroy
+for k, v in vl
+    if (valg = v)
+        vl.Pop(k)
+return
+
+; Gui Show, w620 h420, Window
+; ---------------------------
+; Planet Version 6
+; ---------------------------
+; Ny  vognløb: 31240 301023 Statistikgruppe:ÅRH_GV_5OS
+
+
+; ---------------------------
+; OK   
+; ---------------------------
