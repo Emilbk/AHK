@@ -2650,7 +2650,6 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     genvej_beskrivelse(3)
     genvej_mod := sys_genvej_til_ahk_tast(4)
     sys_genvej_keywait(genvej_mod)
-    mod_up()
     SendInput, % bruger_genvej[3] ; opr telenor-genvej
     sleep 40
     SendInput, % bruger_genvej[3] ; Misser den af og til?
