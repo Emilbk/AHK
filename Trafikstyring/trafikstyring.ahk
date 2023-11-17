@@ -343,8 +343,9 @@ P6_aktiver()
 
 P6_alt_menu(byref tast1 := "", byref tast2 := "")
 {
-    keywait ctrl, T0.5
-    keywait alt, T0.5
+    ; keywait ctrl, T0.5
+    ; keywait alt, T0.5
+    sleep 40
     SendInput, %tast1%
     SendInput, %tast2%
     sleep 200
@@ -481,7 +482,7 @@ p6_vl_vindue()
         vl_opslag := clipboard
         sleep 100
         tid_nu := A_TickCount - tid_start
-        if (tid_nu > 6000)
+        if (tid_nu > 12000)
         {
             return 0
         }
