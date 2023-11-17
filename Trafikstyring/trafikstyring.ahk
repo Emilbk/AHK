@@ -45,6 +45,7 @@ s := bruger_genvej.41
 tlf :=
 trio_genvej := "Genvejsoversigt"
 vl_repl := []
+ 
 ;   bruger_genvej  telenor_opr     telenor_ahk
 
 ;; hotkeydef.
@@ -1314,32 +1315,7 @@ p6_liste_vl(byref vl := "")
     return vl_repl
 
 }
-#IfWinActive, Planet ; er ikke med stort i repl.vindue
-    +enter::
-        {
-            vl := p6_replaner_gem_vl()
-            p6_liste_vl(vl)
-            Return
-        }
-#IfWinActive
-#IfWinActive PLANET
-    +^l::
-        {
-            KeyWait, control
-            KeyWait, shift
-            ; MsgBox, , , Text,
-            GuiControl, repl: , listbox1 , %vl_repl_liste%
-            Gui repl: Show, w620 h420, Window
-            return
-        }
 
-    ^l::
-        {
-            vl := P6_hent_vl()
-            sleep 200
-            p6_liste_vl(vl)
-        }
-#IfWinActive
 ;; Telenor
 
 ;; Trio
@@ -2309,6 +2285,31 @@ l_p6_udraabsalarmer:
     P6_udraabsalarmer()
     afslut_genvej()
 return
+; Replaner og gem i liste, kolonne 49
+l_p6_replaner:
+    genvej_mod := sys_genvej_til_ahk_tast(49)
+    sys_genvej_keywait(genvej_mod)
+    vl := p6_replaner_gem_vl()
+    p6_liste_vl(vl)
+return
+
+; Gem aktiv vl på liste, kolonne 50
+l_p6_liste_vl:
+    genvej_mod := sys_genvej_til_ahk_tast(50)
+    sys_genvej_keywait(genvej_mod)
+    vl := P6_hent_vl()
+    p6_liste_vl(vl)
+    return
+    
+; vist VL-liste, kolonne 51
+l_p6_vis_liste_vl:
+
+    genvej_mod := sys_genvej_til_ahk_tast(51)
+    sys_genvej_keywait(genvej_mod)
+    GuiControl, repl: , listbox1 , %vl_repl_liste%
+    Gui repl: Show, w620 h420, Window
+    return
+
 l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     genvej_mod := sys_genvej_til_ahk_tast(20)
     sys_genvej_keywait(genvej_mod)
