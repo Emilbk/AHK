@@ -623,6 +623,23 @@ P6_notat(byref tekst:="")
     Return
 
 }
+
+p6_notat_ank(notat := "")
+{
+    initialer := sys_initialer()
+    Input, st, , {enter}{Escape}
+     if (ErrorLevel = "Endkey:Escape")
+        return
+    Input, tid, , {enter} {Escape}
+    if (ErrorLevel = "Endkey:Escape")
+        return
+    notat := StrReplace(notat, "st." , "st. " st)
+    notat := StrReplace(notat, "ank" , "ank. " tid)
+    notat := StrReplace(notat, " initialer" , initialer " ")
+    P6_notat(notat)
+; "st. " %st% " ank. " tid ", chf informerer kunde" initialer " "
+    return
+}
 ; ***
 ; gå i rent rejsesøg med karet i telefonfelt
 P6_rejsesog_tlf(ByRef telefon:=" ")
@@ -3306,9 +3323,32 @@ return
 #IfWinActive, PLANET
 ::/ankc::
 {
-    initialer := sys_initialer()
-    Input, st, , {enter}{Escape}
-    Input, tid, , {enter}{Escape}
-    P6_notat("st. " st " ank. " tid ", chf informerer kunde" initialer " ")
+    P6_notat_ank("st. ank, chf giver kunde besked initialer ")
+    return
+}
+::/ank::
+{
+    P6_notat_ank("st. ank initialer")
+    return
+}
+::/ankk::
+{
+    P6_notat_ank("st. ank KI initialer")
+    return
+}
+::/ankf::
+{
+    P6_notat_ank("st. ank jf. FF initialer")
+    return
+}
+::/ankt::
+{
+    P6_notat_ank("st. ank grundet trafik initialer")
+    return
+}
+::/anktc::
+{
+    P6_notat_ank("st. ank grundet trafik. Chf informerer kunde initialer")
+    return
 }
 #IfWinActive
