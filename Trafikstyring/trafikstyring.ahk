@@ -777,10 +777,9 @@ P6_tlf_vl_dato_efter(ByRef telefon:=" ")
 P6_initialer()
 {
     global s
-    FormatTime, tid, ,HHmm ;definerer format på tid/dato
-    initialer = /mt%A_userName%%tid%
-    initialer_udentid =/mt%A_userName%
-    P6_Planvindue()
+    initialer := sys_initialer()
+    initialer_udentid := "/mt" A_userName 
+
     SendInput, {F5} ; for at undgå timeout. Giver det problemer med langsom opdatering?
     sleep s * 40
     sendinput ^n
@@ -824,8 +823,7 @@ P6_initialer()
 P6_initialer_skriv()
 {
     global s
-    FormatTime, Time, ,HHmm tt ;definerer format på tid/dato
-    initialer = /mt%A_userName%%time%
+    initialer := sys_initialer()
     P6_Planvindue()
     sleep s * 40
     sendinput ^n
@@ -1796,6 +1794,12 @@ sys_genvej_keywait(byref genvej_mod := "")
     if (genvej_mod2 = "shift" or genvej_mod2 = "alt" or genvej_mod2 = "control" genvej_mod2 = "lwin")
         keywait, %genvej_mod2%
 }
+sys_initialer()
+{
+    FormatTime, tid, ,HHmm ;definerer format på tid/dato
+    initialer = /mt%A_userName%%tid%
+    return initialer
+} 
 ; l_sys_inputbox_til_fra:
 
 ; brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
@@ -3292,3 +3296,13 @@ l_p6_rejsesog:
     P6_rejsesogvindue()
     afslut_genvej()
 return
+
+#IfWinActive, PLANET
+::/ankc::
+{
+    initialer := sys_initialer()
+    Input, st, , {enter}{Escape}
+    Input, tid, , {enter}{Escape}
+    P6_notat("st. " st " ank. " tid ", chf informerer kunde" initialer " ")
+}
+#IfWinActive
