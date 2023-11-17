@@ -215,6 +215,7 @@ Gui trio_genvej: -MinimizeBox -MaximizeBox +AlwaysOnTop +Owner -Caption +ToolWin
 Gui trio_genvej: Font, s12, Segoe UI
 Gui trio_genvej: Add, Button, vtrio_genvej gtrio_genvej x0 y0 h42 w240, %trio_genvej%
 
+Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 ; Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 
 ; gui repl
@@ -3236,7 +3237,7 @@ svigtok:
         if (tid_slet != "Åbningstid garanti")
             beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
         Else
-        beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
+            beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, destroy
     }
     if (type = 3 and årsag != "")
