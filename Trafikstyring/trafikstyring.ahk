@@ -693,7 +693,7 @@ P6_hent_vl_tlf()
         ClipWait, 1
         sleep 100
     }
-    SendInput {enter}
+    SendInput ^a
     vl_tlf := Clipboard
     clipboard := gemt_klip
     Return vl_tlf
