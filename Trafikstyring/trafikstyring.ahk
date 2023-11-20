@@ -45,7 +45,7 @@ s := bruger_genvej.41
 tlf :=
 trio_genvej := "Genvejsoversigt"
 vl_repl := []
- 
+
 ;   bruger_genvej  telenor_opr     telenor_ahk
 
 ;; hotkeydef.
@@ -275,7 +275,7 @@ return
 replguiEscape:
 replguiClose:
     gui, hide
-    return
+return
 
 replOK:
     Gui, Submit
@@ -812,7 +812,7 @@ P6_initialer()
 {
     global s
     initialer := sys_initialer()
-    initialer_udentid := "/mt" A_userName 
+    initialer_udentid := "/mt" A_userName
 
     SendInput, {F5} ; for at undgå timeout. Giver det problemer med langsom opdatering?
     sleep s * 40
@@ -951,7 +951,7 @@ P6_input_sluttid()
     }
     if (p6_input_sidste_slut_ops = "0")
     {
-        luk := [] 
+        luk := []
         Input, sidste_stop, T10, {Enter}{escape}
         if (ErrorLevel = "EndKey:Escape")
             Return 0
@@ -988,7 +988,7 @@ P6_input_sluttid()
             MsgBox, , Fejl i indtastning, Der skal bruges fire tal i luktid, i formatet TTMM (f. eks. 1434).
             return 0
         }
- 
+
         sidste_stop_tjek := A_YYYY A_MM A_DD luk.1
         if sidste_stop_tjek is not Time
         {
@@ -1001,7 +1001,7 @@ P6_input_sluttid()
             MsgBox, , Fejl i indtastning , Den indtastede lukketid er ikke et klokkeslæt.,
             return 0
         }
- 
+
         luk.1 := A_YYYY A_MM A_DD luk.1
         Input, tid_til_hjemzone, T5, {enter}{Escape},
         if (ErrorLevel = "EndKey:Escape")
@@ -1611,8 +1611,8 @@ Flexfinder_til_p6()
     if (pixel = 0xFCFBFB)
     {
         MsgBox, , FlexFinder, Fanenerne "Grupper" og "Tid" i FlexFinder skal være lukket.
-    return 0
-}
+        return 0
+    }
     if (x = 0)
     {
         ; PixelSearch, Px, Py, 90, 190, 1062, 621, 0x7E7974, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
@@ -1780,15 +1780,15 @@ sys_genvej_til_ahk_tast(byref kolonne := "")
     global bruger_genvej
 
     genvej_mod := StrSplit(bruger_genvej[kolonne])
-    
+
     for i, e in genvej_mod
-        {
+    {
         genvej_mod[i] := StrReplace(genvej_mod[i], "!", "alt")
         genvej_mod[i] := StrReplace(genvej_mod[i], "^", "control")
         genvej_mod[i] := StrReplace(genvej_mod[i], "+", "shift")
         genvej_mod[i] := StrReplace(genvej_mod[i], "#", "lwin")
-        }
-        return genvej_mod   
+    }
+    return genvej_mod
     ; genvej_mod := StrReplace(genvej_mod, "+", "shift")
     ; genvej_mod := StrReplace(genvej_mod, "^", "control")
     ; win skal være enten left/right - hvordan?
@@ -1808,7 +1808,7 @@ sys_initialer()
     FormatTime, tid, ,HHmm ;definerer format på tid/dato
     initialer = /mt%A_userName%%tid%
     return initialer
-} 
+}
 ; l_sys_inputbox_til_fra:
 
 ; brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
@@ -1993,118 +1993,118 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     ; }
     ; else
     ; {
-        clipboard := klip
-        if (telefon = "")
-            telefon := "ikke registreret"
-        InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 160, 180, X, Y, , Timeout, %telefon%
-        if (ErrorLevel = 1 or ErrorLevel = 2)
+    clipboard := klip
+    if (telefon = "")
+        telefon := "ikke registreret"
+    InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 160, 180, X, Y, , Timeout, %telefon%
+    if (ErrorLevel = 1 or ErrorLevel = 2)
+    {
+        afslut_genvej()
+        return
+    }
+    sleep 100
+    MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
+    IfMsgBox, no
+    {
+        afslut_genvej()
+        return
+    }
+    IfMsgBox, Yes
+        P6_ret_tlf_vl(telefon)
+    sleep s * 100
+    Input, næste, L1 V T4
+    if (næste = "n")
+    {
+        Loop
         {
-            afslut_genvej()
-            return
-        }
-        sleep 100
-        MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
-        IfMsgBox, no
-        {
-            afslut_genvej()
-            return
-        }
-        IfMsgBox, Yes
-            P6_ret_tlf_vl(telefon)
-        sleep s * 100
-        Input, næste, L1 V T4
-        if (næste = "n")
-        {
-            Loop
-            {
-                Clipboard :=
-                sleep 20
-                SendInput, !l{tab}
-                sleep 200
-                SendInput, !{right}
-                sleep 400
+            Clipboard :=
+            sleep 20
+            SendInput, !l{tab}
+            sleep 200
+            SendInput, !{right}
+            sleep 400
+            SendInput, ^c
+            clipwait 3
+            if (InStr(clipboard, "eksistere"))
+                continue
+            if (ErrorLevel = 1)
                 SendInput, ^c
-                clipwait 3
-                if (InStr(clipboard, "eksistere"))
-                    continue
-                if (ErrorLevel = 1)
+            clipwait 3
+            tid_ind := Clipboard
+            if (InStr(tid_ind, "senare"))
+            {
+                SendInput, {enter}
+                for index, element in faste_dage
+                {
+                    SendInput, !l
+                    sleep 200
+                    sendinput {tab}
+                    SendInput, %element% {enter}
+                    sleep 200
+                    clipboard :=
+                    SendInput, {tab}
                     SendInput, ^c
-                clipwait 3
-                tid_ind := Clipboard
-                if (InStr(tid_ind, "senare"))
-                {
-                    SendInput, {enter}
-                    for index, element in faste_dage
+                    clipwait 3
+                    if (clipboard = element)
                     {
-                        SendInput, !l
-                        sleep 200
-                        sendinput {tab}
-                        SendInput, %element% {enter}
-                        sleep 200
-                        clipboard :=
-                        SendInput, {tab}
-                        SendInput, ^c
-                        clipwait 3
-                        if (clipboard = element)
-                        {
-                            ; MsgBox, , , match
-                            tid_ind := uge_dage[index]
-                            ramt_dag := index
-                            ; MsgBox, , overført, % tid_ind
-                            Break
-                        }
-                        else
-                        {
-                            ; MsgBox, , ,% clipboard "." element,
-                            SendInput, {enter}
-                            continue
-                        }
-
+                        ; MsgBox, , , match
+                        tid_ind := uge_dage[index]
+                        ramt_dag := index
+                        ; MsgBox, , overført, % tid_ind
+                        Break
+                    }
+                    else
+                    {
+                        ; MsgBox, , ,% clipboard "." element,
+                        SendInput, {enter}
+                        continue
                     }
 
                 }
-                dato := SubStr(tid_ind, 4, 2) SubStr(tid_ind, 1, 2)
-                OutputDebug, % dato
-                dato:= A_YYYY dato
-                FormatTime, dato, %dato%, dddd dd/MM
-                if (StrLen(clipboard) = 2)
+
+            }
+            dato := SubStr(tid_ind, 4, 2) SubStr(tid_ind, 1, 2)
+            OutputDebug, % dato
+            dato:= A_YYYY dato
+            FormatTime, dato, %dato%, dddd dd/MM
+            if (StrLen(clipboard) = 2)
+            {
+                StringLower, clipboard, clipboard, ; dage med ø skal være lowercase. Hvorfor?
+                for index, element in faste_dage
                 {
-                    StringLower, clipboard, clipboard, ; dage med ø skal være lowercase. Hvorfor?
-                    for index, element in faste_dage
+                    if (clipboard = element)
                     {
-                        if (clipboard = element)
-                        {
-                            ramt_dag := index
-                            ; MsgBox, , , % ramt_dag,
-                        }
+                        ramt_dag := index
+                        ; MsgBox, , , % ramt_dag,
                     }
-                    dato := uge_dage[ramt_dag]
-                    ; MsgBox, , næste dag , % uge_dag[ramt_dag]
                 }
-                ; MsgBox, , , % dato,
-                sleep 100
-                MsgBox, 4, Sikker?, Vil du sætte %telefon% på VL %vl% på %dato%?,
-                IfMsgBox, Yes
+                dato := uge_dage[ramt_dag]
+                ; MsgBox, , næste dag , % uge_dag[ramt_dag]
+            }
+            ; MsgBox, , , % dato,
+            sleep 100
+            MsgBox, 4, Sikker?, Vil du sætte %telefon% på VL %vl% på %dato%?,
+            IfMsgBox, Yes
+            {
+                if (ramt_dag = 7)
                 {
-                    if (ramt_dag = 7)
-                    {
-                        P6_ret_tlf_vl_efterfølgende(telefon)
-                        afslut_genvej()
-                        return
-                    }
-                    sleep 200
                     P6_ret_tlf_vl_efterfølgende(telefon)
-                    sleep 200
-                    continue
-                }
-                IfMsgBox, no
-                {
                     afslut_genvej()
                     return
                 }
+                sleep 200
+                P6_ret_tlf_vl_efterfølgende(telefon)
+                sleep 200
+                continue
             }
-
+            IfMsgBox, no
+            {
+                afslut_genvej()
+                return
+            }
         }
+
+    }
     ; }
     afslut_genvej()
 return
@@ -2315,6 +2315,7 @@ l_p6_udraabsalarmer:
 return
 ; Replaner og gem i liste, kolonne 49
 l_p6_replaner:
+    MsgBox, , , test
     genvej_mod := sys_genvej_til_ahk_tast(49)
     sys_genvej_keywait(genvej_mod)
     vl := p6_replaner_gem_vl()
@@ -2327,8 +2328,8 @@ l_p6_liste_vl:
     sys_genvej_keywait(genvej_mod)
     vl := P6_hent_vl()
     p6_liste_vl(vl)
-    return
-    
+return
+
 ; vist VL-liste, kolonne 51
 l_p6_vis_liste_vl:
 
@@ -2336,7 +2337,7 @@ l_p6_vis_liste_vl:
     sys_genvej_keywait(genvej_mod)
     GuiControl, repl: , listbox1 , %vl_repl_liste%
     Gui repl: Show, w620 h420, Window
-    return
+return
 
 l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     genvej_mod := sys_genvej_til_ahk_tast(20)
@@ -2516,7 +2517,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, ^s
             sleep 1000
             SendInput, {enter}
-            P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. Tekst sendt om VL-lås" initialer " ")
+            P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. Låst, tekst sendt om VL-lås" initialer " ")
             gui, cancel
             afslut_genvej()
             return
@@ -2590,7 +2591,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         tlf := P6_hent_vl_tlf()
         P6_tekstTilChf("Jeg kan ikke ringe dig op på telefonnummer " tlf ". Ring til driften, 70112210. Mvh Midttrafik.")
         sleep 500
-        MsgBox, 4, Send til chauffør?, Send tekst til chauffør? 
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?
         IfMsgBox, Yes
         {
             sleep 200
@@ -2775,7 +2776,7 @@ l_outlook_ny_mail: ; opretter ny mail. Bruger.16
     afslut_genvej()
 Return
 
-;; Excel til vl. 
+;; Excel til vl.
 l_excel_vl_til_P6_A:
 l_excel_vl_til_P6_B:
     mod_up()
@@ -3330,35 +3331,87 @@ l_p6_rejsesog:
     afslut_genvej()
 return
 
+;; Hotstring
 #IfWinActive, PLANET
-::/ankc::
-{
-    P6_notat_ank("st. ank, chf giver kunde besked initialer ")
-    return
-}
-::/ank::
-{
-    P6_notat_ank("st. ank initialer")
-    return
-}
-::/ankk::
-{
-    P6_notat_ank("st. ank KI initialer")
-    return
-}
-::/ankf::
-{
-    P6_notat_ank("st. ank jf. FF initialer")
-    return
-}
-::/ankt::
-{
-    P6_notat_ank("st. ank grundet trafik initialer")
-    return
-}
-::/anktc::
-{
-    P6_notat_ank("st. ank grundet trafik. Chf informerer kunde initialer")
-    return
-}
+    :B0:/ank::
+        {
+            P6_notat_ank("st. ank initialer")
+            return
+        }
+    :B0:/ankc::
+        {
+            P6_notat_ank("st. ank, chf giver kunde besked initialer ")
+            return
+        }
+    :B0:/ankk::
+        {
+            P6_notat_ank("st. ank KI initialer")
+            return
+        }
+    :B0:/ankf::
+        {
+            P6_notat_ank("st. ank jf. FF initialer")
+            return
+        }
+    :B0:/ankfk::
+        {
+            P6_notat_ank("st. ank jf. FF. KI initialer")
+            return
+        }
+    :B0:/ankfkf::
+        {
+            P6_notat_ank("st. ank jf. FF. KFI initialer")
+            return
+        }
+    :B0:/ankfc::
+        {
+            P6_notat_ank("st. ank jf. FF. Chf informerer kunde initialer")
+            return
+        }
+    :B0:/ankt::
+        {
+            P6_notat_ank("st. ank grundet trafik initialer")
+            return
+        }
+    :B0:/anktk::
+        {
+            P6_notat_ank("st. ank grundet trafik. KI initialer")
+            return
+        }
+    :B0:/ankv::
+        {
+            P6_notat_ank("st. ank grundet vejarbejde initialer")
+            return
+        }
+    :B0:/ankvk::
+        {
+            P6_notat_ank("st. ank grundet vejarbejde. KI initialer")
+            return
+        }
+    :B0:/ankvkf::
+        {
+            P6_notat_ank("st. ank grundet vejarbejde. KFI initialer")
+            return
+        }
+    :B0:/anktc::
+        {
+            P6_notat_ank("st. ank grundet trafik. Chf informerer kunde initialer")
+            return
+        }
+    :b0:/repl::
+        {
+            p6_notat_ank("st. replaneret ank initialer")
+            return
+        }
+    :b0:/replk::
+        {
+            p6_notat_ank("st. replaneret ank KI tidspunkt initialer")
+            return
+        }
+    :b0:/replkf::
+        {
+            p6_notat_ank("st. replaneret ank KFI initialer")
+            return
+        }
+
 #IfWinActive
