@@ -580,6 +580,7 @@ P6_alarmer()
 {
     global s
 
+    P6_planvindue()
     P6_alt_menu("!ta!k")
     SendInput, ^{up}
     SendInput, +^{Down}
@@ -599,6 +600,7 @@ P6_udraabsalarmer()
 {
     global s
 
+    P6_planvindue()
     P6_alt_menu("!ta!u")
     sleep s * 200
     SendInput, ^{Delete}
