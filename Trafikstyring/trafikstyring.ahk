@@ -670,16 +670,23 @@ p6_notat_ank(notat := "")
 {
     initialer := sys_initialer()
     Input, st, , {enter}{Escape}
-     if (ErrorLevel = "Endkey:Escape")
+    if (ErrorLevel = "Endkey:Escape")
         return
     Input, tid, , {enter} {Escape}
     if (ErrorLevel = "Endkey:Escape")
         return
+    if (InStr(notat, "tidspunkt"))
+    {
+        Input, tidspunkt, , {enter} {Escape}
+        if (ErrorLevel = "Endkey:Escape")
+            return
+    }
     notat := StrReplace(notat, "st." , "st. " st)
     notat := StrReplace(notat, "ank" , "ank. " tid)
+    notat := StrReplace(notat, "tidspunkt" , "" tidspunkt)
     notat := StrReplace(notat, " initialer" , initialer " ")
     P6_notat(notat)
-; "st. " %st% " ank. " tid ", chf informerer kunde" initialer " "
+    ; "st. " %st% " ank. " tid ", chf informerer kunde" initialer " "
     return
 }
 ; ***
