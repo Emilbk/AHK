@@ -994,22 +994,23 @@ P6_input_sluttid()
         }
         if (sidste_stop = "")
         {
-            return nu_plus_5
+            luk.1 := nu_plus_5
+            return luk
         }
         luk.Push(sidste_stop)
         if (!InStr(luk.1, "/"))
-            {
-                luk.3 := "luk"
-            }
+        {
+            luk.3 := "luk"
+        }
         if (InStr(luk.1, "/"))
+        {
+            luk := StrSplit(sidste_stop, "/")
+            luk.3 := "åbnluk"
+            if (luk.2 = "")
             {
-                luk := StrSplit(sidste_stop, "/")
-                luk.3 := "åbnluk"
-                if (luk.2 = "")
-                    {
-                    luk.3 := "åbn"
-                    }
+                luk.3 := "åbn"
             }
+        }
         if (StrLen(luk.1) != 4)
         {
             MsgBox, , Fejl i indtastning, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
