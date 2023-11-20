@@ -85,7 +85,7 @@ Hotkey, % bruger_genvej.51, l_p6_vis_liste_vl ; F1
 ; Hotkey, % bruger_genvej.45, l_sys_inputbox_til_fra ; ^½
 Hotkey, IfWinActive
 
-Hotkey, IfWinActive, Planet ; specifikt alarmrepl-infobox
+Hotkey, IfWinActive, Planet Version; specifikt alarmrepl-infobox
 Hotkey, % bruger_genvej.49, l_p6_replaner ; F1
 Hotkey, IfWinActive
 ; Trio
