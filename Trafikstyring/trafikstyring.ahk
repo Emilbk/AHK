@@ -3555,11 +3555,6 @@ return
             p6_notat_hotstr("st. ankomst_tid jf. FF. KFI initialer")
             return
         }
-    :B0:/ankfc::
-        {
-            p6_notat_hotstr("st. ankomst_tid jf. FF. Chf informerer kunde initialer")
-            return
-        }
     :B0:/ankt::
         {
             p6_notat_hotstr("st. ankomst_tid grundet trafik initialer")
@@ -3570,7 +3565,11 @@ return
             p6_notat_hotstr("st. ankomst_tid grundet trafik. KI initialer")
             return
         }
-    :B0:/ankv::
+    :B0:/anktc::
+        {
+            p6_notat_hotstr("st. ankomst_tid grundet trafik. Chf informerer kunde initialer")
+            return
+        }    :B0:/ankv::
         {
             p6_notat_hotstr("st. ankomst_tid grundet vejarbejde initialer")
             return
@@ -3585,9 +3584,14 @@ return
             p6_notat_hotstr("st. ankomst_tid grundet vejarbejde. KFI initialer")
             return
         }
-    :B0:/anktc::
+    :B0:/anka::
         {
-            p6_notat_hotstr("st. ankomst_tid grundet trafik. Chf informerer kunde initialer")
+            p6_notat_hotstr("st. ankomst_tid, problemer m. adresse. initialer")
+            return
+        }
+    :B0:/ankak::
+        {
+            p6_notat_hotstr("st. ankomst_tid, problemer m. adresse. KI initialer")
             return
         }
     :b0:/repl::
