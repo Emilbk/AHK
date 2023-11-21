@@ -220,7 +220,7 @@ Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 
 ; gui repl
 Gui repl: Font, s9, Segoe UI
-Gui repl: Add, ListBox, Choose1 x78 y21 w120 h364 vvalg, %vl_repl_liste%
+Gui repl: Add, ListBox, Choose1 x78 y21 w220 h364 vvalg, %vl_repl_liste%
 Gui repl: Add, Button, x359 y239 w80 h23 Default greplok, &OK
 Gui repl: Add, Button, x359 y270 w80 h23 greplslet, &Slet
 ; Gui repl: Show, w620 h420, Window
@@ -280,7 +280,8 @@ return
 replOK:
     Gui, Submit
     gui, hide
-    p6_vaelg_vl(valg)
+    valgt_vl := StrSplit(valg, ",") 
+    p6_vaelg_vl(valgt_vl.1)
 ; MsgBox, , , % valg
 return
 
@@ -289,13 +290,17 @@ replslet:
     gui, hide
     for k, v in vl_repl
         if (valg = v)
-            vl.Pop(k)
-return
+            vl_repl.Pop(k)
+
+    vl_repl_liste := "|"
+    for k, v in vl_repl
+        vl_repl_liste .= vl_repl[k] . "|"
+
+    return
 
 replvl:
     gui Submit
     gui Hide
-    P6_planvindue()
     p6_vaelg_vl(%valg%)
 return
 
@@ -881,6 +886,7 @@ P6_initialer_skriv()
 P6_tekstTilChf(ByRef tekst:=" ")
 {
     global s
+    P6_aktiver()
     P6_planvindue()
     kørselsaftale := P6_hent_k()
     styresystem := P6_hent_s()
@@ -924,12 +930,12 @@ P6_input_sluttid()
     {
         luk := []
         sleep 100
-    InputBox, sidste_stop, Sidste stop, Tast tid for sidste stop. Enter uden noget giver luk nu. `n (4 cifre)
+        InputBox, sidste_stop, Sidste stop, Tast tid for sidste stop. Enter uden noget giver luk nu. `n (4 cifre)
         if (ErrorLevel = "1")
             Return 0
         if (sidste_stop = "")
         {
-            tid.1 := nu_plus_5
+            luk.1 := nu_plus_5
             return luk
         }
         luk.1 := sidste_stop
@@ -1346,11 +1352,11 @@ p6_hent_kunde_tlf(ByRef telefon:="")
 
 p6_replaner_gem_vl()
 {
+    vl := []
     gemtklip := ClipboardAll
     ; global vl_repl
     ; global vl_repl_liste
-    FormatTime, tid, YYYYMMDDHH24MISS, HHmm
-    MsgBox, , , % tid
+    FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
     clipboard :=
     SendInput, ^c
     clipwait 2
@@ -1362,24 +1368,24 @@ p6_replaner_gem_vl()
     repl_besked := StrSplit(clipboard, " ")
     SendInput, {enter}
     if (repl_besked.MaxIndex() = 11)
-        vl := repl_besked.6
+        vl.1 := repl_besked.6
     ; vl_repl.Push(repl_besked.6)
     if (repl_besked.MaxIndex() = 12)
-        vl := repl_besked.7
-    ; vl_repl.Push(repl_besked.7)
-
+        vl.1 := repl_besked.7
+    ; vl_repl.Push(repl_besked.7)/mtebk1200
+    vl.1 := vl.1 . ", repl. " tid
     clipboard := gemtklip
     return vl
 
 }
 
-p6_liste_vl(byref vl := "")
+p6_liste_vl(vl)
 {
     gemtklip := ClipboardAll
     global vl_repl
     global vl_repl_liste
 
-    vl_repl.Push(vl)
+    vl_repl.Push(vl.1)
     vl_repl_liste := "|"
     for k, v in vl_repl
         vl_repl_liste .= vl_repl[k] . "|"
@@ -2359,11 +2365,12 @@ l_p6_udraabsalarmer:
     afslut_genvej()
 return
 ; Replaner og gem i liste, kolonne 49
-l_p6_replaner:
-    MsgBox, , , test
+l_p6_replaner_liste_vl:
     genvej_mod := sys_genvej_til_ahk_tast(49)
     sys_genvej_keywait(genvej_mod)
     vl := p6_replaner_gem_vl()
+    if (vl = 0)
+        return
     p6_liste_vl(vl)
 return
 
@@ -2387,7 +2394,7 @@ return
 l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     genvej_mod := sys_genvej_til_ahk_tast(20)
     sys_genvej_keywait(genvej_mod)
-    FormatTime, Time, ,HHmm
+    FormatTime, tid, ,HHmm
     initialer = /mt%A_userName%%time%
     initialer_udentid =/mt%A_userName%
     brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
@@ -2584,12 +2591,15 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
         IfMsgBox, Yes
         {
+            vl := []
             sleep 200
             SendInput, ^s
             sleep 1000
             SendInput, {enter}
             P6_planvindue()
-            vl := P6_hent_vl()
+            vl.1 := P6_hent_vl()
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl.1 := vl.1 ", Wakeup sendt " tid
             p6_liste_vl(vl)
             P6_notat("WakeUp sendt" initialer " ")
             gui, cancel
