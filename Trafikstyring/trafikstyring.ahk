@@ -990,38 +990,70 @@ P6_input_sluttid()
     FormatTime, nu_plus_5, %nu_plus_5%, HHmm
     if (p6_input_sidste_slut_ops = "1")
     {
+        luk := []
         sleep 100
-        InputBox, sidste_stop, Sidste stop, Tast tid for sidste stop (4 cifre)
+    InputBox, sidste_stop, Sidste stop, Tast tid for sidste stop. Enter uden noget giver luk nu. `n (4 cifre)
         if (ErrorLevel = "1")
             Return 0
         if (sidste_stop = "")
         {
-            return nu_plus_5
+            tid.1 := nu_plus_5
+            return luk
         }
-        if (StrLen(sidste_stop)!= 4)
+        luk.1 := sidste_stop
+        if (!InStr(luk.1, "/"))
+        {
+            luk.3 := "luk"
+        }
+        if (InStr(luk.1, "/"))
+        {
+            luk := StrSplit(sidste_stop, "/")
+            luk.3 := "åbnluk"
+            if (luk.2 = "")
+            {
+                luk.3 := "åbn"
+            }
+        }
+        if (StrLen(luk.1)!= 4)
         {
             MsgBox, , Fejl i indtastning, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
             return 0
         }
-        sidste_stop_tjek := A_YYYY A_MM A_DD sidste_stop
+        if (luk.2 != "" and StrLen(luk.2)!= 4)
+        {
+            MsgBox, , Fejl i indtastning, Der skal bruges fire tal i luktid, i formatet TTMM (f. eks. 1434).
+            return 0
+        }
+        sidste_stop_tjek := A_YYYY A_MM A_DD luk.1
         if sidste_stop_tjek is not Time
         {
             MsgBox, , Fejl i indtastning , Det indtastede er ikke et klokkeslæt.,
             return 0
         }
-        sidste_stop := A_YYYY A_MM A_DD sidste_stop
+        sidste_stop_tjek := A_YYYY A_MM A_DD luk.2
+        if sidste_stop_tjek is not Time
+        {
+            MsgBox, , Fejl i indtastning , Den indtastede lukketid er ikke et klokkeslæt.,
+            return 0
+        }
+        luk.1 := A_YYYY A_MM A_DD luk.1
         sleep 200
-        InputBox, tid_til_hjemzone, Tid til hjemzone, Tid til hjemzone i minutter
+        InputBox, tid_til_hjemzone, Tid til hjemzone, Tid til hjemzone i minutter. Enter uden noget giver luk til tidspunktet, der blev indtastet før.
         if (ErrorLevel = "1")
             Return 0
         if (tid_til_hjemzone = "" )
         {
-            FormatTime, sidste_stop, %sidste_stop%, HHmm
-            return sidste_stop
+            midl_luk := luk.1
+            FormatTime, midl_luk, %midl_luk%, HHmm
+            luk.RemoveAt(1)
+            luk.InsertAt(1, midl_luk)
+            return luk
         }
-        EnvAdd, sidste_stop, tid_til_hjemzone + 5, minutes
-        FormatTime, sidste_stop, %sidste_stop%, HHmm
-        return sidste_stop
+        midl_luk := luk.1
+        EnvAdd, midl_luk , tid_til_hjemzone + 5, minutes
+        FormatTime, midl_luk, %midl_luk%, HHmm
+        luk.1 := midl_luk
+        return luk
     }
     if (p6_input_sidste_slut_ops = "0")
     {
