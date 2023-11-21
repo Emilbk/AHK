@@ -626,24 +626,30 @@ P6_notat(byref tekst:="")
 
 }
 
-p6_notat_ank(notat := "")
+p6_notat_hotstr(notat := "")
 {
     initialer := sys_initialer()
-    Input, st, , {enter}{Escape}
-    if (ErrorLevel = "Endkey:Escape")
-        return
-    Input, tid, , {enter} {Escape}
-    if (ErrorLevel = "Endkey:Escape")
-        return
-    if (InStr(notat, "tidspunkt"))
+    if (InStr(notat, "st."))
     {
-        Input, tidspunkt, , {enter} {Escape}
+        Input, st, , {enter}{Escape}
+        if (ErrorLevel = "Endkey:Escape")
+            return
+    }
+    if (InStr(notat, "ankomst_tid"))
+    {
+        Input, ankomst_tid, , {enter} {Escape}
+        if (ErrorLevel = "Endkey:Escape")
+            return
+    }
+    if (InStr(notat, "repl_tid"))
+    {
+        Input, repl_tid, , {enter} {Escape}
         if (ErrorLevel = "Endkey:Escape")
             return
     }
     notat := StrReplace(notat, "st." , "st. " st)
-    notat := StrReplace(notat, "ank" , "ank. " tid)
-    notat := StrReplace(notat, "tidspunkt" , "" tidspunkt)
+    notat := StrReplace(notat, "ankomst_tid" , "ank. " ankomst_tid)
+    notat := StrReplace(notat, "repl_tid" , "" repl_tid)
     notat := StrReplace(notat, " initialer" , initialer " ")
     P6_notat(notat)
     ; "st. " %st% " ank. " tid ", chf informerer kunde" initialer " "
@@ -3335,82 +3341,87 @@ return
 #IfWinActive, PLANET
     :B0:/ank::
         {
-            P6_notat_ank("st. ank initialer")
+            p6_notat_hotstr("st. ankomst_tid initialer")
             return
         }
     :B0:/ankc::
         {
-            P6_notat_ank("st. ank, chf giver kunde besked initialer ")
+            p6_notat_hotstr("st. ankomst_tid, chf giver kunde besked initialer ")
             return
         }
     :B0:/ankk::
         {
-            P6_notat_ank("st. ank KI initialer")
+            p6_notat_hotstr("st. ankomst_tid KI initialer")
             return
         }
     :B0:/ankf::
         {
-            P6_notat_ank("st. ank jf. FF initialer")
+            p6_notat_hotstr("st. ankomst_tid jf. FF initialer")
             return
         }
     :B0:/ankfk::
         {
-            P6_notat_ank("st. ank jf. FF. KI initialer")
+            p6_notat_hotstr("st. ankomst_tid jf. FF. KI initialer")
             return
         }
     :B0:/ankfkf::
         {
-            P6_notat_ank("st. ank jf. FF. KFI initialer")
+            p6_notat_hotstr("st. ankomst_tid jf. FF. KFI initialer")
             return
         }
     :B0:/ankfc::
         {
-            P6_notat_ank("st. ank jf. FF. Chf informerer kunde initialer")
+            p6_notat_hotstr("st. ankomst_tid jf. FF. Chf informerer kunde initialer")
             return
         }
     :B0:/ankt::
         {
-            P6_notat_ank("st. ank grundet trafik initialer")
+            p6_notat_hotstr("st. ankomst_tid grundet trafik initialer")
             return
         }
     :B0:/anktk::
         {
-            P6_notat_ank("st. ank grundet trafik. KI initialer")
+            p6_notat_hotstr("st. ankomst_tid grundet trafik. KI initialer")
             return
         }
     :B0:/ankv::
         {
-            P6_notat_ank("st. ank grundet vejarbejde initialer")
+            p6_notat_hotstr("st. ankomst_tid grundet vejarbejde initialer")
             return
         }
     :B0:/ankvk::
         {
-            P6_notat_ank("st. ank grundet vejarbejde. KI initialer")
+            p6_notat_hotstr("st. ankomst_tid grundet vejarbejde. KI initialer")
             return
         }
     :B0:/ankvkf::
         {
-            P6_notat_ank("st. ank grundet vejarbejde. KFI initialer")
+            p6_notat_hotstr("st. ankomst_tid grundet vejarbejde. KFI initialer")
             return
         }
     :B0:/anktc::
         {
-            P6_notat_ank("st. ank grundet trafik. Chf informerer kunde initialer")
+            p6_notat_hotstr("st. ankomst_tid grundet trafik. Chf informerer kunde initialer")
             return
         }
     :b0:/repl::
         {
-            p6_notat_ank("st. replaneret ank initialer")
+            p6_notat_hotstr("st. replaneret repl_tid initialer")
             return
         }
     :b0:/replk::
         {
-            p6_notat_ank("st. replaneret ank KI tidspunkt initialer")
+            p6_notat_hotstr("st. replaneret repl_tid KI ankomst_tid initialer")
             return
         }
     :b0:/replkf::
         {
-            p6_notat_ank("st. replaneret ank KFI initialer")
+            p6_notat_hotstr("st. replaneret repl_tid KFI initialer")
+            return
+        }
+    :b0:/tom::
+        {
+            p6_notat_hotstr("TOM st. initialer")
             return
         }
 
