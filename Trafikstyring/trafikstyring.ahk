@@ -1354,6 +1354,11 @@ p6_replaner_gem_vl()
     clipboard :=
     SendInput, ^c
     clipwait 2
+    if (InStr(clipboard, "planlægges"))
+    {
+        SendInput, {enter}
+        return 0
+    }
     repl_besked := StrSplit(clipboard, " ")
     SendInput, {enter}
     if (repl_besked.MaxIndex() = 11)
