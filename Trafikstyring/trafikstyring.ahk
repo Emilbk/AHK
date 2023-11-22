@@ -2532,7 +2532,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     genvej_mod := sys_genvej_til_ahk_tast(20)
     sys_genvej_keywait(genvej_mod)
     FormatTime, tid, ,HHmm
-    initialer = /mt%A_userName%%time%
+    initialer = /mt%A_userName%%tid%
     initialer_udentid =/mt%A_userName%
     brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
     bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 2)
