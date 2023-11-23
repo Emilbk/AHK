@@ -165,7 +165,7 @@ Gui sygehusrand: Add, Button, gsygehusmenu2 v78475300 x16 y56 w115 h23, &Psyk.
 
 gui sygehusvib:+Labelsygehus2
 Gui sygehusvib: Font, s9, Segoe UI
-Gui sygehusvib: Add, Button, gsygehusmenu2 v78430000 x16 y8 w115 h23, &Viborg syg.
+Gui sygehusvib: Add, Button, gsygehusmenu2 v78440000 x16 y8 w115 h23, &Viborg syg.
 Gui sygehusvib: Add, Button, gsygehusmenu2 v78447720 x16 y32 w115 h23, &Dialyse
 Gui sygehusvib: Add, Button, gsygehusmenu2 v78474000 x16 y56 w115 h23, &Psyk.
 
