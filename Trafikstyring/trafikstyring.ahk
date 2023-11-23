@@ -1403,27 +1403,37 @@ p6_liste_vl(vl)
 Trio_opkald(ByRef telefon)
 {
 
-    ifWinNotExist, ahk_class AccessBar
+    
+    ifWinNotExist, ahk_class Addressbook
     {
-        WinActivate, ahk_class Agent Main GUI
-        WinWaitActive, ahk_class Agent Main GUI
-        sleep 100
-        SendInput, {alt}
-        sleep 100
-        SendInput, v{Down 5}{enter}
+        WinMenuSelectItem, ahk_class Agent Main GUI, , Vis, Skrivebordsværktøjslinie
+        ;WinActivate, ahk_class Agent Main GUI
+        ;WinWaitActive, ahk_class Agent Main GUI
+        ;sleep 100
+        ;SendInput, {alt}
+        ;sleep 100
+        ;SendInput, v{Down 5}{enter}
     }
-    ControlClick, x360 y17, ahk_class AccessBar
-    sleep 800
-    WinActivate, ahk_class Addressbook
-    WinwaitActive, ahk_class Addressbook
-    ControlClick, Edit2, ahk_class Addressbook
-    SendInput, ^a{del}
-    ; sleep 200
-    ; SendInput, {NumpadSub}
-    sleep 200
-    SendInput, %telefon%
-    sleep 500
-    SendInput, +{enter} ; undgår kobling ved igangværende opkald
+    ;ControlClick, x360 y17, ahk_class AccessBar
+    controlsend, Edit2, ^a {delete}, ahk_class Addressbook
+    controlsend, Edit2, %telefon%, ahk_class Addressbook
+;    sleep 800
+;    WinActivate, ahk_class Addressbook
+;    WinwaitActive, ahk_class Addressbook
+;    SendInput, ^a{del}
+;    ; sleep 200
+;    ; SendInput, {NumpadSub}
+;    sleep 200
+;    SendInput, %telefon%
+;    sleep 500
+    ControlGetText, kobl_test, Button1, Trio Attendant
+    MsgBox, , , % kobl_test
+    if (kobl_test = "Koble")
+        controlsend, , {ShiftDown}{enter}{ShiftUp}}, ahk_class Addressbook
+    Else
+    controlsend, , {enter}, ahk_class Addressbook
+;    ControlClick, Button1, ahk_class Addressbook
+    ; SendInput, +{enter} ; undgår kobling ved igangværende opkald
     Return
 }
 
@@ -1431,10 +1441,15 @@ Trio_opkald(ByRef telefon)
 ; Læg på i Trio
 Trio_afslutopkald()
 {
-    WinActivate, ahk_class AccessBar
-    winwaitactive, ahk_class AccessBar
-    sleep 40
-    SendInput, {NumpadSub}
+    ; ControlFocus, Button1, Addressbook
+    ; ControlGetText, opkaldsstatus, Button1, Trio Attendant
+    ; sleep 200
+    ; MsgBox, , , % opkaldsstatus
+    ControlSend, , {NumpadSub}, ahk_class Agent Main GUI
+    ; WinActivate, ahk_class AccessBar
+    ; winwaitactive, ahk_class AccessBar
+    ; sleep 40
+    ; SendInput, {NumpadSub}
 
     return
 }
@@ -1443,16 +1458,17 @@ Trio_afslutopkald()
 ; Trio hop til efterbehandling
 trio_efterbehandling()
 {
-    WinActivate, ahk_class Agent Main GUI
-    winwaitactive, ahk_class Agent Main GUI
-    sleep 40
-    SendInput, !f
-    sleep 40
-    SendInput, o
-    sleep 40
-    SendInput, 8
-    WinActivate, PLANET
-    winwaitactive, PLANET
+    WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Rolle, 9&
+    ; WinActivate, ahk_class Agent Main GUI
+    ; winwaitactive, ahk_class Agent Main GUI
+    ; sleep 40
+    ; SendInput, !f
+    ; sleep 40
+    ; SendInput, o
+    ; sleep 40
+    ; SendInput, 8
+    ; WinActivate, PLANET
+    ; winwaitactive, PLANET
     Return
 }
 
@@ -1460,18 +1476,19 @@ trio_efterbehandling()
 ; Trio hop til midt uden overløb
 trio_udenov()
 {
-    WinActivate, ahk_class Agent Main GUI
-    winwaitactive, ahk_class Agent Main GUI
-    sleep 40
-    SendInput, !f
-    sleep 40
-    SendInput, o
-    sleep 40
-    SendInput, 3
-    sleep 100
-    SendInput, {F4}
-    WinActivate, PLANET
-    winwaitactive, PLANET
+    WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Rolle, 4&
+    ; WinActivate, ahk_class Agent Main GUI
+    ; winwaitactive, ahk_class Agent Main GUI
+    ; sleep 40
+    ; SendInput, !f
+    ; sleep 40
+    ; SendInput, o
+    ; sleep 40
+    ; SendInput, 3
+    ; sleep 100
+    ; SendInput, {F4}
+    ; WinActivate, PLANET
+    ; winwaitactive, PLANET
     Return
 }
 
@@ -1479,16 +1496,17 @@ trio_udenov()
 ; Trio hop til alarm
 trio_alarm()
 {
-    WinActivate, ahk_class Agent Main GUI
-    winwaitactive, ahk_class Agent Main GUI
-    sleep 40
-    SendInput, !f
-    sleep 40
-    SendInput, o
-    sleep 40
-    SendInput, 7
-    WinActivate, PLANET
-    winwaitactive, PLANET
+    WinMenuSelectItem, Trio Attendant, , Fil, Rolle, 8&
+    ; WinActivate, ahk_class Agent Main GUI
+    ; winwaitactive, ahk_class Agent Main GUI
+    ; sleep 40
+    ; SendInput, !f
+    ; sleep 40
+    ; SendInput, o
+    ; sleep 40
+    ; SendInput, 7
+    ; WinActivate, PLANET
+    ; winwaitactive, PLANET
     Return
 }
 
@@ -1496,12 +1514,13 @@ trio_alarm()
 ; Trio hop til pause
 trio_pause()
 {
-    WinActivate, ahk_class AccessBar
-    winwaitactive, ahk_class AccessBar
-    sleep 100
-    SendInput, {F3}
-    WinActivate, PLANET
-    winwaitactive, PLANET
+    WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Pause
+    ; WinActivate, ahk_class AccessBar
+    ; winwaitactive, ahk_class AccessBar
+    ; sleep 100
+    ; SendInput, {F3}
+    ; WinActivate, PLANET
+    ; winwaitactive, PLANET
     Return
 }
 
@@ -1509,12 +1528,13 @@ trio_pause()
 ; Trio hop til klar
 trio_klar()
 {
-    WinActivate, ahk_class AccessBar
-    winwaitactive, ahk_class AccessBar
-    Sleep 100
-    SendInput, {F4}
-    WinActivate, PLANET
-    winwaitactive, PLANET
+    WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Klar
+    ; WinActivate, ahk_class AccessBar
+    ; winwaitactive, ahk_class AccessBar
+    ; Sleep 100
+    ; SendInput, {F4}
+    ; WinActivate, PLANET
+    ; winwaitactive, PLANET
     Return
 }
 
@@ -1522,16 +1542,16 @@ trio_klar()
 ; Trio hop til frokost
 trio_frokost()
 {
-    WinActivate, ahk_class Agent Main GUI
-    winwaitactive, ahk_class Agent Main GUI
-    sleep 40
-    SendInput, !f
-    sleep 40
-    SendInput, o
-    sleep 40
-    SendInput, 9
-    WinActivate, PLANET
-    winwaitactive, PLANET
+    WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Rolle, 10&
+    ;winwaitactive, ahk_class Agent Main GUI
+    ;sleep 40
+    ;SendInput, !f
+    ;sleep 40
+    ;SendInput, o
+    ;sleep 40
+    ;SendInput, 9
+    ;WinActivate, PLANET
+    ;winwaitactive, PLANET
     Return
 }
 
@@ -1539,14 +1559,9 @@ trio_frokost()
 
 trio_pauseklar()
 {
-    WinActivate, ahk_class AccessBar
-    winwaitactive, ahk_class AccessBar
-    Sleep 200
-    SendInput, {F3}
-    sleep 400
-    SendInput, {F4}
-    WinActivate, PLANET
-    winwaitactive, PLANET
+    trio_pause()
+    sleep 300
+    trio_klar()
 
     Return
 }
