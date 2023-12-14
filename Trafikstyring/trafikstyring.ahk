@@ -82,6 +82,7 @@ Hotkey, % bruger_genvej.36, l_flexf_fra_p6 ; +^F
 Hotkey, % bruger_genvej.48, l_p6_rejsesog ; F1
 Hotkey, % bruger_genvej.50, l_p6_liste_vl ; F1
 Hotkey, % bruger_genvej.51, l_p6_vis_liste_vl ; F1
+Hotkey, % bruger_genvej.55, l_p6_initialer_slet_eget ; +^n
 ; Hotkey, % bruger_genvej.45, l_sys_inputbox_til_fra ; ^½
 Hotkey, IfWinActive
 
@@ -861,6 +862,48 @@ P6_initialer()
         SendInput, !o
         return
     }
+}
+P6_initialer_slet_eget()
+{
+    global s
+    initialer := sys_initialer()
+    initialer_udentid := "/mt" A_userName
+
+    SendInput, {F5} ; for at undgå timeout. Giver det problemer med langsom opdatering?
+    sleep s * 40
+    sendinput ^n
+    sleep s * 1400
+    clipboard :=
+    SendInput, ^a^c
+    ClipWait, 1, 0
+    notering := Clipboard
+    clipwait 3, 0
+    notering_split := StrSplit(notering, initialer_udentid)
+    if (InStr(notering_split.1, "/"))
+    {
+        SendInput, !o
+        return
+    }
+    notering_split.RemoveAt(1)
+    notering_split.1 := SubStr(notering_split.1, 5)
+    for i, e in notering_split
+    {
+        if (i > 1)
+        {
+            notering_split[i] := initialer_udentid . notering_split[i]
+        }
+    }
+    for i, e in notering_split
+    {
+        notering_endelig := notering_endelig . notering_split[i]
+    }
+    clipboard := % notering_endelig
+    SendInput, ^v
+    sleep 50
+    SendInput, !o
+    sleep 200
+    clipboard := notering
+
 }
 
 ; ** kan gemtklip-funktion skrives bedre?
@@ -2024,6 +2067,12 @@ l_p6_initialer: ;; Initialer til/fra
     sys_genvej_keywait(genvej_mod)
     P6_initialer()
     afslut_genvej()
+Return
+l_p6_initialer_slet_eget: ;; Initialer til/fra
+    genvej_mod := sys_genvej_til_ahk_tast(55)
+    sys_genvej_keywait(genvej_mod)
+    P6_initialer_slet_eget()
+    sys_afslut_genvej()
 Return
 ; skriv initialer, fortsæt notat. Kolonne 6
 l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
