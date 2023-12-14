@@ -1459,39 +1459,29 @@ p6_liste_vl(vl)
 ; Sæt kopieret tlf i Trio
 Trio_opkald(ByRef telefon)
 {
-
-    
     ifWinNotExist, ahk_class Addressbook
     {
-        WinMenuSelectItem, ahk_class Agent Main GUI, , Vis, Skrivebordsværktøjslinie
-        ;WinActivate, ahk_class Agent Main GUI
-        ;WinWaitActive, ahk_class Agent Main GUI
-        ;sleep 100
-        ;SendInput, {alt}
-        ;sleep 100
-        ;SendInput, v{Down 5}{enter}
+        ; ControlClick, x368 y68, ahk_class Agent Main GUI , , ,, ,, ; Main vindue
+        ControlClick, x365 y18, Trio Agent, , ,, ,, ; Skrivebordsværkstøjsline
+        sleep 100
     }
-    ;ControlClick, x360 y17, ahk_class AccessBar
-    controlsend, Edit2, ^a {delete}, ahk_class Addressbook
+    sleep 200
+    controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
+    controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
+    ; sleep 80
+    ; controlsend, Edit2, {delete}, ahk_class Addressbook
+    sleep 80
     controlsend, Edit2, %telefon%, ahk_class Addressbook
-;    sleep 800
-;    WinActivate, ahk_class Addressbook
-;    WinwaitActive, ahk_class Addressbook
-;    SendInput, ^a{del}
-;    ; sleep 200
-;    ; SendInput, {NumpadSub}
-;    sleep 200
-;    SendInput, %telefon%
-;    sleep 500
     ControlGetText, kobl_test, Button1, Trio Attendant
-    MsgBox, , , % kobl_test
     if (kobl_test = "Koble")
-        controlsend, , {ShiftDown}{enter}{ShiftUp}}, ahk_class Addressbook
+    {
+        controlsend, , {ShiftDown}{enter}{ShiftUp}, ahk_class Addressbook
+    }
     Else
-    controlsend, , {enter}, ahk_class Addressbook
-;    ControlClick, Button1, ahk_class Addressbook
-    ; SendInput, +{enter} ; undgår kobling ved igangværende opkald
-    Return
+    {
+        controlsend, , {enter}, ahk_class Addressbook
+        Return
+    }
 }
 
 ; ***
@@ -1617,7 +1607,7 @@ trio_frokost()
 trio_pauseklar()
 {
     trio_pause()
-    sleep 300
+    sleep 900
     trio_klar()
 
     Return
@@ -2876,7 +2866,9 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     sys_genvej_beskrivelse(3)
     genvej_mod := sys_genvej_til_ahk_tast(4)
     sys_genvej_keywait(genvej_mod)
-    SendInput, % bruger_genvej[3] ; opr telenor-genvej
+    ControlGetText, koble_test, Button1, Trio Attendant
+    if ()
+        SendInput, % bruger_genvej[3] ; opr telenor-genvej
     sleep 40
     SendInput, % bruger_genvej[3] ; Misser den af og til?
     sleep 40
@@ -2924,6 +2916,7 @@ l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     SendInput, ^c
     ClipWait, 2, 0
     telefon := clipboard
+    GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
     sleep 300
     Trio_opkald(telefon)
     sleep 3100 ; for at genvejsbeskrivelsen bliver der - et problem?
@@ -2935,8 +2928,6 @@ l_trio_afslut_opkald:
 l_trio_afslut_opkaldB:
     mod_up()
     Trio_afslutopkald()
-    sleep 200
-    WinActivate, PLANET
 Return
 
 ;; Flexfinder
