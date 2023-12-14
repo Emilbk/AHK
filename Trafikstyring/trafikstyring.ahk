@@ -2996,8 +2996,6 @@ l_restartAHK: ; AHK-reload
     sleep 2000
 Return
 
-^+a::databaseview("%A_linefile%\..\db\bruger_ops.tsv")
-
 ;; GUI-hjælp
 
 ;hjælp GUI
@@ -3651,5 +3649,86 @@ return
         }
 #IfWinActive
 
+::vllp::Låst, ingen kontakt til chf, privatrejse ikke udråbt
+::bsgs::Glemt slettet retur
+::rgef::Rejsegaranti, egenbetaling fjernet
+::vlaok::Alarm st OK
 
-#IfWinActive
+;; TEST
+
+^+a::databaseview("%A_linefile%\..\db\bruger_ops.tsv")
+; Tag alarm, gå til næste VL på liste
+p6_tag_alarm()
+{
+    SendInput, ^l
+    SendInput, !{Down}
+    return
+}
+; Samme som p6_tag_alarm, aktiv fra boksen med repl-VL
+p6_tag_alarm_vl_box()
+{
+    SendInput, {enter}
+    sleep 50
+    SendInput, ^l
+    SendInput, !{Down}
+    return
+}
+
+;#ifWinActive Vognløbsnotering
+{
+    ^e::
+        clipboard :=
+        SendInput, {enter}
+        sleep 80
+        SendInput, ^a^c
+        ClipWait, 2
+        ny_tekst := clipboard
+        sleep 40
+        p6_notat(ny_tekst, 1)
+    Return
+}
+
++^e::FlexFinder_addresse()
+FlexFinder_addresse()
+{
+    ; SendInput, +{tab} {Down} {Tab}
+    If (WinExist("FlexDanmark FlexFinder"))
+    {
+        sleep 200
+        WinActivate, FlexDanmark FlexFinder
+        winwaitactive, FlexDanmark FlexFinder
+        sleep 40
+        SendInput, {Home}
+        sleep 400
+        SendInput, {PgUp}
+        sleep 200
+        WinGetPos, W_X, W_Y, , , FlexDanmark FlexFinder, , ,
+        if(W_X = "1920" or W_X = "-1920")
+        {
+            ; PixelSearch, Px, Py, 0, 0, , 11, 0xF26C5B, 0, Fast
+            sleep 200
+            click %Px% %Py%
+            sleep 999
+            SendInput, {tab 3} {down} {tab}
+            ; ControlClick, x322 y100, FlexDanmark FlexFinder
+            sleep 40
+            return
+        }
+        Else
+        {
+            PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6C2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
+            sleep 200
+            click %Px% %Py%
+            sleep 200
+            ControlClick, x322 y100, FlexDanmark FlexFinder
+            sleep 40
+            SendInput, +{tab}{down}{tab}
+            return
+        }
+        ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
+    }
+    Else
+        MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den forreste fane)
+    Return
+}
+;
