@@ -942,8 +942,8 @@ P6_initialer_skriv()
 P6_tekstTilChf(ByRef tekst:=" ")
 {
     global s
+    gemtklip := ClipboardAll
     P6_aktiver()
-    P6_planvindue()
     kørselsaftale := P6_hent_k()
     styresystem := P6_hent_s()
     sleep s * 200
@@ -964,7 +964,11 @@ P6_tekstTilChf(ByRef tekst:=" ")
         SendInput, %tekst%
     }
     Else
+    {
+        clipboard := gemtklip
         return
+    }
+    clipboard := gemtklip
     return
 }
 
