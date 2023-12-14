@@ -478,7 +478,6 @@ P6_vis_k()
     SendInput !{F5}
     return
 }
-; ***
 
 ; Tjek for om der er skrevet nyt VL-notat i mellemtiden
 ;         clipboard :=
@@ -511,6 +510,7 @@ P6_vis_k()
 ;     Return
 ; }
 #IfWinActive
+; Kørselsaftale på VL til clipboard
 P6_hent_k()
 {
     global s
@@ -728,15 +728,26 @@ P6_udraabsalarmer()
 
     return
 }
-
-P6_notat(byref tekst:="")
+; tager 1, tekst og 2, tjek for "ny notat-funktion" (hvis = 1)
+P6_notat(byref tekst:="", tjek:="")
 {
-    P6_planvindue()
-    SendInput, ^n
-    sleep 500
-    SendInput, %tekst%
-    SendInput, !o
-
+    if (tjek = 1)
+    {
+        SendInput, ^n
+        sleep 500
+        SendInput, ^a
+        sleep 40
+        sendraw, %tekst%
+        SendInput, !o
+    }
+    Else
+    {
+        P6_planvindue()
+        SendInput, ^n
+        sleep 500
+        sendraw, %tekst%
+        SendInput, !o
+    }
     Return
 
 }
