@@ -408,7 +408,7 @@ P6_vis_k()
 {
     global s
     P6_planvindue()
-    P6_alt_menu("!tk")
+    P6_alt_menu("{alt},", "tk")
     sleep s * 40
     SendInput !{F5}
     return
@@ -419,10 +419,11 @@ P6_hent_k()
 {
     global s
     ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
-    Sendinput !tp!k
+    ; Sendinput !tp!k
+    P6_planvindue()
+    SendInput, !k
     clipboard := ""
     Sendinput +{F10}c
-    Send, {Ctrl}
     ClipWait
     sleep s * 200
     kørselsaftale := clipboard
@@ -447,7 +448,7 @@ P6_hent_s()
 {
     global s
     ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
-    Sendinput !tp!k{tab}
+    Sendinput k{tab}
     clipboard := ""
     Sendinput +{F10}c
     ClipWait
@@ -478,7 +479,7 @@ P6_hent_vl()
     clipboard := ""
     P6_planvindue()
     SendInput, !l
-    sleep 100 ; ikke P6-afhængig
+    sleep 150 ; ikke P6-afhængig
     SendInput, +{F10}c
     ClipWait, 2, 0
     vl := Clipboard
@@ -487,8 +488,6 @@ P6_hent_vl()
 
 p6_vl_vindue()
 {
-    P6_planvindue()
-    sleep 30
     vl := P6_hent_vl()
     sleep 30
     SendInput, ^{F12}
