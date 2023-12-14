@@ -560,7 +560,7 @@ p6_vl_vindue()
     clipboard :=
     SendInput, ^c
     clipwait 0.5
-    if (InStr(clipboard, "opdateringern"))
+    if (InStr(clipboard, "opdateringern")) ; tjek for tidligere vl-vindue stadig åbent
     {
         SendInput, !y
     }
