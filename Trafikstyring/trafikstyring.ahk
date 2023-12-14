@@ -93,6 +93,7 @@ Hotkey, IfWinActive
 
 Hotkey, IfWinActive, Planet Version ; specifikt alarmrepl-infobox
 Hotkey, % bruger_genvej.49, l_p6_replaner_liste_vl ; F1
+Hotkey, % bruger_genvej.56, l_p6_tag_alarm_vl_box ; F1
 Hotkey, IfWinActive
 ; Trio
 Hotkey, IfWinActive, ahk_group gruppe
@@ -2682,6 +2683,13 @@ l_p6_udraabsalarmer:
     P6_udraabsalarmer()
     sys_afslut_genvej()
 return
+
+l_p6_tag_alarm_vl_box:
+    sys_genvej_beskrivelse(56)
+    p6_tag_alarm_vl_box()
+    sys_afslut_genvej()
+Return
+
 ; Replaner og gem i liste, kolonne 49
 l_p6_replaner_liste_vl:
     genvej_mod := sys_genvej_til_ahk_tast(49)
