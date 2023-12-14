@@ -456,9 +456,8 @@ P6_planvindue()
 P6_rejsesogvindue(byref telefon := "")
 {
     global s
-
     P6_alt_menu("{alt}", "rr")
-    sleep s * 100
+    sleep s * 10 + 100
     if (telefon = "")
         return
     SendInput, ^t
