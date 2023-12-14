@@ -136,6 +136,7 @@ if not WinExist("ahk_class Addressbook")
     ControlClick, x368 y68, ahk_class Agent Main GUI , , ,, ,,
 }
 
+;; GUI
 ; Ring til sygehus
 gui sygehus:+Labelsygehus
 Gui sygehus: Font, s9, Segoe UI
@@ -177,7 +178,7 @@ Gui sygehusrhg: Add, Button, gsygehusmenu2 v78437463 x16 y80 w115 h23, H&erning 
 
 gui sygehusrand:+Labelsygehus2
 Gui sygehusrand: Font, s9, Segoe UI
-Gui sygehusrand: Add, Button, gsygehusmenu2 v78420000 x16 y8 w115 h23, Randers syg.
+Gui sygehusrand: Add, Button, gsygehusmenu2 v78420000 x16 y8 w115 h23, &Randers syg.
 Gui sygehusrand: Add, Button, gsygehusmenu2 v78421590 x16 y32 w115 h23, &Dialyse
 Gui sygehusrand: Add, Button, gsygehusmenu2 v78475300 x16 y56 w115 h23, &Psyk.
 
