@@ -131,6 +131,7 @@ if not WinExist("ahk_class Addressbook")
     ControlClick, x368 y68, ahk_class Agent Main GUI , , ,, ,,
 }
 
+;; GUI
 ; Ring til sygehus
 gui sygehus:+Labelsygehus
 Gui sygehus: Font, s9, Segoe UI
@@ -172,7 +173,7 @@ Gui sygehusrhg: Add, Button, gsygehusmenu2 v78437463 x16 y80 w115 h23, H&erning 
 
 gui sygehusrand:+Labelsygehus2
 Gui sygehusrand: Font, s9, Segoe UI
-Gui sygehusrand: Add, Button, gsygehusmenu2 v78420000 x16 y8 w115 h23, Randers syg.
+Gui sygehusrand: Add, Button, gsygehusmenu2 v78420000 x16 y8 w115 h23, &Randers syg.
 Gui sygehusrand: Add, Button, gsygehusmenu2 v78421590 x16 y32 w115 h23, &Dialyse
 Gui sygehusrand: Add, Button, gsygehusmenu2 v78475300 x16 y56 w115 h23, &Psyk.
 
@@ -233,11 +234,14 @@ Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 
 ; gui repl
 Gui repl: Font, s9, Segoe UI
-Gui repl: Add, ListBox, Choose1 x78 y21 w220 h364 vvalg, %vl_repl_liste%
-Gui repl: Add, Button, x359 y239 w80 h23 Default greplok, &OK
+Gui repl: Add, ListBox, x78 y21 w220 h364 vvalg, %vl_repl_liste%
+Gui repl: Add, Button, x359 y199 w80 h33 Default greplvl_opslag_slet, Ops&lag og slet
+Gui repl: Add, Button, x359 y239 w80 h23 Default greplvl_opslag, &Opslag
 Gui repl: Add, Button, x359 y270 w80 h23 greplslet, &Slet
+Gui repl: Add, Button, x359 y300 w80 h23 greplsletalt, Slet &alt
 ; Gui repl: Show, w620 h420, Window
 
+;
 ;; end autoexec
 return
 ;; GUI-labels
