@@ -2977,25 +2977,11 @@ l_excel_vl_til_P6_B:
     SendInput, {Esc}
     Excel_udklip_til_p6(vl)
 return
-;; HOTSTRINGS
 
-::vllp::Låst, ingen kontakt til chf, privatrejse ikke udråbt
-::bsgs::Glemt slettet retur
-::rgef::Rejsegaranti, egenbetaling fjernet
-::vlaok::Alarm st OK
-::vlik::
-    {
-        ; hent st og tid - gui
-        SendInput, St. %stop% ank. %tid%, ikke kvitteret
-    }
 l_excel_mange_ture:
     excel_p6_kundenummer()
 return
 
-::/in::
-    FormatTime, tid, ,HHmm ;definerer format på tid/dato
-    initialer = /mt%A_userName%%tid%
-    Sendinput %initialer%
 l_excel_p6_id:
     excel_p6_id()
 return
@@ -3247,7 +3233,7 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     sleep 500
     ; ClipWait, 3,
     klip := ClipboardAll
-    ; clipwait 3, 1 ;; bedre løsning?
+    ; clipwait 3, 1 ; bedre løsning?
     gui, svigt:new
     gui, svigt:default
     Gui Font, w600
@@ -3549,19 +3535,24 @@ return
             p6_notat_hotstr("st. ankomst_tid KI initialer")
             return
         }
+    :B0:/anks::
+        {
+            p6_notat_hotstr("st. ankomst_tid SI initialer")
+            return
+        }
     :B0:/ankf::
         {
-            p6_notat_hotstr("st. ankomst_tid jf. FF initialer")
+            p6_notat_hotstr("st. ca. ankomst_tid jf. FF initialer")
             return
         }
     :B0:/ankfk::
         {
-            p6_notat_hotstr("st. ankomst_tid jf. FF. KI initialer")
+            p6_notat_hotstr("st. ca. ankomst_tid jf. FF. KI initialer")
             return
         }
     :B0:/ankfkf::
         {
-            p6_notat_hotstr("st. ankomst_tid jf. FF. KFI initialer")
+            p6_notat_hotstr("st. ca. ankomst_tid jf. FF. KFI initialer")
             return
         }
     :B0:/ankt::
@@ -3578,7 +3569,8 @@ return
         {
             p6_notat_hotstr("st. ankomst_tid grundet trafik. Chf informerer kunde initialer")
             return
-        }    :B0:/ankv::
+        }
+    :B0:/ankv::
         {
             p6_notat_hotstr("st. ankomst_tid grundet vejarbejde initialer")
             return
@@ -3603,6 +3595,11 @@ return
             p6_notat_hotstr("st. ankomst_tid, problemer m. adresse. KI initialer")
             return
         }
+    :B0:/ankik::
+        {
+            p6_notat_hotstr("st. ankomst_tid, ikke kvitteret initialer")
+            return
+        }
     :b0:/repl::
         {
             p6_notat_hotstr("st. replaneret repl_tid initialer")
@@ -3623,5 +3620,36 @@ return
             p6_notat_hotstr("TOM st. initialer")
             return
         }
+    :b0:/lad::
+        {
+            p6_notat_hotstr("ladepause udvidet til pause_tid initialer")
+            return
+        }
+    :b0:/låso::
+        {
+            p6_notat_hotstr("Låst op initialer")
+            return
+        }
+    :b0:/låsv::
+        {
+            p6_notat_hotstr("Låst, værksted initialer")
+            return
+        }
+    :b0:/ci::
+        {
+            p6_notat_hotstr("chf inf initialer")
+            return
+        }
+#IfWinActive, Vognløbsnotering
+#IfWinActive, PLANET
+    ::/mt::
+        {
+            FormatTime, tid, YYYYMMDDHH24MISS, HHmm
+            initialer := "/mt" A_UserName tid
+            SendInput, %initialer%
+            return
+        }
+#IfWinActive
+
 
 #IfWinActive
