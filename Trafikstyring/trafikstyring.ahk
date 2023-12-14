@@ -1049,7 +1049,7 @@ P6_input_sluttid()
     p6_input_sidste_slut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,42)
     KeyWait, Ctrl,
     KeyWait, Shift,
-    EnvAdd, nu_plus_5, 5, minutes
+    EnvAdd, nu_plus_5, 10, minutes
     FormatTime, nu_plus_5, %nu_plus_5%, HHmm
     if (p6_input_sidste_slut_ops = "1")
     {
@@ -1405,7 +1405,7 @@ P6_vl_luk(tid:="")
     vl := p6_vl_vindue()
     k_aftale := p6_vl_vindue_edit()
     sleep 40
-    if (k_aftale.1 = 1)
+    if (k_aftale = 1)
     {
         MsgBox, , VL afsluttet, VL er allerede afsluttet
         SendInput, ^a
