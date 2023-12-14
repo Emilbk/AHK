@@ -272,20 +272,20 @@ sygehusmenu2:
     Trio_opkald(knap2)
     gui cancel
     WinActivate, PLANET
-    afslut_genvej()
+    sys_afslut_genvej()
 return
 
 sygehusEscape:
 sygehusClose:
     gui cancel
-    afslut_genvej()
+    sys_afslut_genvej()
 return
 
 sygehus2Escape:
 sygehus2Close:
     vis_sygehus_1()
     gui Cancel
-    afslut_genvej()
+    sys_afslut_genvej()
 return
 
 ; GUI repl
@@ -324,14 +324,14 @@ return
 ;; FUNKTIONER
 ;; P6
 
-afslut_genvej()
+sys_afslut_genvej()
 {
     GuiControl, trio_genvej:text, Button1, Genvejsoversigt
     mod_up()
     return
 }
 
-genvej_beskrivelse(kolonne)
+sys_genvej_beskrivelse(kolonne)
 {
     trio_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, kolonne)
     GuiControl, trio_genvej:text, Button1, %trio_genvej%
@@ -704,7 +704,7 @@ P6_hent_vl_tlf()
     {
         sleep 100
         MsgBox, , For lang tid brugt, Noget er gået galt. Prøv igen.
-        afslut_genvej()
+        sys_afslut_genvej()
         return 0
     }
     vl_tilstand := p6_vl_vindue_edit()
@@ -712,7 +712,7 @@ P6_hent_vl_tlf()
     {
         sleep 100
         MsgBox, , Vl er lukket, Kan ikke trække telefonnummer, vl er afsluttet
-        afslut_genvej()
+        sys_afslut_genvej()
         return 0
     }
     SendInput {Enter}{Enter}
@@ -1343,7 +1343,7 @@ P6_vl_luk(tid:="")
     {
         MsgBox, , VL afsluttet, VL er allerede afsluttet
         SendInput, ^a
-        afslut_genvej()
+        sys_afslut_genvej()
         return 0
     }
     if (k_aftale.2 = "drift" or k_aftale.2 = "" and tid.3 = "luk")
@@ -2064,13 +2064,13 @@ return
 ; SygehusGUI
 ; omskrives
 l_p6_sygehus_ring_op:
-    genvej_beskrivelse(18)
+    sys_genvej_beskrivelse(18)
     vis_sygehus_1()
     mod_up()
 return
 
 l_p6_central_ring_op:
-    genvej_beskrivelse(19)
+    sys_genvej_beskrivelse(19)
     gui, Taxa:Default
     Gui,Add,Button,vtaxa1,&Århus Taxa
     Gui,Add,Button,vtaxa2,Århus Taxa Sk&ole
@@ -2134,19 +2134,19 @@ Return
 
 l_p6_aktiver:
     p6_aktiver()
-    afslut_genvej()
+    sys_afslut_genvej()
 return
 ;; PLANET
 l_p6_hastighed:
     P6_hastighed()
-    afslut_genvej()
+    sys_afslut_genvej()
 return
 ; skriv/fjern initialer. Kolonne 5
 l_p6_initialer: ;; Initialer til/fra
     genvej_mod := sys_genvej_til_ahk_tast(5)
     sys_genvej_keywait(genvej_mod)
     P6_initialer()
-    afslut_genvej()
+    sys_afslut_genvej()
 Return
 l_p6_initialer_slet_eget: ;; Initialer til/fra
     genvej_mod := sys_genvej_til_ahk_tast(55)
@@ -2159,19 +2159,19 @@ l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
     genvej_mod := sys_genvej_til_ahk_tast(6)
     sys_genvej_keywait(genvej_mod)
     P6_initialer_skriv()
-    afslut_genvej()
+    sys_afslut_genvej()
 return
 
 l_p6_vis_k_aftale: ;Vis kørselsaftale for aktivt vognløb
     P6_vis_k()
-    afslut_genvej()
+    sys_afslut_genvej()
 Return
 
 l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     faste_dage := ["ma", "ti", "on", "to", "fr", "lø", "sø"]
     uge_dage := ["faste mandage", "faste tirsdage", "faste onsdage", "faste torsdage", "faste fredage", "faste lørdage", "faste søndage"]
 
-    genvej_beskrivelse(8)
+    sys_genvej_beskrivelse(8)
     genvej_mod := sys_genvej_til_ahk_tast(8)
     sys_genvej_keywait(genvej_mod)
 
@@ -2194,14 +2194,14 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     InputBox, telefon, VL, Skal der bruges et andet telefonnummer end %telefon%?,, 160, 180, X, Y, , Timeout, %telefon%
     if (ErrorLevel = 1 or ErrorLevel = 2)
     {
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
     sleep 100
     MsgBox, 4, Sikker?, Vil du ændre Vl-tlf til %telefon% på VL %vl%?,
     IfMsgBox, no
     {
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
     IfMsgBox, Yes
@@ -2284,7 +2284,7 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
                 if (ramt_dag = 7)
                 {
                     P6_ret_tlf_vl_efterfølgende(telefon)
-                    afslut_genvej()
+                    sys_afslut_genvej()
                     return
                 }
                 sleep 200
@@ -2294,14 +2294,14 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
             }
             IfMsgBox, no
             {
-                afslut_genvej()
+                sys_afslut_genvej()
                 return
             }
         }
 
     }
     ; }
-    afslut_genvej()
+    sys_afslut_genvej()
 return
 
 #IfWinActive ; for at resette indent
@@ -2317,13 +2317,13 @@ l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
         MsgBox, , Tlf ikke registreret , Telefonnummeret er ikke registreret i Ethics., 1
         WinActivate, PLANET, , ,
         SendInput, !tp!l
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
     else
         sleep s * 40
     P6_udfyld_k_og_s(vl)
-    afslut_genvej()
+    sys_afslut_genvej()
 Return
 
 ; ***r
@@ -2338,7 +2338,7 @@ l_trio_til_p6: ;træk tlf til rejsesøg
         if (telefon = "")
         {
             MsgBox, , Intet indgående telefonnummer, Der er intet indgående telefonnummer, 1
-            afslut_genvej()
+            sys_afslut_genvej()
             return
         }
         if (telefon = "78410222")
@@ -2347,14 +2347,14 @@ l_trio_til_p6: ;træk tlf til rejsesøg
             P6_rejsesogvindue()
             sleep s * 40
             SendInput, ^t
-            afslut_genvej()
+            sys_afslut_genvej()
             return
         }
         Else
         {
             WinActivate, PLANET
             P6_rejsesog_tlf(telefon)
-            afslut_genvej()
+            sys_afslut_genvej()
             return
         }
     }
@@ -2363,18 +2363,18 @@ return
 ; gå i vl
 l_p6_vaelg_vl:
     p6_vaelg_vl()
-    afslut_genvej()
+    sys_afslut_genvej()
 return
 ;træk tlf fra aktiv planbillede, ring op i Trio. Col 11
 l_p6_vl_ring_op:
-    genvej_beskrivelse(11)
+    sys_genvej_beskrivelse(11)
     genvej_mod := sys_genvej_til_ahk_tast(11)
     sys_genvej_keywait(genvej_mod)
     sleep s * 100
     vl_tlf := P6_hent_vl_tlf()
     if (vl_tlf = 0)
     {
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
     if (vl_tlf = "")
@@ -2383,7 +2383,7 @@ l_p6_vl_ring_op:
         IfMsgBox, yes
             Goto, l_p6_vl_ring_op
         IfMsgBox, no
-            afslut_genvej()
+            sys_afslut_genvej()
         return
     }
     sleep 200
@@ -2393,14 +2393,14 @@ l_p6_vl_ring_op:
     sleep 400
     WinActivate, PLANET
     P6_Planvindue()
-    afslut_genvej()
+    sys_afslut_genvej()
 return
 
 ; ***
 
 ; ^+F5 col 12
 l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
-    genvej_beskrivelse(12)
+    sys_genvej_beskrivelse(12)
     genvej_mod := sys_genvej_til_ahk_tast(12)
     sys_genvej_keywait(genvej_mod)
 
@@ -2412,7 +2412,7 @@ l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
     sleep 800
     WinActivate, PLANET
 
-    afslut_genvej()
+    sys_afslut_genvej()
 Return
 
 ; P6 - ring op til kunde markeret i Vl (kræver tlf opsat på kundetilladelse)
@@ -2422,20 +2422,20 @@ l_p6_ring_til_kunde:
     if (SubStr(telefon, 1, 3) = "888")
     {
         MsgBox, , Telefon ikke tilknyttet, Kunden har ikke telefon tilknyttet.
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
     Else
     {
         Trio_opkald(telefon)
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
 return
 
 ; #F5, col 13
 l_p6_vl_luk:
-    genvej_beskrivelse(13)
+    sys_genvej_beskrivelse(13)
     genvej_mod := sys_genvej_til_ahk_tast(13)
     sys_genvej_keywait(genvej_mod)
     gemtklip := ClipboardAll
@@ -2443,7 +2443,7 @@ l_p6_vl_luk:
     tid := P6_input_sluttid()
     if !tid
     {
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
     p6_vl_luk(tid)
@@ -2451,7 +2451,7 @@ l_p6_vl_luk:
     P6_planvindue()
     sleep 200
     SendInput, {F5}
-    afslut_genvej()
+    sys_afslut_genvej()
 
     clipboard := gemtklip
     gemtklip :=
@@ -2463,7 +2463,7 @@ l_p6_udregn_minut:
     tid_tekst := tid.1
     if (tid = "fejl")
     {
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
     gui, plustid:New,
@@ -2480,33 +2480,33 @@ Return
 ok:
     {
         gui, cancel
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
 udklip:
     {
         Clipboard := tid.2
         gui, cancel
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
 plustidGuiEscape:
 plustidGuiClose:
     gui, cancel
-    afslut_genvej()
+    sys_afslut_genvej()
 return
 
 l_p6_alarmer:
-    genvej_beskrivelse(14)
+    sys_genvej_beskrivelse(14)
     P6_alarmer()
-    afslut_genvej()
+    sys_afslut_genvej()
 return
 
 l_p6_udraabsalarmer:
-    genvej_beskrivelse(15)
+    sys_genvej_beskrivelse(15)
 
     P6_udraabsalarmer()
-    afslut_genvej()
+    sys_afslut_genvej()
 return
 ; Replaner og gem i liste, kolonne 49
 l_p6_replaner_liste_vl:
@@ -2545,7 +2545,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 2)
     ; ctrl_s := chr(19)
 
-    genvej_beskrivelse(20)
+    sys_genvej_beskrivelse(20)
 
     ; KeyWait Alt
     ; keywait Ctrl
@@ -2553,7 +2553,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     if (valgt = "t")
     {
         P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
     if (valgt = "f")
@@ -2580,7 +2580,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         f_chfGuiClose:
             {
                 gui, Cancel
-                afslut_genvej()
+                sys_afslut_genvej()
                 return
             }
         f_chfok:
@@ -2600,7 +2600,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 sleep 1000
                 SendInput, {enter}
                 P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf." initialer)
-                afslut_genvej()
+                sys_afslut_genvej()
                 return
             }
             IfMsgBox, No
@@ -2609,7 +2609,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
                 gui, cancel
             }
-            afslut_genvej()
+            sys_afslut_genvej()
         return
     }
     if (valgt = "k")
@@ -2638,7 +2638,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         k_chfGuiClose:
             {
                 gui, Cancel
-                afslut_genvej()
+                sys_afslut_genvej()
                 return
             }
         k_chfok:
@@ -2663,7 +2663,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 }
                 else
                     P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. " initialer " ")
-                afslut_genvej()
+                sys_afslut_genvej()
                 return
             }
             IfMsgBox, No
@@ -2672,7 +2672,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
                 gui, cancel
             }
-            afslut_genvej()
+            sys_afslut_genvej()
         return
     }
     if (valgt == "p")
@@ -2689,7 +2689,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, {enter}
             P6_notat("Priv. ikke kvitteret, tekst sendt til chf" initialer " ")
             gui, cancel
-            afslut_genvej()
+            sys_afslut_genvej()
             return
         }
         IfMsgBox, No
@@ -2698,7 +2698,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
             gui, cancel
         }
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
     if (valgt == "P")
@@ -2715,7 +2715,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, {enter}
             P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. Låst, tekst sendt om VL-lås" initialer " ")
             gui, cancel
-            afslut_genvej()
+            sys_afslut_genvej()
             return
         }
         IfMsgBox, No
@@ -2724,7 +2724,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
             gui, cancel
         }
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
     if (valgt == "w")
@@ -2747,7 +2747,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             p6_liste_vl(vl)
             P6_notat("WakeUp sendt" initialer " ")
             gui, cancel
-            afslut_genvej()
+            sys_afslut_genvej()
             return
         }
         IfMsgBox, No
@@ -2755,7 +2755,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sleep 200
             MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
             gui, cancel
-            afslut_genvej()
+            sys_afslut_genvej()
             return
         }
     }
@@ -2773,7 +2773,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, {enter}
             P6_notat("Ingen kontakt til chf, tekst sendt, VL låst" initialer " ")
             gui, cancel
-            afslut_genvej()
+            sys_afslut_genvej()
             return
         }
         IfMsgBox, No
@@ -2781,7 +2781,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sleep 200
             MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
             gui, cancel
-            afslut_genvej()
+            sys_afslut_genvej()
             return
         }
     }
@@ -2799,7 +2799,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, {enter}
             P6_notat("Ingen kontakt til chf, tekst sendt (ring til driften)" initialer " ")
             gui, cancel
-            afslut_genvej()
+            sys_afslut_genvej()
             return
         }
         IfMsgBox, No
@@ -2807,7 +2807,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sleep 200
             MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
             gui, cancel
-            afslut_genvej()
+            sys_afslut_genvej()
             return
         }
     }
@@ -2825,7 +2825,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             SendInput, {enter}
             P6_notat("Tal forgæves, tekst sendt" initialer " ")
             gui, cancel
-            afslut_genvej()
+            sys_afslut_genvej()
             return
         }
         IfMsgBox, No
@@ -2834,10 +2834,10 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
             gui, cancel
         }
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
-    afslut_genvej()
+    sys_afslut_genvej()
     return
 #IfWinActive ; udelukkende for at resette indentering i auto-formatering
 
@@ -2870,12 +2870,12 @@ Return
 
 l_triokald_til_udklip: ; trækker indkommende kald til udklip, ringer ikke op.
     clipboard := Trio_hent_tlf()
-    afslut_genvej()
+    sys_afslut_genvej()
 Return
 
 ; Telenor accepter indgående kald, søg planet
 l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
-    genvej_beskrivelse(3)
+    sys_genvej_beskrivelse(3)
     genvej_mod := sys_genvej_til_ahk_tast(4)
     sys_genvej_keywait(genvej_mod)
     SendInput, % bruger_genvej[3] ; opr telenor-genvej
@@ -2891,7 +2891,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
         P6_aktiver()
         sleep 100
         p6_vaelg_vl()
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
     vl := P6_hent_vl_fra_tlf(telefon)
@@ -2899,7 +2899,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     {
         sleep 200
         P6_udfyld_k_og_s(vl)
-        afslut_genvej()
+        sys_afslut_genvej()
         Return
     }
     if (telefon = "78410222" OR telefon ="78410224") ; mangler yderligere?
@@ -2908,14 +2908,14 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
         sleep 200
         P6_rejsesogvindue()
         SendInput, ^t
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
     Else
     {
         sleep 200
         P6_rejsesogvindue(telefon)
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
 ; Opkald på markeret tekst. Kolonne 28
@@ -2928,7 +2928,8 @@ l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     telefon := clipboard
     sleep 300
     Trio_opkald(telefon)
-    afslut_genvej()
+    sleep 3100 ; for at genvejsbeskrivelsen bliver der - et problem?
+    sys_afslut_genvej()
 Return
 
 ; Minus på numpad afslutter Trioopkald global (Skal der tilbage til P6?)
@@ -2944,7 +2945,7 @@ Return
 l_flexf_fra_p6:
     mod_up()
     Flexfinder_opslag()
-    afslut_genvej()
+    sys_afslut_genvej()
 Return
 ; slå VL op i FF. Kolonne 36
 l_flexf_til_p6:
@@ -2954,7 +2955,7 @@ l_flexf_til_p6:
     vl :=Flexfinder_til_p6()
     if !vl
     {
-        afslut_genvej()
+        sys_afslut_genvej()
         return
     }
     Else
@@ -2964,15 +2965,15 @@ l_flexf_til_p6:
         P6_udfyld_k_og_s(vl)
         sleep 400 ; skal optimeres
         WinActivate, FlexDanmark FlexFinder, , ,
-        afslut_genvej()
+        sys_afslut_genvej()
         Return
     }
 
 ;; Outlook
 l_outlook_ny_mail: ; opretter ny mail. Bruger.16
-    genvej_beskrivelse(37)
+    sys_genvej_beskrivelse(37)
     Outlook_nymail()
-    afslut_genvej()
+    sys_afslut_genvej()
 Return
 
 ;; Excel til vl.
@@ -3519,12 +3520,12 @@ svigtok:
     ; gemtklip :=
     ; MsgBox, , , % emnefelt "`n" beskrivelse
     gemtklip :=
-    afslut_genvej()
+    sys_afslut_genvej()
 Return
 
 svigtGuiEscape:
 svigtGuiClose:
-    afslut_genvej()
+    sys_afslut_genvej()
     Gui, destroy
 Return
 
@@ -3536,7 +3537,7 @@ test()
 
 l_p6_rejsesog:
     P6_rejsesogvindue()
-    afslut_genvej()
+    sys_afslut_genvej()
 return
 
 ;; Hotstring
