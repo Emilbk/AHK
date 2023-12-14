@@ -437,12 +437,10 @@ P6_aktiver()
 
 P6_alt_menu(byref tast1 := "", byref tast2 := "")
 {
-    ; keywait ctrl, T0.5
-    ; keywait alt, T0.5
+    Sendinput %tast1%
     sleep 40
-    SendInput, %tast1%
     SendInput, %tast2%
-    sleep 200
+    sleep 40
 }
 ; ***
 ; Åben planbillede
