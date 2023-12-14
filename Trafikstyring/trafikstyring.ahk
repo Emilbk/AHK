@@ -447,6 +447,7 @@ P6_alt_menu(byref tast1 := "", byref tast2 := "")
 P6_planvindue()
 {
     global s
+    P6_aktiver()
     P6_alt_menu("{alt}", "tp")
 }
 
