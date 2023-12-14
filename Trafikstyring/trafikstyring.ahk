@@ -773,10 +773,17 @@ p6_notat_hotstr(notat := "")
         if (ErrorLevel = "Endkey:Escape")
             return
     }
+    if (InStr(notat, "pause_tid"))
+    {
+        Input, pause_tid, , {enter} {Escape}
+        if (ErrorLevel = "Endkey:Escape")
+            return
+    }
     notat := StrReplace(notat, "st." , "st. " st)
     notat := StrReplace(notat, "ankomst_tid" , "ank. " ankomst_tid)
     notat := StrReplace(notat, "repl_tid" , "" repl_tid)
     notat := StrReplace(notat, " initialer" , initialer " ")
+    notat := StrReplace(notat, "pause_tid" , pause_tid " ")
     P6_notat(notat)
     ; "st. " %st% " ank. " tid ", chf informerer kunde" initialer " "
     return
@@ -999,25 +1006,25 @@ P6_initialer_slet_eget()
     notering := Clipboard
     clipwait 3, 0
     notering_split := StrSplit(notering, initialer_udentid)
-    if (InStr(notering_split.1, "/"))
-    {
-        SendInput, !o
-        return
-    }
-    notering_split.RemoveAt(1)
-    notering_split.1 := SubStr(notering_split.1, 5)
-    for i, e in notering_split
-    {
-        if (i > 1)
+        if (InStr(notering_split.1, "/"))
         {
-            notering_split[i] := initialer_udentid . notering_split[i]
+            SendInput, !o
+            return
         }
-    }
-    for i, e in notering_split
-    {
-        notering_endelig := notering_endelig . notering_split[i]
-    }
-    clipboard := % notering_endelig
+        notering_split.RemoveAt(1)
+        notering_split.1 := SubStr(notering_split.1, 5)
+        for i, e in notering_split
+        {
+            if (i > 1)
+            {
+                notering_split[i] := initialer_udentid . notering_split[i]
+            }
+        }
+        for i, e in notering_split
+        {
+            notering_endelig := notering_endelig . notering_split[i]
+        }
+       clipboard := % notering_endelig
     SendInput, ^v
     sleep 50
     SendInput, !o
