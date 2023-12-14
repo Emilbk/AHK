@@ -123,6 +123,15 @@ Hotkey, IfWinActive, ,
 
 ;; GUI
 ; gui-definitioner
+;; Trio-setup
+if not WinExist("ahk_class AccessBar")
+{
+    WinMenuSelectItem, ahk_class Agent Main GUI, , Vis, Skrivebordsværktøjslinie
+}
+if not WinExist("ahk_class Addressbook")
+{
+    ControlClick, x368 y68, ahk_class Agent Main GUI , , ,, ,,
+}
 
 ; Ring til sygehus
 gui sygehus:+Labelsygehus
