@@ -116,8 +116,11 @@ Hotkey, % bruger_genvej.39, l_excel_vl_til_P6_A ; !Lbutton
 Hotkey, % bruger_genvej.40, l_excel_vl_til_P6_B ; ^w
 Hotkey, IfWinActive, ,
 
-;; GUI
-; gui-definitioner
+Hotkey, ifWinActive, MD0121
+Hotkey, % bruger_genvej.52, l_excel_mange_ture ; !Lbutton
+Hotkey, % bruger_genvej.53, l_excel_p6_id ; !Lbutton
+Hotkey, % bruger_genvej.54, l_excel_p6_cpr ; !Lbutton
+Hotkey, IfWinActive, ,
 ;; Trio-setup
 if not WinExist("ahk_class AccessBar")
 {
@@ -1838,6 +1841,70 @@ Excel_udklip_til_p6(byref vl:="")
     return
 }
 
+excel_p6_kundenummer()
+{
+    clipboard :=
+    SendInput, ^c
+    clipwait 2
+    kundenr := StrSplit(clipboard, "`r`n")
+    sleep 500
+    SendInput, {Down}
+    sleep 100
+    P6_aktiver()
+    P6_rejsesogvindue()
+    sleep 50
+    SendInput, ^t
+    sleep 50
+    SendInput, +{tab}
+    sleep 150
+    SendInput, % kundenr[1]
+    sleep 100
+    SendInput, ^r
+
+    return
+}
+excel_p6_id()
+{
+    clipboard :=
+    SendInput, ^c
+    clipwait 2
+    p6_id := StrSplit(clipboard, " ", "`n")
+    sleep 500
+    SendInput, {Down}
+    sleep 100
+    P6_aktiver()
+    P6_rejsesogvindue()
+    sleep 50
+    SendInput, ^t
+    sleep 50
+    SendInput, !n{Down}{Tab}
+    sleep 150
+    SendInput, % p6_id[1]
+    sleep 100
+    SendInput, ^r
+
+    return
+}
+excel_p6_cpr()
+{
+    clipboard :=
+    SendInput, ^c
+    clipwait 2
+    cpr := StrSplit(clipboard, " ", "`n")
+    sleep 500
+    SendInput, {Down}
+    sleep 100
+    P6_aktiver()
+    P6_rejsesogvindue()
+    sleep 50
+    SendInput, ^t
+    sleep 150
+    SendInput, % cpr[1]
+    sleep 100
+    SendInput, ^r
+
+    return
+}
 ;; System
 
 ; asd
@@ -2924,11 +2991,20 @@ return
         ; hent st og tid - gui
         SendInput, St. %stop% ank. %tid%, ikke kvitteret
     }
+l_excel_mange_ture:
+    excel_p6_kundenummer()
+return
 
 ::/in::
     FormatTime, tid, ,HHmm ;definerer format på tid/dato
     initialer = /mt%A_userName%%tid%
     Sendinput %initialer%
+l_excel_p6_id:
+    excel_p6_id()
+return
+
+l_excel_p6_cpr:
+    excel_p6_cpr()
 return
 
 l_restartAHK: ; AHK-reload
