@@ -479,7 +479,38 @@ P6_vis_k()
     return
 }
 ; ***
-;Kørselsaftale på VL til clipboard
+
+; Tjek for om der er skrevet nyt VL-notat i mellemtiden
+;         clipboard :=
+; SendInput, {enter}
+; sleep 80
+; SendInput, ^a^c
+; ClipWait, 2
+; ny_tekst := clipboard
+; SendInput, !a
+; sleep 10
+; SendInput, ^n
+; sleep 200
+; clipboard :=
+; SendInput, ^a^c
+; clipwait, 2
+; gammel_tekst := clipboard
+; sleep 40
+; ; MsgBox, , , % gammel_tekst
+; if gammel_tekst = %ny_tekst%
+; {
+;     p6_notat(ny_tekst, 1)
+;     return
+; }
+; Else
+; {
+;     MsgBox, , , Der er kommet et nyt notat på vl
+;     ; SendInput, {tab}{enter}
+;     ; sleep 100
+;     ; P6_notat(clipboard, 1)
+;     Return
+; }
+#IfWinActive
 P6_hent_k()
 {
     global s
