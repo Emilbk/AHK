@@ -95,6 +95,11 @@ Hotkey, IfWinActive, Planet Version ; specifikt alarmrepl-infobox
 Hotkey, % bruger_genvej.49, l_p6_replaner_liste_vl ; F1
 Hotkey, % bruger_genvej.56, l_p6_tag_alarm_vl_box ; F1
 Hotkey, IfWinActive
+
+
+Hotkey, IfWinActive, Vognløbsnotering ; specifikt alarmrepl-infobox
+Hotkey, % bruger_genvej.57, l_p6_notat_igen ; F1
+Hotkey, IfWinActive
 ; Trio
 Hotkey, IfWinActive, ahk_group gruppe
 Hotkey, % bruger_genvej.22, l_trio_pause ; ^0
@@ -752,7 +757,18 @@ P6_notat(byref tekst:="", tjek:="")
     Return
 
 }
-
+p6_notat_igen()
+{
+        clipboard :=
+        SendInput, {enter}
+        sleep 80
+        SendInput, ^a^c
+        ClipWait, 2
+        ny_tekst := clipboard
+        sleep 40
+        p6_notat(ny_tekst, 1)
+    Return
+}
 p6_notat_hotstr(notat := "")
 {
     initialer := sys_initialer()
@@ -2336,6 +2352,14 @@ l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
     P6_initialer_skriv()
     sys_afslut_genvej()
 return
+; gentag notat. Kolonne 57
+l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
+    genvej_mod := sys_genvej_til_ahk_tast(57)
+    sys_genvej_keywait(genvej_mod)
+    P6_notat_igen()
+    sys_afslut_genvej()
+return
+
 
 l_p6_vis_k_aftale: ;Vis kørselsaftale for aktivt vognløb
     P6_vis_k()
