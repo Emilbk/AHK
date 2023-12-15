@@ -2353,7 +2353,7 @@ l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
     sys_afslut_genvej()
 return
 ; gentag notat. Kolonne 57
-l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
+l_p6_notat_igen: ; skriv initialer og forsæt notering.
     genvej_mod := sys_genvej_til_ahk_tast(57)
     sys_genvej_keywait(genvej_mod)
     P6_notat_igen()
