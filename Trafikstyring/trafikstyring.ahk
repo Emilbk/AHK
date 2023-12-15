@@ -2728,6 +2728,13 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 SendInput, ^s
                 sleep 1000
                 SendInput, {enter}
+                P6_planvindue()
+                vl_ind := P6_hent_vl()
+                vl.Push(vl_ind)
+                FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+                vl.1 := vl.1 . ", Kvitt. sendt " tid
+                p6_liste_vl(vl)
+
                 if (k_tid != "Oprindelig kvittering")
                 {
                     P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. tid " k_tid initialer " ")
