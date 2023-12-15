@@ -88,11 +88,12 @@ Hotkey, % bruger_genvej.48, l_p6_rejsesog ; F1
 Hotkey, % bruger_genvej.50, l_p6_liste_vl ; F1
 Hotkey, % bruger_genvej.51, l_p6_vis_liste_vl ; F1
 Hotkey, % bruger_genvej.55, l_p6_initialer_slet_eget ; +^n
-Hotkey, % bruger_genvej.56, l_p6_tag_alarm_vl_box ; F1
+Hotkey, % bruger_genvej.56, l_p6_tag_alarm ; F1
 ; Hotkey, % bruger_genvej.45, l_sys_inputbox_til_fra ; ^½
 Hotkey, IfWinActive
 
 Hotkey, IfWinActive, Planet Version ; specifikt alarmrepl-infobox
+Hotkey, % bruger_genvej.56, l_p6_tag_alarm_vl_box ; F1
 Hotkey, % bruger_genvej.49, l_p6_replaner_liste_vl ; F1
 Hotkey, IfWinActive
 
@@ -2707,6 +2708,12 @@ l_p6_udraabsalarmer:
     P6_udraabsalarmer()
     sys_afslut_genvej()
 return
+
+l_p6_tag_alarm:
+    sys_genvej_beskrivelse(56)
+    p6_tag_alarm()
+    sys_afslut_genvej()
+Return
 
 l_p6_tag_alarm_vl_box:
     sys_genvej_beskrivelse(56)
