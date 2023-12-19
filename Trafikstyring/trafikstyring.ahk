@@ -45,8 +45,9 @@ s := bruger_genvej.41
 tlf :=
 trio_genvej := "Genvejsoversigt"
 vl_repl := []
-
+vl_tekst := A_UserName . "_vl.txt"
 ;   bruger_genvej  telenor_opr     telenor_ahk
+FileRead, vl_repl_liste, %vl_tekst%
 
 ;; hotkeydef.
 ; globale genveje                                           ; Standard-opsætning
@@ -301,26 +302,54 @@ replguiClose:
     gui, hide
 return
 
-replOK:
+replvl_opslag:
     Gui, Submit
     gui, hide
-    valgt_vl := StrSplit(valg, ",") 
+    valgt_vl := StrSplit(valg, ",")
     p6_vaelg_vl(valgt_vl.1)
-; MsgBox, , , % valg
+return
+
+replvl_opslag_slet:
+    Gui, Submit
+    gui, hide
+    valgt_vl := StrSplit(valg, ",")
+    for k, v in vl_repl
+        if (valg = v)
+            vl_repl.removeat(k)
+    vl_repl_liste := "|"
+    for k, v in vl_repl
+        vl_repl_liste .= vl_repl[k] . "|"
+    FileDelete, %vl_tekst%
+    FileAppend, %vl_repl_liste%, %vl_tekst%
+    p6_vaelg_vl(valgt_vl.1)
 return
 
 replslet:
     Gui, Submit
     gui, hide
-    for k, v in vl_repl
+    FileRead, vl_repl_liste, %vl_tekst%
+    vl_repl_split := StrSplit(vl_repl_liste, "|")
+    for k, v in vl_repl_split
         if (valg = v)
-            vl_repl.Pop(k)
+            vl_repl.removeat(k)
 
     vl_repl_liste := "|"
     for k, v in vl_repl
         vl_repl_liste .= vl_repl[k] . "|"
+    FileDelete, %vl_tekst%
+    FileAppend, %vl_repl_liste%, %vl_tekst%
+return
 
-    return
+replsletalt:
+    Gui, Submit
+    gui, hide
+    vl_repl := []
+    vl_repl_liste := "|"
+    for k, v in vl_repl
+        vl_repl_liste .= vl_repl[k] . "|"
+    FileDelete, %vl_tekst%
+    FileAppend, %vl_repl_liste%, %vl_tekst%
+return
 
 replvl:
     gui Submit
@@ -376,7 +405,6 @@ P6_aktiver()
     }
     return 0
 }
-
 P6_alt_menu(byref tast1 := "", byref tast2 := "")
 {
     Sendinput %tast1%
@@ -1506,19 +1534,35 @@ p6_replaner_gem_vl()
 
 }
 
-p6_liste_vl(vl)
+; p6_liste_vl(vl_arr)
+; {
+;     gemtklip := ClipboardAll
+;     global vl_repl
+;     global vl_repl_liste
+;     global vl_tekst
+;     vl_repl := []
+;     vl_repl.Push(vl_arr.1)
+;     ; vl_repl_liste := "|"
+;     for k, v in vl_repl
+;         vl_repl_liste .= vl_repl[k] . "|"
+;     FileDelete, %vl_tekst%
+;     FileAppend, %vl_repl_liste%, %vl_tekst%
+;     clipboard := gemtklip
+;     return vl_repl
+
+; }
+p6_vl_til_liste(vl_arr)
 {
     gemtklip := ClipboardAll
-    global vl_repl
-    global vl_repl_liste
-
-    vl_repl.Push(vl.1)
-    vl_repl_liste := "|"
-    for k, v in vl_repl
-        vl_repl_liste .= vl_repl[k] . "|"
+    
+    FileRead, vl_array_fil, vl_array.txt
+    vl_array_fil.Push(vl_arr.1)
+    ; vl_repl_liste := "|"
+    FileDelete, vl_array.txt
+    FileAppend, %vl_repl_liste%, vl_array.txt
 
     clipboard := gemtklip
-    return vl_repl
+    return 
 
 }
 
@@ -1739,8 +1783,8 @@ Flexfinder_opslag()
         sleep 400
         SendInput, {PgUp}
         sleep 200
-        WinGetPos, X, Y, , , FlexDanmark FlexFinder, , ,
-        if(x = "1920" or x = "-1920")
+        WinGetPos, W_X, W_Y, , , FlexDanmark FlexFinder, , ,
+        if(W_X = "1920" or W_X = "-1920")
         {
             PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6CF2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
             sleep 200
@@ -1835,8 +1879,7 @@ Flexfinder_til_p6()
     }
 
 }
-
-;; Outlook
+; Outlook
 ; ***
 ; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script. Kolonne 37
 Outlook_nymail()
@@ -2594,15 +2637,18 @@ l_p6_replaner_liste_vl:
     vl := p6_replaner_gem_vl()
     if (vl = 0)
         return
-    p6_liste_vl(vl)
+    p6_vl_til_liste(vl)
 return
 
 ; Gem aktiv vl på liste, kolonne 50
 l_p6_liste_vl:
     genvej_mod := sys_genvej_til_ahk_tast(50)
     sys_genvej_keywait(genvej_mod)
-    vl := P6_hent_vl()
-    p6_liste_vl(vl)
+    FormatTime, vl_tid , YYYYMMDDHH24MISS, HH:mm
+    vl_liste := []
+    vl_liste.1 := P6_hent_vl()
+    vl_liste.1 := vl_liste.1 . ", listet " vl_tid
+    p6_vl_til_liste(vl_liste)
 return
 
 ; vist VL-liste, kolonne 51
@@ -2610,7 +2656,9 @@ l_p6_vis_liste_vl:
 
     genvej_mod := sys_genvej_til_ahk_tast(51)
     sys_genvej_keywait(genvej_mod)
+    FileRead, vl_repl_liste, %vl_tekst%
     GuiControl, repl: , listbox1 , %vl_repl_liste%
+    GuiControl, repl: choose , listbox1 , 1
     Gui repl: Show, w620 h420, Window
 return
 
@@ -2736,11 +2784,12 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 sleep 1000
                 SendInput, {enter}
                 P6_planvindue()
+                vl := []
                 vl_ind := P6_hent_vl()
                 vl.Push(vl_ind)
                 FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
                 vl.1 := vl.1 . ", Kvitt. sendt " tid
-                p6_liste_vl(vl)
+                p6_vl_til_liste(vl)
 
                 if (k_tid != "Oprindelig kvittering")
                 {
@@ -2769,10 +2818,17 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
         IfMsgBox, Yes
         {
+            vl := []
             sleep 200
             SendInput, ^s
             sleep 1000
             SendInput, {enter}
+            P6_planvindue()
+            vl_ind := P6_hent_vl()
+            vl.Push(vl_ind)
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl.1 := vl.1 . ", Priv. OBS " tid
+            p6_vl_til_liste(vl)
             P6_notat("Priv. ikke kvitteret, tekst sendt til chf" initialer " ")
             gui, cancel
             sys_afslut_genvej()
@@ -2823,14 +2879,17 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         {
             vl := []
             sleep 200
-            SendInput, ^s
+            ; SendInput, ^s
             sleep 1000
             SendInput, {enter}
             P6_planvindue()
-            vl.1 := P6_hent_vl()
+            sleep 50
+            vl_ind := P6_hent_vl()
+            vl.Push(vl_ind)
+            sleep 40
             FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
             vl.1 := vl.1 ", Wakeup sendt " tid
-            p6_liste_vl(vl)
+            p6_vl_til_liste(vl)
             P6_notat("WakeUp sendt" initialer " ")
             gui, cancel
             sys_afslut_genvej()
@@ -3693,6 +3752,11 @@ return
             p6_notat_hotstr("st. ankomst_tid, ikke kvitteret initialer")
             return
         }
+    :B0:/ankik::
+        {
+            p6_notat_hotstr("st. ankomst_tid, overset initialer")
+            return
+        }
     :b0:/repl::
         {
             p6_notat_hotstr("st. replaneret repl_tid initialer")
@@ -3768,20 +3832,7 @@ p6_tag_alarm_vl_box()
     SendInput, !{Down}
     return
 }
-
-;#ifWinActive Vognløbsnotering
-{
-    ^e::
-        clipboard :=
-        SendInput, {enter}
-        sleep 80
-        SendInput, ^a^c
-        ClipWait, 2
-        ny_tekst := clipboard
-        sleep 40
-        p6_notat(ny_tekst, 1)
-    Return
-}
+; Fra notatvindue - indsætter samme notat igen, til når der timeoutes - skal der tages hensyn til nye notater, der kan være skrevet i mellemtiden?
 
 +^e::FlexFinder_addresse()
 FlexFinder_addresse()
