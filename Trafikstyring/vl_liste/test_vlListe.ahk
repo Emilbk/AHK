@@ -36,12 +36,12 @@ Gui repl: Add, Button, x304 y536 w131 h23, Slet alt
 ;; GUI-funktioner
 ^/::
     {
-        vl_vis_gui()
+        vlListe_vis_gui()
         return
     }
-    vl_vis_gui()
+    vlListe_vis_gui()
     {
-        vl_gui_repl_liste := vl_dan_liste()
+        vl_gui_repl_liste := vlListe_dan_liste()
         GuiControl, repl: , ListBox1, %vl_gui_repl_liste%
         Gui repl: Show, w718 h574, Window
         Return
@@ -108,7 +108,7 @@ Gui repl: Add, Button, x304 y536 w131 h23, Slet alt
         return
     }
 
-    vl_dan_liste()
+    vlListe_dan_liste()
     {
         global vl_liste_array
         vl_liste_repl_str := "|"
@@ -147,7 +147,7 @@ Gui repl: Add, Button, x304 y536 w131 h23, Slet alt
     }
 +^e::
     {
-        vl_dan_liste()
+        vlListe_dan_liste()
         Return
     }
     sd := asd

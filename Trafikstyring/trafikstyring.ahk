@@ -17,7 +17,6 @@ GroupAdd, gruppe, ahk_class Addressbook
 #Include, %A_linefile%\..\lib\AHKDb\ahkdb.ahk
 #Include, %A_linefile%\..\lib\JSON.ahk
 ;; TODO
-p6_replaner_gem_vl()p6_replaner_gem_vl()p6_replaner_gem_vl()p6_replaner_gem_vl()p6_replaner_gem_vl()
 ; gemt-klip-funktion ved al brug af clipboard
 ; Trio gå til linie 1 hvis linie 2 aktiv
 ; forstå pixelsearch
@@ -250,7 +249,6 @@ Gui vl_liste: Add, Button, x304 y536 w131 h23 gvl_liste_slet_alt, Slet alt
 vl_liste_vis_note:
 Return
 vl_liste_opslag:
-
 Return
 vl_liste_opslag_slet:
 Return
