@@ -233,8 +233,8 @@ Gui vl_liste: Add, ListBox, x184 y24 w170 h349,
 Gui vl_liste: Add, ListBox, x360 y24 w170 h349, ListBox
 Gui vl_liste: Add, ListBox, x536 y24 w170 h349, ListBox
 Gui vl_liste: Add, Text, x184 y0 w120 h23 +0x200, WakeUp
-Gui vl_liste: Add, Text, x360 y0 w120 h23 +0x200, Privat&rejse
-Gui vl_liste: Add, Text, x536 y0 w120 h23 +0x200, &Listet
+Gui vl_liste: Add, Text, x360 y0 w120 h23 +0x200, Privatrejse
+Gui vl_liste: Add, Text, x536 y0 w120 h23 +0x200, Listet
 Gui vl_liste: Add, Button, x40 y360 w80 h23, Ryd
 Gui vl_liste: Add, Button, x224 y360 w80 h23, Ryd
 Gui vl_liste: Add, Button, x400 y360 w80 h23, Ryd
@@ -242,17 +242,53 @@ Gui vl_liste: Add, Button, x584 y360 w80 h23, Ryd
 Gui vl_liste: Add, Button, x304 y408 w131 h23 gvl_liste_vis_note, Vis &note
 Gui vl_liste: Add, Button, x304 y440 w131 h23 gvl_liste_opslag, &Opslag
 Gui vl_liste: Add, Button, x304 y472 w131 h23 gvl_liste_opslag_slet, Opslag og &slet
-Gui vl_liste: Add, Button, x304 y504 w131 h23 gvl_liste_slet, Sle&t
+Gui vl_liste: Add, Button, x304 y504 w131 h23 gvl_liste_slet, S&let
 Gui vl_liste: Add, Button, x304 y536 w131 h23 gvl_liste_slet_alt, Slet alt
 
 ;; GUI-label vl-list
+vl_listeEscape:
+vl_listeClose:
+Gui vl_liste: Hide
+Return
+
 vl_liste_vis_note:
 Return
 vl_liste_opslag:
+Gui vl_liste: Submit
+Gui vl_liste: Hide
+vl_liste_valg_vl := StrSplit(valg, ",")
+p6_vaelg_vl(vl_liste_valg_vl[1])
 Return
 vl_liste_opslag_slet:
+Gui vl_liste: Submit
+Gui vl_liste: Hide
+
+vl_liste_valg_vl := StrSplit(valg, ",")
+p6_vaelg_vl(vl_liste_valg_vl[1])
+for i, e in vl_liste_array
+    for i2, e2 in vl_liste_array[i]
+        {
+            if (i2 = 1 and e2 = vl_liste_valg_vl[1])
+                {
+                    vl_liste_array.RemoveAt(i)
+                    break
+                }
+        }
 Return
 vl_liste_slet:
+Gui vl_liste: Submit
+Gui vl_liste: Hide
+
+vl_liste_valg_vl := StrSplit(valg, ",")
+for i, e in vl_liste_array
+    for i2, e2 in vl_liste_array[i]
+        {
+            if (i2 = 1 and e2 = vl_liste_valg_vl[1])
+                {
+                    vl_liste_array.RemoveAt(i)
+                    break
+                }
+        }
 Return
 vl_liste_slet_alt:
 Return
