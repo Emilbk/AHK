@@ -1326,6 +1326,8 @@ p6_replaner_gem_vl()
     clipboard :=
     SendInput, ^c
     clipwait 2
+    if (InStr(clipboard, "planlægges"))
+        return 0
     repl_besked := StrSplit(clipboard, " ")
     SendInput, {enter}
     if (repl_besked.MaxIndex() = 11)
@@ -1419,6 +1421,8 @@ vlliste_replaner_vl_til_liste()
         global vl_liste_array
 
         vl_replaner_listet_vl := vlliste_replaner_hent_vl()
+        if (vl_replaner_listet_vl[1] = 0)
+            return
         vl_liste_array.Push(vl_replaner_listet_vl)
 
         return
@@ -3429,6 +3433,6 @@ return
 ^z::
 {
     vlliste_replaner_vl_til_liste() 
-    
+    SendInput,  {enter}
     return
 }
