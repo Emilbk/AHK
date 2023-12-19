@@ -1696,6 +1696,8 @@ vlliste_replaner_vl_til_liste()
         global vl_liste_array
 
         vl_replaner_listet_vl := vlliste_replaner_hent_vl()
+        if (vl_replaner_listet_vl[1] = 0)
+            return
         vl_liste_array.Push(vl_replaner_listet_vl)
 
         return
@@ -4023,6 +4025,6 @@ FlexFinder_addresse()
 ^z::
 {
     vlliste_replaner_vl_til_liste() 
-    
+    SendInput,  {enter}
     return
 }
