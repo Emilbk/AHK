@@ -46,12 +46,15 @@ trio_genvej := "Genvejsoversigt"
 vl_repl := []
 vl_tekst := A_UserName . "_vl.txt"
 ;; VL-liste-read
+vl_tekst := A_UserName . "_vl.txt"
 FileRead, vl_liste_array_json, vl_tekst.txt
 if (vl_liste_array_json = "")
     vl_liste_array := []
 else if (vl_liste_array_json != "")
     vl_liste_array := json.load(vl_liste_array_json)
+
 ;   bruger_genvej  telenor_opr     telenor_ahk
+FileRead, vl_repl_liste, %vl_tekst%
 
 ;; hotkeydef.
 ; globale genveje                                           ; Standard-opsætning
