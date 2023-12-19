@@ -15,9 +15,9 @@ GroupAdd, gruppe, ahk_class Agent Main GUI
 GroupAdd, gruppe, ahk_class Addressbook
 ;; lib
 #Include, %A_linefile%\..\lib\AHKDb\ahkdb.ahk
-
+#Include, %A_linefile%\..\lib\JSON.ahk
 ;; TODO
-
+p6_replaner_gem_vl()p6_replaner_gem_vl()p6_replaner_gem_vl()p6_replaner_gem_vl()p6_replaner_gem_vl()
 ; gemt-klip-funktion ved al brug af clipboard
 ; Trio gå til linie 1 hvis linie 2 aktiv
 ; forstå pixelsearch
@@ -45,7 +45,13 @@ s := bruger_genvej.41
 tlf :=
 trio_genvej := "Genvejsoversigt"
 vl_repl := []
- 
+
+;; VL-liste-read
+FileRead, vl_liste_array_json, vl_tekst.txt
+if (vl_liste_array_json = "")
+    vl_liste_array := []
+else if (vl_liste_array_json != "")
+    vl_liste_array := json.load(vl_liste_array_json)
 ;   bruger_genvej  telenor_opr     telenor_ahk
 
 ;; hotkeydef.
@@ -217,13 +223,41 @@ Gui trio_genvej: Add, Button, vtrio_genvej gtrio_genvej x0 y0 h42 w240, %trio_ge
 
 ; Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 
-; gui repl
-Gui repl: Font, s9, Segoe UI
-Gui repl: Add, ListBox, Choose1 x78 y21 w120 h364 vvalg, %vl_repl_liste%
-Gui repl: Add, Button, x359 y239 w80 h23 Default greplok, &OK
-Gui repl: Add, Button, x359 y270 w80 h23 greplslet, &Slet
-; Gui repl: Show, w620 h420, Window
 
+
+;; GUI vl-liste
+Gui vl_liste: +LabelVl_liste
+Gui vl_liste: Font, s9, Segoe UI
+Gui vl_liste: Add, Text, x8 y0 w120 h23 +0x200, Replaneret
+Gui vl_liste: Add, ListBox, x8 y24 w170 h349 vvalg, 
+Gui vl_liste: Add, ListBox, x184 y24 w170 h349, 
+Gui vl_liste: Add, ListBox, x360 y24 w170 h349, ListBox
+Gui vl_liste: Add, ListBox, x536 y24 w170 h349, ListBox
+Gui vl_liste: Add, Text, x184 y0 w120 h23 +0x200, WakeUp
+Gui vl_liste: Add, Text, x360 y0 w120 h23 +0x200, Privat&rejse
+Gui vl_liste: Add, Text, x536 y0 w120 h23 +0x200, &Listet
+Gui vl_liste: Add, Button, x40 y360 w80 h23, Ryd
+Gui vl_liste: Add, Button, x224 y360 w80 h23, Ryd
+Gui vl_liste: Add, Button, x400 y360 w80 h23, Ryd
+Gui vl_liste: Add, Button, x584 y360 w80 h23, Ryd
+Gui vl_liste: Add, Button, x304 y408 w131 h23 gvl_liste_vis_note, Vis &note
+Gui vl_liste: Add, Button, x304 y440 w131 h23 gvl_liste_opslag, &Opslag
+Gui vl_liste: Add, Button, x304 y472 w131 h23 gvl_liste_opslag_slet, Opslag og &slet
+Gui vl_liste: Add, Button, x304 y504 w131 h23 gvl_liste_slet, Sle&t
+Gui vl_liste: Add, Button, x304 y536 w131 h23 gvl_liste_slet_alt, Slet alt
+
+;; GUI-label vl-list
+vl_liste_vis_note:
+Return
+vl_liste_opslag:
+
+Return
+vl_liste_opslag_slet:
+Return
+vl_liste_slet:
+Return
+vl_liste_slet_alt:
+Return
 ;; end autoexec
 return
 ;; GUI-labels
@@ -268,34 +302,6 @@ sygehus2Close:
     vis_sygehus_1()
     gui Cancel
     afslut_genvej()
-return
-
-; GUI repl
-replguiEscape:
-replguiClose:
-    gui, hide
-    return
-
-replOK:
-    Gui, Submit
-    gui, hide
-    p6_vaelg_vl(valg)
-; MsgBox, , , % valg
-return
-
-replslet:
-    Gui, Submit
-    gui, hide
-    for k, v in vl_repl
-        if (valg = v)
-            vl.Pop(k)
-return
-
-replvl:
-    gui Submit
-    gui Hide
-    P6_planvindue()
-    p6_vaelg_vl(%valg%)
 return
 
 ;; FUNKTIONER
@@ -1315,7 +1321,74 @@ p6_liste_vl(byref vl := "")
     return vl_repl
 
 }
+vlListe_dan_liste()
+{
+    global vl_liste_array
+    vl_liste_repl_str := "|"
 
+    for i,e in vl_liste_array
+        for i2, e2 in vl_liste_array[i]
+        {
+            if (i2 = 4) or if (i2 = 5 and e2 = "")
+                {}
+            else if (i2 = 5 and e2 != 0)
+                {
+                    if (vl_liste_array[i][6] = "")
+                        vl_liste_array[i].InsertAt(6, " (N)")
+                }
+                ; if (i2 = 5 and e2 != 0)
+                ; if (i2 = 5 and e2 = 0)
+                ; vl_liste_array.InsertAt(6, "")
+            else if (i2 = 5 and e2 = 0)
+                {
+
+                }
+            else
+                vl_liste_repl_str := vl_liste_repl_str . e2
+        }
+    vl_liste_array_json := JSON.Dump(vl_liste_array)
+    vl_liste_arra_json_read := json.load(vl_liste_array_json)
+    FileDelete, vl_tekst.txt
+    FileAppend, % vl_liste_array_json, vl_tekst.txt
+
+    return vl_liste_repl_str
+}
+
+vlListe_vis_gui()
+{
+    vl_gui_repl_liste := vlListe_dan_liste()
+    GuiControl, vl_liste: , ListBox1, %vl_gui_repl_liste%
+    Gui vl_liste: Show, w718 h574, Window
+    Return
+
+}
+vlliste_replaner_hent_vl()
+    {
+        replaneret_vl := []
+
+
+        FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
+        FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
+
+        replaneret_vl[1] := p6_replaner_gem_vl()
+        replaneret_vl[2] := ", repl. kl "
+        replaneret_vl[3] := vl_replaner_tidspunkt_vis
+        replaneret_vl[4] := vl_replaner_tidspunkt_intern
+        replaneret_vl[5] := note
+        replaneret_vl[6] :=
+        replaneret_vl[7] := "|"
+
+        return replaneret_vl
+    }
+vlliste_replaner_vl_til_liste()
+    {
+        global vl_liste_array
+
+        vl_replaner_listet_vl := vlliste_replaner_hent_vl()
+        vl_liste_array.Push(vl_replaner_listet_vl)
+
+        return
+    }
 ;; Telenor
 
 ;; Trio
@@ -3311,3 +3384,17 @@ return
     P6_notat("st. " st " ank. " tid ", chf informerer kunde" initialer " ")
 }
 #IfWinActive
+
+;; test
+^p::
+{
+    vlListe_vis_gui()
+    
+    return
+}
+^z::
+{
+    vlliste_replaner_vl_til_liste() 
+    
+    return
+}
