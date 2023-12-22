@@ -2792,10 +2792,9 @@ l_p6_vis_liste_vl:
 
     genvej_mod := sys_genvej_til_ahk_tast(51)
     sys_genvej_keywait(genvej_mod)
-    FileRead, vl_repl_liste, %vl_tekst%
-    GuiControl, repl: , listbox1 , %vl_repl_liste%
-    GuiControl, repl: choose , listbox1 , 1
-    Gui repl: Show, w620 h420, Window
+    vlListe_vis_gui()
+    sys_afslut_genvej()
+    
 return
 
 l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
@@ -4016,15 +4015,11 @@ FlexFinder_addresse()
 ;
 
 ;; test
-^p::
-{
-    vlListe_vis_gui()
-    
-    return
-}
-^z::
-{
-    vlliste_replaner_vl_til_liste() 
-    SendInput,  {enter}
-    return
-}
+
+;^z::
+;{
+;    vlliste_replaner_vl_til_liste() 
+;    SendInput,  {enter}
+;    return
+;}
+;
