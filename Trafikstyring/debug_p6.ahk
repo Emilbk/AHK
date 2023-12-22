@@ -18,4 +18,13 @@ F10::
     WinActivate, pl
     return
 }
+F5::
+{
+    VSC := WinExist("ahk_exe Code.exe")
+    pl:= WinExist("ahk_exe WIFICA32.exe")
+    ControlFocus,, % "ahk_id" VSC
+    ControlSend,, {F5}, % "ahk_id" VSC
+    WinActivate, pl
+    return
+}
 ; #IfWinActive
