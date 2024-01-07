@@ -46,6 +46,20 @@ trio_genvej := "Genvejsoversigt"
 vl_repl := []
 ;; VL-liste-read
 vl_liste_tekst := A_UserName . "_vl_liste.txt"
+; tjek dato for modification, hvis ikke samme dag slet data
+FileGetTime, vl_liste_tekst_dato, %vl_liste_tekst%, M
+FormatTime, vl_liste_tekst_dato, vl_liste_tekst_dato, ddM
+FormatTime, tid_idag, YYYYMMDDHH24MISS, ddM
+if (tid_idag = vl_liste_tekst_dato)
+    {
+        MsgBox, , , %vl_liste_tekst_dato% er i dag, 1
+    }
+else
+    {
+        MsgBox, , , %vl_liste_tekst_dato% er ikke i dag, 
+
+    }
+FileAppend, , %vl_liste_tekst%
 FileRead, vl_liste_array_json, %vl_liste_tekst%
 if (vl_liste_array_json = "")
     vl_liste_array := []
@@ -1740,7 +1754,7 @@ vlliste_wakeup_lav_array(vl := "")
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
-    vl_liste[2] := ", WakeUp sendt kl. "
+    vl_liste[2] := ", WakeUp sendt, "
     vl_liste[3] := vl_replaner_tidspunkt_vis
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
@@ -1786,7 +1800,7 @@ vlliste_listet_lav_array(vl := "")
 
     return vl_liste
 }
-vlliste_låst_lav_array(vl := "")
+vlliste_laast_lav_array(vl := "")
 {
     vl_liste := []
 
@@ -1794,7 +1808,7 @@ vlliste_låst_lav_array(vl := "")
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
-    vl_liste[2] := ", låst kl. "
+    vl_liste[2] := ", låst "
     vl_liste[3] := vl_replaner_tidspunkt_vis
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
@@ -1804,6 +1818,18 @@ vlliste_låst_lav_array(vl := "")
 
     return vl_liste
 }
+vlliste_laast_op_lav_array(vl, laas_i)
+{
+    global vl_liste_array
+
+    FormatTime, laas_op_tid, YYYYMMDDHH24MISS, HH:mm
+    MsgBox, , , %vl%
+    MsgBox, , , %laas_i%
+    vl_liste_array[laas_i][3] := vl_liste_array[laas_i][3] . ", låst op " laas_op_tid
+    MsgBox, , , % vl_liste_array[laas_i][3]
+    return vl_liste
+}
+
 
 
 
@@ -4145,17 +4171,47 @@ FlexFinder_addresse()
 +^å::
     {
         vlListe_vis_gui()
-
         return
     }
 ^z::
     {
         InputBox, vl, , , , , , , , , , 
-        vl_array := vlliste_wakeup_lav_array(vl)
+        laas_i := vl_liste_laas_tjek(vl)
+        if (laas_i = 0)
+            {
+                vl_array := vlliste_laast_lav_array(vl) 
+            }
+        Else
+            {
+                vl_array := vlliste_laast_op_lav_array(vl,laas_i)
+            }
         vl_liste_array.Push(vl_array)
+        vl_liste_array_til_json_tekst()
+        vlListe_dan_liste("listbox5")
+        return
+    }
+
+    vl_liste_array_til_json_tekst()
+    {
+        global vl_liste_array
+        global vl_liste_tekst
+
         vl_liste_array_json := json.Dump(vl_liste_array)
         FileDelete, %vl_liste_tekst%
-        FileAppend, %vl_liste_array_json%, %vl_liste_tekst%
-        vlListe_dan_liste("listbox2")
+        FileAppend, %vl_liste_array_json%, %vl_liste_tekst% 
         return
+    }
+
+    vl_liste_laas_tjek(vl)
+    {
+        global vl_liste_array
+
+        for i, e in vl_liste_array
+            {
+            if (e[8] = "listbox5" and e.1 = vl) and if (!InStr(e.3, "låst"))
+                {
+                return i
+                }
+    }    
+    return 0
     }
