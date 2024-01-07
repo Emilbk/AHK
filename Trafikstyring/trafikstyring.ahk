@@ -247,34 +247,68 @@ Gui trio_genvej: Add, Button, vtrio_genvej gtrio_genvej x0 y0 h42 w240, %trio_ge
 Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 ; Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 
+;; gui vl-liste
+gui vl_liste: +labelvl_liste
+gui vl_liste: font, s9, segoe ui
+gui vl_liste: add, text, x8 y0 w120 h23 +0x200, replaneret
+gui vl_liste: add, listbox, x8 y24 w170 h349 vvalg gvlryd1, 
+gui vl_liste: add, listbox, x184 y24 w170 h349 gvlryd2, 
+gui vl_liste: add, listbox, x360 y24 w170 h349 gvlryd3, listbox
+gui vl_liste: add, listbox, x536 y24 w170 h349 gvlryd4, listbox
+gui vl_liste: add, listbox, x712 y24 w170 h349 gvlryd5, listbox
+gui vl_liste: add, text, x184 y0 w120 h23 +0x200, wakeup
+gui vl_liste: add, text, x360 y0 w120 h23 +0x200, privatrejse
+gui vl_liste: add, text, x536 y0 w120 h23 +0x200, listet
+gui vl_liste: add, text, x712 y0 w120 h23 +0x200, låst
+gui vl_liste: add, button, x40 y375 w80 h23, ryd
+gui vl_liste: add, button, x224 y375 w80 h23, ryd
+gui vl_liste: add, button, x400 y375 w80 h23, ryd
+gui vl_liste: add, button, x584 y375 w80 h23, ryd
+gui vl_liste: add, button, x760 y375 w80 h23, ryd
+gui vl_liste: add, button, x304 y408 w131 h23 gvl_liste_vis_note, vis &note
+gui vl_liste: add, button, x304 y440 w131 h23 gvl_liste_opslag, &opslag
+gui vl_liste: add, button, x304 y472 w131 h23 gvl_liste_opslag_slet, opslag og s&let
+gui vl_liste: add, button, x304 y504 w131 h23 gvl_liste_slet, &slet
+gui vl_liste: add, button, x304 y536 w131 h23 gvl_liste_slet_alt, slet alt
+
+;; gui-label vl-list
+vl_listeescape:
+vl_listeclose:
+gui vl_liste: hide
+return
+
+vlryd1:
+GuiControl, vl_liste: Choose, Listbox2 , 0
+GuiControl, vl_liste: Choose, Listbox3 , 0
+GuiControl, vl_liste: Choose, Listbox4 , 0
+GuiControl, vl_liste: Choose, Listbox5 , 0
+return
+vlryd2:
+GuiControl, vl_liste: Choose, Listbox1 , 0
+GuiControl, vl_liste: Choose, Listbox3 , 0
+GuiControl, vl_liste: Choose, Listbox4 , 0
+GuiControl, vl_liste: Choose, Listbox5 , 0
+return
+vlryd3:
+GuiControl, vl_liste: Choose, Listbox1 , 0
+GuiControl, vl_liste: Choose, Listbox2 , 0
+GuiControl, vl_liste: Choose, Listbox4 , 0
+GuiControl, vl_liste: Choose, Listbox5 , 0
+return
+vlryd4:
+GuiControl, vl_liste: Choose, Listbox1 , 0
+GuiControl, vl_liste: Choose, Listbox2 , 0
+GuiControl, vl_liste: Choose, Listbox3 , 0
+GuiControl, vl_liste: Choose, Listbox5 , 0
+return
+vlryd5:
+GuiControl, vl_liste: Choose, Listbox2 , 0
+GuiControl, vl_liste: Choose, Listbox3 , 0
+GuiControl, vl_liste: Choose, Listbox4 , 0
+GuiControl, vl_liste: Choose, Listbox1 , 0
+return
 
 
-;; GUI vl-liste
-Gui vl_liste: +LabelVl_liste
-Gui vl_liste: Font, s9, Segoe UI
-Gui vl_liste: Add, Text, x8 y0 w120 h23 +0x200, Replaneret
-Gui vl_liste: Add, ListBox, x8 y24 w170 h349 vvalg, 
-Gui vl_liste: Add, ListBox, x184 y24 w170 h349, 
-Gui vl_liste: Add, ListBox, x360 y24 w170 h349, ListBox
-Gui vl_liste: Add, ListBox, x536 y24 w170 h349, ListBox
-Gui vl_liste: Add, Text, x184 y0 w120 h23 +0x200, WakeUp
-Gui vl_liste: Add, Text, x360 y0 w120 h23 +0x200, Privatrejse
-Gui vl_liste: Add, Text, x536 y0 w120 h23 +0x200, Listet
-Gui vl_liste: Add, Button, x40 y360 w80 h23, Ryd
-Gui vl_liste: Add, Button, x224 y360 w80 h23, Ryd
-Gui vl_liste: Add, Button, x400 y360 w80 h23, Ryd
-Gui vl_liste: Add, Button, x584 y360 w80 h23, Ryd
-Gui vl_liste: Add, Button, x304 y408 w131 h23 gvl_liste_vis_note, Vis &note
-Gui vl_liste: Add, Button, x304 y440 w131 h23 gvl_liste_opslag, &Opslag
-Gui vl_liste: Add, Button, x304 y472 w131 h23 gvl_liste_opslag_slet, Opslag og &slet
-Gui vl_liste: Add, Button, x304 y504 w131 h23 gvl_liste_slet, S&let
-Gui vl_liste: Add, Button, x304 y536 w131 h23 gvl_liste_slet_alt, Slet alt
-
-;; GUI-label vl-list
-vl_listeEscape:
-vl_listeClose:
-Gui vl_liste: Hide
-Return
 
 vl_liste_vis_note:
 Return
@@ -1146,7 +1180,7 @@ P6_input_sluttid()
     p6_input_sidste_slut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,42)
     KeyWait, Ctrl,
     KeyWait, Shift,
-    EnvAdd, nu_plus_5, 10, minutes
+    EnvAdd, nu_plus_5, 5, minutes
     FormatTime, nu_plus_5, %nu_plus_5%, HHmm
     if (p6_input_sidste_slut_ops = "1")
     {
@@ -1669,7 +1703,7 @@ vlListe_vis_gui()
 {
     vl_gui_repl_liste := vlListe_dan_liste()
     GuiControl, vl_liste: , ListBox1, %vl_gui_repl_liste%
-    Gui vl_liste: Show, w718 h574, Window
+    Gui vl_liste: Show, w918 h574, Window
     Return
 
 }
@@ -4017,11 +4051,15 @@ FlexFinder_addresse()
 ;
 
 ;; test
-
-;^z::
-;{
-;    vlliste_replaner_vl_til_liste() 
-;    SendInput,  {enter}
-;    return
-;}
-;
++^å::
+{
+    vlListe_vis_gui()
+    
+    return
+}
+^z::
+{
+    vlliste_replaner_vl_til_liste() 
+    SendInput,  {enter}
+    return
+}
