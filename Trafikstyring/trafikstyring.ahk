@@ -1716,8 +1716,10 @@ Trio_opkald(ByRef telefon)
         sleep 100
     }
     sleep 200
-    controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
-    controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
+    controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
+    sleep 100
+    controlsend, Edit2, {delete} ,ahk_class Addressbook
+
     ; sleep 80
     ; controlsend, Edit2, {delete}, ahk_class Addressbook
     sleep 80
