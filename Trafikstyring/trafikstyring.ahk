@@ -262,16 +262,16 @@ Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 ;; gui vl-liste
 gui vl_liste: +labelvl_liste
 gui vl_liste: font, s9, segoe ui
-gui vl_liste: add, text, x8 y0 w120 h23 +0x200, replaneret
-gui vl_liste: add, listbox, x8 y24 w170 h349 vvalg gvlryd1,
-gui vl_liste: add, listbox, x184 y24 w170 h349 gvlryd2,
-gui vl_liste: add, listbox, x360 y24 w170 h349 gvlryd3, 
-gui vl_liste: add, listbox, x536 y24 w170 h349 gvlryd4, 
-gui vl_liste: add, listbox, x712 y24 w170 h349 gvlryd5, 
-gui vl_liste: add, text, x184 y0 w120 h23 +0x200, wakeup
-gui vl_liste: add, text, x360 y0 w120 h23 +0x200, privatrejse
-gui vl_liste: add, text, x536 y0 w120 h23 +0x200, listet
-gui vl_liste: add, text, x712 y0 w120 h23 +0x200, låst
+gui vl_liste: add, text, x8 y0 w120 h23 +0x200, &Replaneret
+gui vl_liste: add, listbox, x8 y24 w170 h349 vvalg1 gvlryd1, Replaneret
+gui vl_liste: add, listbox, x184 y24 w170 h349 vvalg2 gvlryd2, 
+gui vl_liste: add, listbox, x360 y24 w170 h349 vvalg3 gvlryd3, 
+gui vl_liste: add, listbox, x536 y24 w170 h349 vvalg4 gvlryd4, 
+gui vl_liste: add, listbox, x712 y24 w170 h349 vvalg5 gvlryd5, 
+gui vl_liste: add, text, x184 y0 w120 h23 +0x200, &Wakeup
+gui vl_liste: add, text, x360 y0 w120 h23 +0x200, &Privatrejse
+gui vl_liste: add, text, x536 y0 w120 h23 +0x200, L&istet
+gui vl_liste: add, text, x712 y0 w120 h23 +0x200, L&åst
 gui vl_liste: add, button, x40 y375 w80 h23, ryd
 gui vl_liste: add, button, x224 y375 w80 h23, ryd
 gui vl_liste: add, button, x400 y375 w80 h23, ryd
@@ -283,6 +283,46 @@ gui vl_liste: add, button, x304 y472 w131 h23 gvl_liste_opslag_slet, opslag og s
 gui vl_liste: add, button, x304 y504 w131 h23 gvl_liste_slet, &slet
 gui vl_liste: add, button, x304 y536 w131 h23 gvl_liste_slet_alt, slet alt
 
+#IfWinActive, VL-liste
+Enter::
+NumpadEnter::
+Gosub, vl_liste_opslag
+return
+w::
+{
+    GuiControl, vl_liste: Focus, listbox2
+    GuiControl, vl_liste: Choose, Listbox2, 1
+    Gosub, vlryd2
+    return
+}
+
+i::
+{
+    GuiControl, vl_liste: Focus, listbox4
+    return
+}
+
+å::
+{
+    GuiControl, vl_liste: Focus, listbox5
+    GuiControl, vl_liste: Choose, Listbox5, 1
+    Gosub, vlryd5
+    return
+}
+
+r::
+{
+    GuiControl, vl_liste: Focus, listbox1
+    return
+}
+
+p::
+{
+    GuiControl, vl_liste: Focus, listbox3
+    return
+}
+
+#IfWinActive
 ;; gui-label vl-list
 vl_listeescape:
 vl_listeclose:
@@ -323,10 +363,26 @@ return
 vl_liste_vis_note:
 Return
 vl_liste_opslag:
+    vl_liste_opslag_array := []
+    valg :=
     Gui vl_liste: Submit
     Gui vl_liste: Hide
-    vl_liste_valg_vl := StrSplit(valg, ",")
-    p6_vaelg_vl(vl_liste_valg_vl[1])
+    vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5)
+    for i,e in vl_liste_opslag_array
+        if (e != "")
+        {
+            valg := vl_liste_opslag_array[i]
+        }
+        if (valg = "")
+            {
+                MsgBox, , Vælg en markering, Der skal laves en markering
+                gui vl_liste: show
+                return
+            }
+        vl_liste_valg_vl := StrSplit(valg, ",")
+        MsgBox, , , % vl_liste_valg_vl.1
+            
+    ; p6_vaelg_vl(vl_liste_valg_vl[1])
 Return
 vl_liste_opslag_slet:
     Gui vl_liste: Submit
@@ -1379,39 +1435,39 @@ P6_udregn_minut()
             return "fejl"
         if (tidb = "")
             tidb := "0"
-        if (tidb + tida < 0)
-        {
-            MsgBox, , Lad vær', ,
-            return
-        }
-        if (StrLen(tida) <= "3")
-        {
-            tid_nul := A_YYYY A_MM A_DD "00" "00"
-            EnvAdd, tid_nul, tida , minutes
-            EnvAdd, tid_nul, tidb, minutes
-            FormatTime, tidC, %tid_nul%, HHmm
-            FormatTime, tid_time, %tid_nul%, H
-            FormatTime, tid_min, %tid_nul%, m
-            FormatTime, result_mid, %tid_nul%, HHmm
-            if (tid_time = "0" and tid_min = "1")
+            if (tidb + tida < 0)
             {
-                resultat.1 := tid_min " minut."
-                resultat.2 := result_mid
-                return resultat
+                MsgBox, , Lad vær', ,
+                return
             }
-            if (tid_time = "0" and tid_min >= "1")
+            if (StrLen(tida) <= "3")
             {
-                resultat.1 := tid_min " minutter."
-                resultat.2 := result_mid
-                return resultat
-            }
-            if (tid_time = "1" and tid_min = "0")
-            {
-                resultat.1 := tid_time " time."
-                resultat.2 := result_mid
-                return resultat
-            }
-            if (tid_time > "1" and tid_min = "0")
+                tid_nul := A_YYYY A_MM A_DD "00" "00"
+                EnvAdd, tid_nul, tida , minutes
+                EnvAdd, tid_nul, tidb, minutes
+                FormatTime, tidC, %tid_nul%, HHmm
+                FormatTime, tid_time, %tid_nul%, H
+                FormatTime, tid_min, %tid_nul%, m
+                FormatTime, result_mid, %tid_nul%, HHmm
+                if (tid_time = "0" and tid_min = "1")
+                {
+                    resultat.1 := tid_min " minut."
+                    resultat.2 := result_mid
+                    return resultat
+                }
+                if (tid_time = "0" and tid_min >= "1")
+                {
+                    resultat.1 := tid_min " minutter."
+                    resultat.2 := result_mid
+                    return resultat
+                }
+                if (tid_time = "1" and tid_min = "0")
+                {
+                    resultat.1 := tid_time " time."
+                    resultat.2 := result_mid
+                    return resultat
+                }
+                if (tid_time > "1" and tid_min = "0")
             {
                 resultat.1 := tid_time " timer."
                 resultat.2 := result_mid
@@ -1724,7 +1780,7 @@ vlListe_vis_gui()
     GuiControl, vl_liste: , ListBox3, %listbox3%
     GuiControl, vl_liste: , ListBox4, %listbox4%
     GuiControl, vl_liste: , ListBox5, %listbox5%
-    Gui vl_liste: Show, w918 h574, Window
+    Gui vl_liste: Show, w918 h574, VL-liste
     Return
 
 }
@@ -1848,10 +1904,10 @@ vlliste_wakeup_vl_til_liste(vl)
 {
     global vl_liste_array
 
-    vl := vlliste_wakeup_lav_array() 
-    if (vl[1] = 0)
+    vl_array := vlliste_wakeup_lav_array(vl) 
+    if (vl_array[1] = 0)
         return
-    vl_liste_array.Push(vl)
+    vl_liste_array.Push(vl_array)
 
     return
 }
@@ -4175,19 +4231,10 @@ FlexFinder_addresse()
     }
 ^z::
     {
-        InputBox, vl, , , , , , , , , , 
-        laas_i := vl_liste_laas_tjek(vl)
-        if (laas_i = 0)
-            {
-                vl_array := vlliste_laast_lav_array(vl) 
-            }
-        Else
-            {
-                vl_array := vlliste_laast_op_lav_array(vl,laas_i)
-            }
-        vl_liste_array.Push(vl_array)
+
+        InputBox vl
+        vlliste_wakeup_vl_til_liste(vl)
         vl_liste_array_til_json_tekst()
-        vlListe_dan_liste("listbox5")
         return
     }
 
@@ -4215,3 +4262,24 @@ FlexFinder_addresse()
     }    
     return 0
     }
+
+    vl_list_laas_vl()
+    {
+        global vl_liste_array
+
+        InputBox, vl, , , , , , , , , , 
+        laas_i := vl_liste_laas_tjek(vl)
+        if (laas_i = 0)
+            {
+                vl_array := vlliste_laast_lav_array(vl) 
+            }
+        Else
+            {
+                vl_array := vlliste_laast_op_lav_array(vl,laas_i)
+            }
+        vl_liste_array.Push(vl_array)
+        vl_liste_array_til_json_tekst()
+        vlListe_dan_liste("listbox5")
+        return
+    }
+    
