@@ -572,6 +572,8 @@ P6_aktiver()
 }
 P6_alt_menu(byref tast1 := "", byref tast2 := "")
 {
+    SendInput, {esc}
+    sleep 20
     Sendinput %tast1%
     sleep 40
     SendInput, %tast2%
