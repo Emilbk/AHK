@@ -1763,9 +1763,9 @@ p6_replaner_hent_vl()
         sleep 50
         vl_laas := vl_liste_laas_vl(vl)
         if (vl_laas = 0)
-            P6_notat("låst /" initialer " ")
+            P6_notat("låst" initialer " ")
         if (vl_laas != 0 )
-            P6_notat("låst op /" initialer " ")
+            P6_notat("låst op" initialer " ")
         return
     }
     ; del af p6_laas_vl, låser åbent VL-vindue
