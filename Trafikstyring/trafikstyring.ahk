@@ -707,12 +707,12 @@ P6_udfyld_s(ss:="")
 P6_hent_vl()
 {
     global s
-    clipboard := ""
     P6_planvindue()
     SendInput, !l
-    sleep 150 ; ikke P6-afhængig
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
     SendInput, +{F10}c
-    ClipWait, 2, 0
+    ClipWait, 1, 0
     vl := Clipboard
     return vl
 }
