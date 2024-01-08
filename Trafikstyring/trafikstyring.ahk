@@ -1698,7 +1698,98 @@ p6_replaner_hent_vl()
     return vl
 
 }
+    ; del af vl_liste_laas_vl
+    vl_liste_laas_tjek(vl)
+    {
+        global vl_liste_array
 
+        for i, e in vl_liste_array
+        {
+            if (e[8] = "listbox5" and e.1 = vl) and if (!InStr(e.3, "låst"))
+            {
+                return i
+            }
+        }
+        return 0
+    }
+    ; Tjekker for VL i oversigt og sætter låst/låst op status
+    vl_liste_laas_vl(vl)
+    {
+        global vl_liste_array
+
+        laas_i := vl_liste_laas_tjek(vl)
+        if (laas_i = 0)
+        {
+            vl_array := vlliste_laast_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+        }
+        Else
+        {
+            vl_array := vlliste_laast_op_lav_array(vl,laas_i)
+        }
+        ; vlListe_dan_liste("listbox5")
+        return laas_i
+    }
+    ; sætter lås på VL, sender til oversigt, sætter notat på
+    p6_laas_vl()
+    {
+        vl := p6_vl_vindue()
+        sleep 90
+        vl_liste_laas_tjek(vl)
+        p6_vl_vindue_edit()
+        sleep 90
+        p6_vl_vindue_laas(vl)
+        return 
+    }
+    ; Sender kun lås til oversigt
+    p6_marker_vl_laas_minimal()
+    {
+        vl := P6_hent_vl()
+        sleep 50
+        vl_laas := vl_liste_laas_vl(vl)
+        return
+    }
+    ; sender lås til oversigt og sætter notat
+    p6_marker_vl_laas()
+    {
+        initialer := sys_initialer()
+        vl := P6_hent_vl()
+        sleep 50
+        vl_laas := vl_liste_laas_vl(vl)
+        if (vl_laas = 0)
+            P6_notat("låst /" initialer " ")
+        if (vl_laas != 0 )
+            P6_notat("låst op /" initialer " ")
+        return
+    }
+    ; del af p6_laas_vl, låser åbent VL-vindue
+    p6_vl_vindue_laas(vl)
+    {
+        
+        SendInput, {enter 2}{space}!v^{Up}
+        sleep 50
+        vl_laas := vl_liste_laas_vl(vl) 
+        initialer := sys_initialer()
+        if (vl_laas = 0)
+            SendInput, låst %initialer% {Space}  
+        if (vl_laas != 0)
+            SendInput, låst op %initialer% {space}
+        sleep 50
+        SendInput, {enter}
+        P6_planvindue()
+        SendInput, {f5}!o
+    }
+    ; konverter vl_liste_array til JSON, dump i tekst
+    vl_liste_array_til_json_tekst()
+    {
+        global vl_liste_array
+        global vl_liste_tekst
+
+        vl_liste_array_json := json.Dump(vl_liste_array)
+        FileDelete, %vl_liste_tekst%
+        FileAppend, %vl_liste_array_json%, %vl_liste_tekst%
+        return
+    }
 ; p6_liste_vl(vl_arr)
 ; {
 ;     gemtklip := ClipboardAll
@@ -1716,6 +1807,7 @@ p6_replaner_hent_vl()
 ;     return vl_repl
 
 ; }
+;; RYD OP
 p6_vl_til_liste(vl_arr)
 {
     gemtklip := ClipboardAll
@@ -1782,14 +1874,14 @@ vlListe_vis_gui()
     Return
 
 }
-vlliste_replaner_lav_array()
+vlliste_replaner_lav_array(vl)
 {
     vl_liste := []
 
     FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
-    vl_liste[1] := p6_replaner_hent_vl()
+    vl_liste[1] := vl
     vl_liste[2] := ", repl. kl "
     vl_liste[3] := vl_replaner_tidspunkt_vis
     vl_liste[4] := vl_replaner_tidspunkt_intern
@@ -1818,7 +1910,7 @@ vlliste_wakeup_lav_array(vl := "")
 
     return vl_liste
 }
-vlliste_priv_lav_array(vl := "")
+vlliste_priv_lav_array(vl)
 {
     vl_liste := []
 
@@ -1826,7 +1918,7 @@ vlliste_priv_lav_array(vl := "")
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
-    vl_liste[2] := ", priv. OBS sendt kl. "
+    vl_liste[2] := ", priv. OBS sendt, "
     vl_liste[3] := vl_replaner_tidspunkt_vis
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
@@ -1844,7 +1936,7 @@ vlliste_listet_lav_array(vl := "")
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
-    vl_liste[2] := ", listet kl. "
+    vl_liste[2] := ", listet, "
     vl_liste[3] := vl_replaner_tidspunkt_vis
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
@@ -1877,36 +1969,28 @@ vlliste_laast_op_lav_array(vl, laas_i)
     global vl_liste_array
 
     FormatTime, laas_op_tid, YYYYMMDDHH24MISS, HH:mm
-    MsgBox, , , %vl%
-    MsgBox, , , %laas_i%
     vl_liste_array[laas_i][3] := vl_liste_array[laas_i][3] . ", låst op " laas_op_tid
-    MsgBox, , , % vl_liste_array[laas_i][3]
     return vl_liste
 }
 
+; vlliste_repl_vl_til_liste()
+; {
+;     global vl_liste_array
 
+;     if (vl[1] = 0)
+;         return
+;     vl_liste_array.Push(vl)
 
-
-vlliste_repl_vl_til_liste()
+;     return
+; }
+vlliste_vl_array_til_liste(vl_array)
 {
     global vl_liste_array
 
-    vl := vlliste_replaner_lav_array()
-    if (vl[1] = 0)
-        return
-    vl_liste_array.Push(vl)
-
-    return
-}
-vlliste_wakeup_vl_til_liste(vl)
-{
-    global vl_liste_array
-
-    vl_array := vlliste_wakeup_lav_array(vl) 
     if (vl_array[1] = 0)
         return
     vl_liste_array.Push(vl_array)
-
+    vl_liste_array_til_json_tekst()
     return
 }
 ;; Telenor
@@ -2981,7 +3065,8 @@ l_p6_replaner_liste_vl:
     vl := p6_replaner_hent_vl()
     if (vl = 0)
         return
-    p6_vl_til_liste(vl)
+    vl_array := vlliste_replaner_lav_array(vl)
+    vlliste_vl_array_til_liste(vl_array)
 return
 
 ; Gem aktiv vl på liste, kolonne 50
@@ -2990,8 +3075,8 @@ l_p6_liste_vl:
     sys_genvej_keywait(genvej_mod)
     FormatTime, vl_tid , YYYYMMDDHH24MISS, HH:mm
     vl := P6_hent_vl()
-    vlliste_listet_lav_array(vl)
-    p6_vl_til_liste(vl_liste)
+    vl_array := vlliste_listet_lav_array(vl)
+    vlliste_vl_array_til_liste(vl_array)
 return
 
 ; vist VL-liste, kolonne 51
