@@ -373,16 +373,14 @@ vl_liste_opslag:
         {
             valg := vl_liste_opslag_array[i]
         }
-        if (valg = "")
-            {
-                MsgBox, , Vælg en markering, Der skal laves en markering
-                gui vl_liste: show
-                return
-            }
-        vl_liste_valg_vl := StrSplit(valg, ",")
-        MsgBox, , , % vl_liste_valg_vl.1
-            
-    ; p6_vaelg_vl(vl_liste_valg_vl[1])
+    if (valg = "")
+    {
+        MsgBox, , Vælg en markering, Der skal laves en markering
+        gui vl_liste: show
+        return
+    }
+    vl_liste_valg_vl := StrSplit(valg, ",")
+    p6_vaelg_vl(vl_liste_valg_vl[1])
 Return
 vl_liste_opslag_slet:
     Gui vl_liste: Submit
