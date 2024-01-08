@@ -1435,39 +1435,39 @@ P6_udregn_minut()
             return "fejl"
         if (tidb = "")
             tidb := "0"
-            if (tidb + tida < 0)
+        if (tidb + tida < 0)
+        {
+            MsgBox, , Lad vær', ,
+            return
+        }
+        if (StrLen(tida) <= "3")
+        {
+            tid_nul := A_YYYY A_MM A_DD "00" "00"
+            EnvAdd, tid_nul, tida , minutes
+            EnvAdd, tid_nul, tidb, minutes
+            FormatTime, tidC, %tid_nul%, HHmm
+            FormatTime, tid_time, %tid_nul%, H
+            FormatTime, tid_min, %tid_nul%, m
+            FormatTime, result_mid, %tid_nul%, HHmm
+            if (tid_time = "0" and tid_min = "1")
             {
-                MsgBox, , Lad vær', ,
-                return
+                resultat.1 := tid_min " minut."
+                resultat.2 := result_mid
+                return resultat
             }
-            if (StrLen(tida) <= "3")
+            if (tid_time = "0" and tid_min >= "1")
             {
-                tid_nul := A_YYYY A_MM A_DD "00" "00"
-                EnvAdd, tid_nul, tida , minutes
-                EnvAdd, tid_nul, tidb, minutes
-                FormatTime, tidC, %tid_nul%, HHmm
-                FormatTime, tid_time, %tid_nul%, H
-                FormatTime, tid_min, %tid_nul%, m
-                FormatTime, result_mid, %tid_nul%, HHmm
-                if (tid_time = "0" and tid_min = "1")
-                {
-                    resultat.1 := tid_min " minut."
-                    resultat.2 := result_mid
-                    return resultat
-                }
-                if (tid_time = "0" and tid_min >= "1")
-                {
-                    resultat.1 := tid_min " minutter."
-                    resultat.2 := result_mid
-                    return resultat
-                }
-                if (tid_time = "1" and tid_min = "0")
-                {
-                    resultat.1 := tid_time " time."
-                    resultat.2 := result_mid
-                    return resultat
-                }
-                if (tid_time > "1" and tid_min = "0")
+                resultat.1 := tid_min " minutter."
+                resultat.2 := result_mid
+                return resultat
+            }
+            if (tid_time = "1" and tid_min = "0")
+            {
+                resultat.1 := tid_time " time."
+                resultat.2 := result_mid
+                return resultat
+            }
+            if (tid_time > "1" and tid_min = "0")
             {
                 resultat.1 := tid_time " timer."
                 resultat.2 := result_mid
