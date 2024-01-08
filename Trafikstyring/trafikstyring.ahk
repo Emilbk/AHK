@@ -51,14 +51,14 @@ FileGetTime, vl_liste_tekst_dato, %vl_liste_tekst%, M
 FormatTime, vl_liste_tekst_dato, vl_liste_tekst_dato, ddM
 FormatTime, tid_idag, YYYYMMDDHH24MISS, ddM
 if (tid_idag = vl_liste_tekst_dato)
-    {
-        MsgBox, , , %vl_liste_tekst_dato% er i dag, 1
-    }
+{
+    MsgBox, , , %vl_liste_tekst_dato% er i dag, 1
+}
 else
-    {
-        MsgBox, , , %vl_liste_tekst_dato% er ikke i dag, 
+{
+    MsgBox, , , %vl_liste_tekst_dato% er ikke i dag,
 
-    }
+}
 FileAppend, , %vl_liste_tekst%
 FileRead, vl_liste_array_json, %vl_liste_tekst%
 if (vl_liste_array_json = "")
@@ -264,10 +264,10 @@ gui vl_liste: +labelvl_liste
 gui vl_liste: font, s9, segoe ui
 gui vl_liste: add, text, x8 y0 w120 h23 +0x200, &Replaneret
 gui vl_liste: add, listbox, x8 y24 w170 h349 vvalg1 gvlryd1, Replaneret
-gui vl_liste: add, listbox, x184 y24 w170 h349 vvalg2 gvlryd2, 
-gui vl_liste: add, listbox, x360 y24 w170 h349 vvalg3 gvlryd3, 
-gui vl_liste: add, listbox, x536 y24 w170 h349 vvalg4 gvlryd4, 
-gui vl_liste: add, listbox, x712 y24 w170 h349 vvalg5 gvlryd5, 
+gui vl_liste: add, listbox, x184 y24 w170 h349 vvalg2 gvlryd2,
+gui vl_liste: add, listbox, x360 y24 w170 h349 vvalg3 gvlryd3,
+gui vl_liste: add, listbox, x536 y24 w170 h349 vvalg4 gvlryd4,
+gui vl_liste: add, listbox, x712 y24 w170 h349 vvalg5 gvlryd5,
 gui vl_liste: add, text, x184 y0 w120 h23 +0x200, &Wakeup
 gui vl_liste: add, text, x360 y0 w120 h23 +0x200, &Privatrejse
 gui vl_liste: add, text, x536 y0 w120 h23 +0x200, L&istet
