@@ -299,6 +299,8 @@ gui vl_liste: add, button, x304 y536 w131 h23 gvl_liste_slet_alt, slet alt
     i::
         {
             GuiControl, vl_liste: Focus, listbox4
+            GuiControl, vl_liste: Choose, Listbox4, 1
+            Gosub, vlryd4
             return
         }
 
@@ -313,12 +315,16 @@ gui vl_liste: add, button, x304 y536 w131 h23 gvl_liste_slet_alt, slet alt
     r::
         {
             GuiControl, vl_liste: Focus, listbox1
+            GuiControl, vl_liste: Choose, Listbox1, 1
+            Gosub, vlryd1
             return
         }
 
     p::
         {
             GuiControl, vl_liste: Focus, listbox3
+            GuiControl, vl_liste: Choose, Listbox3, 1
+            Gosub, vlryd3
             return
         }
 
