@@ -724,7 +724,7 @@ p6_vl_vindue()
     vl := P6_hent_vl()
     sleep 30
     SendInput, ^{F12}
-    sleep 150
+    sleep 250
     clipboard :=
     SendInput, ^c
     clipwait 0.5
@@ -739,7 +739,7 @@ p6_vl_vindue()
     {
         Send, +{F10}c
         vl_opslag := clipboard
-        sleep 100
+        sleep 50
         tid_nu := A_TickCount - tid_start
         if (tid_nu > 12000)
         {
