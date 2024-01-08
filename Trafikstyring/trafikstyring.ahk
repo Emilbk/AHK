@@ -284,43 +284,43 @@ gui vl_liste: add, button, x304 y504 w131 h23 gvl_liste_slet, &slet
 gui vl_liste: add, button, x304 y536 w131 h23 gvl_liste_slet_alt, slet alt
 
 #IfWinActive, VL-liste
-Enter::
-NumpadEnter::
-Gosub, vl_liste_opslag
-return
-w::
-{
-    GuiControl, vl_liste: Focus, listbox2
-    GuiControl, vl_liste: Choose, Listbox2, 1
-    Gosub, vlryd2
+    Enter::
+    NumpadEnter::
+        Gosub, vl_liste_opslag
     return
-}
+    w::
+        {
+            GuiControl, vl_liste: Focus, listbox2
+            GuiControl, vl_liste: Choose, Listbox2, 1
+            Gosub, vlryd2
+            return
+        }
 
-i::
-{
-    GuiControl, vl_liste: Focus, listbox4
-    return
-}
+    i::
+        {
+            GuiControl, vl_liste: Focus, listbox4
+            return
+        }
 
-å::
-{
-    GuiControl, vl_liste: Focus, listbox5
-    GuiControl, vl_liste: Choose, Listbox5, 1
-    Gosub, vlryd5
-    return
-}
+    å::
+        {
+            GuiControl, vl_liste: Focus, listbox5
+            GuiControl, vl_liste: Choose, Listbox5, 1
+            Gosub, vlryd5
+            return
+        }
 
-r::
-{
-    GuiControl, vl_liste: Focus, listbox1
-    return
-}
+    r::
+        {
+            GuiControl, vl_liste: Focus, listbox1
+            return
+        }
 
-p::
-{
-    GuiControl, vl_liste: Focus, listbox3
-    return
-}
+    p::
+        {
+            GuiControl, vl_liste: Focus, listbox3
+            return
+        }
 
 #IfWinActive
 ;; gui-label vl-list
