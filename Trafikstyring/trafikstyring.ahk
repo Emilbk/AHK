@@ -724,7 +724,7 @@ p6_vl_vindue()
     vl := P6_hent_vl()
     sleep 30
     SendInput, ^{F12}
-    sleep 250
+    sleep 150
     clipboard :=
     SendInput, ^c
     clipwait 0.5
