@@ -3015,12 +3015,13 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
     bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 2)
     ; ctrl_s := chr(19)
-
+    
     sys_genvej_beskrivelse(20)
-
+    
     ; KeyWait Alt
     ; keywait Ctrl
     Input valgt, L1 T5 C, {esc},
+    vl := P6_hent_vl()
     if (valgt = "t")
     {
         P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
@@ -3127,14 +3128,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 SendInput, ^s
                 sleep 1000
                 SendInput, {enter}
-                P6_planvindue()
-                vl := []
-                vl_ind := P6_hent_vl()
-                vl.Push(vl_ind)
                 FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-                vl.1 := vl.1 . ", Kvitt. sendt " tid
-                p6_vl_til_liste(vl)
-
                 if (k_tid != "Oprindelig kvittering")
                 {
                     P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. tid " k_tid initialer " ")
@@ -3162,17 +3156,13 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
         IfMsgBox, Yes
         {
-            vl := []
             sleep 200
             SendInput, ^s
             sleep 1000
             SendInput, {enter}
-            P6_planvindue()
-            vl_ind := P6_hent_vl()
-            vl.Push(vl_ind)
             FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl.1 := vl.1 . ", Priv. OBS " tid
-            p6_vl_til_liste(vl)
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
             P6_notat("Priv. ikke kvitteret, tekst sendt til chf" initialer " ")
             gui, cancel
             sys_afslut_genvej()
@@ -3221,19 +3211,13 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
         IfMsgBox, Yes
         {
-            vl := []
             sleep 200
-            ; SendInput, ^s
+            SendInput, ^s
             sleep 1000
             SendInput, {enter}
-            P6_planvindue()
-            sleep 50
-            vl_ind := P6_hent_vl()
-            vl.Push(vl_ind)
-            sleep 40
             FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl.1 := vl.1 ", Wakeup sendt " tid
-            vlliste_wakeup_lav_array(vl)
+            vl_array := vlliste_wakeup_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
             P6_notat("WakeUp sendt" initialer " ")
             gui, cancel
             sys_afslut_genvej()
@@ -3251,7 +3235,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     if (valgt == "W")
     {
 
-        P6_tekstTilChf("Jeg kan ikke ringe dig op, der er ikke trykket for første køreordre. Ring til driften, hvis du er ude at køre, ellers bliver vognløbet lukket.")
+        P6_tekstTilChf("Jeg kan ikke ringe dig op, der er ikke trykket for første køreordre. Vognløbet er nu låst, ring til driften, hvis du er ude at køre.")
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør? Husk at låse VL,
         IfMsgBox, Yes
