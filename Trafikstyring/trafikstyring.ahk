@@ -1882,7 +1882,7 @@ vlliste_replaner_lav_array(vl)
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
-    vl_liste[2] := ", repl. kl "
+    vl_liste[2] := ", repl. "
     vl_liste[3] := vl_replaner_tidspunkt_vis
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
@@ -1900,7 +1900,7 @@ vlliste_wakeup_lav_array(vl := "")
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
-    vl_liste[2] := ", WakeUp sendt, "
+    vl_liste[2] := ", WakeUp sendt "
     vl_liste[3] := vl_replaner_tidspunkt_vis
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
@@ -1918,7 +1918,7 @@ vlliste_priv_lav_array(vl)
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
-    vl_liste[2] := ", priv. OBS sendt, "
+    vl_liste[2] := ", priv. OBS sendt "
     vl_liste[3] := vl_replaner_tidspunkt_vis
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
@@ -1936,7 +1936,7 @@ vlliste_listet_lav_array(vl := "")
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
-    vl_liste[2] := ", listet, "
+    vl_liste[2] := ", listet "
     vl_liste[3] := vl_replaner_tidspunkt_vis
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
