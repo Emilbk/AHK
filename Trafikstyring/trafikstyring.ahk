@@ -1674,7 +1674,6 @@ p6_hent_kunde_tlf(ByRef telefon:="")
 
 p6_replaner_hent_vl()
 {
-    vl := []
     gemtklip := ClipboardAll
     ; global vl_repl
     ; global vl_repl_liste
@@ -1690,12 +1689,11 @@ p6_replaner_hent_vl()
     repl_besked := StrSplit(clipboard, " ")
     SendInput, {enter}
     if (repl_besked.MaxIndex() = 11)
-        vl.1 := repl_besked.6
+        vl := repl_besked.6
     ; vl_repl.Push(repl_besked.6)
     if (repl_besked.MaxIndex() = 12)
-        vl.1 := repl_besked.7
+        vl := repl_besked.7
     ; vl_repl.Push(repl_besked.7)/mtebk1200
-    vl.1 := vl.1 . ", repl. " tid
     clipboard := gemtklip
     return vl
 
