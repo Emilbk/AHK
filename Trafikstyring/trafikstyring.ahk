@@ -4298,55 +4298,8 @@ FlexFinder_addresse()
     }
 ^z::
     {
-
-        InputBox vl
-        vlliste_wakeup_vl_til_liste(vl)
-        vl_liste_array_til_json_tekst()
+        KeyWait, Ctrl
+        vl := P6_hent_vl()
+        MsgBox, , , % vl
         return
     }
-
-    vl_liste_array_til_json_tekst()
-    {
-        global vl_liste_array
-        global vl_liste_tekst
-
-        vl_liste_array_json := json.Dump(vl_liste_array)
-        FileDelete, %vl_liste_tekst%
-        FileAppend, %vl_liste_array_json%, %vl_liste_tekst% 
-        return
-    }
-
-    vl_liste_laas_tjek(vl)
-    {
-        global vl_liste_array
-
-        for i, e in vl_liste_array
-            {
-            if (e[8] = "listbox5" and e.1 = vl) and if (!InStr(e.3, "låst"))
-                {
-                return i
-                }
-    }    
-    return 0
-    }
-
-    vl_list_laas_vl()
-    {
-        global vl_liste_array
-
-        InputBox, vl, , , , , , , , , , 
-        laas_i := vl_liste_laas_tjek(vl)
-        if (laas_i = 0)
-            {
-                vl_array := vlliste_laast_lav_array(vl) 
-            }
-        Else
-            {
-                vl_array := vlliste_laast_op_lav_array(vl,laas_i)
-            }
-        vl_liste_array.Push(vl_array)
-        vl_liste_array_til_json_tekst()
-        vlListe_dan_liste("listbox5")
-        return
-    }
-    
