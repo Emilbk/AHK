@@ -4299,7 +4299,6 @@ FlexFinder_addresse()
 ^z::
     {
         KeyWait, Ctrl
-        vl := P6_hent_vl()
-        MsgBox, , , % vl
+        p6_laas_vl()
         return
     }
