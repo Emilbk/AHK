@@ -105,6 +105,7 @@ Hotkey, % bruger_genvej.50, l_p6_liste_vl ; F1
 Hotkey, % bruger_genvej.51, l_p6_vis_liste_vl ; F1
 Hotkey, % bruger_genvej.55, l_p6_initialer_slet_eget ; +^n
 Hotkey, % bruger_genvej.56, l_p6_tag_alarm ; F1
+Hotkey, % bruger_genvej.58, l_p6_cpr_til_bestillingsvindue ; ^F1
 ; Hotkey, % bruger_genvej.45, l_sys_inputbox_til_fra ; ^½
 Hotkey, IfWinActive
 
@@ -610,6 +611,13 @@ P6_rejsesogvindue(byref telefon := "")
     Return
 }
 
+p6_bestillingsvindue()
+{
+    P6_aktiver()
+    P6_alt_menu("{alt}", "rb")
+    return
+}
+
 ;  ***
 ; Vis kørselsaftale for aktivt planbillede
 P6_vis_k()
@@ -954,6 +962,18 @@ P6_rejsesog_tlf(ByRef telefon:=" ")
     SendInput, ^r
 
     Return
+}
+
+p6_cpr_til_bestillingsvindue()
+{
+    clipboard :=
+    SendInput, ^a^c
+    ClipWait, 1
+    cpr := clipboard
+    p6_bestillingsvindue()
+    sleep 100
+    SendInput, ^t^v{enter}
+    return
 }
 ; ***
 ;
