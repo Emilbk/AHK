@@ -2034,6 +2034,7 @@ Trio_opkald(ByRef telefon)
         ControlClick, x365 y18, Trio Agent, , ,, ,, ; Skrivebordsværkstøjsline
         sleep 100
     }
+    SendInput, {CtrlUp}
     sleep 200
     controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
     sleep 100
