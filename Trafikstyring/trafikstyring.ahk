@@ -911,6 +911,8 @@ p6_notat_igen()
     ClipWait, 2
     ny_tekst := clipboard
     sleep 40
+    SendInput, !a
+    sleep 40
     p6_notat(ny_tekst, 1)
     Return
 }
@@ -3039,6 +3041,14 @@ l_p6_udregn_minut:
     sleep 100
     Gui Show, w260 h125, Resultat
 Return
+l_p6_cpr_til_bestillingsvindue:
+{
+    sys_genvej_beskrivelse(58)
+    genvej_mod := sys_genvej_til_ahk_tast(58)
+    sys_genvej_keywait(genvej_mod)
+    p6_cpr_til_bestillingsvindue()
+    return
+}
 
 ok:
     {
