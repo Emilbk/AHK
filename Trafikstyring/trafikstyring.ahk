@@ -282,7 +282,7 @@ gui vl_liste: add, button, x304 y408 w131 h23 gvl_liste_vis_note, vis &note
 gui vl_liste: add, button, x304 y440 w131 h23 gvl_liste_opslag, &opslag
 gui vl_liste: add, button, x304 y472 w131 h23 gvl_liste_opslag_slet, opslag og s&let
 gui vl_liste: add, button, x304 y504 w131 h23 gvl_liste_slet, &slet
-gui vl_liste: add, button, x304 y536 w131 h23 gvl_liste_slet_alt, slet alt
+gui vl_liste: add, button, x304 y536 w131 h23 gvl_liste_slet_alt_alle, slet alt
 
 #IfWinActive, VL-liste
     Enter::
@@ -421,6 +421,12 @@ vl_liste_slet:
         }
 Return
 vl_liste_slet_alt:
+Return
+vl_liste_slet_alt_alle:
+gui vl_liste: hide
+FileDelete, %vl_liste_tekst%
+FileAppend, , %vl_liste_tekst%
+vl_liste_array := []
 Return
 ;; end autoexec
 return
