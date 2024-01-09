@@ -4336,6 +4336,5 @@ FlexFinder_addresse()
 ^z::
     {
         KeyWait, Ctrl
-        p6_laas_vl()
         return
     }
