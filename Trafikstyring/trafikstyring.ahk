@@ -1971,6 +1971,21 @@ vlListe_vis_gui()
     Return
 
 }
+vl_liste_opdater_gui()
+{
+    listbox1 := vlListe_dan_liste("listbox1")
+    listbox2 := vlListe_dan_liste("listbox2")
+    listbox3 := vlListe_dan_liste("listbox3")
+    listbox4 := vlListe_dan_liste("listbox4")
+    listbox5 := vlListe_dan_liste("listbox5")
+    GuiControl, vl_liste: , ListBox1, %listbox1%
+    GuiControl, vl_liste: , ListBox2, %listbox2%
+    GuiControl, vl_liste: , ListBox3, %listbox3%
+    GuiControl, vl_liste: , ListBox4, %listbox4%
+    GuiControl, vl_liste: , ListBox5, %listbox5%
+    Return
+
+}
 vlliste_replaner_lav_array(vl)
 {
     vl_liste := []
