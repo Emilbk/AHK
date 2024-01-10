@@ -104,6 +104,7 @@ Hotkey, % bruger_genvej.48, l_p6_rejsesog ; F1
 Hotkey, % bruger_genvej.50, l_p6_liste_vl ; F1
 Hotkey, % bruger_genvej.51, l_p6_vis_liste_vl ; F1
 Hotkey, % bruger_genvej.55, l_p6_initialer_slet_eget ; +^n
+Hotkey, % bruger_genvej.59, l_p6_initialer_skift_eget ; +^n
 Hotkey, % bruger_genvej.56, l_p6_tag_alarm ; F1
 Hotkey, % bruger_genvej.58, l_p6_cpr_til_bestillingsvindue ; ^F1
 ; Hotkey, % bruger_genvej.45, l_sys_inputbox_til_fra ; ^½
@@ -1184,9 +1185,8 @@ P6_initialer_slet_eget()
     sleep s * 1400
     clipboard :=
     SendInput, ^a^c
-    ClipWait, 1, 0
-    notering := Clipboard
     clipwait 3, 0
+    notering := Clipboard
     notering_split := StrSplit(notering, initialer_udentid)
     if (InStr(notering_split.1, "/"))
     {
