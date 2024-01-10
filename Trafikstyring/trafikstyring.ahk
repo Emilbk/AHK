@@ -630,7 +630,6 @@ p6_bestillingsvindue()
 P6_vis_k()
 {
     global s
-    P6_planvindue()
     P6_alt_menu("{alt},", "tk")
     sleep s * 40
     SendInput !{F5}
