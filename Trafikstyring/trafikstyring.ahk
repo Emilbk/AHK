@@ -1233,6 +1233,50 @@ P6_initialer_slet_eget()
     clipboard := notering
 
 }
+P6_initialer_skift_eget()
+{
+    global s
+    initialer := sys_initialer()
+    initialer_udentid := "/mt" A_userName
+
+    Input, oprindelig_tekst, , {escape} {enter},
+    Input, ny_tekst, , {escape} {enter},
+    SendInput, {F5} ; for at undgå timeout. Giver det problemer med langsom opdatering?
+    sleep s * 40
+    sendinput ^n
+    sleep s * 1400
+    clipboard :=
+    SendInput, ^a^c
+    ClipWait, 1, 0
+    notering := Clipboard
+    clipwait 3, 0
+    notering_split := StrSplit(notering, initialer_udentid)
+    notering_split.1 := StrReplace(notering_split.1, oprindelig_tekst , ny_tekst )
+    if (InStr(notering_split.1, "/"))
+    {
+        SendInput, !o
+        return
+    }
+    for i, e in notering_split
+    {
+        if (i > 1)
+        {
+            notering_split[i] := initialer_udentid . notering_split[i]
+        }
+    }
+    for i, e in notering_split
+    {
+        notering_endelig := notering_endelig . notering_split[i]
+    }
+    clipboard := % notering_endelig
+    SendInput, ^v
+    sleep 50
+    SendInput, !o
+    sleep 200
+    clipboard := notering
+
+}
+
 
 ; ** kan gemtklip-funktion skrives bedre?
 ;Indsæt initialer med efterf. kommentar, behold tidligere klip
@@ -2732,10 +2776,16 @@ l_p6_initialer: ;; Initialer til/fra
     P6_initialer()
     sys_afslut_genvej()
 Return
-l_p6_initialer_slet_eget: ;; Initialer til/fra
+l_p6_initialer_slet_eget: 
     genvej_mod := sys_genvej_til_ahk_tast(55)
     sys_genvej_keywait(genvej_mod)
     P6_initialer_slet_eget()
+    sys_afslut_genvej()
+Return
+l_p6_initialer_skift_eget: 
+    genvej_mod := sys_genvej_til_ahk_tast(59)
+    sys_genvej_keywait(genvej_mod)
+    P6_initialer_skift_eget()
     sys_afslut_genvej()
 Return
 ; skriv initialer, fortsæt notat. Kolonne 6
