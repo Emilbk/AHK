@@ -392,20 +392,38 @@ vl_liste_opslag:
     p6_vaelg_vl(vl_liste_valg_vl[1])
 Return
 vl_liste_opslag_slet:
+    vl_liste_opslag_array := []
+    valg :=
     Gui vl_liste: Submit
-    ; Gui vl_liste: Hide
-
-    vl_liste_valg_vl := StrSplit(valg, ",")
-    p6_vaelg_vl(vl_liste_valg_vl[1])
-    for i, e in vl_liste_array
-        for i2, e2 in vl_liste_array[i]
+    vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5)
+    for i,e in vl_liste_opslag_array
+        if (e != "")
         {
-            if (i2 = 1 and e2 = vl_liste_valg_vl[1])
-            {
-                vl_liste_array.RemoveAt(i)
-                break
-            }
+            valg := vl_liste_opslag_array[i]
         }
+    if (valg = "")
+    {
+        MsgBox, , Vælg en markering, Der skal laves en markering
+        gui vl_liste: show
+        return
+    }
+    vl_liste_valg_vl := StrSplit(valg, ",")
+    tid_ind := RegExReplace(vl_liste_valg_vl.2, "\D")
+    tid_korrigeret := SubStr(tid_ind, 1, 2) ":" SubStr(tid_ind, 3 , 2)
+    ; tjek på indkomne listbox(hvordan?), vl og tid - slet i array
+
+    for i,e in vl_liste_array
+        for i2,e2 in e
+        {
+            if (i2 = 1 and e2 = vl_liste_valg_vl.1 and e.3 = tid_korrigeret)
+                {
+                   vl_liste_array.RemoveAt(i)
+                   vl_liste_array_til_json_tekst()
+                   p6_vaelg_vl(vl_liste_valg_vl.1)
+                   return
+                }                
+        }
+
 Return
 vl_liste_slet:
     vl_liste_opslag_array := []
