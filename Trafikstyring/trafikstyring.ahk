@@ -606,7 +606,7 @@ P6_aktiver()
 }
 P6_alt_menu(byref tast1 := "", byref tast2 := "")
 {
-    SendInput, {esc}
+    ; SendInput, {esc}
     sleep 20
     Sendinput %tast1%
     sleep 40
@@ -619,7 +619,7 @@ P6_planvindue()
 {
     global s
     P6_aktiver()
-    P6_alt_menu("{alt}", "tp")
+    P6_alt_menu("{esc}{alt}", "tp")
 }
 
 ; ***
