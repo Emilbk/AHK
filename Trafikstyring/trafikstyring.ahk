@@ -3202,6 +3202,7 @@ l_p6_replaner_opslag_vl:
     vl := p6_replaner_hent_vl()
     if (vl = 0)
         return
+    sleep 200
     p6_vaelg_vl(vl)
 return
 
@@ -3244,7 +3245,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     vl := P6_hent_vl()
     if (vl = "")
        {
-        sleep 100
+        sleep 200
         vl := P6_hent_vl()
        }
     if (valgt = "t")
