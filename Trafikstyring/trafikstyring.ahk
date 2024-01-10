@@ -112,6 +112,7 @@ Hotkey, IfWinActive
 Hotkey, IfWinActive, Planet Version ; specifikt alarmrepl-infobox
 Hotkey, % bruger_genvej.56, l_p6_tag_alarm_vl_box ; F1
 Hotkey, % bruger_genvej.49, l_p6_replaner_liste_vl ; F1
+Hotkey, % bruger_genvej.60, l_p6_replaner_opslag_vl ; F1
 Hotkey, IfWinActive
 
 Hotkey, IfWinActive, Vognløbsnotering ; specifikt alarmrepl-infobox
@@ -3111,6 +3112,16 @@ l_p6_replaner_liste_vl:
     vl_array := vlliste_replaner_lav_array(vl)
     vlliste_vl_array_til_liste(vl_array)
 return
+; Replaner og gå til VL, kolonne 60
+l_p6_replaner_opslag_vl:
+    genvej_mod := sys_genvej_til_ahk_tast(60)
+    sys_genvej_keywait(genvej_mod)
+    vl := p6_replaner_hent_vl()
+    if (vl = 0)
+        return
+    p6_vaelg_vl(vl)
+return
+
 
 ; Gem aktiv vl på liste, kolonne 50
 l_p6_liste_vl:
