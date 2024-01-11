@@ -93,6 +93,7 @@ Hotkey, % bruger_genvej.61, l_p6_vaelg_vl_liste ; ^+Down
 Hotkey, % bruger_genvej.11, l_p6_vl_ring_op ; +F5
 Hotkey, % bruger_genvej.12, l_p6_vm_ring_op ; ^+F5
 Hotkey, % bruger_genvej.13, l_p6_vl_luk ; #F5
+Hotkey, % bruger_genvej.62, l_p6_laas_vl ; #F5
 Hotkey, % bruger_genvej.14, l_p6_alarmer ; F7
 Hotkey, % bruger_genvej.15, l_p6_udraabsalarmer ; +F7
 Hotkey, % bruger_genvej.16, l_p6_ring_til_kunde ; +F8
@@ -3300,7 +3301,13 @@ l_p6_ring_til_kunde:
         return
     }
 return
+l_p6_laas_vl:
+    sys_genvej_beskrivelse(62)
+    genvej_mod := sys_genvej_til_ahk_tast(62)
+    sys_genvej_keywait(genvej_mod)
 
+    p6_marker_vl_laas()
+return
 ; #F5, col 13
 l_p6_vl_luk:
     sys_genvej_beskrivelse(13)
