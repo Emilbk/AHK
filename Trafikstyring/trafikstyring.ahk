@@ -89,6 +89,7 @@ Hotkey, % bruger_genvej.7, l_p6_vis_k_aftale ; F3
 Hotkey, % bruger_genvej.8, l_p6_ret_vl_tlf ; +F3
 Hotkey, % bruger_genvej.9, l_p6_vaelg_vl ; ^F3
 Hotkey, % bruger_genvej.10, l_p6_vaelg_vl ; F4
+Hotkey, % bruger_genvej.61, l_p6_vaelg_vl_liste ; ^+Down
 Hotkey, % bruger_genvej.11, l_p6_vl_ring_op ; +F5
 Hotkey, % bruger_genvej.12, l_p6_vm_ring_op ; ^+F5
 Hotkey, % bruger_genvej.13, l_p6_vl_luk ; #F5
@@ -266,25 +267,26 @@ Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 gui vl_liste: +labelvl_liste
 gui vl_liste: font, s9, segoe ui
 gui vl_liste: add, text, x8 y0 w120 h23 +0x200, &Replaneret
-gui vl_liste: add, listbox, x8 y24 w170 h349 vvalg1 gvlryd1, Replaneret
-gui vl_liste: add, listbox, x184 y24 w170 h349 vvalg2 gvlryd2,
-gui vl_liste: add, listbox, x360 y24 w170 h349 vvalg3 gvlryd3,
-gui vl_liste: add, listbox, x536 y24 w170 h349 vvalg4 gvlryd4,
-gui vl_liste: add, listbox, x712 y24 w170 h349 vvalg5 gvlryd5,
-gui vl_liste: add, text, x184 y0 w120 h23 +0x200, &Wakeup
-gui vl_liste: add, text, x360 y0 w120 h23 +0x200, &Privatrejse
-gui vl_liste: add, text, x536 y0 w120 h23 +0x200, L&istet
-gui vl_liste: add, text, x712 y0 w120 h23 +0x200, L&åst
-gui vl_liste: add, button, x40 y375 w80 h23, ryd
-gui vl_liste: add, button, x224 y375 w80 h23, ryd
-gui vl_liste: add, button, x400 y375 w80 h23, ryd
-gui vl_liste: add, button, x584 y375 w80 h23, ryd
-gui vl_liste: add, button, x760 y375 w80 h23, ryd
-gui vl_liste: add, button, x304 y408 w131 h23 gvl_liste_vis_note, vis &note
-gui vl_liste: add, button, x304 y440 w131 h23 gvl_liste_opslag, &opslag
-gui vl_liste: add, button, x304 y472 w131 h23 gvl_liste_opslag_slet, opslag og s&let
-gui vl_liste: add, button, x304 y504 w131 h23 gvl_liste_slet, &slet
-gui vl_liste: add, button, x304 y536 w131 h23 gvl_liste_slet_alt_alle, slet alt
+gui vl_liste: add, listbox, x8 y24 w170 h449 vvalg1 gvlryd1 multi, Replaneret
+gui vl_liste: add, listbox, x184 y24 w170 h449 vvalg2 gvlryd2 multi,
+gui vl_liste: add, listbox, x360 y24 w170 h449 vvalg3 gvlryd3 multi,
+gui vl_liste: add, listbox, x536 y24 w170 h449 vvalg4 gvlryd4 multi,
+gui vl_liste: add, listbox, x712 y24 w170 h449 vvalg5 gvlryd5 multi,
+gui vl_liste: add, text, x184 y0 w120 h23 +0x200, Wakeup
+gui vl_liste: add, text, x360 y0 w120 h23 +0x200, Privatrejse
+gui vl_liste: add, text, x536 y0 w120 h23 +0x200, Listet
+gui vl_liste: add, text, x712 y0 w120 h23 +0x200, Låst
+gui vl_liste: add, button, x40 y475 w80 h23 gvl_liste_ryd1 vbox1, ryd
+gui vl_liste: add, button, x224 y475 w80 h23 gvl_liste_ryd2 vbox2, ryd
+gui vl_liste: add, button, x400 y475 w80 h23 gvl_liste_ryd3 vbox3, ryd
+gui vl_liste: add, button, x584 y475 w80 h23 gvl_liste_ryd4 vbox4, ryd
+gui vl_liste: add, button, x760 y475 w80 h23 gvl_liste_ryd5 vbox5, ryd
+gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_vis_note, vis &note
+gui vl_liste: add, button, x180 y536 w131 h23 gvl_liste_opslag, &opslag
+gui vl_liste: add, button, x320 y536 w131 h23 gvl_liste_opslag_slet, opslag og s&let
+gui vl_liste: add, button, x460 y536 w131 h23 gvl_liste_slet, &slet
+gui vl_liste: add, button, x600 y536 w131 h23 gvl_liste_slet_alt_alle, slet &alt
+gui vl_liste: add, button, x740 y536 w131 h23 gvl_liste_liste, l&iste
 
 #IfWinActive, VL-liste
     Enter::
@@ -369,13 +371,112 @@ vlryd5:
     GuiControl, vl_liste: Choose, Listbox1 , 0
 return
 
+vl_liste_ryd1:
+    vl_liste_midl := []
+    for i,e in vl_liste_array
+    {    for i2,e2 in e
+            if (i2 = 8 and e2 != "listbox1")
+                {
+                ;    vl_liste_array.RemoveAt(i)
+                vl_liste_midl[i] := vl_liste_array[i]
+                }                
+            }
+        vl_liste_array := vl_liste_midl
+        vl_liste_array_til_json_tekst()
+        vl_liste_opdater_gui()
+return
+vl_liste_ryd2:
+    vl_liste_midl := []
+    for i,e in vl_liste_array
+    {    for i2,e2 in e
+            if (i2 = 8 and e2 != "listbox2")
+                {
+                ;    vl_liste_array.RemoveAt(i)
+                vl_liste_midl[i] := vl_liste_array[i]
+                }                
+            }
+        vl_liste_array := vl_liste_midl
+        vl_liste_array_til_json_tekst()
+        vl_liste_opdater_gui()
+return
+vl_liste_ryd3:
+    vl_liste_midl := []
+    for i,e in vl_liste_array
+    {    for i2,e2 in e
+            if (i2 = 8 and e2 != "listbox3")
+                {
+                ;    vl_liste_array.RemoveAt(i)
+                vl_liste_midl[i] := vl_liste_array[i]
+                }                
+            }
+        vl_liste_array := vl_liste_midl
+        vl_liste_array_til_json_tekst()
+        vl_liste_opdater_gui()
+return
+vl_liste_ryd4:
+    vl_liste_midl := []
+    for i,e in vl_liste_array
+    {    for i2,e2 in e
+            if (i2 = 8 and e2 != "listbox4")
+                {
+                ;    vl_liste_array.RemoveAt(i)
+                vl_liste_midl[i] := vl_liste_array[i]
+                }                
+            }
+        vl_liste_array := vl_liste_midl
+        vl_liste_array_til_json_tekst()
+        vl_liste_opdater_gui()
+return
+vl_liste_ryd5:
+    vl_liste_midl := []
+    for i,e in vl_liste_array
+    {    for i2,e2 in e
+            if (i2 = 8 and e2 != "listbox5")
+                {
+                ;    vl_liste_array.RemoveAt(i)
+                vl_liste_midl[i] := vl_liste_array[i]
+                }                
+            }
+        vl_liste_array := vl_liste_midl
+        vl_liste_array_til_json_tekst()
+        vl_liste_opdater_gui()
+return
+
+
+
 vl_liste_vis_note:
 Return
-vl_liste_opslag:
+vl_liste_liste:
     vl_liste_opslag_array := []
     valg :=
+    array := 0
     Gui vl_liste: Submit
     Gui vl_liste: Hide
+    if (InStr(valg1, "|"))
+       {
+           valg1 := StrSplit(valg1, "|")
+           array := 1
+       }
+    if (InStr(valg2, "|"))
+       {
+           valg2 := StrSplit(valg2, "|")
+           array := 1
+       } 
+    if (InStr(valg3, "|"))
+       {
+           valg3 := StrSplit(valg3, "|")
+           array := 1
+       }
+    if (InStr(valg4, "|"))
+       {
+           valg4 := StrSplit(valg4, "|")
+           array := 1
+       }
+   if (InStr(valg5, "|"))
+       {
+           valg5 := StrSplit(valg5, "|")
+           array := 1
+       } 
     vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5)
     for i,e in vl_liste_opslag_array
         if (e != "")
@@ -388,8 +489,74 @@ vl_liste_opslag:
         gui vl_liste: show
         return
     }
-    vl_liste_valg_vl := StrSplit(valg, ",")
-    p6_vaelg_vl(vl_liste_valg_vl[1])
+    if (array = 0)
+        {
+            listevl_array := []
+            for i,e in valg
+            listevl_array[i] :=   StrSplit(valg[i], ",")
+        }
+    if (array = 1)
+        {
+            listevl_array := []
+            for i,e in valg
+            listevl_array[i] :=   StrSplit(valg[i], ",")
+        }
+Return
+
+vl_liste_opslag:
+    vl_liste_opslag_array := []
+    valg :=
+    array := 0
+    Gui vl_liste: Submit
+    Gui vl_liste: Hide
+    if (InStr(valg1, "|"))
+       {
+           valg1 := StrSplit(valg1, "|")
+           array := 1
+       }
+    if (InStr(valg2, "|"))
+       {
+           valg2 := StrSplit(valg2, "|")
+           array := 1
+       } 
+    if (InStr(valg3, "|"))
+       {
+           valg3 := StrSplit(valg3, "|")
+           array := 1
+       }
+    if (InStr(valg4, "|"))
+       {
+           valg4 := StrSplit(valg4, "|")
+           array := 1
+       }
+   if (InStr(valg5, "|"))
+       {
+           valg5 := StrSplit(valg5, "|")
+           array := 1
+       } 
+    vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5)
+    for i,e in vl_liste_opslag_array
+        if (e != "")
+        {
+            valg := vl_liste_opslag_array[i]
+        }
+    if (valg = "")
+    {
+        MsgBox, , Vælg en markering, Der skal laves en markering
+        gui vl_liste: show
+        return
+    }
+    if (array = 0)
+        {
+            vl_liste_valg_vl := StrSplit(valg, ",")
+            p6_vaelg_vl(vl_liste_valg_vl[1])
+        }
+    if (array = 1)
+        {
+            listevl_array := []
+            for i,e in valg
+            listevl_array[i] :=   StrSplit(valg[i], ",")
+        }
 Return
 vl_liste_opslag_slet:
     vl_liste_opslag_array := []
@@ -865,6 +1032,29 @@ p6_vaelg_vl(byref vl := "")
     }
     return
 }
+p6_vaelg_vl_liste(byref vl := "")
+{
+    global listevl_array
+
+    vl := listevl_array[1][1]
+
+    P6_Planvindue()
+    SendInput, !l
+    if (listevl_array.MaxIndex() = "")
+        {
+        MsgBox, , Liste VL, Listen er tom, 2
+        return
+    }
+     if (vl != "")
+    {
+        listevl_array.RemoveAt(1)
+        SendInput, %vl%
+        sleep 100
+        SendInput, {enter}
+    }
+   return
+}
+
 
 ; Udfyld kørselsaftale og styresystem, tager vl(array) som parameter. Kørselaftale = vl.1, Styresystem = vl.2
 P6_udfyld_k_og_s(vl:="")
@@ -3037,6 +3227,10 @@ return
 ; gå i vl
 l_p6_vaelg_vl:
     p6_vaelg_vl()
+    sys_afslut_genvej()
+return
+l_p6_vaelg_vl_liste:
+    p6_vaelg_vl_liste()
     sys_afslut_genvej()
 return
 ;træk tlf fra aktiv planbillede, ring op i Trio. Col 11
