@@ -188,7 +188,7 @@ Gui sygehusauh: Add, Button, gsygehusmenu2 v78471000 x16 y164 w115 h23, &Psyk.
 gui sygehuspsyk:+Labelsygehus2
 Gui sygehuspsyk: Font, s9, Segoe UI
 Gui sygehuspsyk: Add, Button, gsygehusmenu2 v78471000 x16 y8 w115 h23, &AUH psyk.
-Gui sygehuspsyk: Add, Button, gsygehusmenu2 v78474500 x16 y32 w115 h23, &RHG psyk.
+Gui sygehuspsyk: Add, Button, gsygehusmenu2 v78474500 x16 y32 w115 h23, RH&G psyk.
 Gui sygehuspsyk: Add, Button, gsygehusmenu2 v78475300 x16 y56 w115 h30, &Randers psyk.
 Gui sygehuspsyk: Add, Button, gsygehusmenu2 v20936488 x16 y87 w115 h30, &Holstebro psyk.
 Gui sygehuspsyk: Add, Button, gsygehusmenu2 v78474000 x16 y111 w115, &Viborg, Silkeborg og Skive psyk.
