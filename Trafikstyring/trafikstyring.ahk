@@ -995,7 +995,7 @@ p6_vl_vindue_edit()
     clipwait 0.5
     if (InStr(clipboard, A_Year))
     {
-        return 1 ; VL lukket
+        return 0 ; VL lukket
     }
     clipboard :=
     SendInput, +{F10}c
