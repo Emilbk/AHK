@@ -942,6 +942,14 @@ P6_hent_vl()
     SendInput, +{F10}c
     ClipWait, 1, 0
     vl := Clipboard
+    while (vl = "")
+        {
+            SendInput, !l
+            sleep 200
+            SendInput, +{F10}c
+            ClipWait, 1, 0
+            vl := clipboard
+        }
     return vl
 }
 
