@@ -3470,7 +3470,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     ; keywait Ctrl
     Input valgt, L1 T5 C, {esc},
     vl := P6_hent_vl()
-    if (vl = "")
+    while (vl = "")
        {
         sleep 200
         vl := P6_hent_vl()
