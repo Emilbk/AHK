@@ -2346,6 +2346,7 @@ Trio_opkald(ByRef telefon)
     sleep 80
     controlsend, Edit2, %telefon%, ahk_class Addressbook
     ControlGetText, kobl_test, Button1, Trio Attendant
+    trio_pauseklar()
     if (kobl_test = "Koble")
     {
         controlsend, , {ShiftDown}{enter}{ShiftUp}, ahk_class Addressbook
