@@ -282,7 +282,7 @@ gui vl_liste: add, button, x224 y475 w80 h23 gvl_liste_ryd2 vbox2, ryd
 gui vl_liste: add, button, x400 y475 w80 h23 gvl_liste_ryd3 vbox3, ryd
 gui vl_liste: add, button, x584 y475 w80 h23 gvl_liste_ryd4 vbox4, ryd
 gui vl_liste: add, button, x760 y475 w80 h23 gvl_liste_ryd5 vbox5, ryd
-gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_vis_note, vis )note
+gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_vis_note, vis &note
 gui vl_liste: add, button, x180 y536 w131 h23 gvl_liste_opslag, &opslag
 gui vl_liste: add, button, x320 y536 w131 h23 gvl_liste_opslag_slet, opslag og s&let
 gui vl_liste: add, button, x460 y536 w131 h23 gvl_liste_slet, &slet
