@@ -268,11 +268,11 @@ Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 gui vl_liste: +labelvl_liste
 gui vl_liste: font, s9, segoe ui
 gui vl_liste: add, text, x8 y0 w120 h23 +0x200, &Replaneret
-gui vl_liste: add, listbox, x8 y24 w170 h449 vvalg1 gvlryd1 multi, Replaneret
-gui vl_liste: add, listbox, x184 y24 w170 h449 vvalg2 gvlryd2 multi,
-gui vl_liste: add, listbox, x360 y24 w170 h449 vvalg3 gvlryd3 multi,
-gui vl_liste: add, listbox, x536 y24 w170 h449 vvalg4 gvlryd4 multi,
-gui vl_liste: add, listbox, x712 y24 w170 h449 vvalg5 gvlryd5 multi,
+gui vl_liste: add, listbox, x8 y24 w170 h449 HWNDListbox1 vvalg1 gvlryd1 multi, Replaneret
+gui vl_liste: add, listbox, x184 y24 w170 h449  vvalg2 gvlryd2 multi,
+gui vl_liste: add, listbox, x360 y24 w170 h449 HWNDListbox3 vvalg3 gvlryd3 multi,
+gui vl_liste: add, listbox, x536 y24 w170 h449 HWNDListbox4  vvalg4 gvlryd4 multi,
+gui vl_liste: add, listbox, x712 y24 w170 h449 HWNDListbox5  vvalg5 gvlryd5 multi,
 gui vl_liste: add, text, x184 y0 w120 h23 +0x200, Wakeup
 gui vl_liste: add, text, x360 y0 w120 h23 +0x200, Privatrejse
 gui vl_liste: add, text, x536 y0 w120 h23 +0x200, Listet
@@ -282,17 +282,23 @@ gui vl_liste: add, button, x224 y475 w80 h23 gvl_liste_ryd2 vbox2, ryd
 gui vl_liste: add, button, x400 y475 w80 h23 gvl_liste_ryd3 vbox3, ryd
 gui vl_liste: add, button, x584 y475 w80 h23 gvl_liste_ryd4 vbox4, ryd
 gui vl_liste: add, button, x760 y475 w80 h23 gvl_liste_ryd5 vbox5, ryd
-gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_vis_note, vis &note
+gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_vis_note, vis )note
 gui vl_liste: add, button, x180 y536 w131 h23 gvl_liste_opslag, &opslag
 gui vl_liste: add, button, x320 y536 w131 h23 gvl_liste_opslag_slet, opslag og s&let
 gui vl_liste: add, button, x460 y536 w131 h23 gvl_liste_slet, &slet
 gui vl_liste: add, button, x600 y536 w131 h23 gvl_liste_slet_alt_alle, slet &alt
 gui vl_liste: add, button, x740 y536 w131 h23 gvl_liste_liste, l&iste
 
-#IfWinActive, VL-liste
+#If WinActive("ahk_id" ID2)
     Enter::
     NumpadEnter::
         Gosub, vl_liste_opslag
+        MsgBox, , , % ID2
+        return
+#IfWinActive
+#IfWinActive, VL-liste
+    F5::
+    vl_liste_opdater_gui()
     return
     w::
         {
@@ -4673,6 +4679,11 @@ FlexFinder_addresse()
 +^å::
     {
         vlListe_vis_gui()
+ ControlGet, ID1, Hwnd, , Listbox1,  , , , 
+    ControlGet, ID3, Hwnd, , Listbox3,  , , , 
+    ControlGet, ID4, Hwnd, , Listbox4,  , , , 
+    ControlGet, ID5, Hwnd, , Listbox5,  , , , 
+    ControlGet, ID2, Hwnd, , Listbox2, VL-liste
         return
     }
 ^z::
