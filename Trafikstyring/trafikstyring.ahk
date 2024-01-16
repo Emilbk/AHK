@@ -3879,6 +3879,8 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
 l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     genvej_mod := sys_genvej_til_ahk_tast(28)
     sys_genvej_keywait(genvej_mod)
+    SendInput, {Click 2}
+    sleep 200
     clipboard := ""
     SendInput, ^c
     ClipWait, 2, 0
