@@ -3885,6 +3885,7 @@ l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     SendInput, ^c
     ClipWait, 2, 0
     telefon := clipboard
+    telefon := RegExReplace(telefon, "\D")
     GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
     sleep 300
     Trio_opkald(telefon)
