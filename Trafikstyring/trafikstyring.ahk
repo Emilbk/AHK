@@ -268,11 +268,11 @@ Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 gui vl_liste: +labelvl_liste
 gui vl_liste: font, s9, segoe ui
 gui vl_liste: add, text, x8 y0 w120 h23 +0x200, &Replaneret
-gui vl_liste: add, listbox, x8 y24 w170 h449 HWNDListbox1 vvalg1 gvlryd1 multi, Replaneret
-gui vl_liste: add, listbox, x184 y24 w170 h449  vvalg2 gvlryd2 multi,
-gui vl_liste: add, listbox, x360 y24 w170 h449 HWNDListbox3 vvalg3 gvlryd3 multi,
-gui vl_liste: add, listbox, x536 y24 w170 h449 HWNDListbox4  vvalg4 gvlryd4 multi,
-gui vl_liste: add, listbox, x712 y24 w170 h449 HWNDListbox5  vvalg5 gvlryd5 multi,
+gui vl_liste: add, listbox, x8 y24 w170 h449 HWNDListbox1id vvalg1 gvlryd1 multi, Replaneret
+gui vl_liste: add, listbox, x184 y24 w170 h449  HWNDListbox2id vvalg2 gvlryd2 multi,
+gui vl_liste: add, listbox, x360 y24 w170 h449 HWNDListbox3id vvalg3 gvlryd3 multi,
+gui vl_liste: add, listbox, x536 y24 w170 h449 HWNDListbox4id  vvalg4 gvlryd4 multi,
+gui vl_liste: add, listbox, x712 y24 w170 h449 HWNDListbox5id  vvalg5 gvlryd5 multi,
 gui vl_liste: add, text, x184 y0 w120 h23 +0x200, Wakeup
 gui vl_liste: add, text, x360 y0 w120 h23 +0x200, Privatrejse
 gui vl_liste: add, text, x536 y0 w120 h23 +0x200, Listet
@@ -288,14 +288,22 @@ gui vl_liste: add, button, x320 y536 w131 h23 gvl_liste_opslag_slet, opslag og s
 gui vl_liste: add, button, x460 y536 w131 h23 gvl_liste_slet, &slet
 gui vl_liste: add, button, x600 y536 w131 h23 gvl_liste_slet_alt_alle, slet &alt
 gui vl_liste: add, button, x740 y536 w131 h23 gvl_liste_liste, l&iste
-
-#If WinActive("ahk_id" ID2)
+#IfWinActive VL-liste
     Enter::
     NumpadEnter::
-        Gosub, vl_liste_opslag
-        MsgBox, , , % ID2
-        return
+        fokus := GUIfokus()
+        if (InStr(fokus, "listbox"))
+        {
+            Gosub, vl_liste_opslag
+            return
+        }
+        Else
+            {
+                SendInput, {enter}
+                return
+            }
 #IfWinActive
+
 #IfWinActive, VL-liste
     F5::
     vl_liste_opdater_gui()
@@ -763,6 +771,12 @@ sys_genvej_beskrivelse(kolonne)
     trio_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, kolonne)
     GuiControl, trio_genvej:text, Button1, %trio_genvej%
     return trio_genvej
+}
+; henter GUI-control, der har fokus
+GUIfokus()
+{
+ControlGetFocus, GUIfokus
+return GUIfokus
 }
 ; **
 ; fix, giver 0-fejl ved esc.
@@ -4679,11 +4693,6 @@ FlexFinder_addresse()
 +^å::
     {
         vlListe_vis_gui()
- ControlGet, ID1, Hwnd, , Listbox1,  , , , 
-    ControlGet, ID3, Hwnd, , Listbox3,  , , , 
-    ControlGet, ID4, Hwnd, , Listbox4,  , , , 
-    ControlGet, ID5, Hwnd, , Listbox5,  , , , 
-    ControlGet, ID2, Hwnd, , Listbox2, VL-liste
         return
     }
 ^z::
