@@ -958,7 +958,7 @@ p6_vl_vindue()
     vl := P6_hent_vl()
     sleep 30
     SendInput, ^{F12}
-    sleep 250
+    sleep 350
     clipboard :=
     SendInput, ^c
     clipwait 0.5
@@ -1000,8 +1000,15 @@ p6_vl_vindue_edit()
     clipboard :=
     SendInput, +{F10}c
     clipwait 2
+    while (clipboard = "")
+        {
+    clipboard :=
+    SendInput, +{F10}c
+    clipwait 2
+        }
     k_aftale.1 := clipboard
     clipboard :=
+    ; tjek om drift eller vogngruppe
     SendInput, {tab 2}
     sleep 40
     SendInput, +{F10}c
@@ -1245,6 +1252,7 @@ P6_hent_vl_tlf()
         sys_afslut_genvej()
         return 0
     }
+    sleep 100
     SendInput {Enter}{Enter}
     sleep s * 40
     SendInput !ø
