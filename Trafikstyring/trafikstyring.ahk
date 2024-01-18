@@ -103,7 +103,8 @@ Hotkey, % bruger_genvej.19, l_p6_central_ring_op ; ^+c
 Hotkey, % bruger_genvej.20, l_p6_tekst_til_chf ; ^+t
 Hotkey, % bruger_genvej.36, l_flexf_fra_p6 ; +^F
 Hotkey, % bruger_genvej.48, l_p6_rejsesog ; F1
-Hotkey, % bruger_genvej.50, l_p6_liste_vl ; F1
+Hotkey, % bruger_genvej.50, l_p6_liste_vl ; ^å
+;Hotkey, % bruger_genvej.63, l_p6_liste_vl_notat ; ^+F10
 Hotkey, % bruger_genvej.51, l_p6_vis_liste_vl ; F1
 Hotkey, % bruger_genvej.55, l_p6_initialer_slet_eget ; +^n
 Hotkey, % bruger_genvej.59, l_p6_initialer_skift_eget ; +^n
@@ -302,12 +303,30 @@ gui vl_liste: add, button, x740 y536 w131 h23 gvl_liste_liste, l&iste
                 SendInput, {enter}
                 return
             }
+    +enter::
+    {
+    fokus := GUIfokus()
+        if (InStr(fokus, "listbox"))
+        {
+            Gosub, vl_liste_opslag_slet
+            return
+        }
+    }
+#IfWinActive
+
+; Omskriv
+#IfWinActive, PLANET
+#IfWinActive, VL-liste
+    F8::
+    gui vl_liste: Hide
+return
 #IfWinActive
 
 #IfWinActive, VL-liste
     F5::
     vl_liste_opdater_gui()
     return
+
     w::
         {
             GuiControl, vl_liste: Focus, listbox2
