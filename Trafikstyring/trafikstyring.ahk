@@ -4717,13 +4717,3 @@ FlexFinder_addresse()
 ;
 
 ;; test
-+^å::
-    {
-        vlListe_vis_gui()
-        return
-    }
-^z::
-    {
-        KeyWait, Ctrl
-        return
-    }
