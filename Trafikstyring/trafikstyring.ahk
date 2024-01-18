@@ -2382,6 +2382,7 @@ Trio_opkald(ByRef telefon)
         ControlClick, x365 y18, Trio Agent, , ,, ,, ; Skrivebordsværkstøjsline
         sleep 100
     }
+    trio_pause()
     SendInput, {CtrlUp}
     sleep 200
     controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
@@ -2393,14 +2394,18 @@ Trio_opkald(ByRef telefon)
     sleep 80
     controlsend, Edit2, %telefon%, ahk_class Addressbook
     ControlGetText, kobl_test, Button1, Trio Attendant
-    trio_pauseklar()
     if (kobl_test = "Koble")
     {
         controlsend, , {ShiftDown}{enter}{ShiftUp}, ahk_class Addressbook
+        sleep 500
+        trio_klar()
+        return
     }
     Else
     {
         controlsend, , {enter}, ahk_class Addressbook
+        sleep 500
+        trio_klar()
         Return
     }
 }
