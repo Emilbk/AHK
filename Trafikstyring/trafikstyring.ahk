@@ -373,7 +373,13 @@ return
             Gosub, vlryd3
             return
         }
-
+    k::
+        {
+            GuiControl, vl_liste: Focus, listbox6
+            GuiControl, vl_liste: Choose, Listbox6, 1
+            Gosub, vlryd6
+            return
+        }
 #IfWinActive
 ;; gui-label vl-list
 vl_listeescape:
@@ -386,36 +392,42 @@ vlryd1:
     GuiControl, vl_liste: Choose, Listbox3 , 0
     GuiControl, vl_liste: Choose, Listbox4 , 0
     GuiControl, vl_liste: Choose, Listbox5 , 0
+    GuiControl, vl_liste: Choose, Listbox6 , 0
 return
 vlryd2:
     GuiControl, vl_liste: Choose, Listbox1 , 0
     GuiControl, vl_liste: Choose, Listbox3 , 0
     GuiControl, vl_liste: Choose, Listbox4 , 0
     GuiControl, vl_liste: Choose, Listbox5 , 0
+    GuiControl, vl_liste: Choose, Listbox6 , 0
 return
 vlryd3:
     GuiControl, vl_liste: Choose, Listbox1 , 0
     GuiControl, vl_liste: Choose, Listbox2 , 0
     GuiControl, vl_liste: Choose, Listbox4 , 0
     GuiControl, vl_liste: Choose, Listbox5 , 0
+    GuiControl, vl_liste: Choose, Listbox6 , 0
 return
 vlryd4:
     GuiControl, vl_liste: Choose, Listbox1 , 0
     GuiControl, vl_liste: Choose, Listbox2 , 0
     GuiControl, vl_liste: Choose, Listbox3 , 0
     GuiControl, vl_liste: Choose, Listbox5 , 0
+    GuiControl, vl_liste: Choose, Listbox6 , 0
 return
 vlryd5:
     GuiControl, vl_liste: Choose, Listbox2 , 0
     GuiControl, vl_liste: Choose, Listbox3 , 0
     GuiControl, vl_liste: Choose, Listbox4 , 0
     GuiControl, vl_liste: Choose, Listbox1 , 0
+    GuiControl, vl_liste: Choose, Listbox6 , 0
 return
 vlryd6:
     GuiControl, vl_liste: Choose, Listbox2 , 0
     GuiControl, vl_liste: Choose, Listbox3 , 0
     GuiControl, vl_liste: Choose, Listbox4 , 0
     GuiControl, vl_liste: Choose, Listbox1 , 0
+    GuiControl, vl_liste: Choose, Listbox5 , 0
 return
 vl_liste_ryd1:
     vl_liste_midl := []
