@@ -155,6 +155,10 @@ Hotkey, % bruger_genvej.53, l_excel_p6_id ; !Lbutton
 Hotkey, % bruger_genvej.54, l_excel_p6_cpr ; !Lbutton
 Hotkey, IfWinActive, ,
 ;; Trio-setup
+if not WinExist("ahk_class Agent Main GUI")
+    {
+        run "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Trio Enterprise\Contact Center\Agent Client.lnk"
+    }
 if not WinExist("ahk_class AccessBar")
 {
     WinMenuSelectItem, ahk_class Agent Main GUI, , Vis, Skrivebordsværktøjslinie
