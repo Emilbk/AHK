@@ -2442,14 +2442,14 @@ Trio_opkald(ByRef telefon)
     if (kobl_test = "Koble")
     {
         controlsend, , {ShiftDown}{enter}{ShiftUp}, ahk_class Addressbook
-        sleep 500
+        sleep 1000
         trio_klar()
         return
     }
     Else
     {
         controlsend, , {enter}, ahk_class Addressbook
-        sleep 500
+        sleep 1000
         trio_klar()
         Return
     }
