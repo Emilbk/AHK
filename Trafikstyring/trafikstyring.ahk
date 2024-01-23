@@ -278,15 +278,18 @@ gui vl_liste: add, listbox, x184 y24 w170 h449  HWNDListbox2id vvalg2 gvlryd2 mu
 gui vl_liste: add, listbox, x360 y24 w170 h449 HWNDListbox3id vvalg3 gvlryd3 multi,
 gui vl_liste: add, listbox, x536 y24 w170 h449 HWNDListbox4id  vvalg4 gvlryd4 multi,
 gui vl_liste: add, listbox, x712 y24 w170 h449 HWNDListbox5id  vvalg5 gvlryd5 multi,
+gui vl_liste: add, listbox, x888 y24 w170 h449 HWNDListbox6id  vvalg6 gvlryd6 multi,
 gui vl_liste: add, text, x184 y0 w120 h23 +0x200, Wakeup
 gui vl_liste: add, text, x360 y0 w120 h23 +0x200, Privatrejse
 gui vl_liste: add, text, x536 y0 w120 h23 +0x200, Listet
 gui vl_liste: add, text, x712 y0 w120 h23 +0x200, Låst
+gui vl_liste: add, text, x893 y0 w120 h23 +0x200, Kvitteret for chauffør
 gui vl_liste: add, button, x40 y475 w80 h23 gvl_liste_ryd1 vbox1, ryd
 gui vl_liste: add, button, x224 y475 w80 h23 gvl_liste_ryd2 vbox2, ryd
 gui vl_liste: add, button, x400 y475 w80 h23 gvl_liste_ryd3 vbox3, ryd
 gui vl_liste: add, button, x584 y475 w80 h23 gvl_liste_ryd4 vbox4, ryd
 gui vl_liste: add, button, x760 y475 w80 h23 gvl_liste_ryd5 vbox5, ryd
+gui vl_liste: add, button, x936 y475 w80 h23 gvl_liste_ryd6 vbox6, ryd
 gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_vis_note, vis &note
 gui vl_liste: add, button, x180 y536 w131 h23 gvl_liste_opslag, &opslag
 gui vl_liste: add, button, x320 y536 w131 h23 gvl_liste_opslag_slet, opslag og s&let
@@ -408,7 +411,12 @@ vlryd5:
     GuiControl, vl_liste: Choose, Listbox4 , 0
     GuiControl, vl_liste: Choose, Listbox1 , 0
 return
-
+vlryd6:
+    GuiControl, vl_liste: Choose, Listbox2 , 0
+    GuiControl, vl_liste: Choose, Listbox3 , 0
+    GuiControl, vl_liste: Choose, Listbox4 , 0
+    GuiControl, vl_liste: Choose, Listbox1 , 0
+return
 vl_liste_ryd1:
     vl_liste_midl := []
     for i,e in vl_liste_array
@@ -479,7 +487,20 @@ vl_liste_ryd5:
         vl_liste_array_til_json_tekst()
         vl_liste_opdater_gui()
 return
-
+vl_liste_ryd6:
+    vl_liste_midl := []
+    for i,e in vl_liste_array
+    {    for i2,e2 in e
+            if (i2 = 8 and e2 != "listbox6")
+                {
+                ;    vl_liste_array.RemoveAt(i)
+                vl_liste_midl[i] := vl_liste_array[i]
+                }                
+            }
+        vl_liste_array := vl_liste_midl
+        vl_liste_array_til_json_tekst()
+        vl_liste_opdater_gui()
+return
 
 
 vl_liste_vis_note:
@@ -2230,12 +2251,14 @@ vlListe_vis_gui()
     listbox3 := vlListe_dan_liste("listbox3")
     listbox4 := vlListe_dan_liste("listbox4")
     listbox5 := vlListe_dan_liste("listbox5")
+    listbox6 := vlListe_dan_liste("listbox6")
     GuiControl, vl_liste: , ListBox1, %listbox1%
     GuiControl, vl_liste: , ListBox2, %listbox2%
     GuiControl, vl_liste: , ListBox3, %listbox3%
     GuiControl, vl_liste: , ListBox4, %listbox4%
     GuiControl, vl_liste: , ListBox5, %listbox5%
-    Gui vl_liste: Show, w918 h574, VL-liste
+    GuiControl, vl_liste: , ListBox6, %listbox6%
+    Gui vl_liste: Show, w1076 h574, VL-liste
     Return
 
 }
@@ -2269,6 +2292,24 @@ vlliste_replaner_lav_array(vl)
     vl_liste[6] :=
     vl_liste[7] := "|"
     vl_liste[8] := "listbox1"
+
+    return vl_liste
+}
+vlliste_kvittering_lav_array(vl := "")
+{
+    vl_liste := []
+
+    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
+    FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
+
+    vl_liste[1] := vl
+    vl_liste[2] := ", kvittering sendt "
+    vl_liste[3] := vl_replaner_tidspunkt_vis
+    vl_liste[4] := vl_replaner_tidspunkt_intern
+    vl_liste[5] := note
+    vl_liste[6] :=
+    vl_liste[7] := "|"
+    vl_liste[8] := "listbox6"
 
     return vl_liste
 }
@@ -3639,6 +3680,8 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 sleep 1000
                 SendInput, {enter}
                 FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_kvittering_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
                 if (k_tid != "Oprindelig kvittering")
                 {
                     P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. tid " k_tid initialer " ")
