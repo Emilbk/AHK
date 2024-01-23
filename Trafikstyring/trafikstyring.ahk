@@ -605,7 +605,12 @@ vl_liste_opslag:
            valg5 := StrSplit(valg5, "|")
            array := 1
        } 
-    vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5)
+   if (InStr(valg6, "|"))
+       {
+           valg6 := StrSplit(valg6, "|")
+           array := 1
+       } 
+    vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5, valg6)
     for i,e in vl_liste_opslag_array
         if (e != "")
         {
