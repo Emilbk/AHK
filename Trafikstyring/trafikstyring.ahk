@@ -130,8 +130,8 @@ Hotkey, % bruger_genvej.24, l_trio_udenov ; ^2
 Hotkey, % bruger_genvej.25, l_trio_efterbehandling ; ^3
 Hotkey, % bruger_genvej.26, l_trio_alarm ; ^4
 Hotkey, % bruger_genvej.27, l_trio_frokost ; ^5
-Hotkey, % bruger_genvej.29, l_triokald_til_udklip ; #q
 Hotkey, IfWinActive
+Hotkey, % bruger_genvej.29, l_triokald_til_udklip ; #q
 
 ; flexfinder
 Hotkey, IfWinActive, FlexDanmark FlexFinder ;
