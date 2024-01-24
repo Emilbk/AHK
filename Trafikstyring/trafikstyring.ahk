@@ -3813,6 +3813,9 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sleep 200
             SendInput, ^s
             sleep 1000
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_laast_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
             SendInput, {enter}
             P6_notat("Ingen kontakt til chf, tekst sendt, VL låst" initialer " ")
             gui, cancel
