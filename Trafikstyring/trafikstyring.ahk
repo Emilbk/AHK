@@ -141,8 +141,6 @@ Hotkey, IfWinActive, ,
 ; outlook
 Hotkey, % bruger_genvej.37, l_outlook_ny_mail ; ^+m
 
-Hotkey, IfWinActive, PLANET
-Hotkey, IfWinActive, ,
 
 ;excel
 Hotkey, ifWinActive, Garantivognsoversigt FG8.xlsm
