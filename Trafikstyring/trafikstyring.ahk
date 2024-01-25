@@ -8,11 +8,12 @@ SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
 SetTitleMatchMode, 1 ; matcher så længe et ord er der
 #SingleInstance, force
 ; Define the group: gruppe
-GroupAdd, gruppe, PLANET
+GroupAdd, trafikstyringsgruppe, PLANET
 ; GroupAdd, gruppe, ahk_class Chrome_WidgetWin_1
-GroupAdd, gruppe, ahk_class AccessBar
-GroupAdd, gruppe, ahk_class Agent Main GUI
-GroupAdd, gruppe, ahk_class Addressbook
+GroupAdd, trafikstyringsgruppe, ahk_class AccessBar
+GroupAdd, trafikstyringsgruppe, ahk_class Agent Main GUI
+GroupAdd, trafikstyringsgruppe, ahk_class Addressbook
+GroupAdd, trafikstyringsgruppe, ahk_class Transparent Windows Client
 ;; lib
 #Include, %A_linefile%\..\lib\AHKDb\ahkdb.ahk
 #Include, %A_linefile%\..\lib\JSON.ahk
@@ -123,7 +124,7 @@ Hotkey, IfWinActive, Vognløbsnotering ; specifikt alarmrepl-infobox
 Hotkey, % bruger_genvej.57, l_p6_notat_igen ; F1
 Hotkey, IfWinActive
 ; Trio
-Hotkey, IfWinActive, ahk_group gruppe
+Hotkey, IfWinActive, ahk_group trafikstyringsgruppe
 Hotkey, % bruger_genvej.22, l_trio_pause ; ^0
 Hotkey, % bruger_genvej.23, l_trio_klar ; ^1
 Hotkey, % bruger_genvej.24, l_trio_udenov ; ^2
