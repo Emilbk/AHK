@@ -97,7 +97,7 @@ Hotkey, % bruger_genvej.13, l_p6_vl_luk ; #F5
 Hotkey, % bruger_genvej.62, l_p6_laas_vl ; #F5
 Hotkey, % bruger_genvej.14, l_p6_alarmer ; F7
 Hotkey, % bruger_genvej.15, l_p6_udraabsalarmer ; +F7
-Hotkey, % bruger_genvej.16, l_p6_ring_til_kunde ; +F8
+; Hotkey, % bruger_genvej.16, l_p6_ring_til_kunde ; +F8
 Hotkey, % bruger_genvej.17, l_p6_udregn_minut ; #t
 Hotkey, % bruger_genvej.18, l_p6_sygehus_ring_op ; ^+s
 Hotkey, % bruger_genvej.19, l_p6_central_ring_op ; ^+c
