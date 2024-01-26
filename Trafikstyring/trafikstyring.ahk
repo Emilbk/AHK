@@ -131,6 +131,8 @@ Hotkey, % bruger_genvej.24, l_trio_udenov ; ^2
 Hotkey, % bruger_genvej.25, l_trio_efterbehandling ; ^3
 Hotkey, % bruger_genvej.26, l_trio_alarm ; ^4
 Hotkey, % bruger_genvej.27, l_trio_frokost ; ^5
+Hotkey, % bruger_genvej.64, l_trio_linie1 ; ^5
+Hotkey, % bruger_genvej.65, l_trio_linie2 ; ^5
 Hotkey, IfWinActive
 Hotkey, % bruger_genvej.29, l_triokald_til_udklip ; #q
 
@@ -2489,6 +2491,34 @@ Trio_afslutopkald()
 
     return
 }
+Trio_linie1()
+{
+    ; ControlFocus, Button1, Addressbook
+    ; ControlGetText, opkaldsstatus, Button1, Trio Attendant
+    ; sleep 200
+    ; MsgBox, , , % opkaldsstatus
+    ControlSend, , {F6}, ahk_class Agent Main GUI
+    ; WinActivate, ahk_class AccessBar
+    ; winwaitactive, ahk_class AccessBar
+    ; sleep 40
+    ; SendInput, {NumpadSub}
+
+    return
+}
+Trio_linie2()
+{
+    ; ControlFocus, Button1, Addressbook
+    ; ControlGetText, opkaldsstatus, Button1, Trio Attendant
+    ; sleep 200
+    ; MsgBox, , , % opkaldsstatus
+    ControlSend, , {F7}, ahk_class Agent Main GUI
+    ; WinActivate, ahk_class AccessBar
+    ; winwaitactive, ahk_class AccessBar
+    ; sleep 40
+    ; SendInput, {NumpadSub}
+
+    return
+}
 
 ; **
 ; Trio hop til efterbehandling
@@ -3906,6 +3936,14 @@ l_trio_efterbehandling: ;Trio efterbehandling
     trio_efterbehandling()
     trio_pauseklar()
 Return
+l_trio_linie1: ;Trio efterbehandling
+    trio_linie1()
+Return
+l_trio_linie2: ;Trio efterbehandling
+    trio_linie2()
+Return
+
+
 
 l_trio_alarm: ;Trio alarm bruger.9
     trio_alarm()
