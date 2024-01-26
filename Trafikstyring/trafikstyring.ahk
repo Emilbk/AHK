@@ -4746,6 +4746,11 @@ return
             p6_notat_hotstr("chf inf initialer")
             return
         }
+    :b0:/retf::
+        {
+            p6_notat_hotstr("st. tid rettet jf. FF initialer")
+            return
+        }
 #IfWinActive, Vognløbsnotering
 #IfWinActive, PLANET
     ::/mt::
