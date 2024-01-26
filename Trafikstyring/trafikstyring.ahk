@@ -4621,7 +4621,12 @@ return
             p6_notat_hotstr("st. ankomst_tid initialer")
             return
         }
-    :B0:/ankc::
+    :B0:/anko::
+        {
+            p6_notat_hotstr("st. ankomst_tid, overset initialer")
+            return
+        } 
+   :B0:/ankc::
         {
             p6_notat_hotstr("st. ankomst_tid, chf giver kunde besked initialer ")
             return
