@@ -2449,7 +2449,7 @@ Trio_opkald(ByRef telefon)
     }
     trio_pause()
     SendInput, {CtrlUp}
-    sleep 200
+    sleep 400
     controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
     sleep 100
     controlsend, Edit2, {delete} ,ahk_class Addressbook
