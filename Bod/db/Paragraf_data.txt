@@ -3,8 +3,7 @@ FG - vognløb lukket helt	 17) Hvis garantivognen eller reservemateriel ikke er 
 FG - vognløb lukket midt på vognløb	 17) Hvis garantivognen eller reservemateriel ikke er til rådighed i den aftalte garanti- og rådighedsperiode jf. § 20, stk. 3. Se dog § 25 stk. 2.
 FG - vognløb lukket/åbnet inden for 2 timer af garantitid	 17) Hvis garantivognen eller reservemateriel ikke er til rådighed i den aftalte garanti- og rådighedsperiode jf. § 20, stk. 3. Se dog § 25 stk. 2.
 FG - Defekt/manglende trappetjener/autostol mv.	 20) Hvis autostol, trappemaskine inkl. sele, transportstol eller tripstol, hvor dette er påkrævet, ikke forefindes i vognen eller er defekt, jf. § 24 stk. 3 og 5, 6, 7, 8 og 9.
-FG - Manglende benyttelse af trappetjener	"21) Hvis trappemaskinen ikke anvendes ved transport af kørestole over mere end ét trin
-jf. § 24 stk. 6, 7 og 9."
+FG - Manglende benyttelse af trappetjener	"21) Hvis trappemaskinen ikke anvendes ved transport af kørestole over mere end ét trin jf. § 24 stk. 6, 7 og 9."
 FG - Manglende udførsel af kørsel	6) Manglende overholdelse af § 20 – Krav til kørslens udførelse. Se dog pkt. 16, 17 og 18.
 FG - Udfordring med opladning	?
 FG - Generelle krav til vogne, udstyr mv	8) Manglende overholdelse af § 23 – Generelle krav til alle vogntyper.
@@ -29,7 +28,6 @@ FV - Svar på klager	3. Manglende overholdelse af tidsfristen på tre dage for i
 FV - Indberetning af uheld	16. Manglende skriftlig indberetning til Trafikselskaberne om uheld inden for 24 timer, eller ufuldstændig udfyldt uheldsrapport, jf. § 19 stk. 8.
 FV - Krav til kommunikationsudstyr	10) Manglende overholdelse af § 26 - Vognkommunikation
 FV - Vognkontrol	?
-FV - ikke rettidig tilmelding jul	"7. Manglende levering af oplysninger til planlægning af kørsel § 20 – Kørsel jul/nytår. Boden
-kan udstedes pr. dag pr. vogn som leverandør ikke indmelder vognen."
+FV - ikke rettidig tilmelding jul	"7. Manglende levering af oplysninger til planlægning af kørsel § 20 – Kørsel jul/nytår. Boden kan udstedes pr. dag pr. vogn som leverandør ikke indmelder vognen."
 FV - Ikke kørt jul	20. Manglende rådighed over vogn efter § 20 – Kørsel jul/nytår.
 Special - alt	

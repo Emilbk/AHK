@@ -1,111 +1,179 @@
-﻿#NoEnv
-#SingleInstance, Force
-SendMode, Input
-SetBatchLines, -1
-SetWorkingDir, %A_ScriptDir%
+﻿#noenv
+#singleinstance, force
+sendmode, input
+setbatchlines, -1
+setworkingdir, %a_scriptdir%
 
+gui vl_bod: font, s9, segoe ui
+gui vl_bod: add, edit, x62 y27 w120 h21 number vvl gvl_slaa_op
+gui vl_bod: font
+gui vl_bod: font, bold
+gui vl_bod: add, text, x18 y22 w35 h23 +0x200, vl:
+gui vl_bod: add, text, x285 y10 w120 h23 +0x200, vm:
+gui vl_bod: add, text, x285 y54 w120 h23 +0x200, kontaktinfo:
+gui vl_bod: font
+gui vl_bod: font, s9, segoe ui
+gui vl_bod: add, text, x325 y10 w120 h23 vvm +0x200, % vm
+gui vl_bod: add, monthcal, x20 y58 w164 h160 vdato
+gui vl_bod: add, dropdownlist, x23 y244 w414, 
+gui vl_bod: add, dropdownlist, x23 y270 w414, 
+gui vl_bod: font
+gui vl_bod: font, bold
+gui vl_bod: add, text, x24 y223 w120 h23 +0x200, paragraf
+gui vl_bod: font
+gui vl_bod: font, s9, segoe ui
+gui vl_bod: add, edit, x25 y328 w568 h84
+gui vl_bod: font
+gui vl_bod: font, bold
+gui vl_bod: add, text, x25 y300 w260 h23 +0x200, "kvalitetetsbristen bestod i, at..."
+gui vl_bod: font
+gui vl_bod: font, s9, segoe ui
+gui vl_bod: add, button, default x288 y415, &ok
 vl_ny := []
-FileRead, vl_data, db/vl_data.txt
-FileRead, paragraf_data, db/paragraf_data.txt
-vl_data := StrSplit(vl_data, "`n")
+fileread, vl_data, db/vl_data.txt
+fileread, paragraf_data, db/paragraf_data.txt
+vl_data := strsplit(vl_data, "`n")
 for i,e in vl_data
     {
-    vl_ny[i] := StrSplit(e, "`t", "`r")
+    vl_ny[i] := strsplit(e, "`t", "`r")
     }
 vl_data := vl_ny
 paragraf_ny := []
-paragraf_data := StrReplace(paragraf_data, "`r", "")
-paragraf_data := StrSplit(paragraf_data, "`n")
+paragraf_data := strreplace(paragraf_data, "`r", "")
+paragraf_data := strsplit(paragraf_data, "`n")
 for i,e in paragraf_data
     {
-    paragraf_ny[i] := StrSplit(e, "`t")
+    paragraf_ny[i] := strsplit(e, "`t")
+    }
+paragraf_data := paragraf_ny
+
+;; paragraf_drop_down
+; msgbox, , , % substr(paragraf_data[1][1], 1,2)
+paragraf_drop_down_fg := "-|"
+paragraf_drop_down_fv := "-|"
+for i,e in paragraf_data
+    if (substr(e[1], 1 ,2) = "fg")
+    {
+    paragraf_drop_down_fg .= paragraf_data[i][1] "|"
+
+    }
+for i,e in paragraf_data
+    if (substr(e[1], 1 ,2) = "fv")
+    {
+    paragraf_drop_down_fv .= paragraf_data[i][1] "|"
+
     }
 
 
-GUIfokus()
+guicontrol, vl_bod: , combobox1 , %paragraf_drop_down_fg%
+guicontrol, vl_bod: , combobox2 , %paragraf_drop_down_fv%
+guicontrol, vl_bod: choose, combobox1, 1
+guicontrol, vl_bod: choose, combobox2, 1
+
+vl_slaa_op:
 {
-ControlGetFocus, GUIfokus
-return GUIfokus
+    guicontrolget, vl, , edit1, 
+    for i,e in vl_data
+        {
+            if (e[1] = vl)
+                {
+                    vm := e[2]
+                    guicontrol, vl_bod: , vm , % vm
+                    return
+                }
+            else
+                {
+
+                    guicontrol, vl_bod: , vm , ikke gyldigt vl
+                }
+        }
+return
 }
 
-+LButton::
+guifokus()
 {
-if (WinActive("Planet - Indbakke - Planet - Outlook"))
+controlgetfocus, guifokus
+return guifokus
+}
+
++lbutton::
+{
+if (winactive("planet - indbakke - planet - outlook"))
     {
-        SendInput, {RButton}
+        sendinput, {rbutton}
         sleep 50
-        SendInput, h
+        sendinput, h
         sleep 50
-        SendInput, {enter}
+        sendinput, {enter}
         sleep 50
-        SendInput, {Up}
-        WinActivate, "Svigt FG8-FV8.xlsx - Excel"
+        sendinput, {up}
+        winactivate, "svigt fg8-fv8.xlsx - excel"
         return
     }
-if (WinActive("Svigt FG8-FV8.xlsx - Excel"))
+if (winactive("svigt fg8-fv8.xlsx - excel"))
     {
-        SendInput, {click2}
+        sendinput, {click2}
         sleep 100
-        SendInput, ^v{tab}
+        sendinput, ^v{tab}
         return
     }
 else
     {
-        SendInput, +{click}
+        sendinput, +{click}
         return
     }
 }
 ^q::
 {
-if (WinActive("Planet - Indbakke - Planet - Outlook"))
+if (winactive("planet - indbakke - planet - outlook"))
     {
-        SendInput, {AppsKey}
+        sendinput, {appskey}
         sleep 50
-        SendInput, h
+        sendinput, h
         sleep 50
-        SendInput, {enter}
+        sendinput, {enter}
         sleep 50
-        SendInput, {Up}
-        WinActivate, "Svigt FG8-FV8.xlsx - Excel"
+        sendinput, {up}
+        winactivate, "svigt fg8-fv8.xlsx - excel"
         return
     }
-if (WinActive("Svigt FG8-FV8.xlsx - Excel"))
+if (winactive("svigt fg8-fv8.xlsx - excel"))
     {
-        SendInput, {F2}
-        SendInput, ^v{tab}
+        sendinput, {f2}
+        sendinput, ^v{tab}
         return
     }
 else
     {
-        SendInput, +{click}
+        sendinput, +{click}
     }
 }
 !q::
 {
-if (WinActive("Svigt FG8-FV8.xlsx - Excel"))
+if (winactive("svigt fg8-fv8.xlsx - excel"))
     {
-        WinActivate Planet - Indbakke - Planet - Outlook
-        ControlFocus, OutlookGrid1, Planet - Indbakke - Planet - Outlook
+        winactivate planet - indbakke - planet - outlook
+        controlfocus, outlookgrid1, planet - indbakke - planet - outlook
         sleep 200
-        SendInput, {AppsKey}
+        sendinput, {appskey}
         sleep 50
-        SendInput, h
+        sendinput, h
         sleep 50
-        SendInput, {enter}
+        sendinput, {enter}
         sleep 500
-        SendInput, {Up}
-        WinActivate, Svigt FG8-FV8.xlsx - Excel
+        sendinput, {up}
+        winactivate, svigt fg8-fv8.xlsx - excel
         return
     }
-if (WinActive("Planet - Indbakke - Planet - Outlook"))
+if (winactive("planet - indbakke - planet - outlook"))
     {
         clipboard :=
-        SendInput, ^c
-        ClipWait, 1, 
+        sendinput, ^c
+        clipwait, 1, 
         sleep 50
-        WinActivate, Svigt FG8-FV8.xlsx - Excel
-        SendInput, {F2}
-        SendInput, ^v{tab}  
+        winactivate, svigt fg8-fv8.xlsx - excel
+        sendinput, {f2}
+        sendinput, ^v{tab}  
         return
     }
 }
@@ -113,7 +181,7 @@ if (WinActive("Planet - Indbakke - Planet - Outlook"))
 
 vm_opslag(vl_data)
 {
-    InputBox, vl
+    inputbox, vl
     for i, e in vl_data
         for i2, e2 in e
             if (e2 = vl)
@@ -124,49 +192,38 @@ return vm
 }
 paragraf_opslag(paragraf_data)
 {
-    InputBox, paragraf
+    inputbox, paragraf
     for i, e in paragraf_data
         for i2, e2 in e
             if (e2 = paragraf)
             {
                paragraf := paragraf_data[i][2]
             }
-return vm
+return paragraf
 }
 !z::
 {
     vm := paragraf_opslag(paragraf_data)   
-    MsgBox, , , % vm, 
+    msgbox, , , % vm, 
+    return
 }
-;; GUI
+;; gui
 
-Gui vl_bod: Font, s9, Segoe UI
-Gui vl_bod: Add, Edit, x62 y27 w120 h21
-Gui vl_bod: Font
-Gui vl_bod: Font, Bold
-Gui vl_bod: Add, Text, x18 y22 w35 h23 +0x200, VL
-Gui vl_bod: Font
-Gui vl_bod: Font, s9, Segoe UI
-Gui vl_bod: Add, MonthCal, x20 y58 w164 h160
-Gui vl_bod: Add, DropDownList, x23 y268 w414, DropDownList||
-Gui vl_bod: Font
-Gui vl_bod: Font, Bold
-Gui vl_bod: Add, Text, x24 y243 w120 h23 +0x200, Paragraf
-Gui vl_bod: Font
-Gui vl_bod: Font, s9, Segoe UI
-Gui vl_bod: Add, Edit, x25 y328 w568 h84
-Gui vl_bod: Font
-Gui vl_bod: Font, Bold
-Gui vl_bod: Add, Text, x25 y300 w260 h23 +0x200, "Kvalitetetsbristen bestod i, at..."
-Gui vl_bod: Font
-Gui vl_bod: Font, s9, Segoe UI
-Gui vl_bod: Add, Text, x285 y10 w120 h23 +0x200, VM
-Gui vl_bod: Add, Text, x285 y54 w120 h23 +0x200, Kontaktinfo
 
-Gui vl_bod: Show, w620 h442, Window
-Return
 
-GuiEscape:
-GuiClose:
-    ExitApp
+z::
+{
+gui vl_bod: show, w620 h442, window
+    return
 
+}
+vl_bodguiescape:
+vl_bodguiclose:
+   gui vl_bod: hide 
+    return
+
+vl_bodbuttonok:
+gui vl_bod: hide
+GuiControl, , edit1, 
+FormatTime, dato, %dato%, dd/MM-yyyy
+MsgBox, , , VL er %vl%, VM er %vm%, dato er %dato%
