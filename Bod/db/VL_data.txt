@@ -1,0 +1,767 @@
+﻿Vognløbsnummer	Firma
+3000	Vinderup Taxi Aps
+3002	Struer bilen
+3005	Byenstaxi Hedensted
+3006	SafeNcare Aps
+3008	NY LANDTAXI v/Jannick Thrue
+3009	Vinderup Taxi Aps
+3010	0
+3020	SafeNcare Aps
+3021	ANC-transport
+3022	Vaviva Transport ApS
+3023	MA Taxi
+3024	SafeNcare Aps
+3025	Dekkou Flex APS
+3026	malik mobayyed
+3027	Muxbus
+3028	Nathalie Transport
+3029	Hatting Sygetransport
+3030	Byenstaxi Hedensted
+3031	OST JYLLAND-FYN
+3034	Sechers Vagt
+3037	CT Biler ApS
+3039	WM Flex
+3040	Taxi & Flex 22 ApS
+3045	A-transport
+3050	Taxa vognmand Per Horup Sørensen
+3052	Sami Flex
+3053	N.A.M
+3057	N.A.M
+3060	BM007 ApS
+3062	0
+3601	0
+3063	Conn3ct+ ApS
+3064	MA Flextrafik aps
+3065	Nørager Taxi og Turist
+3066	Nørager Taxi og Turist
+3068	Sechers Vagt
+3070	Conn3ct+ ApS
+3071	Conn3ct+ ApS
+3072	CT Biler ApS
+3073	Roslev Turist ApS
+3076	Sechers Vagt
+3080	Aflex
+3081	Conn3ct+ ApS
+3082	MA Taxi
+3083	Johnny Kristensen
+3084	Sechers Vagt
+3085	Sechers Vagt
+3086	ASA PersonTransport ApS
+3087	ASA PersonTransport ApS
+3089	BM007 ApS
+3090	0
+3091	LBTransport
+3094	MA Flextrafik aps
+3099	SafeNcare Aps
+3100	Johnny Kristensen
+3101	City Taxi
+3102	Vaviva Transport ApS
+3103	Vojens Taxi Service ApS
+3104	Jytte Gad Hougesen
+3105	KB Bilen
+3106	MA Flextrafik aps
+3107	Vaviva Transport ApS
+3109	Vaviva Transport ApS
+3110	Sabina ApS
+3111	Vaviva Transport ApS
+3114	BM007 ApS
+3115	TEA STRUER APS
+3116	BM007 ApS
+3117	Vaviva Transport ApS
+3118	Sechers Vagt
+3119	BM007 ApS
+3120	Carsten G. Pedersen
+3121	SafeNcare Aps
+3123	BM007 ApS
+3125	LP Busser Holding ApS
+3126	LP Busser Holding ApS
+3127	MA Flextrafik aps
+3128	Vaviva Transport ApS
+3129	BM007 ApS
+3130	KH FlexKørsel
+3132	SafeNcare Aps
+3133	BM007 ApS
+3134	SafeNcare Aps
+3135	Movicare ApS
+3136	Movicare ApS
+3138	Movicare ApS
+3139	Movicare ApS
+3140	Jysk flyt & transport
+3141	LP Busser Holding ApS
+3142	Vaviva Transport ApS
+3144	Taxavognmand Flemming Bak
+3145	MRB TRANSPORT
+3146	Flexbus 2 Aps
+3147	Taxavognmand Flemming Bak
+3148	CT Biler I/S
+3149	Morsø Flextrafik K/s
+3150	Vaviva Transport ApS
+3151	CT Biler I/S
+3152	CT Biler I/S
+3153	Karins Taxi, Hadsten v/Karin Andersen
+3154	Karins Taxi, Hadsten v/Karin Andersen
+3155	Karins Taxi, Hadsten v/Karin Andersen
+3156	RK Flextransport
+3157	Karins Taxi, Hadsten v/Karin Andersen
+3158	Karins Taxi, Hadsten v/Karin Andersen
+3159	Flex786 Aps
+3160	Kronjyllands Taxabus
+3161	SafeNcare Aps
+3162	Conn3ct+ ApS
+3163	Muxbus
+3164	Kronjyllands Taxabus
+3165	SafeNcare Aps
+3166	Taxi v/Lars Hansen
+3167	Hanne børlum
+3168	SafeNcare Aps
+3169	Sabina ApS
+3171	Hatting Sygetransport
+3182	MA Flextrafik aps
+3184	TEA STRUER APS
+3185	Lm taxi
+3190	Tommy d. Andersen
+3191	CMK Transport ApS
+3192	Conn3ct+ ApS
+3193	Conn3ct+ ApS
+3195	GF-BUS v/Gunner Frost
+3196	Johnny Kristensen
+3197	Conn3ct+ ApS
+3198	Byenstaxi Hedensted
+3199	Tommy Taxi
+3200	Taxavognmand Søren Brix
+3201	RK Flextransport
+3202	Tommy Taxi
+3203	Conn3ct+ ApS
+3208	CT Biler I/S
+3209	hasleflex
+3210	CT Biler I/S
+3212	D.D.A. Servicetrafik ApS
+3213	Erik Helmsby Rasmussen
+3215	Es Es 26
+3217	Morsø Flextrafik K/s
+3220	Kronjyllands Taxabus
+3221	From A to B 5 ApS
+3224	Dit - Mit Flex
+3226	SafeNcare Aps
+3227	Gregersens Flexkørsel ApS
+3229	MA Flextrafik aps
+3230	H2 Flex Aps
+3231	Yt Transport ApS
+3232	H2 Flex Aps
+3233	Gregersens Flexkørsel ApS
+3234	Byenstaxi Hedensted
+3235	MA Taxi
+3237	Sydthy Flextrafik ApS
+3238	Holgers Taxi ApS
+3239	Holgers Taxi ApS
+3240	MA Taxi
+3242	hurup taxi
+3243	hurup taxi
+3244	Isak's Flexbiler
+3245	JayAren ApS
+3248	Morsø Flextrafik K/s
+3249	City Taxi
+3250	JK Flextrafik
+3251	vognmand Ivan Schmidt Nielsen
+3254	Johnny Kristensen
+3261	Jomaa transport
+3265	Jørgen Dahl Hedegaard
+3269	Laursen biler
+3270	Tommy d. Andersen
+3271	Johnny Kristensen
+3272	M. D. Persontransport ApS
+3273	Martin Hald
+3275	Sechers Vagt
+3276	MD Transport Herning ApS
+3278	Sechers Vagt
+3279	MA Flextrafik aps
+3281	Sechers Vagt
+3282	MRB TRANSPORT
+3283	OST JYLLAND-FYN
+3285	Johnny Kristensen
+3286	Mørke ny Taxi
+3287	Sechers Vagt
+3288	niels sørensen
+3290	Mørke ny Taxi
+3291	Mørke ny Taxi
+3292	Mørke ny Taxi
+3293	Nord-Transport Aps
+3295	OST JYLLAND-FYN
+3298	OST JYLLAND-FYN
+3299	PPS Transport
+3302	PPS Transport
+3303	Silkeborg Sygetransport ApS
+3304	Silkeborg Sygetransport ApS
+3308	Skanbus
+3309	Nørager Taxi og Turist
+3310	TØRRING TAXA
+3311	Sechers Vagt
+3313	Skanbus
+3314	Tommy Taxi
+3317	Skanbus
+3320	Skanbus
+3321	Standager transport
+3322	Standager transport
+3324	Standager transport
+3328	MA Flextrafik aps
+3329	R-Cap ApS
+3332	R-Cap ApS
+3333	Sydthy Flextrafik ApS
+3335	WM Flex
+3339	Byenstaxi Hedensted
+3343	Sabina ApS
+3347	SafeNcare Aps
+3349	MA Flextrafik aps
+3361	Ejstrupholm Taxi
+3364	Ejstrupholm Taxi
+3372	John Rosenkvist
+3373	SafeNcare Aps
+3374	Sabina ApS
+3375	Vinderup Taxi Aps
+3387	Morsø Flextrafik K/s
+3391	Vognmand Ove Nielsen
+3392	MA Taxi
+3393	Johnny Kristensen
+3394	Johnny Kristensen
+3397	Johnny Kristensen
+3400	Conn3ct+ ApS
+3401	OST JYLLAND-FYN
+3402	TAXAVOGNMAND FLEMMING HALKJÆR RASMUSSEN
+3403	OST JYLLAND-FYN
+3404	Taxavognmand Søren Brix
+3405	OST JYLLAND-FYN
+3406	Conn3ct+ ApS
+3407	Taxavognmand Yusuf
+3409	TM Randers v/Esben Skov
+3410	BM007 ApS
+3411	SafeNcare Aps
+3412	Vognmand Arif Cebel Öniz
+3413	MRB TRANSPORT
+3414	Vognmand Özer ApS
+3415	SafeNcare Aps
+3416	Flexbusser ApS
+3417	Vores Taxi ApS
+3418	Yt Transport ApS
+3419	Yt Transport ApS
+3421	Yt Transport ApS
+3422	Conn3ct+ ApS
+3423	Yt Transport ApS
+3424	Gregersens Flexkørsel ApS
+3425	Gregersens Flexkørsel ApS
+3426	Gregersens Flexkørsel ApS
+3427	Gregersens Flexkørsel ApS
+3432	Vognmand Arif Cebel Öniz
+3441	Dansk Taxi Service ApS anno 2020
+3442	Dansk Taxi Service ApS anno 2020
+3443	Dansk Taxi Service ApS anno 2020
+3444	Dansk Taxi Service ApS anno 2020
+3447	BM007 ApS
+3449	Melisa
+3450	Dansk Taxi Service ApS anno 2020
+3451	Dansk Taxi Service ApS anno 2020
+3452	Dansk Taxi Service ApS anno 2020
+3453	Cabonline Danmark ApS
+3454	Aflex
+3456	Stjernetransport
+3458	Dansk Taxi Service ApS anno 2020
+3459	Stjernetransport
+3460	DT7213
+3462	Vognmand Ove Nielsen
+3463	Vognmand Ove Nielsen
+3465	Vaviva Transport ApS
+3467	LVL Flex 2 ApS
+3469	Johnny Kristensen
+3470	CT Biler ApS
+3472	Adem K Transport
+3477	Uldum Flex
+3483	Uldum Flex
+3484	TØRRING TAXA
+3493	Vognmand Carsten Hyldgård
+3500	D.D.A. Servicetrafik ApS
+3501	A L Flex
+3504	MA Flextrafik aps
+3507	Niels Sloth
+3508	Niels Sloth
+3514	Lm taxi
+3521	BAB Transport
+3522	0
+3523	Vinderup Taxi Aps
+3524	handibilen
+3528	Amar Flex APS
+3530	Lm taxi
+3532	Kronjyllands Taxabus
+3536	BM007 ApS
+3543	Iversen Taxi
+3545	Ikast Taxa Talip Öniz
+3549	Vinderup Taxi Aps
+3555	Flexbusser ApS
+3559	Tversted taxi - bus
+3562	Vinderup Taxi Aps
+3564	Mortens Busser ApS
+3565	Mortens Busser ApS
+3576	Flexbusser ApS
+3578	Flexbusser ApS
+3583	RK Flextransport
+3584	RK Flextransport
+3586	Vindum Transport & Limousine Service
+3600	bjarne lund
+3603	CT Biler ApS
+3604	0
+3605	Kronjyllands Taxabus
+3606	CT Biler ApS
+3607	SafeNcare Aps
+3608	SafeNcare Aps
+3609	SafeNcare Aps
+3610	CT Biler ApS
+3611	Byenstaxi Hedensted
+3612	Hans Pallesen
+3613	Hans Pallesen
+3615	Hans Pallesen
+3616	Vinderup Taxi Aps
+3617	Issotransport
+3618	Guufe Transport ApS
+3619	Issotransport
+3620	Morsø Flextrafik K/s
+3621	Flex786 Aps
+3622	SafeNcare Aps
+3623	SafeNcare Aps
+3625	Crown Transport Aps
+3626	Taxivognmand v/Morten Dieckmann Noesgaard
+3627	Vores Taxi ApS
+3631	Flexbusser ApS
+3632	SafeNcare Aps
+3633	0
+3634	SafeNcare Aps
+3638	OST JYLLAND-FYN
+3639	MRB TRANSPORT
+3642	andreas andersen
+3645	Støve-Rasmussens Person-transport
+3650	GVJ Persontransport
+3651	Yt Transport ApS
+3652	HLN 10
+3655	Henrik Marager
+3656	TEA STRUER APS
+3660	Ahmad Saad ApS
+3666	Flexbusser ApS
+3667	SafeNcare Aps
+3667	SafeNcare Aps
+3670	Morsø Flextrafik K/s
+3676	Morsø Flextrafik K/s
+3680	SafeNcare Aps
+3681	Morsø Flextrafik K/s
+3682	SafeNcare Aps
+3684	SafeNcare Aps
+3686	Crown Transport Aps
+3687	Crown Transport Aps
+3689	Crown Transport Aps
+3690	CT Biler ApS
+3691	SafeNcare Aps
+3694	SafeNcare Aps
+3695	Mortens Busser ApS
+3696	SafeNcare Aps
+3697	Crown Transport Aps
+3698	taxa vognmand knud erik bach
+3699	tomas josephsen
+3702	harboøre taxi
+3703	harboøre taxi
+3705	Cabonline Danmark ApS
+3714	Brian Korsgaard
+3715	RK Flextransport
+3717	Morsø Flextrafik K/s
+3721	N.A.M
+3725	Dantaxi4x48 A/S
+3726	Dantaxi4x48 A/S
+3731	SafeNcare Aps
+3732	SafeNcare Aps
+3733	Byenstaxi Hedensted
+3736	Ejstrupholm Taxi
+3740	Vaviva Transport ApS
+3741	Vaviva Transport ApS
+3743	Sabina ApS
+3744	LP Busser Holding ApS
+3748	Vaviva Transport ApS
+3755	City Taxi
+3756	City Taxi
+3757	City Taxi
+3758	Iversen Taxi
+3760	Vinderup Taxi Aps
+3762	Byenstaxi Hedensted
+3768	MA Flextrafik aps
+3771	Roslev Turist ApS
+3774	TØRRING TAXA
+3775	SafeNcare Aps
+3776	0
+3782	Mortens Busser ApS
+3789	Mortens Busser ApS
+3790	MA Flextrafik aps
+3794	Vinderup Taxi Aps
+3798	Morsø Flextrafik K/s
+3800	hasleflex
+3801	hasleflex
+3803	Holgers Taxi ApS
+3804	Holgers Taxi ApS
+3805	Kenny Thygesen
+3806	Kenny Thygesen
+3807	Kenny Thygesen
+3808	Kenny Thygesen
+3809	Kenny Thygesen
+3810	Kenny Thygesen
+3811	Kenny Thygesen
+3812	Avos
+3813	BM007 ApS
+3814	BM007 ApS
+3815	D.D.A. Servicetrafik ApS
+3816	Kronjyllands Taxabus
+3817	MA Taxi
+3818	Niels Sloth
+3819	Vognmand Arif Cebel Öniz
+3820	OST JYLLAND-FYN
+3821	OST JYLLAND-FYN
+3822	OST JYLLAND-FYN
+3823	Cabonline Danmark ApS
+3824	SafeNcare Aps
+3891	Mørke ny Taxi
+3892	NY LANDTAXI v/Jannick Thrue
+3895	SafeNcare Aps
+3897	Hornslet Taxa
+3898	SafeNcare Aps
+3904	Vognmand
+3918	Ahmad Saad ApS
+3919	Movicare ApS
+3920	VIKINGBUS Danmark A/S
+3921	VIKINGBUS Danmark A/S
+3922	VIKINGBUS Danmark A/S
+3923	VIKINGBUS Danmark A/S
+3924	VIKINGBUS Danmark A/S
+3925	VIKINGBUS Danmark A/S
+3926	VIKINGBUS Danmark A/S
+3927	VIKINGBUS Danmark A/S
+3928	VIKINGBUS Danmark A/S
+3929	VIKINGBUS Danmark A/S
+3930	BM007 ApS
+3931	MA Flextrafik aps
+3932	Taxi & Flex 22 ApS
+3933	Flex Midt ApS
+3934	SafeNcare Aps
+3935	Vognmand
+3936	Skanbus
+3937	SafeNcare Aps
+3938	Kronjyllands Taxabus
+3939	SafeNcare Aps
+3940	Flex Midt ApS
+3941	SafeNcare Aps
+3942	Cabonline Danmark ApS
+3943	Cabonline Danmark ApS
+3944	Cabonline Danmark ApS
+3945	Cabonline Danmark ApS
+3946	Cabonline Danmark ApS
+3947	Cabonline Danmark ApS
+3948	Cabonline Danmark ApS
+3949	Cabonline Danmark ApS
+3950	CT Biler I/S
+3951	CT Biler I/S
+3952	SafeNcare Aps
+3953	SafeNcare Aps
+3954	SafeNcare Aps
+3955	SafeNcare Aps
+3956	SafeNcare Aps
+3957	SafeNcare Aps
+3958	SafeNcare Aps
+3959	SafeNcare Aps
+3960	SafeNcare Aps
+30002	MA Taxi
+30004	MA Flextrafik aps
+30008	MA Flextrafik aps
+30011	SafeNcare Aps
+30012	MA Taxi
+30019	SafeNcare Aps
+30021	MA Flextrafik aps
+30024	MA Flextrafik aps
+30029	MA Flextrafik aps
+30030	SafeNcare Aps
+30032	Ingrid Borup Andresen
+30036	SafeNcare Aps
+30057	TLN ApS
+30077	Lemvig Taxi
+30080	Sechers Vagt
+30081	Mortens Busser ApS
+30099	CT Biler ApS
+30101	Sechers Vagt
+30120	Flex786 Aps
+30154	Sønderbro's Taxi
+30155	Sønderbro's Taxi
+30156	Sønderbro's Taxi
+30183	Vores Taxi ApS
+30188	Sabina ApS
+30258	TAXI MidtVest ApS
+31200	SafeNcare Aps
+31201	SafeNcare Aps
+31202	SafeNcare Aps
+31203	SafeNcare Aps
+31204	SafeNcare Aps
+31205	SafeNcare Aps
+31206	Reliable ApS
+31207	Wahbeh Flex Aps
+31208	Vojens Taxi Service ApS
+31209	SafeNcare Aps
+31210	Cabonline Danmark ApS
+31211	Sabina ApS
+31212	Vojens Taxi Service ApS
+31213	Vojens Taxi Service ApS
+31214	Vojens Taxi Service ApS
+31215	Movicare ApS
+31216	Reliable ApS
+31217	Reliable ApS
+31218	Flex Midt ApS
+31219	Reliable ApS
+31220	KKL Entreprise ApS
+31221	KKL Entreprise ApS
+31222	Flex Midt ApS
+31223	Reliable ApS
+31224	Movicare ApS
+31225	Aros Bus ApS
+31226	Tc1021
+31227	Movicare ApS
+31228	Movicare ApS
+31229	Sabina ApS
+31230	Flex Midt ApS
+31231	SafeNcare Aps
+31232	Flex Midt ApS
+31233	Movicare ApS
+31234	Movicare ApS
+31235	Movicare ApS
+31236	Reliable ApS
+31237	Flex Midt ApS
+31238	SafeNcare Aps
+31239	SafeNcare Aps
+31240	SafeNcare Aps
+31241	Movicare ApS
+31242	Skanbus
+31243	Skanbus
+31244	Aros Bus ApS
+31245	NYC Taxa ApS
+31246	Reliable ApS
+31247	Flex Midt ApS
+31248	Flex Midt ApS
+31249	Reliable ApS
+31250	Movicare ApS
+31251	Movicare ApS
+31252	Movicare ApS
+31253	Movicare ApS
+31254	Skanbus
+31255	Movicare ApS
+31256	Movicare ApS
+31257	Movicare ApS
+31258	Movicare ApS
+31259	Flex Midt ApS
+31260	Flex Midt ApS
+31261	Reliable ApS
+31262	SafeNcare Aps
+31263	Reliable ApS
+31264	SafeNcare Aps
+31265	Reliable ApS
+31266	Skanbus
+31267	KKL Entreprise ApS
+31268	Reliable ApS
+31269	Movicare ApS
+31270	Aros Bus ApS
+31271	SafeNcare Aps
+31272	Movicare ApS
+31273	Movicare ApS
+31274	Movicare ApS
+31275	Movicare ApS
+31276	SafeNcare Aps
+31277	Reliable ApS
+31278	Reliable ApS
+31279	Flex Midt ApS
+31280	Movicare ApS
+31281	Movicare ApS
+31282	Reliable ApS
+31283	Reliable ApS
+31284	KKL Entreprise ApS
+31285	KKL Entreprise ApS
+31286	AVOS
+31287	KKL Entreprise ApS
+31288	Reliable ApS
+31289	Flex Midt ApS
+31290	Flex Midt ApS
+31291	Reliable ApS
+31292	Reliable ApS
+31293	Reliable ApS
+31294	Reliable ApS
+31295	Reliable ApS
+31296	Reliable ApS
+31297	Reliable ApS
+31298	Flex Midt ApS
+31299	AVOS
+31300	Reliable ApS
+31301	Reliable ApS
+31302	Movicare ApS
+31303	Movicare ApS
+31304	Reliable ApS
+31305	Movicare ApS
+31306	Reliable ApS
+31307	KKL Entreprise ApS
+31308	Reliable ApS
+31309	Reliable ApS
+31310	Reliable ApS
+31311	Reliable ApS
+31312	Flex Midt ApS
+31313	Reliable ApS
+31314	Byenstaxi Hedensted
+31315	Reliable ApS
+31316	Reliable ApS
+31317	SafeNcare Aps
+31318	Skanbus
+31319	Reliable ApS
+31320	Movicare ApS
+31321	Reliable ApS
+31322	Flex Midt ApS
+31323	Reliable ApS
+31324	Reliable ApS
+31325	Reliable ApS
+31326	Reliable ApS
+31327	Reliable ApS
+31328	KKL Entreprise ApS
+31329	Reliable ApS
+31330	Movicare ApS
+31331	Flex Midt ApS
+31332	NYC Taxa ApS
+31333	NYC Taxa ApS
+31334	SafeNcare Aps
+31335	Vojens Taxi Service ApS
+31336	Kronjyllands Taxabus
+31337	Kronjyllands Taxabus
+31338	Reliable ApS
+31339	Kronjyllands Taxabus
+31340	Reliable ApS
+31341	Movicare ApS
+31342	KKL Entreprise ApS
+31343	KKL Entreprise ApS
+31344	Flex Midt ApS
+31345	Flex Midt ApS
+31346	Vojens Taxi Service ApS
+31347	Flex Midt ApS
+31348	Movicare ApS
+31349	Wahbeh Flex Aps
+31350	SafeNcare Aps
+31351	Skanbus
+31352	Reliable ApS
+31353	Reliable ApS
+31354	Reliable ApS
+31355	Reliable ApS
+31356	Reliable ApS
+31357	Flex Midt ApS
+31358	Reliable ApS
+31359	Reliable ApS
+31360	Vojens Taxi Service ApS
+31361	Reliable ApS
+31362	Movicare ApS
+31363	Movicare ApS
+31364	Tc1021
+31365	Movicare ApS
+31366	Movicare ApS
+31367	Movicare ApS
+31368	Reliable ApS
+31369	Reliable ApS
+31370	Movicare ApS
+31371	Reliable ApS
+31372	SafeNcare Aps
+31373	Vojens Taxi Service ApS
+31374	KKL Entreprise ApS
+31375	Reliable ApS
+31376	Reliable ApS
+31377	Reliable ApS
+31378	Reliable ApS
+31379	Flex Midt ApS
+31380	Flex Midt ApS
+31381	Flex Midt ApS
+31382	Flex Midt ApS
+31383	Taxi v/Lars Hansen
+31384	Taxi v/Lars Hansen
+31385	Reliable ApS
+31386	MA Flextrafik ApS
+31721	DANSK TAXI SERVICE
+3431	SafeNcare Aps
+3434	SafeNcare Aps
+3262	Conn3ct+ ApS
+3828	0
+3420	SafeNcare Aps
+3665	DK-TAXI
+3466	MRB TRANSPORT
+3664	SafeNcare Aps
+3503	SafeNcare Aps
+3827	KRONJYLLANDS TAXABUS
+3502	SafeNcare Aps
+3668	DK-TAXI
+3437	SafeNcare Aps
+3518	FLEXBUS 2 APS
+3602	SafeNcare Aps
+31710	MUNKEBO TAXI
+3464	SafeNcare Aps
+3435	SafeNcare Aps
+3174	SafeNcare Aps
+3474	OST JYLLAND-FYN
+3513	OST JYLLAND-FYN
+3662	SafeNcare Aps
+3480	CONN3CT+ APS
+3429	SafeNcare Aps
+3481	CONN3CT+ APS
+3476	SafeNcare Aps
+3490	CONN3CT+ APS
+3473	OST JYLLAND-FYN
+3218	KRONJYLLANDS TAXABUS
+3461	SafeNcare Aps
+3446	JYSK FLYT OG TRANSPORT
+3829	MRB TRANSPORT
+3498	SafeNcare Aps
+3173	SafeNcare Aps
+3478	TC1021 APS
+3430	SafeNcare Aps
+3491	SafeNcare Aps
+3496	SafeNcare Aps
+3497	Movicare ApS
+3035	MRB TRANSPORT
+3439	SAFENCARE APS
+3517	CONNE3CT+ APS
+3577	SABINA APS
+3525	SAFENCARE APS
+3579	SAFENCARE APS
+3499	Movicare ApS
+3515	SAFENCARE APS
+3436	SAFENCARE APS
+3505	CONNE3CT+ APS
+3585	FLEXBUS 2 APS
+3587	OST JYLLAND-FYN
+3511	OST JYLLAND-FYN
+3589	Sivasspor
+3241	MA Flextrafik ApS
+3494	SAFENCARE APS
+3591	MOVICARE APS
+3471	MRB TRANSPORT
+3595	FLEX MIDT APS
+3509	OST JYLLAND-FYN
+3581	OST JYLLAND-FYN
+3593	OST JYLLAND-FYN
+3594	OST JYLLAND-FYN
+3582	MOVICARE APS
+3704	VIKINGBUS DANMARK A/S
+3033	ANC-transport
+3588	CONN3CT+ APS
+3570	OST JYLLAND-FYN
+3596	OST JYLLAND-FYN
+3597	OST JYLLAND-FYN
+3706	VIKINGBUS DANMARK A/S
+3663	SAFENCARE APS
+3614	OST JYLLAND-FYN
+3479	TC1021 APS
+3630	OST JYLLAND-FYN
+3590	Flex Midt ApS
+3566	DK-TAXI
+3637	HASLEFLEX
+3598	CONNE3CT+ APS
+3455	SAFENCARE APS
+3599	SAFENCARE APS
+3967	VIKINGBUS DANMARK A/S
+3640	SAFENCARE APS
+3671	NORDTRANSPORT APS
