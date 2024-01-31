@@ -291,12 +291,13 @@ gui vl_liste: add, button, x400 y475 w80 h23 gvl_liste_ryd3 vbox3, ryd
 gui vl_liste: add, button, x584 y475 w80 h23 gvl_liste_ryd4 vbox4, ryd
 gui vl_liste: add, button, x760 y475 w80 h23 gvl_liste_ryd5 vbox5, ryd
 gui vl_liste: add, button, x936 y475 w80 h23 gvl_liste_ryd6 vbox6, ryd
-gui vl_liste: add, button, x95 y536 w131 h23 gvl_liste_vis_note, vis &note
-gui vl_liste: add, button, x235 y536 w131 h23 gvl_liste_opslag, &opslag
-gui vl_liste: add, button, x375 y536 w131 h23 gvl_liste_opslag_slet, opslag og s&let
-gui vl_liste: add, button, x515 y536 w131 h23 gvl_liste_slet, &slet
-gui vl_liste: add, button, x655 y536 w131 h23 gvl_liste_slet_alt_alle, slet &alt
-gui vl_liste: add, button, x795 y536 w131 h23 gvl_liste_liste, l&iste
+gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_tilføj_note, tilf&øj note
+gui vl_liste: add, button, x180 y536 w131 h23 gvl_liste_vis_note, vis &note
+gui vl_liste: add, button, x320 y536 w131 h23 gvl_liste_opslag, &opslag
+gui vl_liste: add, button, x460 y536 w131 h23 gvl_liste_opslag_slet, opslag og s&let
+gui vl_liste: add, button, x600 y536 w131 h23 gvl_liste_slet, &slet
+gui vl_liste: add, button, x740 y536 w131 h23 gvl_liste_slet_alt_alle, slet &alt
+gui vl_liste: add, button, x880 y536 w131 h23 gvl_liste_liste, l&iste
 #IfWinActive VL-liste
     Enter::
     NumpadEnter::
@@ -515,6 +516,9 @@ vl_liste_ryd6:
         vl_liste_opdater_gui()
 return
 
+
+vl_liste_tilføj_note:
+Return
 
 vl_liste_vis_note:
 Return
