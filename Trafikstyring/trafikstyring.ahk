@@ -561,7 +561,9 @@ vl_liste_liste:
         }
     if (valg = "")
     {
+        sleep 500
         MsgBox, , Vælg en markering, Der skal laves en markering
+        sleep 500
         gui vl_liste: show
         return
     }
@@ -623,6 +625,7 @@ vl_liste_opslag:
         }
     if (valg = "")
     {
+        sleep 50
         MsgBox, , Vælg en markering, Der skal laves en markering
         gui vl_liste: show
         return
