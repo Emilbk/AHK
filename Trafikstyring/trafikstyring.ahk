@@ -3922,6 +3922,10 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         sys_afslut_genvej()
         return
     }
+    if (valgt = "n")
+        {
+            ; Jeg kan ikke ringe dig op, jeg har sendt dig en ny tur
+        }
     sys_afslut_genvej()
     return
 #IfWinActive ; udelukkende for at resette indentering i auto-formatering
