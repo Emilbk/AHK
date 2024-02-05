@@ -53,11 +53,11 @@ FormatTime, vl_liste_tekst_dato, vl_liste_tekst_dato, ddM
 FormatTime, tid_idag, YYYYMMDDHH24MISS, ddM
 if (tid_idag = vl_liste_tekst_dato)
 {
-    MsgBox, , , %vl_liste_tekst_dato% er i dag, 1
+    ; MsgBox, , , %vl_liste_tekst_dato% er i dag, 1
 }
 else
 {
-    MsgBox, , , %vl_liste_tekst_dato% er ikke i dag,
+    ; MsgBox, , , %vl_liste_tekst_dato% er ikke i dag,
 
 }
 FileAppend, , %vl_liste_tekst%
@@ -2459,7 +2459,7 @@ Trio_opkald(ByRef telefon)
     sleep 400
     controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
     sleep 100
-    controlsend, Edit2, {delete} ,ahk_class Addressbook
+    controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
 
     ; sleep 80
     ; controlsend, Edit2, {delete}, ahk_class Addressbook
@@ -4845,3 +4845,8 @@ FlexFinder_addresse()
 ;
 
 ;; test
+; !z::
+; {
+
+;     controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
+; }
