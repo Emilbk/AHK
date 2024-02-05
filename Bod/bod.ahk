@@ -15,11 +15,11 @@ gui vl_bod: font
 gui vl_bod: font, s9, segoe ui
 gui vl_bod: add, text, x325 y10 w120 h23 vvm +0x200, % vm
 gui vl_bod: add, monthcal, x20 y58 w164 h160 vdato
-gui vl_bod: add, dropdownlist, x23 y244 w414, 
-gui vl_bod: add, dropdownlist, x23 y270 w414, 
+gui vl_bod: add, dropdownlist, x23 y244 w414 vFG, 
+gui vl_bod: add, dropdownlist, x23 y270 w414 vFV,  
 gui vl_bod: font
 gui vl_bod: font, bold
-gui vl_bod: add, text, x24 y223 w120 h23 +0x200, paragraf
+gui vl_bod: add, text, x24 y223 w120 h23 +0x200, &Paragraf
 gui vl_bod: font
 gui vl_bod: font, s9, segoe ui
 gui vl_bod: add, edit, x25 y328 w568 h84
@@ -225,5 +225,7 @@ vl_bodguiclose:
 vl_bodbuttonok:
 gui vl_bod: hide
 GuiControl, , edit1, 
+valgt := "fv"
+GuiControlGet, paragraf, , % valgt,
 FormatTime, dato, %dato%, dd/MM-yyyy
-MsgBox, , , VL er %vl%, VM er %vm%, dato er %dato%
+MsgBox, , , VL er %vl%, VM er %vm%, dato er %dato%, FV er %fv%, FG er %FG%
