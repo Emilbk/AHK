@@ -98,19 +98,19 @@ return guifokus
 
 +lbutton::
 {
-if (winactive("planet - indbakke - planet - outlook"))
-    {
-        sendinput, {rbutton}
-        sleep 50
-        sendinput, h
-        sleep 50
-        sendinput, {enter}
-        sleep 50
-        sendinput, {up}
-        winactivate, "svigt fg8-fv8.xlsx - excel"
-        return
-    }
-if (winactive("svigt fg8-fv8.xlsx - excel"))
+; if (winactive("Planet - Indbakke - Planet - Outlook"))
+;     {
+;         sendinput, {rbutton}
+;         sleep 50
+;         sendinput, h
+;         sleep 50
+;         sendinput, {enter}
+;         sleep 200
+;         sendinput, {up}
+;         ; winactivate, Svigt FG8-FV8.xlsx - Excel
+;         return
+;     }
+if (winactive("Svigt FG8-FV8.xlsx - Excel"))
     {
         sendinput, {click2}
         sleep 100
@@ -120,12 +120,25 @@ if (winactive("svigt fg8-fv8.xlsx - excel"))
 else
     {
         sendinput, +{click}
+        sleep 150
+if (winactive("Planet - Indbakke - Planet - Outlook"))
+    {
+        sendinput, {rbutton}
+        sleep 50
+        sendinput, h
+        sleep 50
+        sendinput, {enter}
+        sleep 200
+        sendinput, {up}
+        ; winactivate, Svigt FG8-FV8.xlsx - Excel
+        return
+    }
         return
     }
 }
 ^q::
 {
-if (winactive("planet - indbakke - planet - outlook"))
+if (winactive("Planet - Indbakke - Planet - Outlook"))
     {
         sendinput, {appskey}
         sleep 50
@@ -134,10 +147,10 @@ if (winactive("planet - indbakke - planet - outlook"))
         sendinput, {enter}
         sleep 50
         sendinput, {up}
-        winactivate, "svigt fg8-fv8.xlsx - excel"
+        winactivate, Svigt FG8-FV8.xlsx - Excel
         return
     }
-if (winactive("svigt fg8-fv8.xlsx - excel"))
+if (winactive("Svigt FG8-FV8.xlsx - Excel"))
     {
         sendinput, {f2}
         sendinput, ^v{tab}
@@ -146,15 +159,19 @@ if (winactive("svigt fg8-fv8.xlsx - excel"))
 else
     {
         sendinput, +{click}
+        return
     }
+return
 }
 !q::
 {
-if (winactive("svigt fg8-fv8.xlsx - excel"))
+KeyWait, Alt
+if (winactive("Svigt FG8-FV8.xlsx - Excel"))
     {
-        winactivate planet - indbakke - planet - outlook
-        controlfocus, outlookgrid1, planet - indbakke - planet - outlook
-        sleep 200
+        winactivate Planet - Indbakke - Planet - Outlook
+        sleep 100
+        controlfocus, outlookgrid1, Planet - Indbakke - Planet - Outlook
+        sleep 500
         sendinput, {appskey}
         sleep 50
         sendinput, h
@@ -162,20 +179,25 @@ if (winactive("svigt fg8-fv8.xlsx - excel"))
         sendinput, {enter}
         sleep 500
         sendinput, {up}
-        winactivate, svigt fg8-fv8.xlsx - excel
+        sleep 100
+        controlfocus, _WwG1 , Planet - Indbakke - Planet - Outlook
+        sleep 300
+        SendInput, +{down}
+        ; winactivate, Svigt FG8-FV8.xlsx - Excel
         return
     }
-if (winactive("planet - indbakke - planet - outlook"))
+if (winactive("Planet - Indbakke - Planet - Outlook"))
     {
         clipboard :=
         sendinput, ^c
         clipwait, 1, 
         sleep 50
-        winactivate, svigt fg8-fv8.xlsx - excel
+        winactivate, Svigt FG8-FV8.xlsx - Excel
         sendinput, {f2}
         sendinput, ^v{tab}  
         return
     }
+return
 }
 
 
