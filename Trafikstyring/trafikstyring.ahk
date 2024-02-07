@@ -2457,7 +2457,7 @@ Trio_opkald(ByRef telefon)
     trio_pause()
     SendInput, {CtrlUp}
     sleep 400
-    controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
+    controlsend, Edit2, {CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
     sleep 100
     controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
     sleep 100
@@ -4849,6 +4849,9 @@ FlexFinder_addresse()
 ;; test
 ; !z::
 ; {
-
+;     controlsend, Edit2, {CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
+;     sleep 100
+;     controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
+;     sleep 100
 ;     controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
 ; }
