@@ -8,11 +8,12 @@ SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
 SetTitleMatchMode, 1 ; matcher så længe et ord er der
 #SingleInstance, force
 ; Define the group: gruppe
-GroupAdd, gruppe, PLANET
+GroupAdd, trafikstyringsgruppe, PLANET
 ; GroupAdd, gruppe, ahk_class Chrome_WidgetWin_1
-GroupAdd, gruppe, ahk_class AccessBar
-GroupAdd, gruppe, ahk_class Agent Main GUI
-GroupAdd, gruppe, ahk_class Addressbook
+GroupAdd, trafikstyringsgruppe, ahk_class AccessBar
+GroupAdd, trafikstyringsgruppe, ahk_class Agent Main GUI
+GroupAdd, trafikstyringsgruppe, ahk_class Addressbook
+GroupAdd, trafikstyringsgruppe, ahk_class Transparent Windows Client
 ;; lib
 #Include, %A_linefile%\..\lib\AHKDb\ahkdb.ahk
 #Include, %A_linefile%\..\lib\JSON.ahk
@@ -44,17 +45,30 @@ s := bruger_genvej.41
 tlf :=
 trio_genvej := "Genvejsoversigt"
 vl_repl := []
-vl_tekst := A_UserName . "_vl.txt"
 ;; VL-liste-read
-vl_tekst := A_UserName . "_vl.txt"
-FileRead, vl_liste_array_json, vl_tekst.txt
+vl_liste_tekst := "db\vl_liste\" A_UserName . "_vl_liste.txt"
+; tjek dato for modification, hvis ikke samme dag slet data
+FileGetTime, vl_liste_tekst_dato, %vl_liste_tekst%, M
+FormatTime, vl_liste_tekst_dato, vl_liste_tekst_dato, ddM
+FormatTime, tid_idag, YYYYMMDDHH24MISS, ddM
+if (tid_idag = vl_liste_tekst_dato)
+{
+    ; MsgBox, , , %vl_liste_tekst_dato% er i dag, 1
+}
+else
+{
+    ; MsgBox, , , %vl_liste_tekst_dato% er ikke i dag,
+
+}
+FileAppend, , %vl_liste_tekst%
+FileRead, vl_liste_array_json, %vl_liste_tekst%
 if (vl_liste_array_json = "")
     vl_liste_array := []
 else if (vl_liste_array_json != "")
     vl_liste_array := json.load(vl_liste_array_json)
 
 ;   bruger_genvej  telenor_opr     telenor_ahk
-FileRead, vl_repl_liste, %vl_tekst%
+; FileRead, vl_repl_liste, %vl_repl_tekst%
 
 ;; hotkeydef.
 ; globale genveje                                           ; Standard-opsætning
@@ -76,44 +90,51 @@ Hotkey, % bruger_genvej.7, l_p6_vis_k_aftale ; F3
 Hotkey, % bruger_genvej.8, l_p6_ret_vl_tlf ; +F3
 Hotkey, % bruger_genvej.9, l_p6_vaelg_vl ; ^F3
 Hotkey, % bruger_genvej.10, l_p6_vaelg_vl ; F4
+Hotkey, % bruger_genvej.61, l_p6_vaelg_vl_liste ; ^+Down
 Hotkey, % bruger_genvej.11, l_p6_vl_ring_op ; +F5
 Hotkey, % bruger_genvej.12, l_p6_vm_ring_op ; ^+F5
 Hotkey, % bruger_genvej.13, l_p6_vl_luk ; #F5
+Hotkey, % bruger_genvej.62, l_p6_laas_vl ; #F5
 Hotkey, % bruger_genvej.14, l_p6_alarmer ; F7
 Hotkey, % bruger_genvej.15, l_p6_udraabsalarmer ; +F7
-Hotkey, % bruger_genvej.16, l_p6_ring_til_kunde ; +F8
+; Hotkey, % bruger_genvej.16, l_p6_ring_til_kunde ; +F8
 Hotkey, % bruger_genvej.17, l_p6_udregn_minut ; #t
 Hotkey, % bruger_genvej.18, l_p6_sygehus_ring_op ; ^+s
 Hotkey, % bruger_genvej.19, l_p6_central_ring_op ; ^+c
 Hotkey, % bruger_genvej.20, l_p6_tekst_til_chf ; ^+t
 Hotkey, % bruger_genvej.36, l_flexf_fra_p6 ; +^F
 Hotkey, % bruger_genvej.48, l_p6_rejsesog ; F1
-Hotkey, % bruger_genvej.50, l_p6_liste_vl ; F1
+Hotkey, % bruger_genvej.50, l_p6_liste_vl ; ^å
+;Hotkey, % bruger_genvej.63, l_p6_liste_vl_notat ; ^+F10
 Hotkey, % bruger_genvej.51, l_p6_vis_liste_vl ; F1
 Hotkey, % bruger_genvej.55, l_p6_initialer_slet_eget ; +^n
+Hotkey, % bruger_genvej.59, l_p6_initialer_skift_eget ; +^n
 Hotkey, % bruger_genvej.56, l_p6_tag_alarm ; F1
+Hotkey, % bruger_genvej.58, l_p6_cpr_til_bestillingsvindue ; ^F1
 ; Hotkey, % bruger_genvej.45, l_sys_inputbox_til_fra ; ^½
 Hotkey, IfWinActive
 
 Hotkey, IfWinActive, Planet Version ; specifikt alarmrepl-infobox
 Hotkey, % bruger_genvej.56, l_p6_tag_alarm_vl_box ; F1
 Hotkey, % bruger_genvej.49, l_p6_replaner_liste_vl ; F1
+Hotkey, % bruger_genvej.60, l_p6_replaner_opslag_vl ; F1
 Hotkey, IfWinActive
-
 
 Hotkey, IfWinActive, Vognløbsnotering ; specifikt alarmrepl-infobox
 Hotkey, % bruger_genvej.57, l_p6_notat_igen ; F1
 Hotkey, IfWinActive
 ; Trio
-Hotkey, IfWinActive, ahk_group gruppe
+Hotkey, IfWinActive, ahk_group trafikstyringsgruppe
 Hotkey, % bruger_genvej.22, l_trio_pause ; ^0
 Hotkey, % bruger_genvej.23, l_trio_klar ; ^1
 Hotkey, % bruger_genvej.24, l_trio_udenov ; ^2
 Hotkey, % bruger_genvej.25, l_trio_efterbehandling ; ^3
 Hotkey, % bruger_genvej.26, l_trio_alarm ; ^4
 Hotkey, % bruger_genvej.27, l_trio_frokost ; ^5
-Hotkey, % bruger_genvej.29, l_triokald_til_udklip ; #q
+Hotkey, % bruger_genvej.64, l_trio_linie1 ; ^5
+Hotkey, % bruger_genvej.65, l_trio_linie2 ; ^5
 Hotkey, IfWinActive
+Hotkey, % bruger_genvej.29, l_triokald_til_udklip ; #q
 
 ; flexfinder
 Hotkey, IfWinActive, FlexDanmark FlexFinder ;
@@ -122,8 +143,6 @@ Hotkey, IfWinActive, ,
 ; outlook
 Hotkey, % bruger_genvej.37, l_outlook_ny_mail ; ^+m
 
-Hotkey, IfWinActive, PLANET
-Hotkey, IfWinActive, ,
 
 ;excel
 Hotkey, ifWinActive, Garantivognsoversigt FG8.xlsm
@@ -137,6 +156,10 @@ Hotkey, % bruger_genvej.53, l_excel_p6_id ; !Lbutton
 Hotkey, % bruger_genvej.54, l_excel_p6_cpr ; !Lbutton
 Hotkey, IfWinActive, ,
 ;; Trio-setup
+if not WinExist("ahk_class Agent Main GUI")
+    {
+        run "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Trio Enterprise\Contact Center\Agent Client.lnk"
+    }
 if not WinExist("ahk_class AccessBar")
 {
     WinMenuSelectItem, ahk_class Agent Main GUI, , Vis, Skrivebordsværktøjslinie
@@ -172,7 +195,7 @@ Gui sygehusauh: Add, Button, gsygehusmenu2 v78471000 x16 y164 w115 h23, &Psyk.
 gui sygehuspsyk:+Labelsygehus2
 Gui sygehuspsyk: Font, s9, Segoe UI
 Gui sygehuspsyk: Add, Button, gsygehusmenu2 v78471000 x16 y8 w115 h23, &AUH psyk.
-Gui sygehuspsyk: Add, Button, gsygehusmenu2 v78474500 x16 y32 w115 h23, &RHG psyk.
+Gui sygehuspsyk: Add, Button, gsygehusmenu2 v78474500 x16 y32 w115 h23, RH&G psyk.
 Gui sygehuspsyk: Add, Button, gsygehusmenu2 v78475300 x16 y56 w115 h30, &Randers psyk.
 Gui sygehuspsyk: Add, Button, gsygehusmenu2 v20936488 x16 y87 w115 h30, &Holstebro psyk.
 Gui sygehuspsyk: Add, Button, gsygehusmenu2 v78474000 x16 y111 w115, &Viborg, Silkeborg og Skive psyk.
@@ -247,75 +270,453 @@ Gui trio_genvej: Add, Button, vtrio_genvej gtrio_genvej x0 y0 h42 w240, %trio_ge
 Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 ; Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 
+;; gui vl-liste
+gui vl_liste: +labelvl_liste
+gui vl_liste: font, s9, segoe ui
+gui vl_liste: add, text, x8 y0 w120 h23 +0x200, &Replaneret
+gui vl_liste: add, listbox, x8 y24 w170 h449 HWNDListbox1id vvalg1 gvlryd1 multi,
+gui vl_liste: add, listbox, x184 y24 w170 h449  HWNDListbox2id vvalg2 gvlryd2 multi,
+gui vl_liste: add, listbox, x360 y24 w170 h449 HWNDListbox3id vvalg3 gvlryd3 multi,
+gui vl_liste: add, listbox, x536 y24 w170 h449 HWNDListbox4id  vvalg4 gvlryd4 multi,
+gui vl_liste: add, listbox, x712 y24 w170 h449 HWNDListbox5id  vvalg5 gvlryd5 multi,
+gui vl_liste: add, listbox, x888 y24 w170 h449 HWNDListbox6id  vvalg6 gvlryd6 multi,
+gui vl_liste: add, text, x184 y0 w120 h23 +0x200, Wakeup
+gui vl_liste: add, text, x360 y0 w120 h23 +0x200, Privatrejse
+gui vl_liste: add, text, x536 y0 w120 h23 +0x200, Listet
+gui vl_liste: add, text, x712 y0 w120 h23 +0x200, Låst
+gui vl_liste: add, text, x893 y0 w120 h23 +0x200, Kvitteret for chauffør
+gui vl_liste: add, button, x40 y475 w80 h23 gvl_liste_ryd1 vbox1, ryd
+gui vl_liste: add, button, x224 y475 w80 h23 gvl_liste_ryd2 vbox2, ryd
+gui vl_liste: add, button, x400 y475 w80 h23 gvl_liste_ryd3 vbox3, ryd
+gui vl_liste: add, button, x584 y475 w80 h23 gvl_liste_ryd4 vbox4, ryd
+gui vl_liste: add, button, x760 y475 w80 h23 gvl_liste_ryd5 vbox5, ryd
+gui vl_liste: add, button, x936 y475 w80 h23 gvl_liste_ryd6 vbox6, ryd
+gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_tilføj_note, tilf&øj note
+gui vl_liste: add, button, x180 y536 w131 h23 gvl_liste_vis_note, vis &note
+gui vl_liste: add, button, x320 y536 w131 h23 gvl_liste_opslag, &opslag
+gui vl_liste: add, button, x460 y536 w131 h23 gvl_liste_opslag_slet, opslag og s&let
+gui vl_liste: add, button, x600 y536 w131 h23 gvl_liste_slet, &slet
+gui vl_liste: add, button, x740 y536 w131 h23 gvl_liste_slet_alt_alle, slet &alt
+gui vl_liste: add, button, x880 y536 w131 h23 gvl_liste_liste, l&iste
+#IfWinActive VL-liste
+    Enter::
+    NumpadEnter::
+        fokus := GUIfokus()
+        if (InStr(fokus, "listbox"))
+        {
+            Gosub, vl_liste_opslag
+            return
+        }
+        Else
+            {
+                SendInput, {enter}
+                return
+            }
+    +enter::
+    {
+    fokus := GUIfokus()
+        if (InStr(fokus, "listbox"))
+        {
+            Gosub, vl_liste_opslag_slet
+            return
+        }
+    }
+#IfWinActive
+
+; Omskriv
+#IfWinActive, PLANET
+#IfWinActive, VL-liste
+    F8::
+    gui vl_liste: Hide
+return
+#IfWinActive
+
+#IfWinActive, VL-liste
+    F5::
+    vl_liste_opdater_gui()
+    return
+
+    w::
+        {
+            GuiControl, vl_liste: Focus, listbox2
+            GuiControl, vl_liste: Choose, Listbox2, 1
+            Gosub, vlryd2
+            return
+        }
+
+    i::
+        {
+            GuiControl, vl_liste: Focus, listbox4
+            GuiControl, vl_liste: Choose, Listbox4, 1
+            Gosub, vlryd4
+            return
+        }
+
+    å::
+        {
+            GuiControl, vl_liste: Focus, listbox5
+            GuiControl, vl_liste: Choose, Listbox5, 1
+            Gosub, vlryd5
+            return
+        }
+
+    r::
+        {
+            GuiControl, vl_liste: Focus, listbox1
+            GuiControl, vl_liste: Choose, Listbox1, 1
+            Gosub, vlryd1
+            return
+        }
+
+    p::
+        {
+            GuiControl, vl_liste: Focus, listbox3
+            GuiControl, vl_liste: Choose, Listbox3, 1
+            Gosub, vlryd3
+            return
+        }
+    k::
+        {
+            GuiControl, vl_liste: Focus, listbox6
+            GuiControl, vl_liste: Choose, Listbox6, 1
+            Gosub, vlryd6
+            return
+        }
+#IfWinActive
+;; gui-label vl-list
+vl_listeescape:
+vl_listeclose:
+    gui vl_liste: hide
+return
+
+vlryd1:
+    GuiControl, vl_liste: Choose, Listbox2 , 0
+    GuiControl, vl_liste: Choose, Listbox3 , 0
+    GuiControl, vl_liste: Choose, Listbox4 , 0
+    GuiControl, vl_liste: Choose, Listbox5 , 0
+    GuiControl, vl_liste: Choose, Listbox6 , 0
+return
+vlryd2:
+    GuiControl, vl_liste: Choose, Listbox1 , 0
+    GuiControl, vl_liste: Choose, Listbox3 , 0
+    GuiControl, vl_liste: Choose, Listbox4 , 0
+    GuiControl, vl_liste: Choose, Listbox5 , 0
+    GuiControl, vl_liste: Choose, Listbox6 , 0
+return
+vlryd3:
+    GuiControl, vl_liste: Choose, Listbox1 , 0
+    GuiControl, vl_liste: Choose, Listbox2 , 0
+    GuiControl, vl_liste: Choose, Listbox4 , 0
+    GuiControl, vl_liste: Choose, Listbox5 , 0
+    GuiControl, vl_liste: Choose, Listbox6 , 0
+return
+vlryd4:
+    GuiControl, vl_liste: Choose, Listbox1 , 0
+    GuiControl, vl_liste: Choose, Listbox2 , 0
+    GuiControl, vl_liste: Choose, Listbox3 , 0
+    GuiControl, vl_liste: Choose, Listbox5 , 0
+    GuiControl, vl_liste: Choose, Listbox6 , 0
+return
+vlryd5:
+    GuiControl, vl_liste: Choose, Listbox2 , 0
+    GuiControl, vl_liste: Choose, Listbox3 , 0
+    GuiControl, vl_liste: Choose, Listbox4 , 0
+    GuiControl, vl_liste: Choose, Listbox1 , 0
+    GuiControl, vl_liste: Choose, Listbox6 , 0
+return
+vlryd6:
+    GuiControl, vl_liste: Choose, Listbox2 , 0
+    GuiControl, vl_liste: Choose, Listbox3 , 0
+    GuiControl, vl_liste: Choose, Listbox4 , 0
+    GuiControl, vl_liste: Choose, Listbox1 , 0
+    GuiControl, vl_liste: Choose, Listbox5 , 0
+return
+vl_liste_ryd1:
+    vl_liste_midl := []
+    for i,e in vl_liste_array
+    {    for i2,e2 in e
+            if (i2 = 8 and e2 != "listbox1")
+                {
+                ;    vl_liste_array.RemoveAt(i)
+                vl_liste_midl[i] := vl_liste_array[i]
+                }                
+            }
+        vl_liste_array := vl_liste_midl
+        vl_liste_array_til_json_tekst()
+        vl_liste_opdater_gui()
+return
+vl_liste_ryd2:
+    vl_liste_midl := []
+    for i,e in vl_liste_array
+    {    for i2,e2 in e
+            if (i2 = 8 and e2 != "listbox2")
+                {
+                ;    vl_liste_array.RemoveAt(i)
+                vl_liste_midl[i] := vl_liste_array[i]
+                }                
+            }
+        vl_liste_array := vl_liste_midl
+        vl_liste_array_til_json_tekst()
+        vl_liste_opdater_gui()
+return
+vl_liste_ryd3:
+    vl_liste_midl := []
+    for i,e in vl_liste_array
+    {    for i2,e2 in e
+            if (i2 = 8 and e2 != "listbox3")
+                {
+                ;    vl_liste_array.RemoveAt(i)
+                vl_liste_midl[i] := vl_liste_array[i]
+                }                
+            }
+        vl_liste_array := vl_liste_midl
+        vl_liste_array_til_json_tekst()
+        vl_liste_opdater_gui()
+return
+vl_liste_ryd4:
+    vl_liste_midl := []
+    for i,e in vl_liste_array
+    {    for i2,e2 in e
+            if (i2 = 8 and e2 != "listbox4")
+                {
+                ;    vl_liste_array.RemoveAt(i)
+                vl_liste_midl[i] := vl_liste_array[i]
+                }                
+            }
+        vl_liste_array := vl_liste_midl
+        vl_liste_array_til_json_tekst()
+        vl_liste_opdater_gui()
+return
+vl_liste_ryd5:
+    vl_liste_midl := []
+    for i,e in vl_liste_array
+    {    for i2,e2 in e
+            if (i2 = 8 and e2 != "listbox5")
+                {
+                ;    vl_liste_array.RemoveAt(i)
+                vl_liste_midl[i] := vl_liste_array[i]
+                }                
+            }
+        vl_liste_array := vl_liste_midl
+        vl_liste_array_til_json_tekst()
+        vl_liste_opdater_gui()
+return
+vl_liste_ryd6:
+    vl_liste_midl := []
+    for i,e in vl_liste_array
+    {    for i2,e2 in e
+            if (i2 = 8 and e2 != "listbox6")
+                {
+                ;    vl_liste_array.RemoveAt(i)
+                vl_liste_midl[i] := vl_liste_array[i]
+                }                
+            }
+        vl_liste_array := vl_liste_midl
+        vl_liste_array_til_json_tekst()
+        vl_liste_opdater_gui()
+return
 
 
-;; GUI vl-liste
-Gui vl_liste: +LabelVl_liste
-Gui vl_liste: Font, s9, Segoe UI
-Gui vl_liste: Add, Text, x8 y0 w120 h23 +0x200, Replaneret
-Gui vl_liste: Add, ListBox, x8 y24 w170 h349 vvalg, 
-Gui vl_liste: Add, ListBox, x184 y24 w170 h349, 
-Gui vl_liste: Add, ListBox, x360 y24 w170 h349, ListBox
-Gui vl_liste: Add, ListBox, x536 y24 w170 h349, ListBox
-Gui vl_liste: Add, Text, x184 y0 w120 h23 +0x200, WakeUp
-Gui vl_liste: Add, Text, x360 y0 w120 h23 +0x200, Privatrejse
-Gui vl_liste: Add, Text, x536 y0 w120 h23 +0x200, Listet
-Gui vl_liste: Add, Button, x40 y360 w80 h23, Ryd
-Gui vl_liste: Add, Button, x224 y360 w80 h23, Ryd
-Gui vl_liste: Add, Button, x400 y360 w80 h23, Ryd
-Gui vl_liste: Add, Button, x584 y360 w80 h23, Ryd
-Gui vl_liste: Add, Button, x304 y408 w131 h23 gvl_liste_vis_note, Vis &note
-Gui vl_liste: Add, Button, x304 y440 w131 h23 gvl_liste_opslag, &Opslag
-Gui vl_liste: Add, Button, x304 y472 w131 h23 gvl_liste_opslag_slet, Opslag og &slet
-Gui vl_liste: Add, Button, x304 y504 w131 h23 gvl_liste_slet, S&let
-Gui vl_liste: Add, Button, x304 y536 w131 h23 gvl_liste_slet_alt, Slet alt
-
-;; GUI-label vl-list
-vl_listeEscape:
-vl_listeClose:
-Gui vl_liste: Hide
+vl_liste_tilføj_note:
 Return
 
 vl_liste_vis_note:
 Return
+vl_liste_liste:
+    vl_liste_opslag_array := []
+    valg :=
+    array := 0
+    Gui vl_liste: Submit
+    Gui vl_liste: Hide
+    if (InStr(valg1, "|"))
+       {
+           valg1 := StrSplit(valg1, "|")
+           array := 1
+       }
+    if (InStr(valg2, "|"))
+       {
+           valg2 := StrSplit(valg2, "|")
+           array := 1
+       } 
+    if (InStr(valg3, "|"))
+       {
+           valg3 := StrSplit(valg3, "|")
+           array := 1
+       }
+    if (InStr(valg4, "|"))
+       {
+           valg4 := StrSplit(valg4, "|")
+           array := 1
+       }
+   if (InStr(valg5, "|"))
+       {
+           valg5 := StrSplit(valg5, "|")
+           array := 1
+       } 
+    vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5)
+    for i,e in vl_liste_opslag_array
+        if (e != "")
+        {
+            valg := vl_liste_opslag_array[i]
+        }
+    if (valg = "")
+    {
+        sleep 500
+        MsgBox, , Vælg en markering, Der skal laves en markering
+        sleep 500
+        gui vl_liste: show
+        return
+    }
+    if (array = 0)
+        {
+            listevl_array := []
+            for i,e in valg
+            listevl_array[i] :=   StrSplit(valg[i], ",")
+        }
+    if (array = 1)
+        {
+            listevl_array := []
+            for i,e in valg
+            listevl_array[i] :=   StrSplit(valg[i], ",")
+        }
+Return
+
 vl_liste_opslag:
-Gui vl_liste: Submit
-Gui vl_liste: Hide
-vl_liste_valg_vl := StrSplit(valg, ",")
-p6_vaelg_vl(vl_liste_valg_vl[1])
+    vl_liste_opslag_array := []
+    valg :=
+    array := 0
+    Gui vl_liste: Submit
+    Gui vl_liste: Hide
+    if (InStr(valg1, "|"))
+       {
+           valg1 := StrSplit(valg1, "|")
+           array := 1
+       }
+    if (InStr(valg2, "|"))
+       {
+           valg2 := StrSplit(valg2, "|")
+           array := 1
+       } 
+    if (InStr(valg3, "|"))
+       {
+           valg3 := StrSplit(valg3, "|")
+           array := 1
+       }
+    if (InStr(valg4, "|"))
+       {
+           valg4 := StrSplit(valg4, "|")
+           array := 1
+       }
+   if (InStr(valg5, "|"))
+       {
+           valg5 := StrSplit(valg5, "|")
+           array := 1
+       } 
+   if (InStr(valg6, "|"))
+       {
+           valg6 := StrSplit(valg6, "|")
+           array := 1
+       } 
+    vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5, valg6)
+    for i,e in vl_liste_opslag_array
+        if (e != "")
+        {
+            valg := vl_liste_opslag_array[i]
+        }
+    if (valg = "")
+    {
+        sleep 50
+        MsgBox, , Vælg en markering, Der skal laves en markering
+        gui vl_liste: show
+        return
+    }
+    if (array = 0)
+        {
+            vl_liste_valg_vl := StrSplit(valg, ",")
+            p6_vaelg_vl(vl_liste_valg_vl[1])
+        }
+    if (array = 1)
+        {
+            listevl_array := []
+            for i,e in valg
+            listevl_array[i] :=   StrSplit(valg[i], ",")
+        }
 Return
 vl_liste_opslag_slet:
-Gui vl_liste: Submit
-Gui vl_liste: Hide
-
-vl_liste_valg_vl := StrSplit(valg, ",")
-p6_vaelg_vl(vl_liste_valg_vl[1])
-for i, e in vl_liste_array
-    for i2, e2 in vl_liste_array[i]
+    vl_liste_opslag_array := []
+    valg :=
+    Gui vl_liste: Submit
+    vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5)
+    for i,e in vl_liste_opslag_array
+        if (e != "")
         {
-            if (i2 = 1 and e2 = vl_liste_valg_vl[1])
-                {
-                    vl_liste_array.RemoveAt(i)
-                    break
-                }
+            valg := vl_liste_opslag_array[i]
         }
+    if (valg = "")
+    {
+        MsgBox, , Vælg en markering, Der skal laves en markering
+        gui vl_liste: show
+        return
+    }
+    vl_liste_valg_vl := StrSplit(valg, ",")
+    tid_ind := RegExReplace(vl_liste_valg_vl.2, "\D")
+    tid_korrigeret := SubStr(tid_ind, 1, 2) ":" SubStr(tid_ind, 3 , 2)
+    ; tjek på indkomne listbox(hvordan?), vl og tid - slet i array
+
+    for i,e in vl_liste_array
+        for i2,e2 in e
+        {
+            if (i2 = 1 and e2 = vl_liste_valg_vl.1 and e.3 = tid_korrigeret)
+                {
+                   vl_liste_array.RemoveAt(i)
+                   vl_liste_array_til_json_tekst()
+                   p6_vaelg_vl(vl_liste_valg_vl.1)
+                   return
+                }                
+        }
+
 Return
 vl_liste_slet:
-Gui vl_liste: Submit
-Gui vl_liste: Hide
-
-vl_liste_valg_vl := StrSplit(valg, ",")
-for i, e in vl_liste_array
-    for i2, e2 in vl_liste_array[i]
+    vl_liste_opslag_array := []
+    valg :=
+    Gui vl_liste: Submit, NoHide
+    vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5)
+    for i,e in vl_liste_opslag_array
+        if (e != "")
         {
-            if (i2 = 1 and e2 = vl_liste_valg_vl[1])
-                {
-                    vl_liste_array.RemoveAt(i)
-                    break
-                }
+            valg := vl_liste_opslag_array[i]
         }
+    if (valg = "")
+    {
+        MsgBox, , Vælg en markering, Der skal laves en markering
+        gui vl_liste: show
+        return
+    }
+    vl_liste_valg_vl := StrSplit(valg, ",")
+    tid_ind := RegExReplace(vl_liste_valg_vl.2, "\D")
+    tid_korrigeret := SubStr(tid_ind, 1, 2) ":" SubStr(tid_ind, 3 , 2)
+    ; tjek på indkomne listbox(hvordan?), vl og tid - slet i array
+
+    for i,e in vl_liste_array
+        for i2,e2 in e
+        {
+            if (i2 = 1 and e2 = vl_liste_valg_vl.1 and e.3 = tid_korrigeret)
+                {
+                   vl_liste_array.RemoveAt(i)
+                   vl_liste_array_til_json_tekst()
+                   vl_liste_opdater_gui()
+                   return
+                }                
+        }
+
 Return
 vl_liste_slet_alt:
+Return
+vl_liste_slet_alt_alle:
+gui vl_liste: hide
+FileDelete, %vl_liste_tekst%
+FileAppend, , %vl_liste_tekst%
+vl_liste_array := []
 Return
 ;; end autoexec
 return
@@ -386,15 +787,15 @@ replvl_opslag_slet:
     vl_repl_liste := "|"
     for k, v in vl_repl
         vl_repl_liste .= vl_repl[k] . "|"
-    FileDelete, %vl_tekst%
-    FileAppend, %vl_repl_liste%, %vl_tekst%
+    FileDelete, %vl_repl_tekst%
+    FileAppend, %vl_repl_liste%, %vl_repl_tekst%
     p6_vaelg_vl(valgt_vl.1)
 return
 
 replslet:
     Gui, Submit
     gui, hide
-    FileRead, vl_repl_liste, %vl_tekst%
+    FileRead, vl_repl_liste, %vl_repl_tekst%
     vl_repl_split := StrSplit(vl_repl_liste, "|")
     for k, v in vl_repl_split
         if (valg = v)
@@ -403,8 +804,8 @@ replslet:
     vl_repl_liste := "|"
     for k, v in vl_repl
         vl_repl_liste .= vl_repl[k] . "|"
-    FileDelete, %vl_tekst%
-    FileAppend, %vl_repl_liste%, %vl_tekst%
+    FileDelete, %vl_repl_tekst%
+    FileAppend, %vl_repl_liste%, %vl_repl_tekst%
 return
 
 replsletalt:
@@ -414,8 +815,8 @@ replsletalt:
     vl_repl_liste := "|"
     for k, v in vl_repl
         vl_repl_liste .= vl_repl[k] . "|"
-    FileDelete, %vl_tekst%
-    FileAppend, %vl_repl_liste%, %vl_tekst%
+    FileDelete, %vl_repl_tekst%
+    FileAppend, %vl_repl_liste%, %vl_repl_tekst%
 return
 
 replvl:
@@ -439,6 +840,12 @@ sys_genvej_beskrivelse(kolonne)
     trio_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, kolonne)
     GuiControl, trio_genvej:text, Button1, %trio_genvej%
     return trio_genvej
+}
+; henter GUI-control, der har fokus
+GUIfokus()
+{
+ControlGetFocus, GUIfokus
+return GUIfokus
 }
 ; **
 ; fix, giver 0-fejl ved esc.
@@ -474,6 +881,8 @@ P6_aktiver()
 }
 P6_alt_menu(byref tast1 := "", byref tast2 := "")
 {
+    ; SendInput, {esc}
+    sleep 20
     Sendinput %tast1%
     sleep 40
     SendInput, %tast2%
@@ -485,7 +894,7 @@ P6_planvindue()
 {
     global s
     P6_aktiver()
-    P6_alt_menu("{alt}", "tp")
+    P6_alt_menu("{esc}{alt}", "tp")
 }
 
 ; ***
@@ -504,12 +913,18 @@ P6_rejsesogvindue(byref telefon := "")
     Return
 }
 
+p6_bestillingsvindue()
+{
+    P6_aktiver()
+    P6_alt_menu("{alt}", "rb")
+    return
+}
+
 ;  ***
 ; Vis kørselsaftale for aktivt planbillede
 P6_vis_k()
 {
     global s
-    P6_planvindue()
     P6_alt_menu("{alt},", "tk")
     sleep s * 40
     SendInput !{F5}
@@ -609,13 +1024,21 @@ P6_udfyld_s(ss:="")
 P6_hent_vl()
 {
     global s
-    clipboard := ""
     P6_planvindue()
     SendInput, !l
-    sleep 150 ; ikke P6-afhængig
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
     SendInput, +{F10}c
-    ClipWait, 2, 0
+    ClipWait, 1, 0
     vl := Clipboard
+    while (vl = "")
+        {
+            SendInput, !l
+            sleep 200
+            SendInput, +{F10}c
+            ClipWait, 1, 0
+            vl := clipboard
+        }
     return vl
 }
 
@@ -624,7 +1047,7 @@ p6_vl_vindue()
     vl := P6_hent_vl()
     sleep 30
     SendInput, ^{F12}
-    sleep 250
+    sleep 350
     clipboard :=
     SendInput, ^c
     clipwait 0.5
@@ -639,7 +1062,7 @@ p6_vl_vindue()
     {
         Send, +{F10}c
         vl_opslag := clipboard
-        sleep 100
+        sleep 50
         tid_nu := A_TickCount - tid_start
         if (tid_nu > 12000)
         {
@@ -661,13 +1084,20 @@ p6_vl_vindue_edit()
     clipwait 0.5
     if (InStr(clipboard, A_Year))
     {
-        return 1 ; VL lukket
+        return 0 ; VL lukket
     }
     clipboard :=
     SendInput, +{F10}c
     clipwait 2
+    while (clipboard = "")
+        {
+    clipboard :=
+    SendInput, +{F10}c
+    clipwait 2
+        }
     k_aftale.1 := clipboard
     clipboard :=
+    ; tjek om drift eller vogngruppe
     SendInput, {tab 2}
     sleep 40
     SendInput, +{F10}c
@@ -707,6 +1137,29 @@ p6_vaelg_vl(byref vl := "")
     }
     return
 }
+p6_vaelg_vl_liste(byref vl := "")
+{
+    global listevl_array
+
+    vl := listevl_array[1][1]
+
+    P6_Planvindue()
+    SendInput, !l
+    if (listevl_array.MaxIndex() = "")
+        {
+        MsgBox, , Liste VL, Listen er tom, 2
+        return
+    }
+     if (vl != "")
+    {
+        listevl_array.RemoveAt(1)
+        SendInput, %vl%
+        sleep 100
+        SendInput, {enter}
+    }
+   return
+}
+
 
 ; Udfyld kørselsaftale og styresystem, tager vl(array) som parameter. Kørselaftale = vl.1, Styresystem = vl.2
 P6_udfyld_k_og_s(vl:="")
@@ -790,14 +1243,16 @@ P6_notat(byref tekst:="", tjek:="")
 }
 p6_notat_igen()
 {
-        clipboard :=
-        SendInput, {enter}
-        sleep 80
-        SendInput, ^a^c
-        ClipWait, 2
-        ny_tekst := clipboard
-        sleep 40
-        p6_notat(ny_tekst, 1)
+    clipboard :=
+    SendInput, {enter}
+    sleep 80
+    SendInput, ^a^c
+    ClipWait, 2
+    ny_tekst := clipboard
+    sleep 40
+    SendInput, !a
+    sleep 40
+    p6_notat(ny_tekst, 1)
     Return
 }
 p6_notat_hotstr(notat := "")
@@ -849,6 +1304,18 @@ P6_rejsesog_tlf(ByRef telefon:=" ")
 
     Return
 }
+
+p6_cpr_til_bestillingsvindue()
+{
+    clipboard :=
+    SendInput, ^a^c
+    ClipWait, 1
+    cpr := clipboard
+    p6_bestillingsvindue()
+    sleep 100
+    SendInput, ^t^v{enter}
+    return
+}
 ; ***
 ;
 
@@ -874,6 +1341,7 @@ P6_hent_vl_tlf()
         sys_afslut_genvej()
         return 0
     }
+    sleep 100
     SendInput {Enter}{Enter}
     sleep s * 40
     SendInput !ø
@@ -1050,29 +1518,28 @@ P6_initialer_slet_eget()
     sleep s * 1400
     clipboard :=
     SendInput, ^a^c
-    ClipWait, 1, 0
-    notering := Clipboard
     clipwait 3, 0
+    notering := Clipboard
     notering_split := StrSplit(notering, initialer_udentid)
-        if (InStr(notering_split.1, "/"))
+    if (InStr(notering_split.1, "/"))
+    {
+        SendInput, !o
+        return
+    }
+    notering_split.RemoveAt(1)
+    notering_split.1 := SubStr(notering_split.1, 5)
+    for i, e in notering_split
+    {
+        if (i > 1)
         {
-            SendInput, !o
-            return
+            notering_split[i] := initialer_udentid . notering_split[i]
         }
-        notering_split.RemoveAt(1)
-        notering_split.1 := SubStr(notering_split.1, 5)
-        for i, e in notering_split
-        {
-            if (i > 1)
-            {
-                notering_split[i] := initialer_udentid . notering_split[i]
-            }
-        }
-        for i, e in notering_split
-        {
-            notering_endelig := notering_endelig . notering_split[i]
-        }
-       clipboard := % notering_endelig
+    }
+    for i, e in notering_split
+    {
+        notering_endelig := notering_endelig . notering_split[i]
+    }
+    clipboard := % notering_endelig
     SendInput, ^v
     sleep 50
     SendInput, !o
@@ -1080,6 +1547,50 @@ P6_initialer_slet_eget()
     clipboard := notering
 
 }
+P6_initialer_skift_eget()
+{
+    global s
+    initialer := sys_initialer()
+    initialer_udentid := "/mt" A_userName
+
+    Input, oprindelig_tekst, , {escape} {enter},
+    Input, ny_tekst, , {escape} {enter},
+    SendInput, {F5} ; for at undgå timeout. Giver det problemer med langsom opdatering?
+    sleep s * 40
+    sendinput ^n
+    sleep s * 1400
+    clipboard :=
+    SendInput, ^a^c
+    ClipWait, 1, 0
+    notering := Clipboard
+    clipwait 3, 0
+    notering_split := StrSplit(notering, initialer_udentid)
+    notering_split.1 := StrReplace(notering_split.1, oprindelig_tekst , ny_tekst )
+    if (InStr(notering_split.1, "/"))
+    {
+        SendInput, !o
+        return
+    }
+    for i, e in notering_split
+    {
+        if (i > 1)
+        {
+            notering_split[i] := initialer_udentid . notering_split[i]
+        }
+    }
+    for i, e in notering_split
+    {
+        notering_endelig := notering_endelig . notering_split[i]
+    }
+    clipboard := % notering_endelig
+    SendInput, ^v
+    sleep 50
+    SendInput, !o
+    sleep 200
+    clipboard := notering
+
+}
+
 
 ; ** kan gemtklip-funktion skrives bedre?
 ;Indsæt initialer med efterf. kommentar, behold tidligere klip
@@ -1146,7 +1657,7 @@ P6_input_sluttid()
     p6_input_sidste_slut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,42)
     KeyWait, Ctrl,
     KeyWait, Shift,
-    EnvAdd, nu_plus_5, 10, minutes
+    EnvAdd, nu_plus_5, 5, minutes
     FormatTime, nu_plus_5, %nu_plus_5%, HHmm
     if (p6_input_sidste_slut_ops = "1")
     {
@@ -1572,9 +2083,8 @@ p6_hent_kunde_tlf(ByRef telefon:="")
     return
 }
 
-p6_replaner_gem_vl()
+p6_replaner_hent_vl()
 {
-    vl := []
     gemtklip := ClipboardAll
     ; global vl_repl
     ; global vl_repl_liste
@@ -1590,38 +2100,129 @@ p6_replaner_gem_vl()
     repl_besked := StrSplit(clipboard, " ")
     SendInput, {enter}
     if (repl_besked.MaxIndex() = 11)
-        vl.1 := repl_besked.6
+        vl := repl_besked.6
     ; vl_repl.Push(repl_besked.6)
     if (repl_besked.MaxIndex() = 12)
-        vl.1 := repl_besked.7
+        vl := repl_besked.7
     ; vl_repl.Push(repl_besked.7)/mtebk1200
-    vl.1 := vl.1 . ", repl. " tid
     clipboard := gemtklip
     return vl
 
 }
+    ; del af vl_liste_laas_vl
+    vl_liste_laas_tjek(vl)
+    {
+        global vl_liste_array
 
+        for i, e in vl_liste_array
+        {
+            if (e[8] = "listbox5" and e.1 = vl) and if (!InStr(e.3, "låst"))
+            {
+                return i
+            }
+        }
+        return 0
+    }
+    ; Tjekker for VL i oversigt og sætter låst/låst op status
+    vl_liste_laas_vl(vl)
+    {
+        global vl_liste_array
+
+        laas_i := vl_liste_laas_tjek(vl)
+        if (laas_i = 0)
+        {
+            vl_array := vlliste_laast_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+        }
+        Else
+        {
+            vl_array := vlliste_laast_op_lav_array(vl,laas_i)
+        }
+        ; vlListe_dan_liste("listbox5")
+        return laas_i
+    }
+    ; sætter lås på VL, sender til oversigt, sætter notat på
+    p6_laas_vl()
+    {
+        vl := p6_vl_vindue()
+        sleep 90
+        vl_liste_laas_tjek(vl)
+        p6_vl_vindue_edit()
+        sleep 90
+        p6_vl_vindue_laas(vl)
+        return 
+    }
+    ; Sender kun lås til oversigt
+    p6_marker_vl_laas_minimal()
+    {
+        vl := P6_hent_vl()
+        sleep 50
+        vl_laas := vl_liste_laas_vl(vl)
+        return
+    }
+    ; sender lås til oversigt og sætter notat
+    p6_marker_vl_laas()
+    {
+        initialer := sys_initialer()
+        vl := P6_hent_vl()
+        sleep 50
+        vl_laas := vl_liste_laas_vl(vl)
+        if (vl_laas = 0)
+            P6_notat("låst" initialer " ")
+        if (vl_laas != 0 )
+            P6_notat("låst op" initialer " ")
+        return
+    }
+    ; del af p6_laas_vl, låser åbent VL-vindue
+    p6_vl_vindue_laas(vl)
+    {
+        
+        SendInput, {enter 2}{space}!v^{Up}
+        sleep 50
+        vl_laas := vl_liste_laas_vl(vl) 
+        initialer := sys_initialer()
+        if (vl_laas = 0)
+            SendInput, låst %initialer% {Space}  
+        if (vl_laas != 0)
+            SendInput, låst op %initialer% {space}
+        sleep 50
+        SendInput, {enter}
+        P6_planvindue()
+        SendInput, {f5}!o
+    }
+    ; konverter vl_liste_array til JSON, dump i tekst
+    vl_liste_array_til_json_tekst()
+    {
+        global vl_liste_array
+        global vl_liste_tekst
+
+        vl_liste_array_json := json.Dump(vl_liste_array)
+        FileDelete, %vl_liste_tekst%
+        FileAppend, %vl_liste_array_json%, %vl_liste_tekst%
+        return
+    }
 ; p6_liste_vl(vl_arr)
 ; {
 ;     gemtklip := ClipboardAll
 ;     global vl_repl
 ;     global vl_repl_liste
-;     global vl_tekst
+;     global vl_repl_tekst
 ;     vl_repl := []
 ;     vl_repl.Push(vl_arr.1)
 ;     ; vl_repl_liste := "|"
 ;     for k, v in vl_repl
 ;         vl_repl_liste .= vl_repl[k] . "|"
-;     FileDelete, %vl_tekst%
-;     FileAppend, %vl_repl_liste%, %vl_tekst%
+;     FileDelete, %vl_repl_tekst%
+;     FileAppend, %vl_repl_liste%, %vl_repl_tekst%
 ;     clipboard := gemtklip
 ;     return vl_repl
 
 ; }
+;; RYD OP
 p6_vl_til_liste(vl_arr)
 {
     gemtklip := ClipboardAll
-    
+
     FileRead, vl_array_fil, vl_array.txt
     vl_array_fil.Push(vl_arr.1)
     ; vl_repl_liste := "|"
@@ -1632,76 +2233,214 @@ p6_vl_til_liste(vl_arr)
     return vl_repl
 
 }
-vlListe_dan_liste()
+vlListe_dan_liste(listbox)
 {
     global vl_liste_array
-    vl_liste_repl_str := "|"
+    vl_liste_str := "|"
 
     for i,e in vl_liste_array
         for i2, e2 in vl_liste_array[i]
-        {
-            if (i2 = 4) or if (i2 = 5 and e2 = "")
-                {}
-            else if (i2 = 5 and e2 != 0)
+            if (e.8 = listbox)
+            {
                 {
-                    if (vl_liste_array[i][6] = "")
-                        vl_liste_array[i].InsertAt(6, " (N)")
-                }
-                ; if (i2 = 5 and e2 != 0)
-                ; if (i2 = 5 and e2 = 0)
-                ; vl_liste_array.InsertAt(6, "")
-            else if (i2 = 5 and e2 = 0)
-                {
+                    if (i2 = 4) or if (i2 = 5 and e2 = "") or if (i2 = 8)
+                        {}
+                        else if (i2 = 5 and e2 != 0)
+                        {
+                            if (vl_liste_array[i][6] = "")
+                                vl_liste_array[i].InsertAt(6, " (N)")
+                        }
+                        ; if (i2 = 5 and e2 != 0)
+                        ; if (i2 = 5 and e2 = 0)
+                        ; vl_liste_array.InsertAt(6, "")
+                        else if (i2 = 5 and e2 = 0)
+                        {
 
+                        }
+                        else
+                            vl_liste_str := vl_liste_str . e2
                 }
-            else
-                vl_liste_repl_str := vl_liste_repl_str . e2
-        }
-    vl_liste_array_json := JSON.Dump(vl_liste_array)
-    vl_liste_arra_json_read := json.load(vl_liste_array_json)
-    FileDelete, vl_tekst.txt
-    FileAppend, % vl_liste_array_json, vl_tekst.txt
+            }
+    ; vl_liste_array_json := JSON.Dump(vl_liste_array)
+    ; vl_liste_array_json_read := json.load(vl_liste_array_json)
+    ; FileDelete,  % vl_liste_tekst
+    ; FileAppend, % vl_liste_array_json, % vl_liste_tekst
 
-    return vl_liste_repl_str
+    return vl_liste_str
 }
 
 vlListe_vis_gui()
 {
-    vl_gui_repl_liste := vlListe_dan_liste()
-    GuiControl, vl_liste: , ListBox1, %vl_gui_repl_liste%
-    Gui vl_liste: Show, w718 h574, Window
+    listbox1 := vlListe_dan_liste("listbox1")
+    listbox2 := vlListe_dan_liste("listbox2")
+    listbox3 := vlListe_dan_liste("listbox3")
+    listbox4 := vlListe_dan_liste("listbox4")
+    listbox5 := vlListe_dan_liste("listbox5")
+    listbox6 := vlListe_dan_liste("listbox6")
+    GuiControl, vl_liste: , ListBox1, %listbox1%
+    GuiControl, vl_liste: , ListBox2, %listbox2%
+    GuiControl, vl_liste: , ListBox3, %listbox3%
+    GuiControl, vl_liste: , ListBox4, %listbox4%
+    GuiControl, vl_liste: , ListBox5, %listbox5%
+    GuiControl, vl_liste: , ListBox6, %listbox6%
+    Gui vl_liste: Show, w1076 h574, VL-liste
     Return
 
 }
-vlliste_replaner_hent_vl()
-    {
-        replaneret_vl := []
+vl_liste_opdater_gui()
+{
+    listbox1 := vlListe_dan_liste("listbox1")
+    listbox2 := vlListe_dan_liste("listbox2")
+    listbox3 := vlListe_dan_liste("listbox3")
+    listbox4 := vlListe_dan_liste("listbox4")
+    listbox5 := vlListe_dan_liste("listbox5")
+    listbox6 := vlListe_dan_liste("listbox6")
+    GuiControl, vl_liste: , ListBox1, %listbox1%
+    GuiControl, vl_liste: , ListBox2, %listbox2%
+    GuiControl, vl_liste: , ListBox3, %listbox3%
+    GuiControl, vl_liste: , ListBox4, %listbox4%
+    GuiControl, vl_liste: , ListBox5, %listbox5%
+    GuiControl, vl_liste: , ListBox6, %listbox6%
+    Return
 
+}
+vlliste_replaner_lav_array(vl)
+{
+    vl_liste := []
 
-        FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
-        FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
+    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
+    FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
-        replaneret_vl[1] := p6_replaner_gem_vl()
-        replaneret_vl[2] := ", repl. kl "
-        replaneret_vl[3] := vl_replaner_tidspunkt_vis
-        replaneret_vl[4] := vl_replaner_tidspunkt_intern
-        replaneret_vl[5] := note
-        replaneret_vl[6] :=
-        replaneret_vl[7] := "|"
+    vl_liste[1] := vl
+    vl_liste[2] := ", repl. "
+    vl_liste[3] := vl_replaner_tidspunkt_vis
+    vl_liste[4] := vl_replaner_tidspunkt_intern
+    vl_liste[5] := note
+    vl_liste[6] :=
+    vl_liste[7] := "|"
+    vl_liste[8] := "listbox1"
 
-        return replaneret_vl
-    }
-vlliste_replaner_vl_til_liste()
-    {
-        global vl_liste_array
+    return vl_liste
+}
+vlliste_kvittering_lav_array(vl := "")
+{
+    vl_liste := []
 
-        vl_replaner_listet_vl := vlliste_replaner_hent_vl()
-        if (vl_replaner_listet_vl[1] = 0)
-            return
-        vl_liste_array.Push(vl_replaner_listet_vl)
+    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
+    FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
+    vl_liste[1] := vl
+    vl_liste[2] := ", kvittering sendt "
+    vl_liste[3] := vl_replaner_tidspunkt_vis
+    vl_liste[4] := vl_replaner_tidspunkt_intern
+    vl_liste[5] := note
+    vl_liste[6] :=
+    vl_liste[7] := "|"
+    vl_liste[8] := "listbox6"
+
+    return vl_liste
+}
+vlliste_wakeup_lav_array(vl := "")
+{
+    vl_liste := []
+
+    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
+    FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
+
+    vl_liste[1] := vl
+    vl_liste[2] := ", WakeUp sendt "
+    vl_liste[3] := vl_replaner_tidspunkt_vis
+    vl_liste[4] := vl_replaner_tidspunkt_intern
+    vl_liste[5] := note
+    vl_liste[6] :=
+    vl_liste[7] := "|"
+    vl_liste[8] := "listbox2"
+
+    return vl_liste
+}
+vlliste_priv_lav_array(vl)
+{
+    vl_liste := []
+
+    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
+    FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
+
+    vl_liste[1] := vl
+    vl_liste[2] := ", priv. OBS sendt "
+    vl_liste[3] := vl_replaner_tidspunkt_vis
+    vl_liste[4] := vl_replaner_tidspunkt_intern
+    vl_liste[5] := note
+    vl_liste[6] :=
+    vl_liste[7] := "|"
+    vl_liste[8] := "listbox3"
+
+    return vl_liste
+}
+vlliste_listet_lav_array(vl := "")
+{
+    vl_liste := []
+
+    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
+    FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
+
+    vl_liste[1] := vl
+    vl_liste[2] := ", listet "
+    vl_liste[3] := vl_replaner_tidspunkt_vis
+    vl_liste[4] := vl_replaner_tidspunkt_intern
+    vl_liste[5] := note
+    vl_liste[6] :=
+    vl_liste[7] := "|"
+    vl_liste[8] := "listbox4"
+
+    return vl_liste
+}
+vlliste_laast_lav_array(vl := "")
+{
+    vl_liste := []
+
+    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
+    FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
+
+    vl_liste[1] := vl
+    vl_liste[2] := ", låst "
+    vl_liste[3] := vl_replaner_tidspunkt_vis
+    vl_liste[4] := vl_replaner_tidspunkt_intern
+    vl_liste[5] := note
+    vl_liste[6] :=
+    vl_liste[7] := "|"
+    vl_liste[8] := "listbox5"
+
+    return vl_liste
+}
+vlliste_laast_op_lav_array(vl, laas_i)
+{
+    global vl_liste_array
+
+    FormatTime, laas_op_tid, YYYYMMDDHH24MISS, HH:mm
+    vl_liste_array[laas_i][3] := vl_liste_array[laas_i][3] . ", låst op " laas_op_tid
+    return vl_liste
+}
+
+; vlliste_repl_vl_til_liste()
+; {
+;     global vl_liste_array
+
+;     if (vl[1] = 0)
+;         return
+;     vl_liste_array.Push(vl)
+
+;     return
+; }
+vlliste_vl_array_til_liste(vl_array)
+{
+    global vl_liste_array
+
+    if (vl_array[1] = 0)
         return
-    }
+    vl_liste_array.Push(vl_array)
+    vl_liste_array_til_json_tekst()
+    return
+}
 ;; Telenor
 
 ;; Trio
@@ -1715,21 +2454,31 @@ Trio_opkald(ByRef telefon)
         ControlClick, x365 y18, Trio Agent, , ,, ,, ; Skrivebordsværkstøjsline
         sleep 100
     }
-    sleep 200
-    controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
-    controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
+    trio_pause()
+    SendInput, {CtrlUp}
+    sleep 400
+    controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
+    sleep 100
+    controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
+
     ; sleep 80
     ; controlsend, Edit2, {delete}, ahk_class Addressbook
     sleep 80
     controlsend, Edit2, %telefon%, ahk_class Addressbook
     ControlGetText, kobl_test, Button1, Trio Attendant
+    GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
     if (kobl_test = "Koble")
     {
         controlsend, , {ShiftDown}{enter}{ShiftUp}, ahk_class Addressbook
+        sleep 1000
+        trio_klar()
+        return
     }
     Else
     {
         controlsend, , {enter}, ahk_class Addressbook
+        sleep 1000
+        trio_klar()
         Return
     }
 }
@@ -1743,6 +2492,34 @@ Trio_afslutopkald()
     ; sleep 200
     ; MsgBox, , , % opkaldsstatus
     ControlSend, , {NumpadSub}, ahk_class Agent Main GUI
+    ; WinActivate, ahk_class AccessBar
+    ; winwaitactive, ahk_class AccessBar
+    ; sleep 40
+    ; SendInput, {NumpadSub}
+
+    return
+}
+Trio_linie1()
+{
+    ; ControlFocus, Button1, Addressbook
+    ; ControlGetText, opkaldsstatus, Button1, Trio Attendant
+    ; sleep 200
+    ; MsgBox, , , % opkaldsstatus
+    ControlSend, , {F6}, ahk_class Agent Main GUI
+    ; WinActivate, ahk_class AccessBar
+    ; winwaitactive, ahk_class AccessBar
+    ; sleep 40
+    ; SendInput, {NumpadSub}
+
+    return
+}
+Trio_linie2()
+{
+    ; ControlFocus, Button1, Addressbook
+    ; ControlGetText, opkaldsstatus, Button1, Trio Attendant
+    ; sleep 200
+    ; MsgBox, , , % opkaldsstatus
+    ControlSend, , {F7}, ahk_class Agent Main GUI
     ; WinActivate, ahk_class AccessBar
     ; winwaitactive, ahk_class AccessBar
     ; sleep 40
@@ -2385,10 +3162,16 @@ l_p6_initialer: ;; Initialer til/fra
     P6_initialer()
     sys_afslut_genvej()
 Return
-l_p6_initialer_slet_eget: ;; Initialer til/fra
+l_p6_initialer_slet_eget: 
     genvej_mod := sys_genvej_til_ahk_tast(55)
     sys_genvej_keywait(genvej_mod)
     P6_initialer_slet_eget()
+    sys_afslut_genvej()
+Return
+l_p6_initialer_skift_eget: 
+    genvej_mod := sys_genvej_til_ahk_tast(59)
+    sys_genvej_keywait(genvej_mod)
+    P6_initialer_skift_eget()
     sys_afslut_genvej()
 Return
 ; skriv initialer, fortsæt notat. Kolonne 6
@@ -2405,7 +3188,6 @@ l_p6_notat_igen: ; skriv initialer og forsæt notering.
     P6_notat_igen()
     sys_afslut_genvej()
 return
-
 
 l_p6_vis_k_aftale: ;Vis kørselsaftale for aktivt vognløb
     P6_vis_k()
@@ -2610,6 +3392,10 @@ l_p6_vaelg_vl:
     p6_vaelg_vl()
     sys_afslut_genvej()
 return
+l_p6_vaelg_vl_liste:
+    p6_vaelg_vl_liste()
+    sys_afslut_genvej()
+return
 ;træk tlf fra aktiv planbillede, ring op i Trio. Col 11
 l_p6_vl_ring_op:
     sys_genvej_beskrivelse(11)
@@ -2677,7 +3463,13 @@ l_p6_ring_til_kunde:
         return
     }
 return
+l_p6_laas_vl:
+    sys_genvej_beskrivelse(62)
+    genvej_mod := sys_genvej_til_ahk_tast(62)
+    sys_genvej_keywait(genvej_mod)
 
+    p6_marker_vl_laas()
+return
 ; #F5, col 13
 l_p6_vl_luk:
     sys_genvej_beskrivelse(13)
@@ -2721,6 +3513,14 @@ l_p6_udregn_minut:
     sleep 100
     Gui Show, w260 h125, Resultat
 Return
+l_p6_cpr_til_bestillingsvindue:
+{
+    sys_genvej_beskrivelse(58)
+    genvej_mod := sys_genvej_til_ahk_tast(58)
+    sys_genvej_keywait(genvej_mod)
+    p6_cpr_til_bestillingsvindue()
+    return
+}
 
 ok:
     {
@@ -2770,21 +3570,32 @@ Return
 l_p6_replaner_liste_vl:
     genvej_mod := sys_genvej_til_ahk_tast(49)
     sys_genvej_keywait(genvej_mod)
-    vl := p6_replaner_gem_vl()
+    vl := p6_replaner_hent_vl()
     if (vl = 0)
         return
-    p6_vl_til_liste(vl)
+    vl_array := vlliste_replaner_lav_array(vl)
+    vlliste_vl_array_til_liste(vl_array)
 return
+; Replaner og gå til VL, kolonne 60
+l_p6_replaner_opslag_vl:
+    genvej_mod := sys_genvej_til_ahk_tast(60)
+    sys_genvej_keywait(genvej_mod)
+    vl := p6_replaner_hent_vl()
+    if (vl = 0)
+        return
+    sleep 200
+    p6_vaelg_vl(vl)
+return
+
 
 ; Gem aktiv vl på liste, kolonne 50
 l_p6_liste_vl:
     genvej_mod := sys_genvej_til_ahk_tast(50)
     sys_genvej_keywait(genvej_mod)
     FormatTime, vl_tid , YYYYMMDDHH24MISS, HH:mm
-    vl_liste := []
-    vl_liste.1 := P6_hent_vl()
-    vl_liste.1 := vl_liste.1 . ", listet " vl_tid
-    p6_vl_til_liste(vl_liste)
+    vl := P6_hent_vl()
+    vl_array := vlliste_listet_lav_array(vl)
+    vlliste_vl_array_til_liste(vl_array)
 return
 
 ; vist VL-liste, kolonne 51
@@ -2792,10 +3603,9 @@ l_p6_vis_liste_vl:
 
     genvej_mod := sys_genvej_til_ahk_tast(51)
     sys_genvej_keywait(genvej_mod)
-    FileRead, vl_repl_liste, %vl_tekst%
-    GuiControl, repl: , listbox1 , %vl_repl_liste%
-    GuiControl, repl: choose , listbox1 , 1
-    Gui repl: Show, w620 h420, Window
+    vlListe_vis_gui()
+    sys_afslut_genvej()
+
 return
 
 l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
@@ -2807,12 +3617,18 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
     bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 2)
     ; ctrl_s := chr(19)
-
+    
     sys_genvej_beskrivelse(20)
-
+    
     ; KeyWait Alt
     ; keywait Ctrl
     Input valgt, L1 T5 C, {esc},
+    vl := P6_hent_vl()
+    while (vl = "")
+       {
+        sleep 200
+        vl := P6_hent_vl()
+       }
     if (valgt = "t")
     {
         P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
@@ -2919,14 +3735,9 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
                 SendInput, ^s
                 sleep 1000
                 SendInput, {enter}
-                P6_planvindue()
-                vl := []
-                vl_ind := P6_hent_vl()
-                vl.Push(vl_ind)
                 FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-                vl.1 := vl.1 . ", Kvitt. sendt " tid
-                p6_vl_til_liste(vl)
-
+            vl_array := vlliste_kvittering_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
                 if (k_tid != "Oprindelig kvittering")
                 {
                     P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. tid " k_tid initialer " ")
@@ -2954,17 +3765,13 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
         IfMsgBox, Yes
         {
-            vl := []
             sleep 200
             SendInput, ^s
             sleep 1000
             SendInput, {enter}
-            P6_planvindue()
-            vl_ind := P6_hent_vl()
-            vl.Push(vl_ind)
             FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl.1 := vl.1 . ", Priv. OBS " tid
-            p6_vl_til_liste(vl)
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
             P6_notat("Priv. ikke kvitteret, tekst sendt til chf" initialer " ")
             gui, cancel
             sys_afslut_genvej()
@@ -3013,19 +3820,13 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
         IfMsgBox, Yes
         {
-            vl := []
             sleep 200
-            ; SendInput, ^s
+            SendInput, ^s
             sleep 1000
             SendInput, {enter}
-            P6_planvindue()
-            sleep 50
-            vl_ind := P6_hent_vl()
-            vl.Push(vl_ind)
-            sleep 40
             FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl.1 := vl.1 ", Wakeup sendt " tid
-            p6_vl_til_liste(vl)
+            vl_array := vlliste_wakeup_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
             P6_notat("WakeUp sendt" initialer " ")
             gui, cancel
             sys_afslut_genvej()
@@ -3043,7 +3844,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     if (valgt == "W")
     {
 
-        P6_tekstTilChf("Jeg kan ikke ringe dig op, der er ikke trykket for første køreordre. Ring til driften, hvis du er ude at køre, ellers bliver vognløbet lukket.")
+        P6_tekstTilChf("Jeg kan ikke ringe dig op, der er ikke trykket for første køreordre. Vognløbet er nu låst, ring til driften, hvis du er ude at køre.")
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør? Husk at låse VL,
         IfMsgBox, Yes
@@ -3051,6 +3852,9 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sleep 200
             SendInput, ^s
             sleep 1000
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_laast_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
             SendInput, {enter}
             P6_notat("Ingen kontakt til chf, tekst sendt, VL låst" initialer " ")
             gui, cancel
@@ -3118,6 +3922,10 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         sys_afslut_genvej()
         return
     }
+    if (valgt = "n")
+        {
+            ; Jeg kan ikke ringe dig op, jeg har sendt dig en ny tur
+        }
     sys_afslut_genvej()
     return
 #IfWinActive ; udelukkende for at resette indentering i auto-formatering
@@ -3140,6 +3948,14 @@ l_trio_efterbehandling: ;Trio efterbehandling
     trio_efterbehandling()
     trio_pauseklar()
 Return
+l_trio_linie1: ;Trio efterbehandling
+    trio_linie1()
+Return
+l_trio_linie2: ;Trio efterbehandling
+    trio_linie2()
+Return
+
+
 
 l_trio_alarm: ;Trio alarm bruger.9
     trio_alarm()
@@ -3205,10 +4021,13 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
 l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     genvej_mod := sys_genvej_til_ahk_tast(28)
     sys_genvej_keywait(genvej_mod)
+    SendInput, {Click 2}
+    sleep 200
     clipboard := ""
     SendInput, ^c
     ClipWait, 2, 0
     telefon := clipboard
+    telefon := RegExReplace(telefon, "\D")
     GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
     sleep 300
     Trio_opkald(telefon)
@@ -3813,7 +4632,12 @@ return
             p6_notat_hotstr("st. ankomst_tid initialer")
             return
         }
-    :B0:/ankc::
+    :B0:/anko::
+        {
+            p6_notat_hotstr("st. ankomst_tid, overset initialer")
+            return
+        } 
+   :B0:/ankc::
         {
             p6_notat_hotstr("st. ankomst_tid, chf giver kunde besked initialer ")
             return
@@ -3933,6 +4757,11 @@ return
             p6_notat_hotstr("chf inf initialer")
             return
         }
+    :b0:/retf::
+        {
+            p6_notat_hotstr("st. tid rettet jf. FF initialer")
+            return
+        }
 #IfWinActive, Vognløbsnotering
 #IfWinActive, PLANET
     ::/mt::
@@ -4016,15 +4845,8 @@ FlexFinder_addresse()
 ;
 
 ;; test
-^p::
-{
-    vlListe_vis_gui()
-    
-    return
-}
-^z::
-{
-    vlliste_replaner_vl_til_liste() 
-    SendInput,  {enter}
-    return
-}
+; !z::
+; {
+
+;     controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
+; }

@@ -1,0 +1,31 @@
+﻿Vogngruppe	Firma
+Danaarstat	Dantaxi4x48 A/S
+Skandstat	Dantaxi4x48 A/S
+Silkestat1	Dantaxi4x48 A/S
+Skivestat	Dantaxi4x48 A/S
+Viborgstat	Dantaxi4x48 A/S
+RanDANstat	Dantaxi4x48 A/S
+HerDANstat	Dantaxi4x48 A/S
+SILDANMPV	Dantaxi4x48 A/S
+SKIDANMPV	Dantaxi4x48 A/S
+HORDANMPV	Dantaxi4x48 A/S
+ODDDANMPV	Dantaxi4x48 A/S
+ÅRHDANMPV	Dantaxi4x48 A/S
+VIBDANMPV	Dantaxi4x48 A/S
+HERDANMPV	Dantaxi4x48 A/S
+RANDANMPV	Dantaxi4x48 A/S
+SKBDANMPV	Dantaxi4x48 A/S
+RSKDANMPV	Dantaxi4x48 A/S
+Holsstat	dk-taxi
+RanDKstat	dk-taxi
+Hernistcar	Herning Taxa Bestillingskontor
+Silherstat	Herning Taxa Bestillingskontor
+ÅrhMUNstat	Munkebo Taxi
+Horstat	Foreningen Taxa f.m.b.a.
+Århusstat	Foreningen Taxa f.m.b.a.
+Århusmpv	Foreningen Taxa f.m.b.a.
+ÅrhSAFstat	SafeNcare Aps
+ÅrhSAFsta1	SafeNcare Aps
+HerSAFstat	SafeNcare Aps
+SKIØKOSTAT	Skive TAXA, Økonomisk Forening
+Viborgpak	Viborg Taxa kaldet Dan Taxi Viborg
