@@ -2456,6 +2456,11 @@ Trio_opkald(ByRef telefon)
     }
     trio_pause()
     sleep 100
+    ; if tlf = ""
+    ;   msgbox "der er ikke markeret noget"
+    ; controlget nuværende trio-tlf
+    ; while trio != ""
+    ; gør nedenunder
     SendInput, {CtrlUp}{AltUp}
     sleep 100
     controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
