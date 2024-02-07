@@ -1,0 +1,16 @@
+lista=
+(join|
+script1
+script2
+script3
+)
+Gui, font, s10, Arial
+Gui, Add, ListBox, x10 y10 w350 h600 vMyScript gRunScript, %lista%
+Gui, Show
+Return
+
+RunScript:
+Gui, Submit, Destroy
+Run, % A_ScriptDir . "\" MyScript . ".ahk"
+ExitApp
+Return
