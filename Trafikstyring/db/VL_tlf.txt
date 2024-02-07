@@ -1,4 +1,5 @@
-"Opdateret " tidTelefonnummer til chauffør	Vognløbsnummer
+ï»¿Opdateret d. 07/02-24 
+Telefonnummer til chauffÃ¸r	VognlÃ¸bsnummer
 92900598	4978_48
 71929185	4992_48
 92909326	4974_48
@@ -391,7 +392,7 @@
 21428714	4262_48
 31395953	2695
 22184713	2673
-Telefonnummer til chauffør	Vognløbsnummer
+Telefonnummer til chauffÃ¸r	VognlÃ¸bsnummer
 12365489	9999
 40602885	3690_26
 52828807	3037_32
@@ -1923,7 +1924,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 25945694	3565_47
 20313081	4138_48
 52795854	4121_45
-Telefonnummer til chauffør	Vognløbsnummer
+Telefonnummer til chauffÃ¸r	VognlÃ¸bsnummer
 25688891	8104_16
 91663228	8261_16
 22287876	8275_16
