@@ -177,7 +177,7 @@ if (winactive("Svigt FG8-FV8.xlsx - Excel"))
         sendinput, h
         sleep 50
         sendinput, {enter}
-        sleep 500
+        sleep 1500
         sendinput, {up}
         sleep 100
         controlfocus, _WwG1 , Planet - Indbakke - Planet - Outlook
@@ -195,12 +195,35 @@ if (winactive("Planet - Indbakke - Planet - Outlook"))
         winactivate, Svigt FG8-FV8.xlsx - Excel
         sendinput, {f2}
         sendinput, ^v{tab}  
+        sleep 40
+    SendInput, ^d{tab}
+    sleep 40
+    SendInput, !{down}
         return
     }
 return
 }
-
-
+#IfWinActive, Svigt FG8-FV8.xlsx - Excel
+!w::
+    {
+        winactivate Planet - Indbakke - Planet - Outlook
+        sleep 100
+        controlfocus, _WwG1 , Planet - Indbakke - Planet - Outlook
+        sleep 300
+        clipboard :=
+        sendinput, ^c
+        clipwait, 1, 
+        sleep 50
+        winactivate, Svigt FG8-FV8.xlsx - Excel
+        sleep 150
+        sendinput, {f2}
+        sendinput, ^v{tab}  
+        sleep 40
+    SendInput, ^d{tab}
+    sleep 40
+    SendInput, !{down}
+        return
+    }
 vm_opslag(vl_data)
 {
     inputbox, vl
@@ -233,7 +256,7 @@ return paragraf
 
 
 
-z::
+!z::
 {
 gui vl_bod: show, w620 h442, window
     return

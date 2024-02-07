@@ -2460,6 +2460,8 @@ Trio_opkald(ByRef telefon)
     controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
     sleep 100
     controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
+    sleep 100
+    controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
 
     ; sleep 80
     ; controlsend, Edit2, {delete}, ahk_class Addressbook
