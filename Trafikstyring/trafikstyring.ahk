@@ -2455,14 +2455,13 @@ Trio_opkald(ByRef telefon)
         sleep 100
     }
     trio_pause()
-    SendInput, {CtrlUp}
-    sleep 400
-    controlsend, Edit2, {CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
     sleep 100
-    controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
+    SendInput, {CtrlUp}{AltUp}
     sleep 100
-    controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
-
+    controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
+    sleep 100
+    controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
+    sleep 100
     ; sleep 80
     ; controlsend, Edit2, {delete}, ahk_class Addressbook
     sleep 80
