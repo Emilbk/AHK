@@ -8,7 +8,8 @@ SetWorkingDir, %A_ScriptDir%
 
 FileRead, input, Genudbud FG8 - FlexGaranti.txt
 FormatTime, tid, YYYYMMDDHH24MISS, dd/MM-yy
-output_table := "Opdateret `t" tid "`n"
+opdateret := "Opdateret `t" tid "`n"
+
 input_table := TSVParser.ToArray(input)
 input_table2 := []
 
