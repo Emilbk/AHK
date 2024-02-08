@@ -1031,6 +1031,7 @@ P6_hent_vl()
     SendInput, +{F10}c
     ClipWait, 1, 0
     vl := Clipboard
+    loop_test := 0
     while (vl = "")
         {
             SendInput, !l
@@ -1038,6 +1039,12 @@ P6_hent_vl()
             SendInput, +{F10}c
             ClipWait, 1, 0
             vl := clipboard
+            loop_test +1
+            if (loop_test > 10)
+                {
+                    MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
+                    return
+                }
         }
     return vl
 }
@@ -1057,15 +1064,15 @@ p6_vl_vindue()
     }
     clipboard :=
     vl_opslag := clipboard
-    tid_start := A_TickCount
+    loop_test := 0
     while (vl_opslag != vl)
     {
         Send, +{F10}c
         vl_opslag := clipboard
         sleep 400
-        tid_nu := A_TickCount - tid_start
-        if (tid_nu > 12000)
-        {
+        loop_test += 1
+        if (loop_test > 15)
+    {
             return 0
         }
     }
@@ -1089,12 +1096,19 @@ p6_vl_vindue_edit()
     clipboard :=
     SendInput, +{F10}c
     clipwait 2
+    loop_test := 0
     while (clipboard = "")
         {
     sleep 400
     clipboard :=
     SendInput, +{F10}c
     clipwait 2
+    loop_test += 1
+    if (loop_test > 10)
+        {
+            MsgBox, 16 , Fejl, Der er sket en fejl - Prøv igen
+            return
+        }
         }
     k_aftale.1 := clipboard
     clipboard :=
@@ -1330,7 +1344,7 @@ P6_hent_vl_tlf()
     if (vl_tilstand = 0)
     {
         sleep 100
-        MsgBox, , For lang tid brugt, Noget er gået galt. Prøv igen.
+        MsgBox, 16 , For lang tid brugt, Noget er gået galt. Prøv igen.
         sys_afslut_genvej()
         return 0
     }
@@ -1349,12 +1363,19 @@ P6_hent_vl_tlf()
     sleep s * 40
     Clipboard :=
     SendInput {tab}{tab}
+    loop_test := 0
     while (StrLen(clipboard) != 8)
     {
         clipboard :=
         SendInput ^c
         ClipWait, 1
         sleep 400
+        loop_test += 1
+        if (loop_test > 15)
+            {
+                MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
+                return
+            }
     }
     SendInput ^a
     vl_tlf := Clipboard
@@ -1376,12 +1397,19 @@ P6_hent_vm_tlf()
     ; sleep * 40
     Clipboard :=
     SendInput {tab}{tab}{tab}{tab}
+    loop_test := 0
     while (StrLen(clipboard) != 8)
     {
         clipboard :=
         SendInput ^c
         ClipWait, 1
         sleep 400
+        loop_test += 1
+        if (loop_test > 10)
+            {
+                MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
+                return
+            }
     }
     SendInput, {enter}
     SendInput ^a
@@ -2466,11 +2494,17 @@ Trio_opkald(ByRef telefon)
         }
     ControlGetText, tlf_test, Edit2, Trio Attendant
     sleep 100
+    loop_test := 0
     while (tlf_test != "")
         {
             controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
             sleep 100
             ControlGetText, tlf_test, Edit2, Trio Attendant
+            if (loop_test > 10)
+                {
+                    MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
+                    return
+                }
        }
     sleep 80
     controlsend, Edit2, %telefon%, ahk_class Addressbook
@@ -3634,10 +3668,17 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     ; keywait Ctrl
     Input valgt, L1 T5 C, {esc},
     vl := P6_hent_vl()
+    loop_test := 0
     while (vl = "")
        {
         sleep 400
         vl := P6_hent_vl()
+        loop_test += 1
+        if (loop_test > 10)
+            {
+                MsgBox, 16 , Fejl, Der er sket en fejl - prøv igen,
+                return
+            }
        }
     if (valgt = "t")
     {
