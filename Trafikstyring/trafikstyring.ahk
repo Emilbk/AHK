@@ -972,7 +972,7 @@ P6_hent_k()
     SendInput, !k
     clipboard := ""
     Sendinput +{F10}c
-    ClipWait
+    ClipWait 1
     sleep s * 200
     kørselsaftale := clipboard
     return kørselsaftale
@@ -999,7 +999,7 @@ P6_hent_s()
     Sendinput k{tab}
     clipboard := ""
     Sendinput +{F10}c
-    ClipWait
+    ClipWait 1
     styresystem := clipboard
     return styresystem
 }
@@ -1035,15 +1035,15 @@ P6_hent_vl()
     while (vl = "")
         {
             SendInput, !l
-            sleep 400
+            sleep 50
             SendInput, +{F10}c
             ClipWait, 1, 0
             vl := clipboard
-            loop_test := +1
-            if (loop_test > 10)
+            loop_test += 1
+            if (loop_test > 7)
                 {
                     MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
-                    return
+                    return 0
                 }
         }
     return vl
@@ -1052,6 +1052,11 @@ P6_hent_vl()
 p6_vl_vindue()
 {
     vl := P6_hent_vl()
+    if (vl = 0)
+        {
+            sys_afslut_genvej()
+            return
+        }
     sleep 30
     SendInput, ^{F12}
     sleep 350
@@ -1371,10 +1376,10 @@ P6_hent_vl_tlf()
         ClipWait, 1
         sleep 400
         loop_test += 1
-        if (loop_test > 15)
+        if (loop_test > 5)
             {
                 MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
-                return
+                return 0
             }
     }
     SendInput ^a
@@ -1402,13 +1407,13 @@ P6_hent_vm_tlf()
     {
         clipboard :=
         SendInput ^c
-        ClipWait, 1
+        ClipWait, 0.1
         sleep 400
         loop_test += 1
         if (loop_test > 10)
             {
                 MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
-                return
+                return "fejl"
             }
     }
     SendInput, {enter}
@@ -2185,6 +2190,11 @@ p6_replaner_hent_vl()
     p6_marker_vl_laas_minimal()
     {
         vl := P6_hent_vl()
+        if (vl = 0)
+            {
+                sys_afslut_genvej()
+                return
+            }
         sleep 50
         vl_laas := vl_liste_laas_vl(vl)
         return
@@ -2194,6 +2204,11 @@ p6_replaner_hent_vl()
     {
         initialer := sys_initialer()
         vl := P6_hent_vl()
+        if (vl = 0)
+            {
+                sys_afslut_genvej()
+                return
+            }
         sleep 50
         vl_laas := vl_liste_laas_vl(vl)
         if (vl_laas = 0)
@@ -3253,6 +3268,11 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
 
     WinActivate, PLANET
     vl := P6_hent_vl()
+        if (vl = 0)
+            {
+                sys_afslut_genvej()
+                return
+            }
     ; if (telefon = "")
     ; {
     ;     telefon := "Ikke registreret"
@@ -3482,6 +3502,12 @@ l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
     P6_planvindue()
     sleep s * 100
     vm_tlf := P6_hent_vm_tlf()
+    if (vm_tlf = "fejl")
+        {
+
+            sys_afslut_genvej()
+            return
+        }
     sleep 500
     Trio_opkald(vm_tlf)
     sleep 800
@@ -3638,6 +3664,11 @@ l_p6_liste_vl:
     sys_genvej_keywait(genvej_mod)
     FormatTime, vl_tid , YYYYMMDDHH24MISS, HH:mm
     vl := P6_hent_vl()
+        if (vl = 0)
+            {
+                sys_afslut_genvej()
+                return
+            }
     vl_array := vlliste_listet_lav_array(vl)
     vlliste_vl_array_til_liste(vl_array)
 return
@@ -3668,18 +3699,23 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     ; keywait Ctrl
     Input valgt, L1 T5 C, {esc},
     vl := P6_hent_vl()
-    loop_test := 0
-    while (vl = "")
-       {
-        sleep 400
-        vl := P6_hent_vl()
-        loop_test += 1
-        if (loop_test > 10)
-            {
-                MsgBox, 16 , Fejl, Der er sket en fejl - prøv igen,
-                return
-            }
-       }
+    if (vl = 0)
+        {
+            sys_afslut_genvej()
+            return
+        }
+    ; loop_test := 0
+    ; while (vl = "")
+    ;    {
+    ;     sleep 400
+    ;     vl := P6_hent_vl()
+    ;     loop_test += 1
+    ;     if (loop_test > 10)
+    ;         {
+    ;             MsgBox, 16 , Fejl, Der er sket en fejl - prøv igen,
+    ;             return
+    ;         }
+    ;    }
     if (valgt = "t")
     {
         P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
@@ -3924,6 +3960,10 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     if (valgt == "r")
     {
         tlf := P6_hent_vl_tlf()
+        if (tlf = 0)
+            {
+                sys_afslut_genvej()
+            }
         P6_tekstTilChf("Jeg kan ikke ringe dig op på telefonnummer " tlf ". Ring til driften, 70112210. Mvh Midttrafik.")
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?
@@ -4385,6 +4425,11 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     sys_genvej_keywait(genvej_mod)
     gemtklip := ClipboardAll
     vl := P6_hent_vl()
+            if (vl = 0)
+            {
+                sys_afslut_genvej()
+                return
+            }
     clipboard :=
     sleep 500
     SendInput, !{PrintScreen}
