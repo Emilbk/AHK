@@ -1039,7 +1039,7 @@ P6_hent_vl()
             SendInput, +{F10}c
             ClipWait, 1, 0
             vl := clipboard
-            loop_test +1
+            loop_test := +1
             if (loop_test > 10)
                 {
                     MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
