@@ -2457,15 +2457,23 @@ Trio_opkald(ByRef telefon)
     trio_pause()
     sleep 100
     SendInput, {CtrlUp}{AltUp}
+    if (telefon = "")
+        {
+        MsgBox, , , Der er ikke lavet en markering af tal
+        trio_klar()
+        return
+        }
+    ControlGetText, tlf_test, Edit2, Trio Attendant
     sleep 100
-    controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
-    sleep 100
-    controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
-    sleep 100
-    ; sleep 80
-    ; controlsend, Edit2, {delete}, ahk_class Addressbook
+    while (tlf_test != "")
+        {
+            controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
+            sleep 100
+            ControlGetText, tlf_test, Edit2, Trio Attendant
+       }
     sleep 80
     controlsend, Edit2, %telefon%, ahk_class Addressbook
+    sleep 100
     ControlGetText, kobl_test, Button1, Trio Attendant
     GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
     if (kobl_test = "Koble")
