@@ -1034,7 +1034,7 @@ P6_hent_vl()
     while (vl = "")
         {
             SendInput, !l
-            sleep 200
+            sleep 400
             SendInput, +{F10}c
             ClipWait, 1, 0
             vl := clipboard
@@ -1062,7 +1062,7 @@ p6_vl_vindue()
     {
         Send, +{F10}c
         vl_opslag := clipboard
-        sleep 50
+        sleep 400
         tid_nu := A_TickCount - tid_start
         if (tid_nu > 12000)
         {
@@ -1091,6 +1091,7 @@ p6_vl_vindue_edit()
     clipwait 2
     while (clipboard = "")
         {
+    sleep 400
     clipboard :=
     SendInput, +{F10}c
     clipwait 2
@@ -1353,7 +1354,7 @@ P6_hent_vl_tlf()
         clipboard :=
         SendInput ^c
         ClipWait, 1
-        sleep 100
+        sleep 400
     }
     SendInput ^a
     vl_tlf := Clipboard
@@ -1380,7 +1381,7 @@ P6_hent_vm_tlf()
         clipboard :=
         SendInput ^c
         ClipWait, 1
-        sleep 100
+        sleep 400
     }
     SendInput, {enter}
     SendInput ^a
@@ -2456,11 +2457,6 @@ Trio_opkald(ByRef telefon)
     }
     trio_pause()
     sleep 100
-    ; if tlf = ""
-    ;   msgbox "der er ikke markeret noget"
-    ; controlget nuværende trio-tlf
-    ; while trio != ""
-    ; gør nedenunder
     SendInput, {CtrlUp}{AltUp}
     if (telefon = "")
         {
@@ -3640,7 +3636,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     vl := P6_hent_vl()
     while (vl = "")
        {
-        sleep 200
+        sleep 400
         vl := P6_hent_vl()
        }
     if (valgt = "t")
