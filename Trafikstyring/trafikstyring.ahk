@@ -1039,6 +1039,11 @@ P6_hent_vl()
     ClipWait, 1, 0
     vl := Clipboard
     loop_test := 0
+    SendInput, !l
+    sleep 50
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    vl := clipboard
     while (vl = "")
         {
             SendInput, !l
@@ -1077,6 +1082,8 @@ p6_vl_vindue()
     clipboard :=
     vl_opslag := clipboard
     loop_test := 0
+        Send, +{F10}c
+        vl_opslag := clipboard
     while (vl_opslag != vl)
     {
         Send, +{F10}c
@@ -1107,7 +1114,7 @@ p6_vl_vindue_edit()
     }
     clipboard :=
     SendInput, +{F10}c
-    clipwait 2
+    clipwait 0.5
     loop_test := 0
     while (clipboard = "")
         {
@@ -1389,6 +1396,9 @@ P6_hent_vl_tlf()
     Clipboard :=
     SendInput {tab}{tab}
     loop_test := 0
+        clipboard :=
+        SendInput ^c
+        ClipWait, 1
     while (StrLen(clipboard) != 8)
     {
         clipboard :=
@@ -1421,8 +1431,11 @@ P6_hent_vm_tlf()
     SendInput !a
     ; sleep * 40
     Clipboard :=
-    SendInput {tab}{tab}{tab}{tab}
+    SendInput {tab 4}
     loop_test := 0
+    clipboard :=
+        SendInput ^c
+        ClipWait, 0.1
     while (StrLen(clipboard) != 8)
     {
         clipboard :=
@@ -2555,6 +2568,9 @@ Trio_opkald(ByRef telefon)
     ControlGetText, tlf_test, Edit2, Trio Attendant
     sleep 100
     loop_test := 0
+            controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
+            sleep 100
+            ControlGetText, tlf_test, Edit2, Trio Attendant
     while (tlf_test != "")
         {
             controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
@@ -3659,6 +3675,8 @@ l_p6_cpr_til_bestillingsvindue:
 
 l_p6_tjek_andre_rejser:
 {
+sys_genvej_beskrivelse(66)
+sys_genvej_keywait(66)
 p6_tjek_andre_rejser()
 sys_afslut_genvej()
 return
@@ -4188,7 +4206,7 @@ l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     sleep 200
     clipboard := ""
     SendInput, ^c
-    ClipWait, 2, 0
+    ClipWait, 0.3, 0
     telefon := clipboard
     telefon := RegExReplace(telefon, "\D")
     GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
@@ -5002,7 +5020,9 @@ FlexFinder_addresse()
         }
         Else
         {
-            PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6C2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
+            ; PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6C2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
+            ImageSearch, Ix, Iy, 0 , 0, A_ScreenWidth , A_ScreenHeight *100 , /lib/ff.png
+            MsgBox, , , % ix
             sleep 200
             click %Px% %Py%
             sleep 200
