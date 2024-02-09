@@ -667,7 +667,7 @@ vl_liste_opslag_slet:
     for i,e in vl_liste_array
         for i2,e2 in e
         {
-            if (i2 = 1 and e2 = vl_liste_valg_vl.1 and e.3 = tid_korrigeret)
+            if (i2 = 1 and e2 = vl_liste_valg_vl.1 and SubStr(e.3, 1,5) = tid_korrigeret)
                 {
                    vl_liste_array.RemoveAt(i)
                    vl_liste_array_til_json_tekst()
@@ -701,7 +701,7 @@ vl_liste_slet:
     for i,e in vl_liste_array
         for i2,e2 in e
         {
-            if (i2 = 1 and e2 = vl_liste_valg_vl.1 and e.3 = tid_korrigeret)
+            if (i2 = 1 and e2 = vl_liste_valg_vl.1 and SubStr(e.3, 1,5) = tid_korrigeret)
                 {
                    vl_liste_array.RemoveAt(i)
                    vl_liste_array_til_json_tekst()
@@ -2397,7 +2397,7 @@ vlliste_replaner_lav_array(vl)
 {
     vl_liste := []
 
-    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
+    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm 'd'. dd
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
@@ -2415,7 +2415,7 @@ vlliste_kvittering_lav_array(vl := "")
 {
     vl_liste := []
 
-    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
+    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm 'd. dd
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
@@ -2433,7 +2433,7 @@ vlliste_wakeup_lav_array(vl := "")
 {
     vl_liste := []
 
-    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
+    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm 'd'. dd
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
@@ -2451,7 +2451,7 @@ vlliste_priv_lav_array(vl)
 {
     vl_liste := []
 
-    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
+    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm 'd'. dd
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
@@ -2469,7 +2469,7 @@ vlliste_listet_lav_array(vl := "")
 {
     vl_liste := []
 
-    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
+    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm 'd'. dd
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
@@ -2487,7 +2487,7 @@ vlliste_laast_lav_array(vl := "")
 {
     vl_liste := []
 
-    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm
+    FormatTime, vl_replaner_tidspunkt_vis, YYYYMMDDHH24MISS, HH:mm 'd'. dd
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
