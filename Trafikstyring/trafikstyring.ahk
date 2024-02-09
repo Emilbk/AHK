@@ -746,9 +746,15 @@ return
 sygehusmenu2:
     GuiControlGet, knap2, sygehus%navn%: name, % a_guicontrol
     ; MsgBox, , navn2 på knap , % knap2
-    Trio_opkald(knap2)
+    tjek := Trio_opkald(knap2)
+    if (tjek = 0)
+        {
+            sys_afslut_genvej()
+            return
+        }
     gui cancel
     WinActivate, PLANET
+    trio_klar()
     sys_afslut_genvej()
 return
 
@@ -1097,7 +1103,7 @@ p6_vl_vindue_edit()
     clipwait 0.5
     if (InStr(clipboard, A_Year))
     {
-        return 0 ; VL lukket
+        return "lukket" ; VL lukket
     }
     clipboard :=
     SendInput, +{F10}c
@@ -1108,12 +1114,12 @@ p6_vl_vindue_edit()
     sleep 400
     clipboard :=
     SendInput, +{F10}c
-    clipwait 2
+    clipwait 0.5
     loop_test += 1
     if (loop_test > 10)
         {
             MsgBox, 16 , Fejl, Der er sket en fejl - Prøv igen
-            return
+            return 0
         }
         }
     k_aftale.1 := clipboard
@@ -1363,13 +1369,18 @@ P6_hent_vl_tlf()
         return 0
     }
     vl_tilstand := p6_vl_vindue_edit()
-    if (vl_tilstand = 0)
+    if (vl_tilstand = "lukket")
     {
         sleep 100
         MsgBox, , Vl er lukket, Kan ikke trække telefonnummer, vl er afsluttet
         sys_afslut_genvej()
         return 0
     }
+        if (vl_tilstand = 0)
+            {
+                sys_afslut_genvej()
+                return
+            }
     sleep 100
     SendInput {Enter}{Enter}
     sleep s * 40
@@ -1453,7 +1464,12 @@ P6_hent_vl_fra_tlf(ByRef tlf:="")
 ;indsæt clipboard i vl-tlf
 P6_ret_tlf_vl(ByRef telefon:=" ")
 {
-    p6_vl_vindue()
+    vl := p6_vl_vindue()
+        if (vl = 0)
+            {
+                sys_afslut_genvej()
+                return
+            }
     sleep 100
     sendinput ^æ
     sleep s * 200
@@ -2054,7 +2070,17 @@ P6_vl_luk(tid:="")
     global s
 
     vl := p6_vl_vindue()
+        if (vl = 0)
+            {
+                sys_afslut_genvej()
+                return
+            }
     k_aftale := p6_vl_vindue_edit()
+            if (k_aftale = 0)
+            {
+                sys_afslut_genvej()
+                return
+            }
     sleep 40
     if (k_aftale = 1)
     {
@@ -2188,9 +2214,19 @@ p6_replaner_hent_vl()
     p6_laas_vl()
     {
         vl := p6_vl_vindue()
+        if (vl = 0)
+            {
+                sys_afslut_genvej()
+                return
+            }
         sleep 90
         vl_liste_laas_tjek(vl)
-        p6_vl_vindue_edit()
+        tjek := p6_vl_vindue_edit()
+                if (tjek = 0)
+            {
+                sys_afslut_genvej()
+                return
+            }
         sleep 90
         p6_vl_vindue_laas(vl)
         return 
@@ -2514,7 +2550,7 @@ Trio_opkald(ByRef telefon)
         {
         MsgBox, , , Der er ikke lavet en markering af tal
         trio_klar()
-        return
+    /    return
         }
     ControlGetText, tlf_test, Edit2, Trio Attendant
     sleep 100
@@ -2527,7 +2563,7 @@ Trio_opkald(ByRef telefon)
             if (loop_test > 10)
                 {
                     MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
-                    return
+                    return 0
                 }
        }
     sleep 80
@@ -2538,15 +2574,11 @@ Trio_opkald(ByRef telefon)
     if (kobl_test = "Koble")
     {
         controlsend, , {ShiftDown}{enter}{ShiftUp}, ahk_class Addressbook
-        sleep 1000
-        trio_klar()
         return
     }
     Else
     {
         controlsend, , {enter}, ahk_class Addressbook
-        sleep 1000
-        trio_klar()
         Return
     }
 }
@@ -3175,8 +3207,14 @@ Opkaldtaxa(p*){
     Gui, taxa: Destroy
     telefon := % p.1
     sleep 100
-    Trio_opkald(telefon)
+    tjek := Trio_opkald(telefon)
+    if (tjek = 0)
+        {
+            sys_afslut_genvej()
+            return
+        }
     WinActivate, PLANET, , ,
+    trio_klar()
 }
 TaxaGuiClose:
     gui, Destroy
@@ -3491,12 +3529,18 @@ l_p6_vl_ring_op:
         return
     }
     sleep 200
-    Trio_opkald(vl_tlf)
+    tjek := Trio_opkald(vl_tlf)
+    if (tjek = 0)
+        {
+            sys_afslut_genvej()
+            return
+        }
     ; Clipboard = %gemtklip%
     ; gemtklip :=
     sleep 400
     WinActivate, PLANET
     P6_Planvindue()
+    trio_klar()
     sys_afslut_genvej()
 return
 
@@ -3518,10 +3562,15 @@ l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
             return
         }
     sleep 500
-    Trio_opkald(vm_tlf)
+    tjek := Trio_opkald(vm_tlf)
+    if (tjek := 0)
+        {
+            sys_afslut_genvej()
+            return
+        }
     sleep 800
     WinActivate, PLANET
-
+    trio_klar()
     sys_afslut_genvej()
 Return
 
@@ -3537,7 +3586,14 @@ l_p6_ring_til_kunde:
     }
     Else
     {
-        Trio_opkald(telefon)
+        tjek := Trio_opkald(telefon)
+        if (tjek := 0)
+        {
+            trio_klar()
+            sys_afslut_genvej()
+            return
+        }
+        trio_klar()
         sys_afslut_genvej()
         return
     }
@@ -4137,7 +4193,14 @@ l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     telefon := RegExReplace(telefon, "\D")
     GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
     sleep 300
-    Trio_opkald(telefon)
+    tjek := Trio_opkald(telefon)
+    if (tjek := 0)
+        {
+            trio_klar()
+            sys_afslut_genvej()
+            return
+        }
+    trio_klar()
     sleep 3100 ; for at genvejsbeskrivelsen bliver der - et problem?
     sys_afslut_genvej()
 Return
@@ -4959,9 +5022,6 @@ FlexFinder_addresse()
 ;; test
 ; !z::
 ; {
-;     controlsend, Edit2, {CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
-;     sleep 100
-;     controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
-;     sleep 100
-;     controlsend, Edit2, {CtrlDown}a{CtrlUp}{delete} ,ahk_class Addressbook
+
 ; }
+
