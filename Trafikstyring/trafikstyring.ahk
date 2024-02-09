@@ -111,6 +111,7 @@ Hotkey, % bruger_genvej.55, l_p6_initialer_slet_eget ; +^n
 Hotkey, % bruger_genvej.59, l_p6_initialer_skift_eget ; +^n
 Hotkey, % bruger_genvej.56, l_p6_tag_alarm ; F1
 Hotkey, % bruger_genvej.58, l_p6_cpr_til_bestillingsvindue ; ^F1
+Hotkey, % bruger_genvej.66, l_p6_tjek_andre_rejser ; +^F
 ; Hotkey, % bruger_genvej.45, l_sys_inputbox_til_fra ; ^½
 Hotkey, IfWinActive
 
@@ -1335,6 +1336,14 @@ p6_cpr_til_bestillingsvindue()
     sleep 100
     SendInput, ^t^v{enter}
     return
+}
+
+p6_tjek_andre_rejser()
+{
+SendInput, ^{F9}
+sleep 200
+SendInput, !r{F5}
+return
 }
 ; ***
 ;
@@ -3590,6 +3599,13 @@ l_p6_cpr_til_bestillingsvindue:
     sys_genvej_keywait(genvej_mod)
     p6_cpr_til_bestillingsvindue()
     return
+}
+
+l_p6_tjek_andre_rejser:
+{
+p6_tjek_andre_rejser()
+sys_afslut_genvej()
+return
 }
 
 ok:
