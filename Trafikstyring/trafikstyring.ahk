@@ -2803,7 +2803,9 @@ Flexfinder_opslag()
     If (WinExist("FlexDanmark FlexFinder"))
     {
         k_aftale := P6_hent_k()
-        k_aftale := SubStr("000" . k_aftale, -3) ; indsætter nuller og tager sidste fire cifre i strengen.
+        if (k_aftale = "")
+            k_aftale := p6_hent_k()
+        k_aftale := SubStr("000" . k_aftale, -3) ; indsætter nuller og tager sidste fire cifre i strengen (kun i spil når mindre end fire cifre ind).
         ; MsgBox, , er 4 , % k_aftale
         sleep 200
         WinActivate, FlexDanmark FlexFinder
