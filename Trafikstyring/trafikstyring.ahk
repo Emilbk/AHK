@@ -2564,7 +2564,7 @@ Trio_opkald(ByRef telefon)
         {
         MsgBox, , , Der er ikke lavet en markering af tal
         trio_klar()
-    /    return
+        return
         }
     ControlGetText, tlf_test, Edit2, Trio Attendant
     sleep 100
