@@ -754,6 +754,7 @@ sygehusmenu2:
         }
     gui cancel
     WinActivate, PLANET
+    sleep 3000
     trio_klar()
     sys_afslut_genvej()
 return
@@ -3230,6 +3231,7 @@ Opkaldtaxa(p*){
             return
         }
     WinActivate, PLANET, , ,
+    sleep 3000
     trio_klar()
 }
 TaxaGuiClose:
@@ -3556,6 +3558,7 @@ l_p6_vl_ring_op:
     sleep 400
     WinActivate, PLANET
     P6_Planvindue()
+    sleep 3000
     trio_klar()
     sys_afslut_genvej()
 return
@@ -3586,6 +3589,7 @@ l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
         }
     sleep 800
     WinActivate, PLANET
+    sleep 3000
     trio_klar()
     sys_afslut_genvej()
 Return
@@ -3609,6 +3613,7 @@ l_p6_ring_til_kunde:
             sys_afslut_genvej()
             return
         }
+        sleep 3000
         trio_klar()
         sys_afslut_genvej()
         return
@@ -4218,8 +4223,8 @@ l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
             sys_afslut_genvej()
             return
         }
-    trio_klar()
     sleep 3100 ; for at genvejsbeskrivelsen bliver der - et problem?
+    trio_klar()
     sys_afslut_genvej()
 Return
 
