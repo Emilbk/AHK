@@ -1084,7 +1084,7 @@ p6_vl_vindue()
     sleep 350
     clipboard :=
     SendInput, ^c
-    clipwait 0.5
+    clipwait 1.5
     if (InStr(clipboard, "opdateringern")) ; tjek for tidligere vl-vindue stadig åbent. OBS ikke slåfejl
     {
         SendInput, !y
@@ -1092,7 +1092,7 @@ p6_vl_vindue()
     clipboard :=
     loop_test := 0
     Send, +{F10}c
-    ClipWait, 0.5
+    ClipWait, 1.5
     vl_opslag := clipboard
     while (vl_opslag != vl)
     {
@@ -1118,14 +1118,14 @@ p6_vl_vindue_edit()
     sendinput ^æ
     clipboard :=
     SendInput, ^c
-    clipwait 0.5
+    clipwait 1.5
     if (InStr(clipboard, A_Year))
     {
         return "lukket" ; VL lukket
     }
     clipboard :=
     SendInput, +{F10}c
-    clipwait 0.5
+    clipwait 1.5
     loop_test := 0
     while (clipboard = "")
     {
@@ -1133,7 +1133,7 @@ p6_vl_vindue_edit()
         sleep 400
         clipboard :=
         SendInput, +{F10}c
-        clipwait 0.5
+        clipwait 1.5
         loop_test += 1
         if (loop_test > 10)
         {
@@ -1147,7 +1147,7 @@ p6_vl_vindue_edit()
     SendInput, {tab 2}
     sleep 40
     SendInput, +{F10}c
-    clipwait 0.5
+    clipwait 1.5
     k_aftale.2 := clipboard
     if (k_aftale.1 = k_aftale.2)
     {
@@ -1447,13 +1447,13 @@ P6_hent_vm_tlf()
     loop_test := 0
     clipboard :=
     SendInput ^c
-    ClipWait, 0.5
+    ClipWait, 1.5
     while (StrLen(clipboard) != 8)
     {
         SendInput, !a{tab4}
         clipboard :=
         SendInput ^c
-        ClipWait, 0.5
+        ClipWait, 1.5
         sleep 400
         loop_test += 1
         if (loop_test > 10)
@@ -1562,7 +1562,6 @@ P6_initialer()
     SendInput, ^a^c
     ClipWait, 1, 0
     notering := Clipboard
-    clipwait 3, 0
     if (substr(notering,1, 6) = initialer_udentid)
     {
         initialer_fjernet := SubStr(notering, 12)
@@ -3336,10 +3335,9 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     sys_genvej_beskrivelse(8)
     genvej_mod := sys_genvej_til_ahk_tast(8)
     sys_genvej_keywait(genvej_mod)
-
-    ; SendInput, {ShiftUp}{AltUp}{CtrlUp}
-    klip := clipboard
     sleep 100
+    klip := clipboard
+    sleep 200
     telefon := Trio_hent_tlf()
 
     WinActivate, PLANET
@@ -4219,7 +4217,7 @@ l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     sleep 200
     clipboard := ""
     SendInput, ^c
-    ClipWait, 0.3, 0
+    ClipWait, 1.3, 0
     telefon := clipboard
     telefon := RegExReplace(telefon, "\D")
     GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
