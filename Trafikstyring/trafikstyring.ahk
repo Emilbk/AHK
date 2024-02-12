@@ -2468,7 +2468,7 @@ vlliste_priv_lav_array(vl)
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
-    vl_liste[2] := ", priv. OBS"
+    vl_liste[2] := ", priv. OBS "
     vl_liste[3] := vl_replaner_tidspunkt_vis
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
