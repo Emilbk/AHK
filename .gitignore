@@ -1,3 +1,6 @@
 
 .vscode
 master
+
+/*.gitignore
+/Trafikstyring/db/vl_liste/*
