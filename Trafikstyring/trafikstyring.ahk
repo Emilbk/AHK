@@ -1057,6 +1057,7 @@ P6_hent_vl()
     vl := clipboard
     while (vl = "")
         {
+            P6_planvindue()
             SendInput, !l
             sleep 500
             SendInput, +{F10}c
@@ -1086,23 +1087,24 @@ p6_vl_vindue()
     clipboard :=
     SendInput, ^c
     clipwait 0.5
-    if (InStr(clipboard, "opdateringern")) ; tjek for tidligere vl-vindue stadig åbent
+    if (InStr(clipboard, "opdateringern")) ; tjek for tidligere vl-vindue stadig åbent. OBS ikke slåfejl
     {
         SendInput, !y
     }
     clipboard :=
-    vl_opslag := clipboard
     loop_test := 0
-        Send, +{F10}c
-        vl_opslag := clipboard
+    Send, +{F10}c
+    ClipWait, 0.5
+    vl_opslag := clipboard
     while (vl_opslag != vl)
     {
+        SendInput, !l
         Send, +{F10}c
         vl_opslag := clipboard
         sleep 400
         loop_test += 1
         if (loop_test > 15)
-    {
+        {
             return 0
         }
     }
@@ -1129,6 +1131,7 @@ p6_vl_vindue_edit()
     loop_test := 0
     while (clipboard = "")
         {
+    SendInput, !k
     sleep 400
     clipboard :=
     SendInput, +{F10}c
@@ -1412,6 +1415,7 @@ P6_hent_vl_tlf()
         ClipWait, 1
     while (StrLen(clipboard) != 8)
     {
+        SendInput, !ø{tab 2}
         clipboard :=
         SendInput ^c
         ClipWait, 1
@@ -1446,9 +1450,10 @@ P6_hent_vm_tlf()
     loop_test := 0
     clipboard :=
         SendInput ^c
-        ClipWait, 0.1
+        ClipWait, 0.5
     while (StrLen(clipboard) != 8)
     {
+        SendInput, !a{tab4}
         clipboard :=
         SendInput ^c
         ClipWait, 0.1
