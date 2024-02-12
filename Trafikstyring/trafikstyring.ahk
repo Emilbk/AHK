@@ -3130,7 +3130,7 @@ sys_genvej_keywait(byref genvej_mod := "")
     genvej_mod1 := genvej_mod.1
     genvej_mod2 := genvej_mod.2
     KeyWait, %genvej_mod1%,
-    if (genvej_mod2 = "shift" or genvej_mod2 = "alt" or genvej_mod2 = "control" genvej_mod2 = "lwin")
+    if (genvej_mod2 = "shift" or genvej_mod2 = "alt" or genvej_mod2 = "control" or genvej_mod2 = "lwin")
         keywait, %genvej_mod2%
 }
 sys_initialer()
