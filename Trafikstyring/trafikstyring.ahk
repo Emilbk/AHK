@@ -77,7 +77,7 @@ Hotkey, % bruger_genvej.30, l_trio_afslut_opkald ; Numpad -
 Hotkey, % bruger_genvej.31, l_trio_afslut_opkaldB ; Numpad -
 Hotkey, % bruger_genvej.32, l_trio_til_p6 ; +F4
 Hotkey, % bruger_genvej.33, l_quitAHK ; +escape
-Hotkey, % bruger_genvej.46, l_restartAHK ; +escape
+Hotkey, % bruger_genvej.46, l_restartAHK ; +^r
 Hotkey, % bruger_genvej.34, l_p6_aktiver ; +!p
 Hotkey, % bruger_genvej.47, l_gui_hjælp ; ^½
 Hotkey, % bruger_genvej.28, l_trio_opkald_markeret ; !q
@@ -721,9 +721,9 @@ Return
 return
 ;; GUI-labels
 trio_genvej:
-    ; Goto, l_gui_hjælp
-    MsgBox, , Tillykke!, Du har trykket på knappen!,
-
+    Gui Show, w747 h670, AHK
+    ; MsgBox, , Tillykke!, Du har trykket på knappen!,
+    return
 tlfKopi:
     {
         clipboard :=
@@ -852,6 +852,13 @@ GUIfokus()
 {
     ControlGetFocus, GUIfokus
     return GUIfokus
+}
+sys_genvej_start(kolonne)
+{
+    genvej_mod := sys_genvej_til_ahk_tast(kolonne)
+    sys_genvej_keywait(genvej_mod)
+    sys_genvej_beskrivelse(kolonne)
+    return
 }
 ; **
 ; fix, giver 0-fejl ved esc.
@@ -2924,8 +2931,6 @@ Flexfinder_til_p6()
 ; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script. Kolonne 37
 Outlook_nymail()
 {
-    genvej_mod := sys_genvej_til_ahk_tast(37)
-    sys_genvej_keywait(genvej_mod)
     Run, %A_linefile%\..\lib\nymail.lnk, , ,
     WinWaitActive, Ikke-navngivet - Meddelelse (HTML) , , , ,
     Return
@@ -3205,13 +3210,12 @@ return
 ; SygehusGUI
 ; omskrives
 l_p6_sygehus_ring_op:
-    sys_genvej_beskrivelse(18)
+    sys_genvej_start(18)
     vis_sygehus_1()
-    mod_up()
 return
 
 l_p6_central_ring_op:
-    sys_genvej_beskrivelse(19)
+    sys_genvej_start(19)
     gui, Taxa:Default
     Gui,Add,Button,vtaxa1,&Århus Taxa
     Gui,Add,Button,vtaxa2,Århus Taxa Sk&ole
@@ -3291,34 +3295,29 @@ l_p6_hastighed:
 return
 ; skriv/fjern initialer. Kolonne 5
 l_p6_initialer: ;; Initialer til/fra
-    genvej_mod := sys_genvej_til_ahk_tast(5)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(5)
     P6_initialer()
     sys_afslut_genvej()
 Return
 l_p6_initialer_slet_eget:
-    genvej_mod := sys_genvej_til_ahk_tast(55)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(55)
     P6_initialer_slet_eget()
     sys_afslut_genvej()
 Return
 l_p6_initialer_skift_eget:
-    genvej_mod := sys_genvej_til_ahk_tast(59)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(59)
     P6_initialer_skift_eget()
     sys_afslut_genvej()
 Return
 ; skriv initialer, fortsæt notat. Kolonne 6
 l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
-    genvej_mod := sys_genvej_til_ahk_tast(6)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(6)
     P6_initialer_skriv()
     sys_afslut_genvej()
 return
 ; gentag notat. Kolonne 57
 l_p6_notat_igen: ; skriv initialer og forsæt notering.
-    genvej_mod := sys_genvej_til_ahk_tast(57)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(57)
     P6_notat_igen()
     sys_afslut_genvej()
 return
@@ -3332,9 +3331,7 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     faste_dage := ["ma", "ti", "on", "to", "fr", "lø", "sø"]
     uge_dage := ["faste mandage", "faste tirsdage", "faste onsdage", "faste torsdage", "faste fredage", "faste lørdage", "faste søndage"]
 
-    sys_genvej_beskrivelse(8)
-    genvej_mod := sys_genvej_til_ahk_tast(8)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(8)
     sleep 100
     klip := clipboard
     sleep 200
@@ -3525,7 +3522,7 @@ l_trio_til_p6: ;træk tlf til rejsesøg
     }
 return
 
-; gå i vl
+; gå i vl 
 l_p6_vaelg_vl:
     p6_vaelg_vl()
     sys_afslut_genvej()
@@ -3536,9 +3533,7 @@ l_p6_vaelg_vl_liste:
 return
 ;træk tlf fra aktiv planbillede, ring op i Trio. Col 11
 l_p6_vl_ring_op:
-    sys_genvej_beskrivelse(11)
-    genvej_mod := sys_genvej_til_ahk_tast(11)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(11)
     sleep s * 100
     vl_tlf := P6_hent_vl_tlf()
     if (vl_tlf = 0)
@@ -3576,10 +3571,7 @@ return
 
 ; ^+F5 col 12
 l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
-    sys_genvej_beskrivelse(12)
-    genvej_mod := sys_genvej_til_ahk_tast(12)
-    sys_genvej_keywait(genvej_mod)
-
+    sys_genvej_start(12)
     P6_planvindue()
     sleep s * 100
     vm_tlf := P6_hent_vm_tlf()
@@ -3637,9 +3629,7 @@ l_p6_laas_vl:
 return
 ; #F5, col 13
 l_p6_vl_luk:
-    sys_genvej_beskrivelse(13)
-    genvej_mod := sys_genvej_til_ahk_tast(13)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(13)
     gemtklip := ClipboardAll
 
     tid := P6_input_sluttid()
@@ -3660,7 +3650,7 @@ l_p6_vl_luk:
 return
 
 l_p6_udregn_minut:
-    ; mod_up()
+    sys_genvej_start(17)
     tid := P6_udregn_minut()
     tid_tekst := tid.1
     if (tid = "fejl")
@@ -3680,22 +3670,10 @@ l_p6_udregn_minut:
 Return
 l_p6_cpr_til_bestillingsvindue:
     {
-        sys_genvej_beskrivelse(58)
-        genvej_mod := sys_genvej_til_ahk_tast(58)
-        sys_genvej_keywait(genvej_mod)
+        sys_genvej_start(58)
         p6_cpr_til_bestillingsvindue()
         return
     }
-
-l_p6_tjek_andre_rejser:
-    {
-        sys_genvej_beskrivelse(66)
-        sys_genvej_keywait(66)
-        p6_tjek_andre_rejser()
-        sys_afslut_genvej()
-        return
-    }
-
 ok:
     {
         gui, cancel
@@ -3714,22 +3692,30 @@ plustidGuiClose:
     gui, cancel
     sys_afslut_genvej()
 return
+l_p6_tjek_andre_rejser:
+    {
+        sys_genvej_start(66)
+        p6_tjek_andre_rejser()
+        sys_afslut_genvej()
+        return
+    }
+
+
 
 l_p6_alarmer:
-    sys_genvej_beskrivelse(14)
+    sys_genvej_start(14)
     P6_alarmer()
     sys_afslut_genvej()
 return
 
 l_p6_udraabsalarmer:
-    sys_genvej_beskrivelse(15)
-
+    sys_genvej_start(15)
     P6_udraabsalarmer()
     sys_afslut_genvej()
 return
 
 l_p6_tag_alarm:
-    sys_genvej_beskrivelse(56)
+    sys_genvej_start(56)
     p6_tag_alarm()
     sys_afslut_genvej()
 Return
@@ -3742,8 +3728,7 @@ Return
 
 ; Replaner og gem i liste, kolonne 49
 l_p6_replaner_liste_vl:
-    genvej_mod := sys_genvej_til_ahk_tast(49)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(49)
     vl := p6_replaner_hent_vl()
     if (vl = 0)
         return
@@ -3752,8 +3737,7 @@ l_p6_replaner_liste_vl:
 return
 ; Replaner og gå til VL, kolonne 60
 l_p6_replaner_opslag_vl:
-    genvej_mod := sys_genvej_til_ahk_tast(60)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(60)
     vl := p6_replaner_hent_vl()
     if (vl = 0)
         return
@@ -3763,8 +3747,7 @@ return
 
 ; Gem aktiv vl på liste, kolonne 50
 l_p6_liste_vl:
-    genvej_mod := sys_genvej_til_ahk_tast(50)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(50)
     FormatTime, vl_tid , YYYYMMDDHH24MISS, HH:mm
     vl := P6_hent_vl()
     if (vl = 0)
@@ -3779,16 +3762,14 @@ return
 ; vist VL-liste, kolonne 51
 l_p6_vis_liste_vl:
 
-    genvej_mod := sys_genvej_til_ahk_tast(51)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(51)
     vlListe_vis_gui()
     sys_afslut_genvej()
 
 return
 
 l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
-    genvej_mod := sys_genvej_til_ahk_tast(20)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(20)
     FormatTime, tid, ,HHmm
     initialer = /mt%A_userName%%tid%
     initialer_udentid =/mt%A_userName%
@@ -4163,15 +4144,15 @@ l_trio_frokost: ;Trio frokostr. bruger.10
 Return
 
 l_triokald_til_udklip: ; trækker indkommende kald til udklip, ringer ikke op.
+    sys_genvej_start(29)
     clipboard := Trio_hent_tlf()
     sys_afslut_genvej()
 Return
 
 ; Telenor accepter indgående kald, søg planet
 l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
-    sys_genvej_beskrivelse(3)
-    genvej_mod := sys_genvej_til_ahk_tast(4)
-    sys_genvej_keywait(genvej_mod)
+    
+    sys_genvej_start(4)
     ControlGetText, koble_test, Button1, Trio Attendant
     if ()
         SendInput, % bruger_genvej[3] ; opr telenor-genvej
@@ -4216,8 +4197,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     }
 ; Opkald på markeret tekst. Kolonne 28
 l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
-    genvej_mod := sys_genvej_til_ahk_tast(28)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(28)
     SendInput, {Click 2}
     sleep 200
     clipboard := ""
@@ -4242,20 +4222,19 @@ Return
 ; Minus på numpad afslutter Trioopkald global (Skal der tilbage til P6?)
 l_trio_afslut_opkald:
 l_trio_afslut_opkaldB:
-    mod_up()
+    sys_genvej_start(30)
     Trio_afslutopkald()
 Return
 
 ;; Flexfinder
 l_flexf_fra_p6:
-    mod_up()
+    sys_genvej_keywait(36)
     Flexfinder_opslag()
     sys_afslut_genvej()
 Return
 ; slå VL op i FF. Kolonne 36
 l_flexf_til_p6:
-    genvej_mod := sys_genvej_til_ahk_tast(36)
-    sys_genvej_keywait(genvej_mod)
+    sys_genvej_start(35)
     sleep 200
     vl :=Flexfinder_til_p6()
     if !vl
@@ -4276,7 +4255,7 @@ l_flexf_til_p6:
 
 ;; Outlook
 l_outlook_ny_mail: ; opretter ny mail. Bruger.16
-    sys_genvej_beskrivelse(37)
+    sys_genvej_start(37)
     Outlook_nymail()
     sys_afslut_genvej()
 Return
@@ -4284,7 +4263,7 @@ Return
 ;; Excel til vl.
 l_excel_vl_til_P6_A:
 l_excel_vl_til_P6_B:
-    mod_up()
+    sys_genvej_start(40)
     vl := Excel_vl_til_udklip()
     sleep 400
     SendInput, {Esc}
@@ -4292,19 +4271,25 @@ l_excel_vl_til_P6_B:
 return
 
 l_excel_mange_ture:
+    sys_genvej_start(52)
     excel_p6_kundenummer()
+    sys_afslut_genvej()
 return
 
 l_excel_p6_id:
+    sys_genvej_start(53)
     excel_p6_id()
+    sys_afslut_genvej()
 return
 
 l_excel_p6_cpr:
+    sys_genvej_start(54)
     excel_p6_cpr()
+    sys_afslut_genvej()
 return
 
 l_restartAHK: ; AHK-reload
-    SendInput, {CtrlUp}
+    sys_genvej_start(46)
     Reload
     sleep 2000
 Return
@@ -4313,6 +4298,7 @@ Return
 
 ;hjælp GUI
 l_gui_hjælp:
+    sys_genvej_start(47)
     brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
     bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
     p6_udregn_minut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,44)
@@ -4526,16 +4512,14 @@ sysok:
 GuiEscape:
 genvejGuiClose:
     gui, destroy
+    sys_afslut_genvej()
 return
 ; Opret svigt på VL. Kolonne 38
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+    sys_genvej_start(38)
     FormatTime, dato, , d/MM
     ; FormatTime, tid, , HH:mm
-    trio_genvej := global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, 38)
-    GuiControl, trio_genvej:text, Button1, %trio_genvej%
     ; svigt := []
-    genvej_mod := sys_genvej_til_ahk_tast(38)
-    sys_genvej_keywait(genvej_mod)
     gemtklip := ClipboardAll
     vl := P6_hent_vl()
     if (vl = 0)
@@ -4819,8 +4803,8 @@ Return
 
 svigtGuiEscape:
 svigtGuiClose:
-    sys_afslut_genvej()
-    Gui, destroy
+Gui, destroy
+sys_afslut_genvej()
 Return
 
 test()
@@ -4830,6 +4814,7 @@ test()
 }
 
 l_p6_rejsesog:
+    sys_afslut_genvej(48)
     P6_rejsesogvindue()
     sys_afslut_genvej()
 return
@@ -5056,8 +5041,9 @@ FlexFinder_addresse()
 ;
 
 ;; test
-; !z::
+; ^z::
 ; {
-
+; sys_genvej_start(56)
+; MsgBox, , , asd
 ; }
 
