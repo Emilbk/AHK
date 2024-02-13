@@ -298,6 +298,15 @@ gui vl_liste: add, button, x460 y536 w131 h23 gvl_liste_opslag_slet, opslag og s
 gui vl_liste: add, button, x600 y536 w131 h23 gvl_liste_slet, &slet
 gui vl_liste: add, button, x740 y536 w131 h23 gvl_liste_slet_alt_alle, slet &alt
 gui vl_liste: add, button, x880 y536 w131 h23 gvl_liste_liste, l&iste
+
+; GUI vl-note
+gui note: +Labelnote
+Gui note: Font, s9, Segoe UI
+Gui note: Add, Edit, x16 y8 w438 h206 vnote_note
+Gui note: Add, Button, x8 y240 w80 h23 gnote_ok, &sOK
+Gui note: Add, Button, x104 y240 w80 h23 gnote_opslag, &Opslag
+Gui note: Add, Button, x200 y240 w80 h23, &Slet note
+Gui note: Add, Edit, x304 y240 w166 h21, Sæt timer
 #IfWinActive VL-liste
     Enter::
     NumpadEnter::
@@ -514,10 +523,72 @@ vl_liste_ryd6:
     vl_liste_array := vl_liste_midl
     vl_liste_array_til_json_tekst()
     vl_liste_opdater_gui()
-return
+Return
+
+noteEscape:
+noteClose:
+gui note: hide
+sleep 100
+gui vl_liste: show
+Return
 
 vl_liste_tilføj_note:
+; Note-gui
+    valg :=
+    Gui vl_liste: Submit
+    Gui vl_liste: Hide
+    if (valg1 != "")
+       {
+        valg := valg1
+        listbox := "listbox1"
+       }
+
+if (valg2 != "")
+        {
+        listbox := "listbox2"
+        valg := valg2
+        }
+   
+   if (valg3 != "")
+    {
+    listbox := "listbox3"
+   valg := valg3 
+    }
+    if (valg4 != "")
+        {
+        valg := valg4
+        listbox := "listbox4"
+        } 
+    if (valg4 != "")
+        {
+        valg := valg4
+        listbox := "listbox5"
+        } 
+valg := SubStr(valg, 1, 5) 
+valg := Regexreplace(valg, "\D")
+
+
+sleep 100
+Gui note: Show, w477 h277, Note
+sleep 100
+
 Return
+note_ok:
+gui note: submit
+    for i,e in vl_liste_array
+    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg)
+        {
+            vl_liste_array[i][6] := " (N)"
+            vl_liste_array[i][5] := note_note
+            ; vl_liste_array_til_json_tekst()
+            gui note: hide
+            return
+        }
+return
+note_opslag:
+gui note: hide
+p6_vaelg_vl(valg)
+return
 
 vl_liste_vis_note:
 Return
@@ -1181,7 +1252,8 @@ p6_vaelg_vl(byref vl := "")
     if (vl != "")
     {
         SendInput, %vl%
-        sleep 100
+
+        sleep 200
         SendInput, {enter}
     }
     return
