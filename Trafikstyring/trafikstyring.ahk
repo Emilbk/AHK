@@ -1053,13 +1053,8 @@ P6_hent_vl()
     sleep 50 ; ikke P6-afhængig
     SendInput, +{F10}c
     ClipWait, 1, 0
-    vl := Clipboard
-    loop_test := 0
-    SendInput, !l
-    sleep 50
-    SendInput, +{F10}c
-    ClipWait, 1, 0
     vl := clipboard
+    loop_test := 0
     while (vl = "")
     {
         P6_planvindue()
@@ -1091,7 +1086,7 @@ p6_vl_vindue()
     sleep 350
     clipboard :=
     SendInput, ^c
-    clipwait 1.5
+    clipwait 1
     if (InStr(clipboard, "opdateringern")) ; tjek for tidligere vl-vindue stadig åbent. OBS ikke slåfejl
     {
         SendInput, !y
@@ -1105,6 +1100,7 @@ p6_vl_vindue()
     {
         SendInput, !l
         Send, +{F10}c
+        ClipWait, 1
         vl_opslag := clipboard
         sleep 400
         loop_test += 1
@@ -1125,14 +1121,14 @@ p6_vl_vindue_edit()
     sendinput ^æ
     clipboard :=
     SendInput, ^c
-    clipwait 1.5
+    clipwait 0.5
     if (InStr(clipboard, A_Year))
     {
         return "lukket" ; VL lukket
     }
     clipboard :=
     SendInput, +{F10}c
-    clipwait 1.5
+    clipwait 0.5
     loop_test := 0
     while (clipboard = "")
     {
@@ -1154,7 +1150,7 @@ p6_vl_vindue_edit()
     SendInput, {tab 2}
     sleep 40
     SendInput, +{F10}c
-    clipwait 1.5
+    clipwait 0.5
     k_aftale.2 := clipboard
     if (k_aftale.1 = k_aftale.2)
     {
