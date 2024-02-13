@@ -3772,7 +3772,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
     bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 2)
     ; ctrl_s := chr(19)
-
+    gemtklip := ClipboardAll
 
     ; KeyWait Alt
     ; keywait Ctrl
@@ -3789,6 +3789,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         sys_afslut_genvej()
         return
     }
+    clipboard := gemtklip
     ; loop_test := 0
     ; while (vl = "")
     ;    {
