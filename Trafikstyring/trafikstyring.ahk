@@ -4814,7 +4814,7 @@ test()
 }
 
 l_p6_rejsesog:
-    sys_afslut_genvej(48)
+    sys_genvej_start(48)
     P6_rejsesogvindue()
     sys_afslut_genvej()
 return
