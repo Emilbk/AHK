@@ -3796,11 +3796,16 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 2)
     ; ctrl_s := chr(19)
 
-    sys_genvej_beskrivelse(20)
 
     ; KeyWait Alt
     ; keywait Ctrl
     Input valgt, L1 T5 C, {esc},
+    if (ErrorLevel = "EndKey:Escape")
+        {
+        sys_afslut_genvej()
+        return
+        }
+
     vl := P6_hent_vl()
     if (vl = 0)
     {
