@@ -1441,7 +1441,7 @@ p6_tjek_andre_rejser()
 {
     SendInput, ^{F9}
     sleep 200
-    SendInput, !r{F5}
+    SendInput, !r{F5}{down}
     return
 }
 ; ***
