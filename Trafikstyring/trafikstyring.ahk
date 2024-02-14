@@ -4619,6 +4619,10 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     Gui Add, CheckBox, vhelt x160 y48 w120 h23, Ja, og VL &slettet:
     Gui Add, Edit, vtid_slet x170 y68 h21, Åbningstid garanti
     ; Gui Add, CheckBox, vhelt2 x160 y72 w120, GV garanti &slettet i variabel tid ; nødvendig?
+    Gui Font
+    Gui Font, s9, Segoe UI
+    Gui Add, Edit, vårsag x16 y72 w120 h21
+    Gui Font, w600
     Gui Font, s9, Segoe UI
     Gui Font, w600
     Gui Add, Text, x304 y0 w120 h23 +0x200, Garanti eller Var.
@@ -4629,10 +4633,6 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     Gui Add, Radio, vtype x304 y72 w120 h23, &Variabel
     Gui Font, w600
     Gui Add, Text, x16 y48 w120 h23 +0x200, &Årsag
-    Gui Font
-    Gui Font, s9, Segoe UI
-    Gui Add, Edit, vårsag x16 y72 w120 h21
-    Gui Font, w600
     Gui Add, Text, x8 y96 h23 +0x200, &Beskrivelse
     Gui Font
     Gui Font, s9, Segoe UI
