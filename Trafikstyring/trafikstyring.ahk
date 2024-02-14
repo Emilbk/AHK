@@ -5040,6 +5040,7 @@ return
 ::bsgs::Glemt slettet retur
 ::rgef::Rejsegaranti, egenbetaling fjernet
 ::vlaok::Alarm st OK
+::svigtudråb::VL ikke startet op, ingen kontakt til chf. VL ryddet og låst.
 
 ;; TEST
 
