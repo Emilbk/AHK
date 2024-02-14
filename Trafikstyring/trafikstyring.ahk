@@ -4293,6 +4293,7 @@ l_trio_afslut_opkald:
 l_trio_afslut_opkaldB:
     sys_genvej_start(30)
     Trio_afslutopkald()
+    sys_afslut_genvej()
 Return
 
 ;; Flexfinder
