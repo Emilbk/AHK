@@ -305,7 +305,7 @@ Gui note: Font, s9, Segoe UI
 Gui note: Add, Edit, x16 y8 w438 h206 vnote_note
 Gui note: Add, Button, x8 y240 w80 h23 gnote_ok, &sOK
 Gui note: Add, Button, x104 y240 w80 h23 gnote_opslag, &Opslag
-Gui note: Add, Button, x200 y240 w80 h23, &Slet note
+Gui note: Add, Button, x200 y240 w80 h23 gnote_slet, &Slet note
 Gui note: Add, Edit, x304 y240 w166 h21, Sæt timer
 #IfWinActive VL-liste
     Enter::
@@ -566,7 +566,16 @@ if (valg2 != "")
         } 
 valg := SubStr(valg, 1, 5) 
 valg := Regexreplace(valg, "\D")
-
+note_note := 
+GuiControl, note:, note_note , %note_note%
+for i,e in vl_liste_array
+    {
+        if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox)
+            {
+                note_note := vl_liste_array[i][5]
+            }
+    }
+GuiControl, note:, note_note, %note_note%
 
 sleep 100
 Gui note: Show, w477 h277, Note
@@ -580,15 +589,33 @@ gui note: submit
         {
             vl_liste_array[i][6] := " (N)"
             vl_liste_array[i][5] := note_note
-            ; vl_liste_array_til_json_tekst()
+            if (note_note = "")
+                vl_liste_array[i][6] := ""
+            vl_liste_array_til_json_tekst()
             gui note: hide
+            P6_aktiver()
             return
         }
+P6_aktiver()
 return
 note_opslag:
 gui note: hide
 p6_vaelg_vl(valg)
 return
+
+note_slet:
+{
+    for i,e in vl_liste_array
+    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg)
+        {
+            vl_liste_array[i](6) := ""
+            vl_liste_array[i][5] := ""
+            vl_liste_array_til_json_tekst()
+            gui note: hide
+            P6_aktiver()
+            return
+        }
+}
 
 vl_liste_vis_note:
 Return
@@ -750,6 +777,13 @@ vl_liste_slet:
     vl_liste_opslag_array := []
     valg :=
     Gui vl_liste: Submit, NoHide
+    ; find en måde at tjekke for valgt listbox
+    loop_var := "valg1"
+    loop 5
+        {
+            
+        }
+
     vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5)
     for i,e in vl_liste_opslag_array
         if (e != "")
@@ -762,6 +796,26 @@ vl_liste_slet:
         gui vl_liste: show
         return
     }
+    ; tjek for multivalg
+    if (InStr(valg, "|"))
+        {
+            valg_split := StrSplit(valg, "|")
+            for i,e in valg_split
+                {
+                    valg_split[i] := SubStr(valg_split[i], 1, 5)
+                    valg_split[i] := RegExReplace(valg_split[i], "\D")
+
+                }
+        for i,e in valg_split
+            {
+                valg := valg_split[i]
+                for i,e in vl_liste_array
+                    {
+                        if (vl_liste_array[i][1] = valg and vl_liste_array)
+                            ()
+                    }
+            }
+        }
     vl_liste_valg_vl := StrSplit(valg, ",")
     tid_ind := RegExReplace(vl_liste_valg_vl.2, "\D")
     tid_korrigeret := SubStr(tid_ind, 1, 2) ":" SubStr(tid_ind, 3 , 2)
