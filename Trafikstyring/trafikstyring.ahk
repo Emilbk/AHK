@@ -1083,10 +1083,10 @@ p6_vl_vindue()
     }
     sleep 30
     SendInput, ^{F12}
-    sleep 350
+    sleep 150
     clipboard :=
     SendInput, ^c
-    clipwait 1
+    clipwait 0.3
     if (InStr(clipboard, "opdateringern")) ; tjek for tidligere vl-vindue stadig åbent. OBS ikke slåfejl
     {
         SendInput, !y
@@ -1094,7 +1094,7 @@ p6_vl_vindue()
     clipboard :=
     loop_test := 0
     Send, +{F10}c
-    ClipWait, 1.5
+    ClipWait, 1
     vl_opslag := clipboard
     while (vl_opslag != vl)
     {
