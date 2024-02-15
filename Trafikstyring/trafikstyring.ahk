@@ -40,6 +40,9 @@ brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1
 bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
 genvej_ren := []
 genvej_navn := []
+valg :=
+vl :=
+tid :=
 ;   1       2               3
 s := bruger_genvej.41
 tlf :=
@@ -105,6 +108,7 @@ Hotkey, % bruger_genvej.20, l_p6_tekst_til_chf ; ^+t
 Hotkey, % bruger_genvej.36, l_flexf_fra_p6 ; +^F
 Hotkey, % bruger_genvej.48, l_p6_rejsesog ; F1
 Hotkey, % bruger_genvej.50, l_p6_liste_vl ; ^å
+Hotkey, % bruger_genvej.67, l_p6_vis_liste_fra_planbillede
 ;Hotkey, % bruger_genvej.63, l_p6_liste_vl_notat ; ^+F10
 Hotkey, % bruger_genvej.51, l_p6_vis_liste_vl ; F1
 Hotkey, % bruger_genvej.55, l_p6_initialer_slet_eget ; +^n
@@ -291,7 +295,7 @@ gui vl_liste: add, button, x400 y475 w80 h23 gvl_liste_ryd3 vbox3, ryd
 gui vl_liste: add, button, x584 y475 w80 h23 gvl_liste_ryd4 vbox4, ryd
 gui vl_liste: add, button, x760 y475 w80 h23 gvl_liste_ryd5 vbox5, ryd
 gui vl_liste: add, button, x936 y475 w80 h23 gvl_liste_ryd6 vbox6, ryd
-gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_tilføj_note, tilf&øj note
+gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_tilføj_note, tilf&øj/vis note
 gui vl_liste: add, button, x180 y536 w131 h23 gvl_liste_vis_note, vis &note
 gui vl_liste: add, button, x320 y536 w131 h23 gvl_liste_opslag, &opslag
 gui vl_liste: add, button, x460 y536 w131 h23 gvl_liste_opslag_slet, opslag og s&let
@@ -299,11 +303,11 @@ gui vl_liste: add, button, x600 y536 w131 h23 gvl_liste_slet, &slet
 gui vl_liste: add, button, x740 y536 w131 h23 gvl_liste_slet_alt_alle, slet &alt
 gui vl_liste: add, button, x880 y536 w131 h23 gvl_liste_liste, l&iste
 
-; GUI vl-note
+;; GUI vl-note
 gui note: +Labelnote
 Gui note: Font, s9, Segoe UI
 Gui note: Add, Edit, x16 y8 w438 h206 vnote_note
-Gui note: Add, Button, x8 y240 w80 h23 gnote_ok, &sOK
+Gui note: Add, Button, x8 y240 w80 h23 gnote_ok, &Gem
 Gui note: Add, Button, x104 y240 w80 h23 gnote_opslag, &Opslag
 Gui note: Add, Button, x200 y240 w80 h23 gnote_slet, &Slet note
 Gui note: Add, Edit, x304 y240 w166 h21, Sæt timer
@@ -559,20 +563,30 @@ if (valg2 != "")
         valg := valg4
         listbox := "listbox4"
         } 
-    if (valg4 != "")
+    if (valg5 != "")
         {
-        valg := valg4
+        valg := valg5
         listbox := "listbox5"
         } 
-valg := SubStr(valg, 1, 5) 
+    if (valg6 != "")
+        {
+        valg := valg6
+        listbox := "listbox6"
+        } 
+
+tid := StrSplit(valg, ",")
+tid := Regexreplace(tid[2], "\D")
+tid := SubStr(tid, 1, 2) ":" SubStr(tid, 3, 2)
+valg := SubStr(valg, 1, 5)  
 valg := Regexreplace(valg, "\D")
 note_note := 
 GuiControl, note:, note_note , %note_note%
 for i,e in vl_liste_array
     {
-        if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox)
+        if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox and SubStr(vl_liste_array[i][3], 1, 5) = tid)
             {
                 note_note := vl_liste_array[i][5]
+                break
             }
     }
 GuiControl, note:, note_note, %note_note%
@@ -585,14 +599,14 @@ Return
 note_ok:
 gui note: submit
     for i,e in vl_liste_array
-    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg)
+    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid) 
         {
             vl_liste_array[i][6] := " (N)"
             vl_liste_array[i][5] := note_note
             if (note_note = "")
                 vl_liste_array[i][6] := ""
-            vl_liste_array_til_json_tekst()
             gui note: hide
+            vl_liste_array_til_json_tekst()
             P6_aktiver()
             return
         }
@@ -606,7 +620,7 @@ return
 note_slet:
 {
     for i,e in vl_liste_array
-    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg)
+    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid)
         {
             vl_liste_array[i](6) := ""
             vl_liste_array[i][5] := ""
@@ -615,6 +629,7 @@ note_slet:
             P6_aktiver()
             return
         }
+return
 }
 
 vl_liste_vis_note:
@@ -2330,6 +2345,7 @@ p6_replaner_hent_vl()
     return vl
 
 }
+
 ; del af vl_liste_laas_vl
 vl_liste_laas_tjek(vl)
 {
@@ -2682,7 +2698,56 @@ vlliste_vl_array_til_liste(vl_array)
     vl_liste_array_til_json_tekst()
     return
 }
+
+vlliste_vis_note_fra_planbillede()
+{
+    global vl_liste_array
+    global tid
+    global vl
+    global valg
+    global listbox
+
+    P6_aktiver()
+    vl := P6_hent_vl()
+    valg := vl
+    listbox := "listbox4"
+    fundet := 0
+    for i,e in vl_liste_array
+        {
+            if (vl_liste_array[i][1] = vl and vl_liste_array[i][8] = listbox)
+                {
+                    fundet := 1
+                }
+        }
+    if (fundet = 0)
+        {
+    FormatTime, vl_tid , YYYYMMDDHH24MISS, HH:mm
+    vl_array := vlliste_listet_lav_array(vl)
+    vlliste_vl_array_til_liste(vl_array)
+        }
+for i,e in vl_liste_array
+    {
+        if (vl_liste_array[i][1] = vl and vl_liste_array[i][8] = listbox)
+            {
+                note_note := vl_liste_array[i][5]  
+                tid := SubStr(vl_liste_array[i][3], 1, 5)
+            }
+    }
+GuiControl, note:, note_note , %note_note%
+for i,e in vl_liste_array
+    {
+        if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox and SubStr(vl_liste_array[i][3], 1, 5) = tid)
+            {
+                note_note := vl_liste_array[i][5]
+                break
+            }
+    }
+GuiControl, note:, note_note, %note_note%
+gui note: show
+}
+
 ;; Telenor
+
 
 ;; Trio
 ; ***
@@ -3892,6 +3957,15 @@ l_p6_vis_liste_vl:
 
 return
 
+l_p6_vis_liste_fra_planbillede:
+{
+    sys_genvej_start(67)
+    vlliste_vis_note_fra_planbillede()
+    sys_afslut_genvej()
+    return
+}
+
+
 l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     sys_genvej_start(20)
     FormatTime, tid, ,HHmm
@@ -4323,7 +4397,9 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
 ; Opkald på markeret tekst. Kolonne 28
 l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     sys_genvej_start(28)
-    SendInput, {Click 2}
+    SendInput, {click}
+    sleep 100
+    SendInput, {Click}
     sleep 200
     clipboard := ""
     SendInput, ^c
