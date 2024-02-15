@@ -3856,6 +3856,7 @@ l_p6_replaner_liste_vl:
         return
     vl_array := vlliste_replaner_lav_array(vl)
     vlliste_vl_array_til_liste(vl_array)
+    sys_afslut_genvej()
 return
 ; Replaner og gå til VL, kolonne 60
 l_p6_replaner_opslag_vl:
@@ -3865,6 +3866,7 @@ l_p6_replaner_opslag_vl:
         return
     sleep 200
     p6_vaelg_vl(vl)
+    sys_afslut_genvej()
 return
 
 ; Gem aktiv vl på liste, kolonne 50
@@ -3879,6 +3881,7 @@ l_p6_liste_vl:
     }
     vl_array := vlliste_listet_lav_array(vl)
     vlliste_vl_array_til_liste(vl_array)
+    sys_afslut_genvej()
 return
 
 ; vist VL-liste, kolonne 51
