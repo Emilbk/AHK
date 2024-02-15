@@ -40,6 +40,9 @@ brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1
 bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
 genvej_ren := []
 genvej_navn := []
+valg :=
+vl :=
+tid :=
 ;   1       2               3
 s := bruger_genvej.41
 tlf :=
@@ -105,6 +108,7 @@ Hotkey, % bruger_genvej.20, l_p6_tekst_til_chf ; ^+t
 Hotkey, % bruger_genvej.36, l_flexf_fra_p6 ; +^F
 Hotkey, % bruger_genvej.48, l_p6_rejsesog ; F1
 Hotkey, % bruger_genvej.50, l_p6_liste_vl ; ^å
+Hotkey, % bruger_genvej.67, l_p6_vis_liste_fra_planbillede
 ;Hotkey, % bruger_genvej.63, l_p6_liste_vl_notat ; ^+F10
 Hotkey, % bruger_genvej.51, l_p6_vis_liste_vl ; F1
 Hotkey, % bruger_genvej.55, l_p6_initialer_slet_eget ; +^n
@@ -291,13 +295,22 @@ gui vl_liste: add, button, x400 y475 w80 h23 gvl_liste_ryd3 vbox3, ryd
 gui vl_liste: add, button, x584 y475 w80 h23 gvl_liste_ryd4 vbox4, ryd
 gui vl_liste: add, button, x760 y475 w80 h23 gvl_liste_ryd5 vbox5, ryd
 gui vl_liste: add, button, x936 y475 w80 h23 gvl_liste_ryd6 vbox6, ryd
-gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_tilføj_note, tilf&øj note
+gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_tilføj_note, tilf&øj/vis note
 gui vl_liste: add, button, x180 y536 w131 h23 gvl_liste_vis_note, vis &note
 gui vl_liste: add, button, x320 y536 w131 h23 gvl_liste_opslag, &opslag
 gui vl_liste: add, button, x460 y536 w131 h23 gvl_liste_opslag_slet, opslag og s&let
 gui vl_liste: add, button, x600 y536 w131 h23 gvl_liste_slet, &slet
 gui vl_liste: add, button, x740 y536 w131 h23 gvl_liste_slet_alt_alle, slet &alt
 gui vl_liste: add, button, x880 y536 w131 h23 gvl_liste_liste, l&iste
+
+;; GUI vl-note
+gui note: +Labelnote
+Gui note: Font, s9, Segoe UI
+Gui note: Add, Edit, x16 y8 w438 h206 vnote_note
+Gui note: Add, Button, x8 y240 w80 h23 gnote_ok, &Gem
+Gui note: Add, Button, x104 y240 w80 h23 gnote_opslag, &Opslag
+Gui note: Add, Button, x200 y240 w80 h23 gnote_slet, &Slet note
+Gui note: Add, Edit, x304 y240 w166 h21, Sæt timer
 #IfWinActive VL-liste
     Enter::
     NumpadEnter::
@@ -514,10 +527,110 @@ vl_liste_ryd6:
     vl_liste_array := vl_liste_midl
     vl_liste_array_til_json_tekst()
     vl_liste_opdater_gui()
-return
+Return
+
+noteEscape:
+noteClose:
+gui note: hide
+sleep 100
+gui vl_liste: show
+Return
 
 vl_liste_tilføj_note:
+; Note-gui
+    valg :=
+    Gui vl_liste: Submit
+    Gui vl_liste: Hide
+    if (valg1 != "")
+       {
+        valg := valg1
+        listbox := "listbox1"
+       }
+
+if (valg2 != "")
+        {
+        listbox := "listbox2"
+        valg := valg2
+        }
+   
+   if (valg3 != "")
+    {
+    listbox := "listbox3"
+   valg := valg3 
+    }
+    if (valg4 != "")
+        {
+        valg := valg4
+        listbox := "listbox4"
+        } 
+    if (valg5 != "")
+        {
+        valg := valg5
+        listbox := "listbox5"
+        } 
+    if (valg6 != "")
+        {
+        valg := valg6
+        listbox := "listbox6"
+        } 
+
+tid := StrSplit(valg, ",")
+tid := Regexreplace(tid[2], "\D")
+tid := SubStr(tid, 1, 2) ":" SubStr(tid, 3, 2)
+valg := SubStr(valg, 1, 5)  
+valg := Regexreplace(valg, "\D")
+note_note := 
+GuiControl, note:, note_note , %note_note%
+for i,e in vl_liste_array
+    {
+        if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox and SubStr(vl_liste_array[i][3], 1, 5) = tid)
+            {
+                note_note := vl_liste_array[i][5]
+                break
+            }
+    }
+GuiControl, note:, note_note, %note_note%
+
+sleep 100
+Gui note: Show, w477 h277, Note
+sleep 100
+
 Return
+note_ok:
+gui note: submit
+    for i,e in vl_liste_array
+    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid) 
+        {
+            vl_liste_array[i][6] := " (N)"
+            vl_liste_array[i][5] := note_note
+            if (note_note = "")
+                vl_liste_array[i][6] := ""
+            gui note: hide
+            vl_liste_array_til_json_tekst()
+            P6_aktiver()
+            return
+        }
+P6_aktiver()
+return
+note_opslag:
+gui note: hide
+p6_vaelg_vl(valg)
+return
+
+note_slet:
+{
+    for i,e in vl_liste_array
+    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid)
+        {
+            vl_liste_array[i](6) := ""
+            vl_liste_array[i][5] := ""
+            vl_liste_array_til_json_tekst()
+            gui note: hide
+            P6_aktiver()
+            return
+        }
+return
+}
 
 vl_liste_vis_note:
 Return
@@ -684,6 +797,7 @@ vl_liste_slet:
         if (e != "")
         {
             valg := vl_liste_opslag_array[i]
+            listbox := "listbox" . i
         }
     if (valg = "")
     {
@@ -691,6 +805,31 @@ vl_liste_slet:
         gui vl_liste: show
         return
     }
+    ; tjek for multivalg
+    if (InStr(valg, "|"))
+        {
+            valg_split := StrSplit(valg, "|")
+            for i,e in valg_split
+                {
+                    valg_split[i] := SubStr(valg_split[i], 1, 5)
+                    valg_split[i] := RegExReplace(valg_split[i], "\D")
+
+                }
+        for i,e in valg_split
+            {
+                valg := valg_split[i]
+                for i,e in vl_liste_array
+                    {
+                        if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox)
+                            {
+                                vl_liste_array.RemoveAt(i)
+                            }
+                    }
+            }
+        vl_liste_array_til_json_tekst()
+        vl_liste_opdater_gui()
+        return
+        }
     vl_liste_valg_vl := StrSplit(valg, ",")
     tid_ind := RegExReplace(vl_liste_valg_vl.2, "\D")
     tid_korrigeret := SubStr(tid_ind, 1, 2) ":" SubStr(tid_ind, 3 , 2)
@@ -1181,7 +1320,8 @@ p6_vaelg_vl(byref vl := "")
     if (vl != "")
     {
         SendInput, %vl%
-        sleep 100
+
+        sleep 200
         SendInput, {enter}
     }
     return
@@ -1369,7 +1509,7 @@ p6_tjek_andre_rejser()
 {
     SendInput, ^{F9}
     sleep 200
-    SendInput, !r{F5}
+    SendInput, !r{F5}{down}
     return
 }
 ; ***
@@ -2205,6 +2345,7 @@ p6_replaner_hent_vl()
     return vl
 
 }
+
 ; del af vl_liste_laas_vl
 vl_liste_laas_tjek(vl)
 {
@@ -2557,7 +2698,56 @@ vlliste_vl_array_til_liste(vl_array)
     vl_liste_array_til_json_tekst()
     return
 }
+
+vlliste_vis_note_fra_planbillede()
+{
+    global vl_liste_array
+    global tid
+    global vl
+    global valg
+    global listbox
+
+    P6_aktiver()
+    vl := P6_hent_vl()
+    valg := vl
+    listbox := "listbox4"
+    fundet := 0
+    for i,e in vl_liste_array
+        {
+            if (vl_liste_array[i][1] = vl and vl_liste_array[i][8] = listbox)
+                {
+                    fundet := 1
+                }
+        }
+    if (fundet = 0)
+        {
+    FormatTime, vl_tid , YYYYMMDDHH24MISS, HH:mm
+    vl_array := vlliste_listet_lav_array(vl)
+    vlliste_vl_array_til_liste(vl_array)
+        }
+for i,e in vl_liste_array
+    {
+        if (vl_liste_array[i][1] = vl and vl_liste_array[i][8] = listbox)
+            {
+                note_note := vl_liste_array[i][5]  
+                tid := SubStr(vl_liste_array[i][3], 1, 5)
+            }
+    }
+GuiControl, note:, note_note , %note_note%
+for i,e in vl_liste_array
+    {
+        if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox and SubStr(vl_liste_array[i][3], 1, 5) = tid)
+            {
+                note_note := vl_liste_array[i][5]
+                break
+            }
+    }
+GuiControl, note:, note_note, %note_note%
+gui note: show
+}
+
 ;; Telenor
+
 
 ;; Trio
 ; ***
@@ -3730,6 +3920,7 @@ l_p6_replaner_liste_vl:
         return
     vl_array := vlliste_replaner_lav_array(vl)
     vlliste_vl_array_til_liste(vl_array)
+    sys_afslut_genvej()
 return
 ; Replaner og gå til VL, kolonne 60
 l_p6_replaner_opslag_vl:
@@ -3739,6 +3930,7 @@ l_p6_replaner_opslag_vl:
         return
     sleep 200
     p6_vaelg_vl(vl)
+    sys_afslut_genvej()
 return
 
 ; Gem aktiv vl på liste, kolonne 50
@@ -3753,6 +3945,7 @@ l_p6_liste_vl:
     }
     vl_array := vlliste_listet_lav_array(vl)
     vlliste_vl_array_til_liste(vl_array)
+    sys_afslut_genvej()
 return
 
 ; vist VL-liste, kolonne 51
@@ -3763,6 +3956,15 @@ l_p6_vis_liste_vl:
     sys_afslut_genvej()
 
 return
+
+l_p6_vis_liste_fra_planbillede:
+{
+    sys_genvej_start(67)
+    vlliste_vis_note_fra_planbillede()
+    sys_afslut_genvej()
+    return
+}
+
 
 l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     sys_genvej_start(20)
@@ -4195,7 +4397,9 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
 ; Opkald på markeret tekst. Kolonne 28
 l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     sys_genvej_start(28)
-    SendInput, {Click 2}
+    SendInput, {click}
+    sleep 100
+    SendInput, {Click}
     sleep 200
     clipboard := ""
     SendInput, ^c
@@ -4221,6 +4425,7 @@ l_trio_afslut_opkald:
 l_trio_afslut_opkaldB:
     sys_genvej_start(30)
     Trio_afslutopkald()
+    sys_afslut_genvej()
 Return
 
 ;; Flexfinder
@@ -4547,6 +4752,10 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     Gui Add, CheckBox, vhelt x160 y48 w120 h23, Ja, og VL &slettet:
     Gui Add, Edit, vtid_slet x170 y68 h21, Åbningstid garanti
     ; Gui Add, CheckBox, vhelt2 x160 y72 w120, GV garanti &slettet i variabel tid ; nødvendig?
+    Gui Font
+    Gui Font, s9, Segoe UI
+    Gui Add, Edit, vårsag x16 y72 w120 h21
+    Gui Font, w600
     Gui Font, s9, Segoe UI
     Gui Font, w600
     Gui Add, Text, x304 y0 w120 h23 +0x200, Garanti eller Var.
@@ -4557,10 +4766,6 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     Gui Add, Radio, vtype x304 y72 w120 h23, &Variabel
     Gui Font, w600
     Gui Add, Text, x16 y48 w120 h23 +0x200, &Årsag
-    Gui Font
-    Gui Font, s9, Segoe UI
-    Gui Add, Edit, vårsag x16 y72 w120 h21
-    Gui Font, w600
     Gui Add, Text, x8 y96 h23 +0x200, &Beskrivelse
     Gui Font
     Gui Font, s9, Segoe UI
@@ -4968,6 +5173,7 @@ return
 ::bsgs::Glemt slettet retur
 ::rgef::Rejsegaranti, egenbetaling fjernet
 ::vlaok::Alarm st OK
+::svigtudråb::VL ikke startet op, ingen kontakt til chf. VL ryddet og låst.
 
 ;; TEST
 
