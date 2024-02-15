@@ -777,18 +777,12 @@ vl_liste_slet:
     vl_liste_opslag_array := []
     valg :=
     Gui vl_liste: Submit, NoHide
-    ; find en måde at tjekke for valgt listbox
-    loop_var := "valg1"
-    loop 5
-        {
-            
-        }
-
     vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5)
     for i,e in vl_liste_opslag_array
         if (e != "")
         {
             valg := vl_liste_opslag_array[i]
+            listbox := "listbox" . i
         }
     if (valg = "")
     {
@@ -811,10 +805,15 @@ vl_liste_slet:
                 valg := valg_split[i]
                 for i,e in vl_liste_array
                     {
-                        if (vl_liste_array[i][1] = valg and vl_liste_array)
-                            ()
+                        if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox)
+                            {
+                                vl_liste_array.RemoveAt(i)
+                            }
                     }
             }
+        vl_liste_array_til_json_tekst()
+        vl_liste_opdater_gui()
+        return
         }
     vl_liste_valg_vl := StrSplit(valg, ",")
     tid_ind := RegExReplace(vl_liste_valg_vl.2, "\D")
