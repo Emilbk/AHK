@@ -1226,7 +1226,7 @@ P6_hent_s()
 {
     global s
     ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
-    Sendinput k{tab}
+    Sendinput !k{tab}
     clipboard := ""
     Sendinput +{F10}c
     ClipWait 1
