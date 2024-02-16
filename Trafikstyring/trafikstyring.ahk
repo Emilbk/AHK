@@ -295,8 +295,8 @@ gui vl_liste: add, button, x400 y475 w80 h23 gvl_liste_ryd3 vbox3, ryd
 gui vl_liste: add, button, x584 y475 w80 h23 gvl_liste_ryd4 vbox4, ryd
 gui vl_liste: add, button, x760 y475 w80 h23 gvl_liste_ryd5 vbox5, ryd
 gui vl_liste: add, button, x936 y475 w80 h23 gvl_liste_ryd6 vbox6, ryd
-gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_tilføj_note, tilf&øj/vis note
-gui vl_liste: add, button, x180 y536 w131 h23 gvl_liste_vis_note, vis &note
+gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_tilføj_note, tilføj/vis &note
+gui vl_liste: add, button, x180 y536 w131 h23 gvl_liste_OBS, OBS
 gui vl_liste: add, button, x320 y536 w131 h23 gvl_liste_opslag, &opslag
 gui vl_liste: add, button, x460 y536 w131 h23 gvl_liste_opslag_slet, opslag og s&let
 gui vl_liste: add, button, x600 y536 w131 h23 gvl_liste_slet, &slet
@@ -590,9 +590,9 @@ for i,e in vl_liste_array
             }
     }
 GuiControl, note:, note_note, %note_note%
-
 sleep 100
-Gui note: Show, w477 h277, Note
+Gui note: Show, w477 h277, Note VL %valg%
+ControlFocus, Edit1 , Note
 sleep 100
 
 Return
@@ -616,6 +616,69 @@ note_opslag:
 gui note: hide
 p6_vaelg_vl(valg)
 return
+
+
+vl_liste_obs:
+
+    vl_liste_opslag_array := []
+    valg :=
+    Gui vl_liste: Submit, NoHide
+    vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5)
+    for i,e in vl_liste_opslag_array
+        if (e != "")
+        {
+            valg := vl_liste_opslag_array[i]
+            listbox := "listbox" . i
+        }
+    if (valg = "")
+    {
+        MsgBox, , Vælg en markering, Der skal laves en markering, 2
+        gui vl_liste: show
+        return
+    }
+    vl_liste_valg_vl := StrSplit(valg, ",")
+    tid_ind := RegExReplace(vl_liste_valg_vl.2, "\D")
+    tid_korrigeret := SubStr(tid_ind, 1, 2) ":" SubStr(tid_ind, 3 , 2)
+    ; tjek på indkomne listbox(hvordan?), vl og tid - slet i array
+
+    for i,e in vl_liste_array
+        for i2,e2 in e
+        {
+            if (i2 = 1 and e2 = vl_liste_valg_vl.1 and SubStr(e.3, 1,5) = tid_korrigeret and !InStr(vl_liste_array[i][3], "(!)"))
+            {
+                vl_liste_array[i][3] := vl_liste_array[i][3] . " (!)"
+                vl_liste_array_til_json_tekst()
+                vl_liste_opdater_gui()
+                return
+            }
+            if (i2 = 1 and e2 = vl_liste_valg_vl.1 and SubStr(e.3, 1,5) = tid_korrigeret and InStr(vl_liste_array[i][3], "(!)"))
+            {
+                vl_liste_array[i][3] := SubStr(vl_liste_array[i][3], 1 , -4)
+                vl_liste_array_til_json_tekst()
+                vl_liste_opdater_gui()
+                return
+            }
+}
+return
+
+
+gui note: submit
+    for i,e in vl_liste_array
+    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid) 
+        {
+            vl_liste_array[i][3] := vl_liste_array[i][3] . "(!)"
+            vl_liste_opdater_gui()
+            vl_liste_array_til_json_tekst()
+            return
+        }
+    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid and InStr(vl_liste_array[i][3], "(!)")) 
+        {
+            vl_liste_array[i][3] := Ltrim(vl_liste_array[i][3], "(!)")
+            vl_liste_opdater_gui()
+            vl_liste_array_til_json_tekst()
+            return
+        }
+
 
 note_slet:
 {
@@ -674,7 +737,7 @@ vl_liste_liste:
     if (valg = "")
     {
         sleep 500
-        MsgBox, , Vælg en markering, Der skal laves en markering
+        MsgBox, , Vælg en markering, Der skal laves en markering, 2
         sleep 500
         gui vl_liste: show
         return
@@ -738,7 +801,7 @@ vl_liste_opslag:
     if (valg = "")
     {
         sleep 50
-        MsgBox, , Vælg en markering, Der skal laves en markering
+        MsgBox, , Vælg en markering, Der skal laves en markering, 2
         gui vl_liste: show
         return
     }
@@ -766,7 +829,7 @@ vl_liste_opslag_slet:
         }
     if (valg = "")
     {
-        MsgBox, , Vælg en markering, Der skal laves en markering
+        MsgBox, , Vælg en markering, Der skal laves en markering, 2
         gui vl_liste: show
         return
     }
@@ -801,7 +864,7 @@ vl_liste_slet:
         }
     if (valg = "")
     {
-        MsgBox, , Vælg en markering, Der skal laves en markering
+        MsgBox,, Vælg en markering, Der skal laves en markering, 2
         gui vl_liste: show
         return
     }
@@ -2541,6 +2604,8 @@ vlListe_vis_gui()
     GuiControl, vl_liste: , ListBox5, %listbox5%
     GuiControl, vl_liste: , ListBox6, %listbox6%
     Gui vl_liste: Show, w1076 h574, VL-liste
+    sleep 40
+    ControlFocus, Listbox1, vl_liste
     Return
 
 }
