@@ -923,8 +923,13 @@ Return
 return
 ;; GUI-labels
 trio_genvej:
-    Gui Show, w747 h670, AHK
-    ; MsgBox, , Tillykke!, Du har trykket på knappen!,
+    GetKeyState, tjek_key, Shift, 
+    if (tjek_key = "D")
+        {
+            SendInput, {ShiftUp}
+            goto l_restartAHK
+        }
+    MsgBox, , Knap, Knap, 
     return
 tlfKopi:
     {
