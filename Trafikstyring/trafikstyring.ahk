@@ -1519,25 +1519,46 @@ p6_notat_hotstr(notat := "")
         Input, st, , {enter}{Escape}
         if (ErrorLevel = "Endkey:Escape")
             return
+        if (st = "")
+            {
+                MsgBox, 16, Intet input, Intet input - er numlock slået til?
+                return
+            }
     }
     if (InStr(notat, "ankomst_tid"))
     {
         Input, ankomst_tid, , {enter} {Escape}
         if (ErrorLevel = "Endkey:Escape")
             return
+        if (ankomst_tid = "")
+            {
+                MsgBox, 16, Intet input, Intet input - er numlock slået til?
+                return
+            }
     }
     if (InStr(notat, "repl_tid"))
     {
         Input, repl_tid, , {enter} {Escape}
         if (ErrorLevel = "Endkey:Escape")
             return
+        if (repl_tid = "")
+            {
+                MsgBox, 16, Intet input, Intet input - er numlock slået til?
+                return
+            }
     }
     if (InStr(notat, "pause_tid"))
     {
         Input, pause_tid, , {enter} {Escape}
         if (ErrorLevel = "Endkey:Escape")
             return
+        if (pause_tid = "")
+            {
+                MsgBox, 16, Intet input, Intet input - er numlock slået til?
+                return
+            }
     }
+
     notat := StrReplace(notat, "st." , "st. " st)
     notat := StrReplace(notat, "ankomst_tid" , "ank. " ankomst_tid)
     notat := StrReplace(notat, "repl_tid" , "" repl_tid)
