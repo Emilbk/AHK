@@ -2610,7 +2610,7 @@ vlListe_vis_gui()
     GuiControl, vl_liste: , ListBox6, %listbox6%
     Gui vl_liste: Show, w1076 h574, VL-liste
     sleep 40
-    ControlFocus, Listbox1, vl_liste
+    ControlFocus, Listbox1
     Return
 
 }
@@ -2813,7 +2813,7 @@ for i,e in vl_liste_array
             }
     }
 GuiControl, note:, note_note, %note_note%
-gui note: show
+gui note: show, , Note VL %valg%
 }
 
 ;; Telenor
