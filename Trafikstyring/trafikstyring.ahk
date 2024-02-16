@@ -1934,6 +1934,12 @@ P6_tekstTilChf(ByRef tekst:=" ")
     P6_aktiver()
     kørselsaftale := P6_hent_k()
     styresystem := P6_hent_s()
+    if (styresystem = "2" or "4" or "6" or "7" or "8" or "10" or "11" or "13" or "14" or "16" or "17" or "18" or "19" or "20" )
+        {
+        MsgBox, 16 , Styresystem %styresystem% , Dette styresystem kan ikke modtage tekstbeskeder, 
+        sys_tjek := 1
+        return sys_tjek
+        }
     sleep s * 200
     Sendinput !tt^k
     sleep s * 100
@@ -3810,8 +3816,8 @@ l_p6_vaelg_vl_liste:
 return
 ;træk tlf fra aktiv planbillede, ring op i Trio. Col 11
 l_p6_vl_ring_op:
-    sys_genvej_start(11)
-    sleep s * 100
+sys_genvej_start(11)
+sleep s * 100
     vl_tlf := P6_hent_vl_tlf()
     if (vl_tlf = 0)
     {
@@ -4102,6 +4108,15 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         return
     }
     if (valgt = "f")
+        {
+    sys_tjek_array := ["2" ,"4" ,"6" ,"7" ,"8" ,"10" ,"11" ,"13" ,"14" ,"16" ,"17" ,"18" ,"19" ,"20"]
+    sys_tjek := P6_hent_s()
+    for i,e in sys_tjek_array
+        if (e = sys_tjek)
+        {
+        MsgBox, 16 , Styresystem %styresystem% , Dette styresystem kan ikke modtage tekstbeskeder, 
+            return
+        }
     {
         gui, f_chf:New
         gui, f_chf:Default
@@ -4157,7 +4172,17 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sys_afslut_genvej()
         return
     }
+}
     if (valgt = "k")
+        {
+    sys_tjek_array := ["2" ,"4" ,"6" ,"7" ,"8" ,"10" ,"11" ,"13" ,"14" ,"16" ,"17" ,"18" ,"19" ,"20"]
+    sys_tjek := P6_hent_s()
+    for i,e in sys_tjek_array
+        if (e = sys_tjek)
+        {
+        MsgBox, 16 , Styresystem %styresystem% , Dette styresystem kan ikke modtage tekstbeskeder, 
+            return
+        }
     {
         gui, k_chf:New
         gui, k_chf:Default
@@ -4223,11 +4248,21 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sys_afslut_genvej()
         return
     }
+}
     if (valgt == "p")
     {
 
-        P6_tekstTilChf("Er der blevet glemt at kvittere for privatrejsen? Mvh. Midttrafik")
+        sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for privatrejsen? Mvh. Midttrafik")
         sleep 500
+        if (sys_tjek = 1)
+            {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Priv. ikke kvitteret" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            }
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
         IfMsgBox, Yes
         {
@@ -4280,9 +4315,20 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     }
     if (valgt == "w")
     {
-
-        P6_tekstTilChf("Der er ikke bedt om vognløb start. Huske at bede om første køreordre ved opstart, uanset om der ligger ture eller ej. Mvh. Midttrafik")
+        sys_tjek := P6_tekstTilChf("Der er ikke bedt om vognløb start. Huske at bede om første køreordre ved opstart, uanset om der ligger ture eller ej. Mvh. Midttrafik")
         sleep 500
+        if (sys_tjek = 1)
+            {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_wakeup_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat(initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return 
+            }
+        if (sys_tjek = 0)
+            {
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
         IfMsgBox, Yes
         {
@@ -4306,11 +4352,20 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sys_afslut_genvej()
             return
         }
+            }
     }
     if (valgt == "W")
     {
-
-        P6_tekstTilChf("Jeg kan ikke ringe dig op, der er ikke trykket for første køreordre. Vognløbet er nu låst, ring til driften, hvis du er ude at køre.")
+        sys_tjek := P6_tekstTilChf("Jeg kan ikke ringe dig op, der er ikke trykket for første køreordre. Vognløbet er nu låst, ring til driften, hvis du er ude at køre.")
+        if (sys_tjek = 1)
+           {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_laast_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Ingen kontakt til chf, VL låst" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+           } 
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør? Husk at låse VL,
         IfMsgBox, Yes
@@ -4338,10 +4393,15 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     }
     if (valgt == "r")
     {
-        tlf := P6_hent_vl_tlf()
-        if (tlf = 0)
+    sys_tjek_array := ["2" ,"4" ,"6" ,"7" ,"8" ,"10" ,"11" ,"13" ,"14" ,"16" ,"17" ,"18" ,"19" ,"20"]
+    sys_tjek := P6_hent_s()
+    for i,e in sys_tjek_array
+        if (e = sys_tjek)
         {
-            sys_afslut_genvej()
+        MsgBox, 16 , Styresystem %styresystem% , Dette styresystem kan ikke modtage tekstbeskeder, 
+        P6_notat("Ingen kontakt til chf" initialer " ")
+        sys_afslut_genvej()
+            return
         }
         P6_tekstTilChf("Jeg kan ikke ringe dig op på telefonnummer " tlf ". Ring til driften, 70112210. Mvh Midttrafik.")
         sleep 500
@@ -4370,6 +4430,11 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     {
 
         P6_tekstTilChf("Jeg kan ikke ringe dig op. Tryk for opkald igen, hvis du stadig gerne vil ringes op. Mvh. Midttrafik")
+        if (sys_tjek = 1)
+            {
+            P6_notat("Tal forgæves" initialer " ")
+            sys_afslut_genvej()
+            }
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?
         IfMsgBox, Yes
