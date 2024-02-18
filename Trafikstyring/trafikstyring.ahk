@@ -623,12 +623,16 @@ vl_liste_obs:
     vl_liste_opslag_array := []
     valg :=
     Gui vl_liste: Submit, NoHide
-    vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5)
+    vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5, valg6)
+    for i,e in [valg1, valg2, valg3, valg4, valg5, valg6]
+        {
+            if (i != "")
+                listbox := listbox . i
+        }
     for i,e in vl_liste_opslag_array
         if (e != "")
         {
             valg := vl_liste_opslag_array[i]
-            listbox := "listbox" . i
         }
     if (valg = "")
     {
