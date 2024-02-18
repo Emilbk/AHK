@@ -2427,6 +2427,11 @@ p6_replaner_hent_vl()
     clipboard :=
     SendInput, ^c
     clipwait 2
+    if (clipboard = "")
+        {
+            SendInput, ^c
+            ClipWait, 1    
+        }
     if (InStr(clipboard, "planlægges"))
     {
         SendInput, {enter}
