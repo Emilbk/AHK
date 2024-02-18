@@ -678,6 +678,7 @@ for i,e in vl_liste_array
                 note_count += 1
                 note_vl[note_count].Push(vl_liste_array[i][1])
                 note_vl[note_count].push(vl_liste_array[i][5])
+                vl_liste_array[i][10 := ""]
             }
     }
 for i,e in note_vl
