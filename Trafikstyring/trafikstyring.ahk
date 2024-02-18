@@ -673,24 +673,6 @@ vl_liste_obs:
 return
 
 
-gui note: submit
-    for i,e in vl_liste_array
-    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid) 
-        {
-            vl_liste_array[i][3] := vl_liste_array[i][3] . "(!)"
-            vlListe_opdater_gui()
-            vl_liste_array_til_json_tekst()
-            return
-        }
-    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid and InStr(vl_liste_array[i][3], "(!)")) 
-        {
-            vl_liste_array[i][3] := Ltrim(vl_liste_array[i][3], "(!)")
-            vlListe_opdater_gui()
-            vl_liste_array_til_json_tekst()
-            return
-        }
-
-
 note_slet:
 {
     for i,e in vl_liste_array
