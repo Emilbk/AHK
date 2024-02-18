@@ -310,7 +310,8 @@ Gui note: Add, Edit, x16 y8 w438 h206 vnote_note
 Gui note: Add, Button, x8 y240 w80 h23 gnote_ok, &Gem
 Gui note: Add, Button, x104 y240 w80 h23 gnote_opslag, &Opslag
 Gui note: Add, Button, x200 y240 w80 h23 gnote_slet, &Slet note
-Gui note: Add, Edit, x304 y240 w166 h21, Sæt timer
+Gui note: Add, checkbox, x319 y240 w76 h21 vnote_reminder, &Reminder
+Gui note: Add, Edit, x394 y240 w50 h21 vnote_tid, 
 #IfWinActive VL-liste
     Enter::
     NumpadEnter::
@@ -346,7 +347,7 @@ Gui note: Add, Edit, x304 y240 w166 h21, Sæt timer
 
 #IfWinActive, VL-liste
     F5::
-        vl_liste_opdater_gui()
+        vlListe_opdater_gui()
     return
 
     w::
@@ -456,7 +457,7 @@ vl_liste_ryd1:
     }
     vl_liste_array := vl_liste_midl
     vl_liste_array_til_json_tekst()
-    vl_liste_opdater_gui()
+    vlListe_opdater_gui()
 return
 vl_liste_ryd2:
     vl_liste_midl := []
@@ -470,7 +471,7 @@ vl_liste_ryd2:
     }
     vl_liste_array := vl_liste_midl
     vl_liste_array_til_json_tekst()
-    vl_liste_opdater_gui()
+    vlListe_opdater_gui()
 return
 vl_liste_ryd3:
     vl_liste_midl := []
@@ -484,7 +485,7 @@ vl_liste_ryd3:
     }
     vl_liste_array := vl_liste_midl
     vl_liste_array_til_json_tekst()
-    vl_liste_opdater_gui()
+    vlListe_opdater_gui()
 return
 vl_liste_ryd4:
     vl_liste_midl := []
@@ -498,7 +499,7 @@ vl_liste_ryd4:
     }
     vl_liste_array := vl_liste_midl
     vl_liste_array_til_json_tekst()
-    vl_liste_opdater_gui()
+    vlListe_opdater_gui()
 return
 vl_liste_ryd5:
     vl_liste_midl := []
@@ -512,7 +513,7 @@ vl_liste_ryd5:
     }
     vl_liste_array := vl_liste_midl
     vl_liste_array_til_json_tekst()
-    vl_liste_opdater_gui()
+    vlListe_opdater_gui()
 return
 vl_liste_ryd6:
     vl_liste_midl := []
@@ -526,11 +527,12 @@ vl_liste_ryd6:
     }
     vl_liste_array := vl_liste_midl
     vl_liste_array_til_json_tekst()
-    vl_liste_opdater_gui()
+    vlListe_opdater_gui()
 Return
 
 noteEscape:
 noteClose:
+vlListe_opdater_gui()
 gui note: hide
 sleep 100
 gui vl_liste: show
@@ -541,38 +543,15 @@ vl_liste_tilføj_note:
     valg :=
     Gui vl_liste: Submit
     Gui vl_liste: Hide
-    if (valg1 != "")
-       {
-        valg := valg1
-        listbox := "listbox1"
-       }
-
-if (valg2 != "")
+    for i,e in [valg1, valg2, valg3, valg4, valg5, valg6]
         {
-        listbox := "listbox2"
-        valg := valg2
+            if (e != "")
+                {
+                    valg := e
+                    listbox := "listbox" . i
+                    break
+                }
         }
-   
-   if (valg3 != "")
-    {
-    listbox := "listbox3"
-   valg := valg3 
-    }
-    if (valg4 != "")
-        {
-        valg := valg4
-        listbox := "listbox4"
-        } 
-    if (valg5 != "")
-        {
-        valg := valg5
-        listbox := "listbox5"
-        } 
-    if (valg6 != "")
-        {
-        valg := valg6
-        listbox := "listbox6"
-        } 
 
 tid := StrSplit(valg, ",")
 tid := Regexreplace(tid[2], "\D")
@@ -586,8 +565,17 @@ for i,e in vl_liste_array
         if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox and SubStr(vl_liste_array[i][3], 1, 5) = tid)
             {
                 note_note := vl_liste_array[i][5]
+                GuiControl, note:, edit2, % vl_liste_array[i][10]
+            if (vl_liste_array[i][10] = "")
+            {
+                GuiControl, note:, note_reminder, 0
+            }            
+            Else
+                {
+                GuiControl, note:, note_reminder, 1
+                }
                 break
-            }
+            }   
     }
 GuiControl, note:, note_note, %note_note%
 sleep 100
@@ -598,19 +586,38 @@ sleep 100
 Return
 note_ok:
 gui note: submit
-    for i,e in vl_liste_array
-    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid) 
-        {
-            vl_liste_array[i][6] := " (N)"
-            vl_liste_array[i][5] := note_note
-            if (note_note = "")
-                vl_liste_array[i][6] := ""
-            gui note: hide
-            vl_liste_array_til_json_tekst()
-            P6_aktiver()
-            return
-        }
-P6_aktiver()
+vlListe_note(note_reminder, note_tid, note_note)
+;     if (note_reminder = 1 and StrLen(note_tid) != 4)
+;         {
+;             MsgBox, 16 , Fejl i indtastet tidspunkt, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
+;             gui note: Show
+;             return 
+;         }
+;     note_tid_tjek := A_YYYY A_MM A_DD note_tid
+;         if note_tid_tjek is not Time
+;         {
+;             MsgBox, 16 , Fejl i indtastning af tidspunkt , Det indtastede er ikke et klokkeslæt.,
+;             gui note: show
+;             return
+;         }
+;     for i,e in vl_liste_array
+;     if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid) 
+;         {
+;             if (note_reminder = 1)
+;                 {
+;                     vl_liste_array[i][10] := note_tid
+;                     vl_liste_array[i][7] := " (R)"
+;                 }
+;             vl_liste_array[i][6] := " (N)"
+;             vl_liste_array[i][5] := note_note
+;             if (note_note = "")
+;                 vl_liste_array[i][6] := ""
+;             gui note: hide
+;             vl_liste_array_til_json_tekst()
+;             P6_aktiver()
+;             return
+;         }
+; P6_aktiver()
 return
 note_opslag:
 gui note: hide
@@ -652,14 +659,14 @@ vl_liste_obs:
             {
                 vl_liste_array[i][3] := vl_liste_array[i][3] . " (!)"
                 vl_liste_array_til_json_tekst()
-                vl_liste_opdater_gui()
+                vlListe_opdater_gui()
                 return
             }
             if (i2 = 1 and e2 = vl_liste_valg_vl.1 and SubStr(e.3, 1,5) = tid_korrigeret and InStr(vl_liste_array[i][3], "(!)"))
             {
                 vl_liste_array[i][3] := SubStr(vl_liste_array[i][3], 1 , -4)
                 vl_liste_array_til_json_tekst()
-                vl_liste_opdater_gui()
+                vlListe_opdater_gui()
                 return
             }
 }
@@ -671,14 +678,14 @@ gui note: submit
     if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid) 
         {
             vl_liste_array[i][3] := vl_liste_array[i][3] . "(!)"
-            vl_liste_opdater_gui()
+            vlListe_opdater_gui()
             vl_liste_array_til_json_tekst()
             return
         }
     if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid and InStr(vl_liste_array[i][3], "(!)")) 
         {
             vl_liste_array[i][3] := Ltrim(vl_liste_array[i][3], "(!)")
-            vl_liste_opdater_gui()
+            vlListe_opdater_gui()
             vl_liste_array_til_json_tekst()
             return
         }
@@ -894,7 +901,7 @@ vl_liste_slet:
                     }
             }
         vl_liste_array_til_json_tekst()
-        vl_liste_opdater_gui()
+        vlListe_opdater_gui()
         return
         }
     vl_liste_valg_vl := StrSplit(valg, ",")
@@ -909,7 +916,7 @@ vl_liste_slet:
             {
                 vl_liste_array.RemoveAt(i)
                 vl_liste_array_til_json_tekst()
-                vl_liste_opdater_gui()
+                vlListe_opdater_gui()
                 return
             }
         }
@@ -2614,7 +2621,7 @@ vlListe_dan_liste(listbox)
                         ; if (i2 = 5 and e2 != 0)
                         ; if (i2 = 5 and e2 = 0)
                         ; vl_liste_array.InsertAt(6, "")
-                        else if (i2 = 5 and e2 = 0)
+                        else if (i2 = 5 and e2 = 0) or (i2 = 10)
                         {
 
                         }
@@ -2644,13 +2651,13 @@ vlListe_vis_gui()
     GuiControl, vl_liste: , ListBox4, %listbox4%
     GuiControl, vl_liste: , ListBox5, %listbox5%
     GuiControl, vl_liste: , ListBox6, %listbox6%
-    Gui vl_liste: Show, w1272 h574, VL-liste
+    Gui vl_liste: Show, w1372 h574, VL-liste
     sleep 40
     ControlFocus, Listbox1
     Return
 
 }
-vl_liste_opdater_gui()
+vlListe_opdater_gui()
 {
     listbox1 := vlListe_dan_liste("listbox1")
     listbox2 := vlListe_dan_liste("listbox2")
@@ -2680,7 +2687,7 @@ vlliste_replaner_lav_array(vl)
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
     vl_liste[6] :=
-    vl_liste[7] := "|"
+    vl_liste[11] := "|"
     vl_liste[8] := "listbox1"
 
     return vl_liste
@@ -2698,7 +2705,7 @@ vlliste_kvittering_lav_array(vl := "")
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
     vl_liste[6] :=
-    vl_liste[7] := "|"
+    vl_liste[11] := "|"
     vl_liste[8] := "listbox6"
 
     return vl_liste
@@ -2716,7 +2723,7 @@ vlliste_wakeup_lav_array(vl := "")
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
     vl_liste[6] :=
-    vl_liste[7] := "|"
+    vl_liste[11] := "|"
     vl_liste[8] := "listbox2"
 
     return vl_liste
@@ -2734,7 +2741,7 @@ vlliste_priv_lav_array(vl)
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
     vl_liste[6] :=
-    vl_liste[7] := "|"
+    vl_liste[11] := "|"
     vl_liste[8] := "listbox3"
 
     return vl_liste
@@ -2752,7 +2759,7 @@ vlliste_listet_lav_array(vl := "")
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
     vl_liste[6] :=
-    vl_liste[7] := "|"
+    vl_liste[11] := "|"
     vl_liste[8] := "listbox4"
 
     return vl_liste
@@ -2770,7 +2777,7 @@ vlliste_laast_lav_array(vl := "")
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
     vl_liste[6] :=
-    vl_liste[7] := "|"
+    vl_liste[11] := "|"
     vl_liste[8] := "listbox5"
 
     return vl_liste
@@ -2805,6 +2812,52 @@ vlliste_vl_array_til_liste(vl_array)
     return
 }
 
+vlListe_note(note_reminder, note_tid, note_note)
+{
+     global vl_liste_array
+    global tid
+    global vl
+    global valg
+    global listbox
+
+   if (note_reminder = 1 and StrLen(note_tid) != 4)
+        {
+            MsgBox, 16 , Fejl i indtastet tidspunkt, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
+            gui note: Show
+            return 
+        }
+    note_tid_tjek := A_YYYY A_MM A_DD note_tid
+        if note_tid_tjek is not Time
+        {
+            MsgBox, 16 , Fejl i indtastning af tidspunkt , Det indtastede er ikke et klokkeslæt.,
+            gui note: show
+            return
+        }
+    for i,e in vl_liste_array
+    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid) 
+        {
+            if (note_reminder = 1)
+                {
+                    vl_liste_array[i][10] := note_tid
+                    vl_liste_array[i][7] := " (R)"
+                }
+          if (note_reminder = 0)
+                {
+                    vl_liste_array[i][10] := ""
+                    vl_liste_array[i][7] := ""
+                }
+            vl_liste_array[i][6] := " (N)"
+            vl_liste_array[i][5] := note_note
+            if (note_note = "")
+                vl_liste_array[i][6] := ""
+            gui note: hide
+            vl_liste_array_til_json_tekst()
+            P6_aktiver()
+            return
+        }
+P6_aktiver()
+return
+}
 vlliste_vis_note_fra_planbillede()
 {
     global vl_liste_array
@@ -2815,6 +2868,8 @@ vlliste_vis_note_fra_planbillede()
 
     P6_aktiver()
     vl := P6_hent_vl()
+    if (vl = 0)
+        return
     valg := vl
     listbox := "listbox4"
     fundet := 0
@@ -2837,9 +2892,19 @@ for i,e in vl_liste_array
             {
                 note_note := vl_liste_array[i][5]  
                 tid := SubStr(vl_liste_array[i][3], 1, 5)
+                if (vl_liste_array[i][10] = "")
+                    {
+                        note_reminder = 0
+                        GuiControl, note:, edit2, 
+                    }
+                if (vl_liste_array[i][10] != "")
+                    {
+                        note_reminder = 1
+                        GuiControl, note: , note_reminder, 1
+                        GuiControl, note:, edit2, % vl_liste_array[i][10]
+                    }
             }
     }
-GuiControl, note:, note_note , %note_note%
 for i,e in vl_liste_array
     {
         if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox and SubStr(vl_liste_array[i][3], 1, 5) = tid)
@@ -2850,6 +2915,7 @@ for i,e in vl_liste_array
     }
 GuiControl, note:, note_note, %note_note%
 gui note: show, , Note VL %valg%
+ControlFocus, Edit1
 }
 
 ;; Telenor
@@ -2871,7 +2937,7 @@ Trio_opkald(ByRef telefon)
     SendInput, {CtrlUp}{AltUp}
     if (telefon = "")
     {
-        MsgBox, , , Der er ikke lavet en markering af tal
+        MsgBox, , , Der er ikke lavet en markering af telefonnummer
         trio_klar()
         return
     }
