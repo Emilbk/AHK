@@ -312,7 +312,7 @@ Gui note: Add, Button, x8 y240 w80 h23 gnote_ok, &Gem
 Gui note: Add, Button, x104 y240 w80 h23 gnote_opslag, &Opslag
 Gui note: Add, Button, x200 y240 w80 h23 gnote_slet, &Slet note
 Gui note: Add, checkbox, x319 y240 w76 h21 vnote_reminder, &Reminder
-Gui note: Add, Edit, x394 y240 w50 h21 vnote_tid, 
+Gui note: Add, Edit, x394 y240 w50 h21 number vnote_tid, 
 #IfWinActive VL-liste
     Enter::
     NumpadEnter::
@@ -678,7 +678,8 @@ for i,e in vl_liste_array
                 note_count += 1
                 note_vl[note_count].Push(vl_liste_array[i][1])
                 note_vl[note_count].push(vl_liste_array[i][5])
-                vl_liste_array[i][10 := ""]
+                vl_liste_array[i][10] := ""
+                vl_liste_array[i][7] := ""
             }
     }
 for i,e in note_vl
@@ -690,6 +691,8 @@ for i,e in note_vl
         Gui note: show, ,Reminder vognløb %vl%
         ControlFocus, edit2
         GuiControl, note:, Edit1, %note%
+        GuiControl, note:, Edit2, 
+        GuiControl, note:, note_reminder, 0 
         
     }
 }
