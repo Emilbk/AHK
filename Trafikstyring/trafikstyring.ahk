@@ -70,6 +70,7 @@ if (vl_liste_array_json = "")
 else if (vl_liste_array_json != "")
     vl_liste_array := json.load(vl_liste_array_json)
 
+SetTimer, note_tjek_tid, 60000
 ;   bruger_genvej  telenor_opr     telenor_ahk
 ; FileRead, vl_repl_liste, %vl_repl_tekst%
 
@@ -538,6 +539,41 @@ sleep 100
 gui vl_liste: show
 Return
 
+vl_liste_add_note(valg, note_note)
+{
+    tid := StrSplit(valg, ",")
+tid := Regexreplace(tid[2], "\D")
+tid := SubStr(tid, 1, 2) ":" SubStr(tid, 3, 2)
+valg := SubStr(valg, 1, 5)  
+valg := Regexreplace(valg, "\D")
+note_note := 
+GuiControl, note:, note_note , %note_note%
+for i,e in vl_liste_array
+    {
+        if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox and SubStr(vl_liste_array[i][3], 1, 5) = tid)
+            {
+                note_note := vl_liste_array[i][5]
+                GuiControl, note:, edit2, % vl_liste_array[i][10]
+            if (vl_liste_array[i][10] = "")
+            {
+                GuiControl, note:, note_reminder, 0
+            }            
+            Else
+                {
+                GuiControl, note:, note_reminder, 1
+                }
+                break
+            }   
+    }
+GuiControl, note:, note_note, %note_note%
+sleep 100
+Gui note: Show, w477 h277, Note VL %valg%
+ControlFocus, Edit1 , Note
+sleep 100
+
+
+}
+;; lav
 vl_liste_tilføj_note:
 ; Note-gui
     valg :=
@@ -552,6 +588,7 @@ vl_liste_tilføj_note:
                     break
                 }
         }
+; vl_liste_add_note(valg, note_note)
 
 tid := StrSplit(valg, ",")
 tid := Regexreplace(tid[2], "\D")
@@ -618,12 +655,44 @@ vlListe_note(note_reminder, note_tid, note_note)
 ;             return
 ;         }
 ; P6_aktiver()
+if (note_reminder = 1)
+{
+    vlliste_note_reminder(note_reminder, note_tid)
+}
 return
+
+
 note_opslag:
 gui note: hide
 p6_vaelg_vl(valg)
 return
 
+note_tjek_tid:
+FormatTime, note_tid_ur, YYYYMMDDHH24MISS, HHmm
+note_vl := [[]]
+note_count := 0
+for i,e in vl_liste_array
+    {
+        if (vl_liste_array[i][10] = note_tid_ur)
+            {
+                note_count += 1
+                note_vl[note_count].Push(vl_liste_array[i][1])
+                note_vl[note_count].push(vl_liste_array[i][5])
+            }
+    }
+for i,e in note_vl
+    {
+    if (e[i] != "")
+    {
+        vl := e[1]
+        note := e[2]
+        Gui note: show, ,Reminder vognløb %vl%
+        ControlFocus, edit2
+        GuiControl, note:, Edit1, %note%
+        
+    }
+}
+return
 
 vl_liste_obs:
 
@@ -2840,6 +2909,14 @@ vlListe_note(note_reminder, note_tid, note_note)
 P6_aktiver()
 return
 }
+
+vlliste_note_reminder(note_reminder, note_tid)
+{
+    return
+}
+
+
+
 vlliste_vis_note_fra_planbillede()
 {
     global vl_liste_array
