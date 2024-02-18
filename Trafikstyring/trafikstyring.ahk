@@ -281,27 +281,27 @@ gui vl_liste: add, listbox, x18 y24 w200 h449 HWNDListbox1id vvalg1 gvlryd1 mult
 gui vl_liste: add, listbox, x224 y24 w200 h449 HWNDListbox2id vvalg2 gvlryd2 multi,
 gui vl_liste: add, listbox, x430 y24 w200 h449 HWNDListbox3id vvalg3 gvlryd3 multi,
 gui vl_liste: add, listbox, x636 y24 w200 h449 HWNDListbox4id vvalg4 gvlryd4 multi,
-gui vl_liste: add, listbox, x842 y24 w200 h449 HWNDListbox5id vvalg5 gvlryd5 multi,
-gui vl_liste: add, listbox, x1048 y24 w200 h449 HWNDListbox6id vvalg6 gvlryd6 multi,
+gui vl_liste: add, listbox, x842 y24 w250 h449 HWNDListbox5id vvalg5 gvlryd5 multi,
+gui vl_liste: add, listbox, x1098 y24 w200 h449 HWNDListbox6id vvalg6 gvlryd6 multi,
 gui vl_liste: add, text, x18 y0 w120 h23 +0x200, &Replaneret
 gui vl_liste: add, text, x224 y0 w120 h23 +0x200, Wakeup
 gui vl_liste: add, text, x430 y0 w120 h23 +0x200, Privatrejse
 gui vl_liste: add, text, x636 y0 w120 h23 +0x200, Listet
 gui vl_liste: add, text, x842 y0 w120 h23 +0x200, Låst
-gui vl_liste: add, text, x1048 y0 w120 h23 +0x200, Kvitteret for chauffør
+gui vl_liste: add, text, x1097 y0 w120 h23 +0x200, Kvitteret for chauffør
 gui vl_liste: add, button, x78 y475 w80 h23 gvl_liste_ryd1 vbox1, ryd
 gui vl_liste: add, button, x284 y475 w80 h23 gvl_liste_ryd2 vbox2, ryd
 gui vl_liste: add, button, x490 y475 w80 h23 gvl_liste_ryd3 vbox3, ryd
 gui vl_liste: add, button, x696 y475 w80 h23 gvl_liste_ryd4 vbox4, ryd
-gui vl_liste: add, button, x902 y475 w80 h23 gvl_liste_ryd5 vbox5, ryd
-gui vl_liste: add, button, x1108 y475 w80 h23 gvl_liste_ryd6 vbox6, ryd
-gui vl_liste: add, button, x130 y536 w131 h23 gvl_liste_tilføj_note, tilføj/vis &note
-gui vl_liste: add, button, x270 y536 w131 h23 gvl_liste_OBS, OBS
-gui vl_liste: add, button, x410 y536 w131 h23 gvl_liste_opslag, &opslag
-gui vl_liste: add, button, x550 y536 w131 h23 gvl_liste_opslag_slet, opslag og s&let
-gui vl_liste: add, button, x690 y536 w131 h23 gvl_liste_slet, &slet
-gui vl_liste: add, button, x830 y536 w131 h23 gvl_liste_slet_alt_alle, slet &alt
-gui vl_liste: add, button, x970 y536 w131 h23 gvl_liste_liste, l&iste
+gui vl_liste: add, button, x927 y475 w80 h23 gvl_liste_ryd5 vbox5, ryd
+gui vl_liste: add, button, x1158 y475 w80 h23 gvl_liste_ryd6 vbox6, ryd
+gui vl_liste: add, button, x180 y536 w131 h23 gvl_liste_tilføj_note, tilføj/vis &note
+gui vl_liste: add, button, x320 y536 w131 h23 gvl_liste_OBS, OBS
+gui vl_liste: add, button, x460 y536 w131 h23 gvl_liste_opslag, &opslag
+gui vl_liste: add, button, x600 y536 w131 h23 gvl_liste_opslag_slet, opslag og s&let
+gui vl_liste: add, button, x740 y536 w131 h23 gvl_liste_slet, &slet
+gui vl_liste: add, button, x880 y536 w131 h23 gvl_liste_slet_alt_alle, slet &alt
+gui vl_liste: add, button, x1020 y536 w131 h23 gvl_liste_liste, l&iste
 
 ;; GUI vl-note
 gui note: +Labelnote
