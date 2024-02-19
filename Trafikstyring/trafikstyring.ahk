@@ -287,7 +287,7 @@ gui vl_liste: add, listbox, x1098 y24 w200 h449 HWNDListbox6id vvalg6 gvlryd6 mu
 gui vl_liste: add, text, x18 y0 w120 h23 +0x200, &Replaneret
 gui vl_liste: add, text, x224 y0 w120 h23 +0x200, Wakeup
 gui vl_liste: add, text, x430 y0 w120 h23 +0x200, Privatrejse
-gui vl_liste: add, text, x636 y0 w120 h23 +0x200, Listet
+gui vl_liste: add, text, x636 y0 w120 h23 +0x200, Huskeliste
 gui vl_liste: add, text, x842 y0 w120 h23 +0x200, Låst
 gui vl_liste: add, text, x1097 y0 w120 h23 +0x200, Kvitteret for chauffør
 gui vl_liste: add, button, x78 y475 w80 h23 gvl_liste_ryd1 vbox1, ryd
@@ -533,9 +533,14 @@ Return
 
 noteEscape:
 noteClose:
+WinGetActiveTitle, note_vinduetitel
 vlListe_opdater_gui()
 gui note: hide
 sleep 100
+if (InStr(note_vinduetitel, "reminder") or InStr(note_vinduetitel, "liste"))
+    {
+        return
+    }
 gui vl_liste: show
 Return
 
@@ -2821,7 +2826,7 @@ vlliste_listet_lav_array(vl := "")
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
-    vl_liste[2] := ", listet "
+    vl_liste[2] := ", huskeliste "
     vl_liste[3] := vl_replaner_tidspunkt_vis
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
@@ -2991,7 +2996,7 @@ for i,e in vl_liste_array
 GuiControl, note:, note_note, %note_note%
         GuiControl, note:, Edit2, 
         GuiControl, note:, note_reminder, 0 
-gui note: show, , Note VL %valg%
+gui note: show, , Note VL %valg% til huskeliste
 ControlFocus, Edit1
 }
 
