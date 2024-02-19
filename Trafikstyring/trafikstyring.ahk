@@ -359,7 +359,7 @@ Gui note: Add, Edit, x394 y240 w50 h21 number vnote_tid,
             return
         }
 
-    i::
+    h::
         {
             GuiControl, vl_liste: Focus, listbox4
             GuiControl, vl_liste: Choose, Listbox4, 1
@@ -2727,7 +2727,7 @@ vlListe_vis_gui()
     GuiControl, vl_liste: , ListBox6, %listbox6%
     Gui vl_liste: Show, w1372 h574, VL-liste
     sleep 40
-    ControlFocus, Listbox1
+    GuiControl, vl_liste: Choose, Listbox1 , 0
     Return
 
 }
