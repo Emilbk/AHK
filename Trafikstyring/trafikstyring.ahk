@@ -4405,6 +4405,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             P6_notat("Priv. ikke kvitteret" initialer " ")
             gui, cancel
             sys_afslut_genvej()
+            return
             }
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
         IfMsgBox, Yes
