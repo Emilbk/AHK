@@ -1922,6 +1922,8 @@ P6_initialer_slet_eget()
         notering_endelig := notering_endelig . notering_split[i]
     }
     clipboard := % notering_endelig
+    if (clipboard = "")
+        clipboard := " "
     SendInput, ^v
     sleep 50
     SendInput, !o
