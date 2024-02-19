@@ -2977,6 +2977,8 @@ for i,e in vl_liste_array
             }
     }
 GuiControl, note:, note_note, %note_note%
+        GuiControl, note:, Edit2, 
+        GuiControl, note:, note_reminder, 0 
 gui note: show, , Note VL %valg%
 ControlFocus, Edit1
 }
