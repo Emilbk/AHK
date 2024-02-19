@@ -2000,12 +2000,15 @@ P6_tekstTilChf(ByRef tekst:=" ")
     P6_aktiver()
     kørselsaftale := P6_hent_k()
     styresystem := P6_hent_s()
-    if (styresystem = "2" or "4" or "6" or "7" or "8" or "10" or "11" or "13" or "14" or "16" or "17" or "18" or "19" or "20" )
+    for i,e in ["2" , "4" , "6" , "7" , "8" , "10" , "11" , "13" , "14" , "16" , "17" , "18" , "19" , "20"] 
+    {
+    if (styresystem = e)
         {
         MsgBox, 16 , Styresystem %styresystem% , Dette styresystem kan ikke modtage tekstbeskeder, 
         sys_tjek := 1
         return sys_tjek
-        }
+     }
+    }
     sleep s * 200
     Sendinput !tt^k
     sleep s * 100
