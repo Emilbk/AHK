@@ -309,7 +309,7 @@ gui note: +Labelnote
 Gui note: Font, s9, Segoe UI
 Gui note: Add, Edit, x16 y8 w438 h206 vnote_note
 Gui note: Add, Button, x8 y240 w80 h23 gnote_ok, &Gem
-Gui note: Add, Button, x104 y240 w80 h23 gnote_opslag, &Opslag
+Gui note: Add, Button, x104 y240 w80 h23 gnote_opslag, &Opslag VL
 Gui note: Add, Button, x200 y240 w80 h23 gnote_slet, &Slet note
 Gui note: Add, checkbox, x319 y240 w76 h21 vnote_reminder, &Reminder
 Gui note: Add, Edit, x394 y240 w50 h21 number vnote_tid, 
