@@ -25,7 +25,7 @@ loop, %r_a_sidste%
     }
 vm_stam.RemoveAt(1)
 kontakt_stam.RemoveAt(1)
-xl.quit()
+stamopl.quit()
 
 stamopl_sti := "C:\Users\ebk\Svigt FG8-FV8.xlsx"
 
@@ -49,7 +49,7 @@ loop, %r_a_sidste%
          vl_svigt.push(stamopl_ark.range("A" A_index).value)
          vm_svigt.push(stamopl_ark.range("B" A_index).value)
     }
-
+stamopl.quit()
 for i,e in vl_svigt
     {
         if e is number
@@ -88,6 +88,7 @@ MsgBox, , , % r_a_sidste
 
 +esc::
 {
+    stamopl.quit()
     ExitApp
 }
 ; oWorkbook := ComObjCreate("Excel.Application")
