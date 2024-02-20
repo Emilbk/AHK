@@ -2726,8 +2726,8 @@ vlListe_vis_gui()
     GuiControl, vl_liste: , ListBox5, %listbox5%
     GuiControl, vl_liste: , ListBox6, %listbox6%
     Gui vl_liste: Show, w1372 h574, VL-liste
-    sleep 40
-    GuiControl, vl_liste: Choose, Listbox1 , 0
+    sleep 80
+    GuiControl Choose, Listbox1 , 0
     Return
 
 }
@@ -5477,6 +5477,11 @@ return
     :b0:/retf::
         {
             p6_notat_hotstr("st. tid rettet jf. FF initialer")
+            return
+        }
+    :b0:/ryk::
+        {
+            p6_notat_hotstr("st. rykker initialer")
             return
         }
 #IfWinActive, Vognløbsnotering
