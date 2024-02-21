@@ -40,6 +40,9 @@ brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1
 bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
 genvej_ren := []
 genvej_navn := []
+valg :=
+vl :=
+tid :=
 ;   1       2               3
 s := bruger_genvej.41
 tlf :=
@@ -67,6 +70,7 @@ if (vl_liste_array_json = "")
 else if (vl_liste_array_json != "")
     vl_liste_array := json.load(vl_liste_array_json)
 
+SetTimer, note_tjek_tid, 60000
 ;   bruger_genvej  telenor_opr     telenor_ahk
 ; FileRead, vl_repl_liste, %vl_repl_tekst%
 
@@ -105,6 +109,7 @@ Hotkey, % bruger_genvej.20, l_p6_tekst_til_chf ; ^+t
 Hotkey, % bruger_genvej.36, l_flexf_fra_p6 ; +^F
 Hotkey, % bruger_genvej.48, l_p6_rejsesog ; F1
 Hotkey, % bruger_genvej.50, l_p6_liste_vl ; ^å
+Hotkey, % bruger_genvej.67, l_p6_vis_liste_fra_planbillede
 ;Hotkey, % bruger_genvej.63, l_p6_liste_vl_notat ; ^+F10
 Hotkey, % bruger_genvej.51, l_p6_vis_liste_vl ; F1
 Hotkey, % bruger_genvej.55, l_p6_initialer_slet_eget ; +^n
@@ -273,31 +278,41 @@ Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 ;; gui vl-liste
 gui vl_liste: +labelvl_liste
 gui vl_liste: font, s9, segoe ui
-gui vl_liste: add, text, x8 y0 w120 h23 +0x200, &Replaneret
-gui vl_liste: add, listbox, x8 y24 w170 h449 HWNDListbox1id vvalg1 gvlryd1 multi,
-gui vl_liste: add, listbox, x184 y24 w170 h449 HWNDListbox2id vvalg2 gvlryd2 multi,
-gui vl_liste: add, listbox, x360 y24 w170 h449 HWNDListbox3id vvalg3 gvlryd3 multi,
-gui vl_liste: add, listbox, x536 y24 w170 h449 HWNDListbox4id vvalg4 gvlryd4 multi,
-gui vl_liste: add, listbox, x712 y24 w170 h449 HWNDListbox5id vvalg5 gvlryd5 multi,
-gui vl_liste: add, listbox, x888 y24 w170 h449 HWNDListbox6id vvalg6 gvlryd6 multi,
-gui vl_liste: add, text, x184 y0 w120 h23 +0x200, Wakeup
-gui vl_liste: add, text, x360 y0 w120 h23 +0x200, Privatrejse
-gui vl_liste: add, text, x536 y0 w120 h23 +0x200, Listet
-gui vl_liste: add, text, x712 y0 w120 h23 +0x200, Låst
-gui vl_liste: add, text, x893 y0 w120 h23 +0x200, Kvitteret for chauffør
-gui vl_liste: add, button, x40 y475 w80 h23 gvl_liste_ryd1 vbox1, ryd
-gui vl_liste: add, button, x224 y475 w80 h23 gvl_liste_ryd2 vbox2, ryd
-gui vl_liste: add, button, x400 y475 w80 h23 gvl_liste_ryd3 vbox3, ryd
-gui vl_liste: add, button, x584 y475 w80 h23 gvl_liste_ryd4 vbox4, ryd
-gui vl_liste: add, button, x760 y475 w80 h23 gvl_liste_ryd5 vbox5, ryd
-gui vl_liste: add, button, x936 y475 w80 h23 gvl_liste_ryd6 vbox6, ryd
-gui vl_liste: add, button, x40 y536 w131 h23 gvl_liste_tilføj_note, tilf&øj note
-gui vl_liste: add, button, x180 y536 w131 h23 gvl_liste_vis_note, vis &note
-gui vl_liste: add, button, x320 y536 w131 h23 gvl_liste_opslag, &opslag
-gui vl_liste: add, button, x460 y536 w131 h23 gvl_liste_opslag_slet, opslag og s&let
-gui vl_liste: add, button, x600 y536 w131 h23 gvl_liste_slet, &slet
-gui vl_liste: add, button, x740 y536 w131 h23 gvl_liste_slet_alt_alle, slet &alt
-gui vl_liste: add, button, x880 y536 w131 h23 gvl_liste_liste, l&iste
+gui vl_liste: add, listbox, x18 y24 w200 h449 HWNDListbox1id vvalg1 gvlryd1 multi,
+gui vl_liste: add, listbox, x224 y24 w200 h449 HWNDListbox2id vvalg2 gvlryd2 multi,
+gui vl_liste: add, listbox, x430 y24 w200 h449 HWNDListbox3id vvalg3 gvlryd3 multi,
+gui vl_liste: add, listbox, x636 y24 w200 h449 HWNDListbox4id vvalg4 gvlryd4 multi,
+gui vl_liste: add, listbox, x842 y24 w250 h449 HWNDListbox5id vvalg5 gvlryd5 multi,
+gui vl_liste: add, listbox, x1098 y24 w200 h449 HWNDListbox6id vvalg6 gvlryd6 multi,
+gui vl_liste: add, text, x18 y0 w120 h23 +0x200, &Replaneret
+gui vl_liste: add, text, x224 y0 w120 h23 +0x200, Wakeup
+gui vl_liste: add, text, x430 y0 w120 h23 +0x200, Privatrejse
+gui vl_liste: add, text, x636 y0 w120 h23 +0x200, Huskeliste
+gui vl_liste: add, text, x842 y0 w120 h23 +0x200, Låst
+gui vl_liste: add, text, x1097 y0 w120 h23 +0x200, Kvitteret for chauffør
+gui vl_liste: add, button, x78 y475 w80 h23 gvl_liste_ryd1 vbox1, ryd
+gui vl_liste: add, button, x284 y475 w80 h23 gvl_liste_ryd2 vbox2, ryd
+gui vl_liste: add, button, x490 y475 w80 h23 gvl_liste_ryd3 vbox3, ryd
+gui vl_liste: add, button, x696 y475 w80 h23 gvl_liste_ryd4 vbox4, ryd
+gui vl_liste: add, button, x927 y475 w80 h23 gvl_liste_ryd5 vbox5, ryd
+gui vl_liste: add, button, x1158 y475 w80 h23 gvl_liste_ryd6 vbox6, ryd
+gui vl_liste: add, button, x180 y536 w131 h23 gvl_liste_tilføj_note, tilføj/vis &note
+gui vl_liste: add, button, x320 y536 w131 h23 gvl_liste_OBS, OBS
+gui vl_liste: add, button, x460 y536 w131 h23 gvl_liste_opslag, &opslag
+gui vl_liste: add, button, x600 y536 w131 h23 gvl_liste_opslag_slet, opslag og s&let
+gui vl_liste: add, button, x740 y536 w131 h23 gvl_liste_slet, &slet
+gui vl_liste: add, button, x880 y536 w131 h23 gvl_liste_slet_alt_alle, slet &alt
+gui vl_liste: add, button, x1020 y536 w131 h23 gvl_liste_liste, l&iste
+
+;; GUI vl-note
+gui note: +Labelnote
+Gui note: Font, s9, Segoe UI
+Gui note: Add, Edit, x16 y8 w438 h206 vnote_note
+Gui note: Add, Button, x8 y240 w80 h23 gnote_ok, &Gem
+Gui note: Add, Button, x104 y240 w80 h23 gnote_opslag, &Opslag VL
+Gui note: Add, Button, x200 y240 w80 h23 gnote_slet, &Slet note
+Gui note: Add, checkbox, x319 y240 w76 h21 vnote_reminder, &Reminder
+Gui note: Add, Edit, x394 y240 w50 h21 number vnote_tid, 
 #IfWinActive VL-liste
     Enter::
     NumpadEnter::
@@ -333,7 +348,7 @@ gui vl_liste: add, button, x880 y536 w131 h23 gvl_liste_liste, l&iste
 
 #IfWinActive, VL-liste
     F5::
-        vl_liste_opdater_gui()
+        vlListe_opdater_gui()
     return
 
     w::
@@ -344,7 +359,7 @@ gui vl_liste: add, button, x880 y536 w131 h23 gvl_liste_liste, l&iste
             return
         }
 
-    i::
+    h::
         {
             GuiControl, vl_liste: Focus, listbox4
             GuiControl, vl_liste: Choose, Listbox4, 1
@@ -443,7 +458,7 @@ vl_liste_ryd1:
     }
     vl_liste_array := vl_liste_midl
     vl_liste_array_til_json_tekst()
-    vl_liste_opdater_gui()
+    vlListe_opdater_gui()
 return
 vl_liste_ryd2:
     vl_liste_midl := []
@@ -457,7 +472,7 @@ vl_liste_ryd2:
     }
     vl_liste_array := vl_liste_midl
     vl_liste_array_til_json_tekst()
-    vl_liste_opdater_gui()
+    vlListe_opdater_gui()
 return
 vl_liste_ryd3:
     vl_liste_midl := []
@@ -471,7 +486,7 @@ vl_liste_ryd3:
     }
     vl_liste_array := vl_liste_midl
     vl_liste_array_til_json_tekst()
-    vl_liste_opdater_gui()
+    vlListe_opdater_gui()
 return
 vl_liste_ryd4:
     vl_liste_midl := []
@@ -485,7 +500,7 @@ vl_liste_ryd4:
     }
     vl_liste_array := vl_liste_midl
     vl_liste_array_til_json_tekst()
-    vl_liste_opdater_gui()
+    vlListe_opdater_gui()
 return
 vl_liste_ryd5:
     vl_liste_midl := []
@@ -499,7 +514,7 @@ vl_liste_ryd5:
     }
     vl_liste_array := vl_liste_midl
     vl_liste_array_til_json_tekst()
-    vl_liste_opdater_gui()
+    vlListe_opdater_gui()
 return
 vl_liste_ryd6:
     vl_liste_midl := []
@@ -513,11 +528,243 @@ vl_liste_ryd6:
     }
     vl_liste_array := vl_liste_midl
     vl_liste_array_til_json_tekst()
-    vl_liste_opdater_gui()
+    vlListe_opdater_gui()
+Return
+
+noteEscape:
+noteClose:
+WinGetActiveTitle, note_vinduetitel
+vlListe_opdater_gui()
+gui note: hide
+sleep 100
+if (InStr(note_vinduetitel, "reminder") or InStr(note_vinduetitel, "liste"))
+    {
+        return
+    }
+gui vl_liste: show
+Return
+
+vl_liste_add_note(valg, note_note)
+{
+    tid := StrSplit(valg, ",")
+tid := Regexreplace(tid[2], "\D")
+tid := SubStr(tid, 1, 2) ":" SubStr(tid, 3, 2)
+valg := SubStr(valg, 1, 5)  
+valg := Regexreplace(valg, "\D")
+note_note := 
+GuiControl, note:, note_note , %note_note%
+for i,e in vl_liste_array
+    {
+        if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox and SubStr(vl_liste_array[i][3], 1, 5) = tid)
+            {
+                note_note := vl_liste_array[i][5]
+                GuiControl, note:, edit2, % vl_liste_array[i][10]
+            if (vl_liste_array[i][10] = "")
+            {
+                GuiControl, note:, note_reminder, 0
+            }            
+            Else
+                {
+                GuiControl, note:, note_reminder, 1
+                }
+                break
+            }   
+    }
+GuiControl, note:, note_note, %note_note%
+sleep 100
+Gui note: Show, w477 h277, Note VL %valg%
+ControlFocus, Edit1 , Note
+sleep 100
+
+
+}
+;; lav
+vl_liste_tilføj_note:
+; Note-gui
+    valg :=
+    Gui vl_liste: Submit
+    Gui vl_liste: Hide
+    for i,e in [valg1, valg2, valg3, valg4, valg5, valg6]
+        {
+            if (e != "")
+                {
+                    valg := e
+                    listbox := "listbox" . i
+                    break
+                }
+        }
+; vl_liste_add_note(valg, note_note)
+
+tid := StrSplit(valg, ",")
+tid := Regexreplace(tid[2], "\D")
+tid := SubStr(tid, 1, 2) ":" SubStr(tid, 3, 2)
+valg := SubStr(valg, 1, 5)  
+valg := Regexreplace(valg, "\D")
+note_note := 
+GuiControl, note:, note_note , %note_note%
+for i,e in vl_liste_array
+    {
+        if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox and SubStr(vl_liste_array[i][3], 1, 5) = tid)
+            {
+                note_note := vl_liste_array[i][5]
+                GuiControl, note:, edit2, % vl_liste_array[i][10]
+            if (vl_liste_array[i][10] = "")
+            {
+                GuiControl, note:, note_reminder, 0
+            }            
+            Else
+                {
+                GuiControl, note:, note_reminder, 1
+                }
+                break
+            }   
+    }
+GuiControl, note:, note_note, %note_note%
+sleep 100
+Gui note: Show, w477 h277, Note VL %valg%
+ControlFocus, Edit1 , Note
+sleep 100
+
+Return
+note_ok:
+gui note: submit
+vlListe_note(note_reminder, note_tid, note_note)
+;     if (note_reminder = 1 and StrLen(note_tid) != 4)
+;         {
+;             MsgBox, 16 , Fejl i indtastet tidspunkt, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
+;             gui note: Show
+;             return 
+;         }
+;     note_tid_tjek := A_YYYY A_MM A_DD note_tid
+;         if note_tid_tjek is not Time
+;         {
+;             MsgBox, 16 , Fejl i indtastning af tidspunkt , Det indtastede er ikke et klokkeslæt.,
+;             gui note: show
+;             return
+;         }
+;     for i,e in vl_liste_array
+;     if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid) 
+;         {
+;             if (note_reminder = 1)
+;                 {
+;                     vl_liste_array[i][10] := note_tid
+;                     vl_liste_array[i][7] := " (R)"
+;                 }
+;             vl_liste_array[i][6] := " (N)"
+;             vl_liste_array[i][5] := note_note
+;             if (note_note = "")
+;                 vl_liste_array[i][6] := ""
+;             gui note: hide
+;             vl_liste_array_til_json_tekst()
+;             P6_aktiver()
+;             return
+;         }
+; P6_aktiver()
+if (note_reminder = 1)
+{
+    vlliste_note_reminder(note_reminder, note_tid)
+}
 return
 
-vl_liste_tilføj_note:
-Return
+
+note_opslag:
+gui note: hide
+p6_vaelg_vl(valg)
+return
+
+note_tjek_tid:
+FormatTime, note_tid_ur, YYYYMMDDHH24MISS, HHmm
+note_vl := [[]]
+note_count := 0
+for i,e in vl_liste_array
+    {
+        if (vl_liste_array[i][10] = note_tid_ur)
+            {
+                note_count += 1
+                note_vl[note_count].Push(vl_liste_array[i][1])
+                note_vl[note_count].push(vl_liste_array[i][5])
+                vl_liste_array[i][10] := ""
+                vl_liste_array[i][7] := ""
+            }
+    }
+for i,e in note_vl
+    {
+    if (e[i] != "")
+    {
+        vl := e[1]
+        note := e[2]
+        Gui note: show, ,Reminder vognløb %vl%
+        ControlFocus, edit2
+        GuiControl, note:, Edit1, %note%
+        GuiControl, note:, Edit2, 
+        GuiControl, note:, note_reminder, 0 
+        
+    }
+}
+return
+
+vl_liste_obs:
+
+    vl_liste_opslag_array := []
+    valg :=
+    Gui vl_liste: Submit, NoHide
+    vl_liste_opslag_array.Push(valg1, valg2, valg3, valg4, valg5, valg6)
+    for i,e in [valg1, valg2, valg3, valg4, valg5, valg6]
+        {
+            if (i != "")
+                listbox := listbox . i
+        }
+    for i,e in vl_liste_opslag_array
+        if (e != "")
+        {
+            valg := vl_liste_opslag_array[i]
+        }
+    if (valg = "")
+    {
+        MsgBox, , Vælg en markering, Der skal laves en markering, 2
+        gui vl_liste: show
+        return
+    }
+    vl_liste_valg_vl := StrSplit(valg, ",")
+    tid_ind := RegExReplace(vl_liste_valg_vl.2, "\D")
+    tid_korrigeret := SubStr(tid_ind, 1, 2) ":" SubStr(tid_ind, 3 , 2)
+    ; tjek på indkomne listbox(hvordan?), vl og tid - slet i array
+
+    for i,e in vl_liste_array
+        for i2,e2 in e
+        {
+            if (i2 = 1 and e2 = vl_liste_valg_vl.1 and SubStr(e.3, 1,5) = tid_korrigeret and !InStr(vl_liste_array[i][3], "(!)"))
+            {
+                vl_liste_array[i][3] := vl_liste_array[i][3] . " (!)"
+                vl_liste_array_til_json_tekst()
+                vlListe_opdater_gui()
+                return
+            }
+            if (i2 = 1 and e2 = vl_liste_valg_vl.1 and SubStr(e.3, 1,5) = tid_korrigeret and InStr(vl_liste_array[i][3], "(!)"))
+            {
+                vl_liste_array[i][3] := SubStr(vl_liste_array[i][3], 1 , -4)
+                vl_liste_array_til_json_tekst()
+                vlListe_opdater_gui()
+                return
+            }
+}
+return
+
+
+note_slet:
+{
+    for i,e in vl_liste_array
+    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid)
+        {
+            vl_liste_array[i](6) := ""
+            vl_liste_array[i][5] := ""
+            vl_liste_array_til_json_tekst()
+            gui note: hide
+            P6_aktiver()
+            return
+        }
+return
+}
 
 vl_liste_vis_note:
 Return
@@ -561,7 +808,7 @@ vl_liste_liste:
     if (valg = "")
     {
         sleep 500
-        MsgBox, , Vælg en markering, Der skal laves en markering
+        MsgBox, , Vælg en markering, Der skal laves en markering, 2
         sleep 500
         gui vl_liste: show
         return
@@ -625,7 +872,7 @@ vl_liste_opslag:
     if (valg = "")
     {
         sleep 50
-        MsgBox, , Vælg en markering, Der skal laves en markering
+        MsgBox, , Vælg en markering, Der skal laves en markering, 2
         gui vl_liste: show
         return
     }
@@ -653,7 +900,7 @@ vl_liste_opslag_slet:
         }
     if (valg = "")
     {
-        MsgBox, , Vælg en markering, Der skal laves en markering
+        MsgBox, , Vælg en markering, Der skal laves en markering, 2
         gui vl_liste: show
         return
     }
@@ -684,13 +931,39 @@ vl_liste_slet:
         if (e != "")
         {
             valg := vl_liste_opslag_array[i]
+            listbox := "listbox" . i
         }
     if (valg = "")
     {
-        MsgBox, , Vælg en markering, Der skal laves en markering
+        MsgBox,, Vælg en markering, Der skal laves en markering, 2
         gui vl_liste: show
         return
     }
+    ; tjek for multivalg
+    if (InStr(valg, "|"))
+        {
+            valg_split := StrSplit(valg, "|")
+            for i,e in valg_split
+                {
+                    valg_split[i] := SubStr(valg_split[i], 1, 5)
+                    valg_split[i] := RegExReplace(valg_split[i], "\D")
+
+                }
+        for i,e in valg_split
+            {
+                valg := valg_split[i]
+                for i,e in vl_liste_array
+                    {
+                        if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox)
+                            {
+                                vl_liste_array.RemoveAt(i)
+                            }
+                    }
+            }
+        vl_liste_array_til_json_tekst()
+        vlListe_opdater_gui()
+        return
+        }
     vl_liste_valg_vl := StrSplit(valg, ",")
     tid_ind := RegExReplace(vl_liste_valg_vl.2, "\D")
     tid_korrigeret := SubStr(tid_ind, 1, 2) ":" SubStr(tid_ind, 3 , 2)
@@ -703,7 +976,7 @@ vl_liste_slet:
             {
                 vl_liste_array.RemoveAt(i)
                 vl_liste_array_til_json_tekst()
-                vl_liste_opdater_gui()
+                vlListe_opdater_gui()
                 return
             }
         }
@@ -721,8 +994,13 @@ Return
 return
 ;; GUI-labels
 trio_genvej:
-    Gui Show, w747 h670, AHK
-    ; MsgBox, , Tillykke!, Du har trykket på knappen!,
+    GetKeyState, tjek_key, Shift, 
+    if (tjek_key = "D")
+        {
+            SendInput, {ShiftUp}
+            goto l_restartAHK
+        }
+    MsgBox, , Knap, Knap, 
     return
 tlfKopi:
     {
@@ -1019,7 +1297,7 @@ P6_hent_s()
 {
     global s
     ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
-    Sendinput k{tab}
+    Sendinput !k{tab}
     clipboard := ""
     Sendinput +{F10}c
     ClipWait 1
@@ -1181,7 +1459,8 @@ p6_vaelg_vl(byref vl := "")
     if (vl != "")
     {
         SendInput, %vl%
-        sleep 100
+
+        sleep 200
         SendInput, {enter}
     }
     return
@@ -1311,25 +1590,46 @@ p6_notat_hotstr(notat := "")
         Input, st, , {enter}{Escape}
         if (ErrorLevel = "Endkey:Escape")
             return
+        if (st = "")
+            {
+                MsgBox, 16, Intet input, Intet input - er numlock slået til?
+                return
+            }
     }
     if (InStr(notat, "ankomst_tid"))
     {
         Input, ankomst_tid, , {enter} {Escape}
         if (ErrorLevel = "Endkey:Escape")
             return
+        if (ankomst_tid = "")
+            {
+                MsgBox, 16, Intet input, Intet input - er numlock slået til?
+                return
+            }
     }
     if (InStr(notat, "repl_tid"))
     {
         Input, repl_tid, , {enter} {Escape}
         if (ErrorLevel = "Endkey:Escape")
             return
+        if (repl_tid = "")
+            {
+                MsgBox, 16, Intet input, Intet input - er numlock slået til?
+                return
+            }
     }
     if (InStr(notat, "pause_tid"))
     {
         Input, pause_tid, , {enter} {Escape}
         if (ErrorLevel = "Endkey:Escape")
             return
+        if (pause_tid = "")
+            {
+                MsgBox, 16, Intet input, Intet input - er numlock slået til?
+                return
+            }
     }
+
     notat := StrReplace(notat, "st." , "st. " st)
     notat := StrReplace(notat, "ankomst_tid" , "ank. " ankomst_tid)
     notat := StrReplace(notat, "repl_tid" , "" repl_tid)
@@ -1369,7 +1669,7 @@ p6_tjek_andre_rejser()
 {
     SendInput, ^{F9}
     sleep 200
-    SendInput, !r{F5}
+    SendInput, !r{F5}{down}
     return
 }
 ; ***
@@ -1627,6 +1927,8 @@ P6_initialer_slet_eget()
         notering_endelig := notering_endelig . notering_split[i]
     }
     clipboard := % notering_endelig
+    if (clipboard = "")
+        clipboard := " "
     SendInput, ^v
     sleep 50
     SendInput, !o
@@ -1698,13 +2000,18 @@ P6_initialer_skriv()
 
 ;  ***
 ; Send tekst til chf
-P6_tekstTilChf(ByRef tekst:=" ")
+P6_tekstTilChf(ByRef tekst:=" ", kørselsaftale := "", styresystem := "")
 {
     global s
     gemtklip := ClipboardAll
     P6_aktiver()
-    kørselsaftale := P6_hent_k()
-    styresystem := P6_hent_s()
+    if (kørselsaftale = "")
+        kørselsaftale := P6_hent_k()
+    if (styresystem = "")
+        styresystem := P6_hent_s()
+    systjek := p6_tekst_tjek_for_system(styresystem)
+    if systjek = 1
+        return 1
     sleep s * 200
     Sendinput !tt^k
     sleep s * 100
@@ -1737,6 +2044,19 @@ P6_tekstTilChf(ByRef tekst:=" ")
 ; Hvis tid for sidste stop hjemzone er tom, luk nu + 5 min
 ; hvis tid til hjemzone stop tom luk til udfyldte tid for sidste stop uden ændringer
 ; hvis tid for sidste stop og tid til hjemzone udfyldt, luk til tiden fra sidste stop til hjemzone, plus 2 min
+p6_tekst_tjek_for_system(styresystem)
+{
+    for i,e in ["2" , "4" , "6" , "7" , "8" , "10" , "11" , "13" , "14" , "16" , "17" , "18" , "19" , "20"] 
+    {
+    if (styresystem = e)
+        {
+        MsgBox, 16 , Styresystem %styresystem% , Dette styresystem kan ikke modtage tekstbeskeder, 
+        sys_tjek := 1
+        return sys_tjek
+     }
+    }
+}
+
 P6_input_sluttid()
 {
     brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
@@ -2188,6 +2508,11 @@ p6_replaner_hent_vl()
     clipboard :=
     SendInput, ^c
     clipwait 2
+    if (clipboard = "")
+        {
+            SendInput, ^c
+            ClipWait, 1    
+        }
     if (InStr(clipboard, "planlægges"))
     {
         SendInput, {enter}
@@ -2205,6 +2530,7 @@ p6_replaner_hent_vl()
     return vl
 
 }
+
 ; del af vl_liste_laas_vl
 vl_liste_laas_tjek(vl)
 {
@@ -2369,7 +2695,7 @@ vlListe_dan_liste(listbox)
                         ; if (i2 = 5 and e2 != 0)
                         ; if (i2 = 5 and e2 = 0)
                         ; vl_liste_array.InsertAt(6, "")
-                        else if (i2 = 5 and e2 = 0)
+                        else if (i2 = 5 and e2 = 0) or (i2 = 10)
                         {
 
                         }
@@ -2399,11 +2725,13 @@ vlListe_vis_gui()
     GuiControl, vl_liste: , ListBox4, %listbox4%
     GuiControl, vl_liste: , ListBox5, %listbox5%
     GuiControl, vl_liste: , ListBox6, %listbox6%
-    Gui vl_liste: Show, w1076 h574, VL-liste
+    Gui vl_liste: Show, w1372 h574, VL-liste
+    sleep 80
+    GuiControl Choose, Listbox1 , 0
     Return
 
 }
-vl_liste_opdater_gui()
+vlListe_opdater_gui()
 {
     listbox1 := vlListe_dan_liste("listbox1")
     listbox2 := vlListe_dan_liste("listbox2")
@@ -2433,7 +2761,7 @@ vlliste_replaner_lav_array(vl)
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
     vl_liste[6] :=
-    vl_liste[7] := "|"
+    vl_liste[11] := "|"
     vl_liste[8] := "listbox1"
 
     return vl_liste
@@ -2451,7 +2779,7 @@ vlliste_kvittering_lav_array(vl := "")
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
     vl_liste[6] :=
-    vl_liste[7] := "|"
+    vl_liste[11] := "|"
     vl_liste[8] := "listbox6"
 
     return vl_liste
@@ -2469,7 +2797,7 @@ vlliste_wakeup_lav_array(vl := "")
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
     vl_liste[6] :=
-    vl_liste[7] := "|"
+    vl_liste[11] := "|"
     vl_liste[8] := "listbox2"
 
     return vl_liste
@@ -2487,7 +2815,7 @@ vlliste_priv_lav_array(vl)
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
     vl_liste[6] :=
-    vl_liste[7] := "|"
+    vl_liste[11] := "|"
     vl_liste[8] := "listbox3"
 
     return vl_liste
@@ -2500,12 +2828,12 @@ vlliste_listet_lav_array(vl := "")
     FormatTime, vl_replaner_tidspunkt_intern, YYYYMMDDHH24MISS, HHmmss
 
     vl_liste[1] := vl
-    vl_liste[2] := ", listet "
+    vl_liste[2] := ", huskeliste "
     vl_liste[3] := vl_replaner_tidspunkt_vis
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
     vl_liste[6] :=
-    vl_liste[7] := "|"
+    vl_liste[11] := "|"
     vl_liste[8] := "listbox4"
 
     return vl_liste
@@ -2523,7 +2851,7 @@ vlliste_laast_lav_array(vl := "")
     vl_liste[4] := vl_replaner_tidspunkt_intern
     vl_liste[5] := note
     vl_liste[6] :=
-    vl_liste[7] := "|"
+    vl_liste[11] := "|"
     vl_liste[8] := "listbox5"
 
     return vl_liste
@@ -2557,7 +2885,125 @@ vlliste_vl_array_til_liste(vl_array)
     vl_liste_array_til_json_tekst()
     return
 }
+
+vlListe_note(note_reminder, note_tid, note_note)
+{
+     global vl_liste_array
+    global tid
+    global vl
+    global valg
+    global listbox
+
+   if (note_reminder = 1 and StrLen(note_tid) != 4)
+        {
+            MsgBox, 16 , Fejl i indtastet tidspunkt, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
+            gui note: Show
+            return 
+        }
+    note_tid_tjek := A_YYYY A_MM A_DD note_tid
+        if note_tid_tjek is not Time
+        {
+            MsgBox, 16 , Fejl i indtastning af tidspunkt , Det indtastede er ikke et klokkeslæt.,
+            gui note: show
+            return
+        }
+    for i,e in vl_liste_array
+    if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid) 
+        {
+            if (note_reminder = 1)
+                {
+                    vl_liste_array[i][10] := note_tid
+                    vl_liste_array[i][7] := " (R)"
+                }
+          if (note_reminder = 0)
+                {
+                    vl_liste_array[i][10] := ""
+                    vl_liste_array[i][7] := ""
+                }
+            vl_liste_array[i][6] := " (N)"
+            vl_liste_array[i][5] := note_note
+            if (note_note = "")
+                vl_liste_array[i][6] := ""
+            gui note: hide
+            vl_liste_array_til_json_tekst()
+            P6_aktiver()
+            return
+        }
+P6_aktiver()
+return
+}
+
+vlliste_note_reminder(note_reminder, note_tid)
+{
+    return
+}
+
+
+
+vlliste_vis_note_fra_planbillede()
+{
+    global vl_liste_array
+    global tid
+    global vl
+    global valg
+    global listbox
+
+    P6_aktiver()
+    vl := P6_hent_vl()
+    if (vl = 0)
+        return
+    valg := vl
+    listbox := "listbox4"
+    fundet := 0
+    for i,e in vl_liste_array
+        {
+            if (vl_liste_array[i][1] = vl and vl_liste_array[i][8] = listbox)
+                {
+                    fundet := 1
+                }
+        }
+    if (fundet = 0)
+        {
+    FormatTime, vl_tid , YYYYMMDDHH24MISS, HH:mm
+    vl_array := vlliste_listet_lav_array(vl)
+    vlliste_vl_array_til_liste(vl_array)
+        }
+for i,e in vl_liste_array
+    {
+        if (vl_liste_array[i][1] = vl and vl_liste_array[i][8] = listbox)
+            {
+                note_note := vl_liste_array[i][5]  
+                tid := SubStr(vl_liste_array[i][3], 1, 5)
+                if (vl_liste_array[i][10] = "")
+                    {
+                        note_reminder = 0
+                        GuiControl, note:, edit2, 
+                    }
+                if (vl_liste_array[i][10] != "")
+                    {
+                        note_reminder = 1
+                        GuiControl, note: , note_reminder, 1
+                        GuiControl, note:, edit2, % vl_liste_array[i][10]
+                    }
+            }
+    }
+for i,e in vl_liste_array
+    {
+        if (vl_liste_array[i][1] = valg and vl_liste_array[i][8] = listbox and SubStr(vl_liste_array[i][3], 1, 5) = tid)
+            {
+                note_note := vl_liste_array[i][5]
+                break
+            }
+    }
+GuiControl, note:, note_note, %note_note%
+        GuiControl, note:, Edit2, 
+        GuiControl, note:, note_reminder, 0 
+gui note: show, , Note VL %valg% til huskeliste
+ControlFocus, Edit1
+}
+
 ;; Telenor
+
 
 ;; Trio
 ; ***
@@ -2575,7 +3021,7 @@ Trio_opkald(ByRef telefon)
     SendInput, {CtrlUp}{AltUp}
     if (telefon = "")
     {
-        MsgBox, , , Der er ikke lavet en markering af tal
+        MsgBox, , , Der er ikke lavet en markering af telefonnummer
         trio_klar()
         return
     }
@@ -3529,8 +3975,8 @@ l_p6_vaelg_vl_liste:
 return
 ;træk tlf fra aktiv planbillede, ring op i Trio. Col 11
 l_p6_vl_ring_op:
-    sys_genvej_start(11)
-    sleep s * 100
+sys_genvej_start(11)
+sleep s * 100
     vl_tlf := P6_hent_vl_tlf()
     if (vl_tlf = 0)
     {
@@ -3730,6 +4176,7 @@ l_p6_replaner_liste_vl:
         return
     vl_array := vlliste_replaner_lav_array(vl)
     vlliste_vl_array_til_liste(vl_array)
+    sys_afslut_genvej()
 return
 ; Replaner og gå til VL, kolonne 60
 l_p6_replaner_opslag_vl:
@@ -3739,6 +4186,7 @@ l_p6_replaner_opslag_vl:
         return
     sleep 200
     p6_vaelg_vl(vl)
+    sys_afslut_genvej()
 return
 
 ; Gem aktiv vl på liste, kolonne 50
@@ -3753,6 +4201,7 @@ l_p6_liste_vl:
     }
     vl_array := vlliste_listet_lav_array(vl)
     vlliste_vl_array_til_liste(vl_array)
+    sys_afslut_genvej()
 return
 
 ; vist VL-liste, kolonne 51
@@ -3763,6 +4212,15 @@ l_p6_vis_liste_vl:
     sys_afslut_genvej()
 
 return
+
+l_p6_vis_liste_fra_planbillede:
+{
+    sys_genvej_start(67)
+    vlliste_vis_note_fra_planbillede()
+    sys_afslut_genvej()
+    return
+}
+
 
 l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     sys_genvej_start(20)
@@ -3789,6 +4247,8 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         sys_afslut_genvej()
         return
     }
+    kørselsaftale := P6_hent_k()
+    styresystem := P6_hent_s()
     clipboard := gemtklip
     ; loop_test := 0
     ; while (vl = "")
@@ -3804,11 +4264,18 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     ;    }
     if (valgt = "t")
     {
-        P6_tekstTilChf() ; tager tekst ("eksempel") som parameter (accepterer variabel)
+        P6_tekstTilChf( , kørselsaftale, styresystem) ; tager tekst ("eksempel") som parameter (accepterer variabel)
         sys_afslut_genvej()
         return
     }
     if (valgt = "f")
+        {
+    sys_tjek := p6_tekst_tjek_for_system(styresystem)
+    if (sys_tjek = 1)
+        {      
+        sys_afslut_genvej()
+        return
+        }
     {
         gui, f_chf:New
         gui, f_chf:Default
@@ -3842,7 +4309,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             GuiControlGet, k_navn2, , ,
             ; MsgBox, , , % tekst,
             gui, cancel
-            P6_tekstTilChf("Jeg kan ikke ringe dig op. Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 ", i stedet - Mvh. Midttrafik")
+            P6_tekstTilChf("Jeg kan ikke ringe dig op. Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 ", i stedet - Mvh. Midttrafik", kørselsaftale, styresystem)
             sleep 500
             MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
             IfMsgBox, Yes
@@ -3864,7 +4331,15 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sys_afslut_genvej()
         return
     }
+}
     if (valgt = "k")
+        {
+    systjek := p6_tekst_tjek_for_system(styresystem)
+    if (systjek = 1)
+        {
+        sys_afslut_genvej()    
+        return
+        }
     {
         gui, k_chf:New
         gui, k_chf:Default
@@ -3900,7 +4375,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             GuiControlGet, k_navn2, , ,
             GuiControlGet, k_tid, , ,
             gui, cancel
-            P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st. " f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 " - Mvh. Midttrafik")
+            P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st. " f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 " - Mvh. Midttrafik", kørselsaftale, styresystem)
             sleep 500
             MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
             IfMsgBox, Yes
@@ -3930,11 +4405,22 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sys_afslut_genvej()
         return
     }
+}
     if (valgt == "p")
     {
 
-        P6_tekstTilChf("Er der blevet glemt at kvittere for privatrejsen? Mvh. Midttrafik")
+        sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for privatrejsen? Mvh. Midttrafik", kørselsaftale ,styresystem)
         sleep 500
+        if (sys_tjek = 1)
+            {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Priv. ikke kvitteret" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+            }
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
         IfMsgBox, Yes
         {
@@ -3961,8 +4447,16 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     }
     if (valgt == "P")
     {
+    systjek := p6_tekst_tjek_for_system(styresystem)
+    if (systjek = 1)
+        {
+        P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. Låst" initialer " ")
+        sys_afslut_genvej()
+        return
+        }
+    {
 
-        P6_tekstTilChf("Jeg kan ikke ringe dig op, din privatrejse er ikke kvitteret. Vognløbet er låst, ring til driften, hvis du er ude at køre.")
+        P6_tekstTilChf("Jeg kan ikke ringe dig op, din privatrejse er ikke kvitteret. Vognløbet er låst, ring til driften, hvis du er ude at køre.", kørselsaftale , styresystem)
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
         IfMsgBox, Yes
@@ -3985,11 +4479,23 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         sys_afslut_genvej()
         return
     }
+    }
     if (valgt == "w")
     {
-
-        P6_tekstTilChf("Der er ikke bedt om vognløb start. Huske at bede om første køreordre ved opstart, uanset om der ligger ture eller ej. Mvh. Midttrafik")
+        sys_tjek := P6_tekstTilChf("Der er ikke bedt om vognløb start. Huske at bede om første køreordre ved opstart, uanset om der ligger ture eller ej. Mvh. Midttrafik", kørselsaftale, styresystem)
         sleep 500
+        if (sys_tjek = 1)
+            {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_wakeup_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat(initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return 
+            }
+        if (sys_tjek = 0)
+            {
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
         IfMsgBox, Yes
         {
@@ -4013,11 +4519,20 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sys_afslut_genvej()
             return
         }
+            }
     }
     if (valgt == "W")
     {
-
-        P6_tekstTilChf("Jeg kan ikke ringe dig op, der er ikke trykket for første køreordre. Vognløbet er nu låst, ring til driften, hvis du er ude at køre.")
+        sys_tjek := P6_tekstTilChf("Jeg kan ikke ringe dig op, der er ikke trykket for første køreordre. Vognløbet er nu låst, ring til driften, hvis du er ude at køre.", kørselsaftale , styresystem)
+        if (sys_tjek = 1)
+           {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_laast_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Ingen kontakt til chf, VL låst" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+           } 
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør? Husk at låse VL,
         IfMsgBox, Yes
@@ -4045,12 +4560,16 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     }
     if (valgt == "r")
     {
-        tlf := P6_hent_vl_tlf()
-        if (tlf = 0)
-        {
-            sys_afslut_genvej()
+    systjek := p6_tekst_tjek_for_system(styresystem)
+    if (systjek = 1)
+        {      
+        MsgBox, 16 , Styresystem %styresystem% , Dette styresystem kan ikke modtage tekstbeskeder, 
+        P6_notat("Ingen kontakt til chf" initialer " ")
+        sys_afslut_genvej()
+            return
         }
-        P6_tekstTilChf("Jeg kan ikke ringe dig op på telefonnummer " tlf ". Ring til driften, 70112210. Mvh Midttrafik.")
+        tlf := P6_hent_vl_tlf()
+        P6_tekstTilChf("Jeg kan ikke ringe dig op på telefonnummer " tlf ". Ring til driften, 70112210. Mvh Midttrafik.", kørselsaftale, styresystem)
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?
         IfMsgBox, Yes
@@ -4075,8 +4594,13 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     }
     if (valgt = "a")
     {
-
-        P6_tekstTilChf("Jeg kan ikke ringe dig op. Tryk for opkald igen, hvis du stadig gerne vil ringes op. Mvh. Midttrafik")
+        sys_tjek := P6_tekstTilChf("Jeg kan ikke ringe dig op. Tryk for opkald igen, hvis du stadig gerne vil ringes op. Mvh. Midttrafik", kørselsaftale, styresystem)
+        if (sys_tjek = 1)
+            {
+            P6_notat("Tal forgæves" initialer " ")
+            sys_afslut_genvej()
+            return
+            }
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?
         IfMsgBox, Yes
@@ -4195,7 +4719,9 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
 ; Opkald på markeret tekst. Kolonne 28
 l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     sys_genvej_start(28)
-    SendInput, {Click 2}
+    SendInput, {click}
+    sleep 100
+    SendInput, {Click}
     sleep 200
     clipboard := ""
     SendInput, ^c
@@ -4221,6 +4747,7 @@ l_trio_afslut_opkald:
 l_trio_afslut_opkaldB:
     sys_genvej_start(30)
     Trio_afslutopkald()
+    sys_afslut_genvej()
 Return
 
 ;; Flexfinder
@@ -4547,6 +5074,10 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     Gui Add, CheckBox, vhelt x160 y48 w120 h23, Ja, og VL &slettet:
     Gui Add, Edit, vtid_slet x170 y68 h21, Åbningstid garanti
     ; Gui Add, CheckBox, vhelt2 x160 y72 w120, GV garanti &slettet i variabel tid ; nødvendig?
+    Gui Font
+    Gui Font, s9, Segoe UI
+    Gui Add, Edit, vårsag x16 y72 w120 h21
+    Gui Font, w600
     Gui Font, s9, Segoe UI
     Gui Font, w600
     Gui Add, Text, x304 y0 w120 h23 +0x200, Garanti eller Var.
@@ -4557,10 +5088,6 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     Gui Add, Radio, vtype x304 y72 w120 h23, &Variabel
     Gui Font, w600
     Gui Add, Text, x16 y48 w120 h23 +0x200, &Årsag
-    Gui Font
-    Gui Font, s9, Segoe UI
-    Gui Add, Edit, vårsag x16 y72 w120 h21
-    Gui Font, w600
     Gui Add, Text, x8 y96 h23 +0x200, &Beskrivelse
     Gui Font
     Gui Font, s9, Segoe UI
@@ -4960,6 +5487,11 @@ return
             p6_notat_hotstr("st. tid rettet jf. FF initialer")
             return
         }
+    :b0:/ryk::
+        {
+            p6_notat_hotstr("st. rykker initialer")
+            return
+        }
 #IfWinActive, Vognløbsnotering
 #IfWinActive, PLANET
     ::/mt::
@@ -4975,6 +5507,7 @@ return
 ::bsgs::Glemt slettet retur
 ::rgef::Rejsegaranti, egenbetaling fjernet
 ::vlaok::Alarm st OK
+::svigtudråb::VL ikke startet op, ingen kontakt til chf. VL ryddet og låst.
 
 ;; TEST
 

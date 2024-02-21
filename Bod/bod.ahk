@@ -265,7 +265,7 @@ paragraf_opslag(paragraf_data)
                paragraf := paragraf_data[i][2]
             }
 return paragraf
-; }
+}
 ; !z::
 ; {
 ;     vm := paragraf_opslag(paragraf_data)   
@@ -281,7 +281,7 @@ return paragraf
 ; gui vl_bod: show, w620 h442, window
 ;     return
 
-}
+; }
 vl_bodguiescape:
 vl_bodguiclose:
    gui vl_bod: hide 
