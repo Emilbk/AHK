@@ -350,6 +350,7 @@ html_test =
 
 
 
+bodtemplate.SentOnBehalfOfName := "planet@midttrafik.dk"
 bodtemplate.To := email
 bodtemplate.CC := "oekonomi@midttrafik.dk"
 bodtemplate.subject := "Bod for kvalitetsbrist - vognløb " vl " d. " dato
