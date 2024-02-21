@@ -4,8 +4,7 @@ SendMode, Input
 SetBatchLines, -1
 SetWorkingDir, %A_ScriptDir%
 ;; GUI
-gui vl_bod: font, s9, segoe ui
-gui vl_bod: add, edit, x62 y27 w120 h21 number vvl gvl_slaa_op
+
 gui vl_bod: font
 gui vl_bod: font, bold
 gui vl_bod: add, text, x18 y22 w35 h23 +0x200, vl:
@@ -13,22 +12,28 @@ gui vl_bod: add, text, x285 y10 w120 h23 +0x200, vm:
 gui vl_bod: add, text, x285 y54 w120 h23 +0x200, kontaktinfo:
 gui vl_bod: font
 gui vl_bod: font, s9, segoe ui
+gui vl_bod: add, edit, x62 y27 w120 h21 number vvl gvl_slaa_op
+gui vl_bod: font
+gui vl_bod: font, s9, segoe ui
 gui vl_bod: add, text, x380 y10 w200 h23 vvm +0x200, % vm
 gui vl_bod: add, text, x380 y54 w200 h23 vemail +0x200, % email
-gui vl_bod: add, monthcal, x20 y58 w164 h160 vdato
-gui vl_bod: add, dropdownlist, x23 y244 w414 vFG, 
-gui vl_bod: add, dropdownlist, x23 y270 w414 vFV,  
+gui vl_bod: add, dateTime, vdato x20 y58 w164 h60, 
+; gui vl_bod: add, monthcal, x20 y58 w164 h160 vdato
 gui vl_bod: font
 gui vl_bod: font, bold
+gui vl_bod: font
+gui vl_bod: font, s9, segoe ui
+gui vl_bod: add, text, x24 y170 w120 h23 +0x200, &Søg Paragraf
+gui vl_bod: add, edit, x24 y200 w120 h23 +0x200 vparagraf_søg gparagraf_slaa_op, 
 gui vl_bod: add, text, x24 y223 w120 h23 +0x200, &Paragraf
+gui vl_bod: add, dropdownlist, x23 y244 w414 vFG, 
+gui vl_bod: add, dropdownlist, x23 y270 w414 vFV,
+gui vl_bod: font
+gui vl_bod: font, bold
+gui vl_bod: add, text, x25 y300 w260 h23 +0x200, &kvalitetsbristen bestod i, at...
 gui vl_bod: font
 gui vl_bod: font, s9, segoe ui
 gui vl_bod: add, edit, x25 y328 w568 h84 vbrist
-gui vl_bod: font
-gui vl_bod: font, bold
-gui vl_bod: add, text, x25 y300 w260 h23 +0x200, "kvalitetetsbristen bestod i, at..."
-gui vl_bod: font
-gui vl_bod: font, s9, segoe ui
 gui vl_bod: add, button, default x288 y415, &ok
 
 fileread, paragraf_data, db/paragraf_data.txt
@@ -46,15 +51,15 @@ paragraf_data := paragraf_ny
 paragraf_drop_down_fg := "-|"
 paragraf_drop_down_fv := "-|"
 for i,e in paragraf_data
-    if (substr(e[1], 1 ,2) = "fg")
+    if (substr(e[2], 1 ,2) = "fg")
     {
-    paragraf_drop_down_fg .= paragraf_data[i][1] "|"
+    paragraf_drop_down_fg .= paragraf_data[i][2] "|"
 
     }
 for i,e in paragraf_data
-    if (substr(e[1], 1 ,2) = "fv")
+    if (substr(e[2], 1 ,2) = "fv")
     {
-    paragraf_drop_down_fv .= paragraf_data[i][1] "|"
+    paragraf_drop_down_fv .= paragraf_data[i][2] "|"
 
     }
 
@@ -141,7 +146,6 @@ for i, e in vm_svigt
 ; test := stamopl.worksheets(stamopl_ark).columns(1)
 ; stamopl.workbooks()
 ; vm := stamopl_ark.range("A:A").end("xldown")
-MsgBox, , , % r_a_sidste
 
 guicontrol, vl_bod: , combobox1 , %paragraf_drop_down_fg%
 guicontrol, vl_bod: , combobox2 , %paragraf_drop_down_fv%
@@ -168,9 +172,38 @@ gui vl_bod: show, w620 h442, window
 
 ;; GUI-funktion
 
+paragraf_slaa_op:
+{
+    guicontrolget, vl, , edit2, 
+    if (vl = "")
+        guicontrolget, vl, , edit2, 
+    for i,e in paragraf_data
+        {
+            if (InStr(e[2], fg))
+                {
+                    guicontrol, vl_bod: , fg , % paragraf_data[i][2]
+                    break
+                    return
+                }
+            if (InStr(e[2], fv))
+                {
+                    guicontrol, vl_bod: , fv , % paragraf_data[i][2]
+                    break
+                    return
+                }
+            else
+                {
+
+                }
+        }
+return
+}
+
 vl_slaa_op:
 {
     guicontrolget, vl, , edit1, 
+    if (vl = "")
+        guicontrolget, vl, , edit1, 
     for i,e in stamdata
         {
             if (e[1] = vl)
@@ -190,7 +223,6 @@ vl_slaa_op:
         }
 return
 }
-
 ;; GUI-label
 vl_bodguiescape:
 vl_bodguiclose:
@@ -199,6 +231,44 @@ vl_bodguiclose:
 
 vl_bodbuttonok:
 gui Submit, nohide
-FormatTime, dato, %dato%, dd/MM-yyyy
-MsgBox, , , VL er %vl%, VM er %vm%, kontakt-email er %email% dato er %dato%, paragraffen er %FV% %FG%, kvalitetsbristen var %brist%
+if (fg != "-" and fv != "-")
+    {
+        MsgBox, 16, Både FG og FV valgt, Der skal kun vælges fra ét udbud.
+        return
+    }
+    for i,e in paragraf_data
+        {
+            if (e[2] = fg) or (e[2] = fv) 
+                {
+                    paragraf := paragraf_data[i][3]
+                    bod := paragraf_data[i][1]
+                    break
+                }
+        }
+
+
+FormatTime, dato, %dato%, dd-MM-yyyy
+
+test = 
+(
+Til
+%vm%
+Bod for kvalitetsbrist
+ 
+Midttrafik har den %dato% registreret en kvalitetsbrist på vognløb %vl%, der medfører en bod på kr. %bod%,- jf. FG8, side 52, § 31, stk. 3, litra 
+
+%paragraf%
+ 
+Kvalitetsbristen bestod i, at %brist%
+ 
+Beløbet vil blive modregnet i vognmandsafregningen.
+Eventuel indsigelse skal foretages skriftligt inden 5 arbejdsdage.
+)
+
+MsgBox, , , %test%
+
+
+guicontrol, vl_bod: , vl , 
+return
+
 

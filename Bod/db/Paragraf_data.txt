@@ -1,33 +1,33 @@
-﻿FG - Ikke i hjemzone fra start	 16) Hvis garantivogn eller reservemateriel ikke er til rådighed ved hjemstedet ved vognløbets start, jf. § 20, stk. 3. 
-FG - vognløb lukket helt	 17) Hvis garantivognen eller reservemateriel ikke er til rådighed i den aftalte garanti- og rådighedsperiode jf. § 20, stk. 3. Se dog § 25 stk. 2.
-FG - vognløb lukket midt på vognløb	 17) Hvis garantivognen eller reservemateriel ikke er til rådighed i den aftalte garanti- og rådighedsperiode jf. § 20, stk. 3. Se dog § 25 stk. 2.
-FG - vognløb lukket/åbnet inden for 2 timer af garantitid	 17) Hvis garantivognen eller reservemateriel ikke er til rådighed i den aftalte garanti- og rådighedsperiode jf. § 20, stk. 3. Se dog § 25 stk. 2.
-FG - Defekt/manglende trappetjener/autostol mv.	 20) Hvis autostol, trappemaskine inkl. sele, transportstol eller tripstol, hvor dette er påkrævet, ikke forefindes i vognen eller er defekt, jf. § 24 stk. 3 og 5, 6, 7, 8 og 9.
-FG - Manglende benyttelse af trappetjener	"21) Hvis trappemaskinen ikke anvendes ved transport af kørestole over mere end ét trin jf. § 24 stk. 6, 7 og 9."
-FG - Manglende udførsel af kørsel	6) Manglende overholdelse af § 20 – Krav til kørslens udførelse. Se dog pkt. 16, 17 og 18.
-FG - Udfordring med opladning	?
-FG - Generelle krav til vogne, udstyr mv	8) Manglende overholdelse af § 23 – Generelle krav til alle vogntyper.
-FG - Krav til vogntype	 9) Manglende overholdelse af § 24 – Vogntyper. Se dog pkt. 21 og 22.
-FG - Krav til chauffør	4) Manglende overholdelse af § 19 – Øvrige krav til personale. Se dog pkt. 15
-FG - Krav til chauffør - uddannelse	14) Manglende overholdelse af §§ 18, 18a og 18b – Uddannelseskrav
-FG - Svar på klager	3) Manglende overholdelse af tidsfristen på tre dage for indsendelse af udtalelser i forbindelse med kundehenvendelser, jf. § 15 - Leverandørs virksomhed.
-FG - Udskiftning/indsættelse af reservevogn uden godkendelse	22) Udskiftning af vogn og indsættelse af reservevogn uden godkendelse fra Trafikselskaberne, jf. § 25.
-FG - Manglende overholdelse af retningslinjer	1) Manglende overholdelse af § 12 – Retningslinjer for driften og serviceniveau
-FG - Indberetning af uheld	18) Manglende skriftlig indberetning til Trafikselskaberne om uheld inden for 24 timer, eller ufuldstændig udfyldt uheldsrapport, jf. § 20 stk. 8.
-FG - Krav til kommunikationsudstyr	10) Manglende overholdelse af § 26 - Vognkommunikation
-FG - Vognkontrol	?
-FV - Nedbrud, akut nedlukning	6. Manglende overholdelse af § 19 – Krav til kørslens udførelse. Se dog pkt. 14.
-FV - Ingen kontakt	6. Manglende overholdelse af § 19 – Krav til kørslens udførelse. Se dog pkt. 14.
-FV - Manglende udførsel af kørsel	6. Manglende overholdelse af § 19 – Krav til kørslens udførelse. Se dog pkt. 14.
-FV - Manglende overholdelse af retningslinjer	1. Manglende overholdelse af § 10 – Retningslinjer for driften og serviceniveau
-FV - Krav til chauffør	4. Manglende overholdelse af § 17 – Øvrige krav til personale. Se dog pkt. 15.
-FV - Krav til chauffør - uddannelse	14. Manglende overholdelse af §§ 16, 16a og 16b – Uddannelseskrav.
-FV - Generelle krav til vogne, udstyr mv	8. Manglende overholdelse af § 23 – Generelle krav til alle vogntyper.
-FV - Krav til vogntype	9. Manglende overholdelse af § 24 – Vogntyper. Se dog pkt. 18 og 19.
-FV - Svar på klager	3. Manglende overholdelse af tidsfristen på tre dage for indsendelse af udtalelser i forbindelse med kundehenvendelser, jf. § 13 - Leverandørs virksomhed.
-FV - Indberetning af uheld	16. Manglende skriftlig indberetning til Trafikselskaberne om uheld inden for 24 timer, eller ufuldstændig udfyldt uheldsrapport, jf. § 19 stk. 8.
-FV - Krav til kommunikationsudstyr	10) Manglende overholdelse af § 26 - Vognkommunikation
-FV - Vognkontrol	?
-FV - ikke rettidig tilmelding jul	"7. Manglende levering af oplysninger til planlægning af kørsel § 20 – Kørsel jul/nytår. Boden kan udstedes pr. dag pr. vogn som leverandør ikke indmelder vognen."
-FV - Ikke kørt jul	20. Manglende rådighed over vogn efter § 20 – Kørsel jul/nytår.
-Special - alt	
+﻿2000	FG - Ikke i hjemzone fra start	16) Hvis garantivogn eller reservemateriel ikke er til rådighed ved hjemstedet ved vognløbets start, jf. § 20, stk. 3. 
+2000	FG - vognløb lukket helt	17) Hvis garantivognen eller reservemateriel ikke er til rådighed i den aftalte garanti- og rådighedsperiode jf. § 20, stk. 3. Se dog § 25 stk. 2.
+2000	FG - vognløb lukket midt på vognløb	17) Hvis garantivognen eller reservemateriel ikke er til rådighed i den aftalte garanti- og rådighedsperiode jf. § 20, stk. 3. Se dog § 25 stk. 2.
+2000	FG - vognløb lukket/åbnet inden for 2 timer af garantitid	17) Hvis garantivognen eller reservemateriel ikke er til rådighed i den aftalte garanti- og rådighedsperiode jf. § 20, stk. 3. Se dog § 25 stk. 2.
+2000	FG - Defekt/manglende trappetjener/autostol mv.	20) Hvis autostol, trappemaskine inkl. sele, transportstol eller tripstol, hvor dette er påkrævet, ikke forefindes i vognen eller er defekt, jf. § 24 stk. 3 og 5, 6, 7, 8 og 9.
+2000	FG - Manglende benyttelse af trappetjener	21) Hvis trappemaskinen ikke anvendes ved transport af kørestole over mere end ét trin jf. § 24 stk. 6, 7 og 9."
+1000	FG - Manglende udførsel af kørsel	6) Manglende overholdelse af § 20 – Krav til kørslens udførelse. Se dog pkt. 16, 17 og 18.
+?	FG - Udfordring med opladning	?
+1000	FG - Generelle krav til vogne, udstyr mv	8) Manglende overholdelse af § 23 – Generelle krav til alle vogntyper.
+1000	FG - Krav til vogntype	9) Manglende overholdelse af § 24 – Vogntyper. Se dog pkt. 21 og 22.
+1000	FG - Krav til chauffør	4) Manglende overholdelse af § 19 – Øvrige krav til personale. Se dog pkt. 15
+2000	FG - Krav til chauffør - uddannelse	14) Manglende overholdelse af §§ 18, 18a og 18b – Uddannelseskrav
+1000	FG - Svar på klager	3) Manglende overholdelse af tidsfristen på tre dage for indsendelse af udtalelser i forbindelse med kundehenvendelser, jf. § 15 - Leverandørs virksomhed.
+2000	FG - Udskiftning/indsættelse af reservevogn uden godkendelse	22) Udskiftning af vogn og indsættelse af reservevogn uden godkendelse fra Trafikselskaberne, jf. § 25.
+1000	FG - Manglende overholdelse af retningslinjer	1) Manglende overholdelse af § 12 – Retningslinjer for driften og serviceniveau
+2000	FG - Indberetning af uheld	18) Manglende skriftlig indberetning til Trafikselskaberne om uheld inden for 24 timer, eller ufuldstændig udfyldt uheldsrapport, jf. § 20 stk. 8.
+1000	FG - Krav til kommunikationsudstyr	10) Manglende overholdelse af § 26 - Vognkommunikation
+?	FG - Vognkontrol	?
+1000	FV - Nedbrud, akut nedlukning	6. Manglende overholdelse af § 19 – Krav til kørslens udførelse. Se dog pkt. 14.
+1000	FV - Ingen kontakt	6. Manglende overholdelse af § 19 – Krav til kørslens udførelse. Se dog pkt. 14.
+1000	FV - Manglende udførsel af kørsel	6. Manglende overholdelse af § 19 – Krav til kørslens udførelse. Se dog pkt. 14.
+1000	FV - Manglende overholdelse af retningslinjer	1. Manglende overholdelse af § 10 – Retningslinjer for driften og serviceniveau
+1000	FV - Krav til chauffør	4. Manglende overholdelse af § 17 – Øvrige krav til personale. Se dog pkt. 15.
+2000	FV - Krav til chauffør - uddannelse	14. Manglende overholdelse af §§ 16, 16a og 16b – Uddannelseskrav.
+1000	FV - Generelle krav til vogne, udstyr mv	8. Manglende overholdelse af § 23 – Generelle krav til alle vogntyper.
+1000	FV - Krav til vogntype	9. Manglende overholdelse af § 24 – Vogntyper. Se dog pkt. 18 og 19.
+1000	FV - Svar på klager	3. Manglende overholdelse af tidsfristen på tre dage for indsendelse af udtalelser i forbindelse med kundehenvendelser, jf. § 13 - Leverandørs virksomhed.
+2000	FV - Indberetning af uheld	16. Manglende skriftlig indberetning til Trafikselskaberne om uheld inden for 24 timer, eller ufuldstændig udfyldt uheldsrapport, jf. § 19 stk. 8.
+1000	FV - Krav til kommunikationsudstyr	10) Manglende overholdelse af § 26 - Vognkommunikation
+?	FV - Vognkontrol	?
+1000	FV - ikke rettidig tilmelding jul	"7. Manglende levering af oplysninger til planlægning af kørsel § 20 – Kørsel jul/nytår. Boden kan udstedes pr. dag pr. vogn som leverandør ikke indmelder vognen."
+10000	FV - Ikke kørt jul	20. Manglende rådighed over vogn efter § 20 – Kørsel jul/nytår.
+	Special - alt	
