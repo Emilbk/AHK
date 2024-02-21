@@ -289,7 +289,63 @@ Sender du fortrolige eller følsomme personoplysninger til Midttrafik, skal det 
 ; MsgBox, , , %test%
 
 
+html_test =
+(
+    <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40"><head><meta name=Generator content="Microsoft Word 15 (filtered medium)"><!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
+    o\:* {behavior:url(#default#VML);}
+    w\:* {behavior:url(#default#VML);}
+    .shape {behavior:url(#default#VML);}
+    </style><![endif]--><style><!--
+    /* Font Definitions */
+    @font-face
+        {font-family:"Cambria Math";
+        panose-1:2 4 5 3 5 4 6 3 2 4;}
+    @font-face
+        {font-family:Calibri;
+        panose-1:2 15 5 2 2 2 4 3 2 4;}
+    @font-face
+        {font-family:Verdana;
+        panose-1:2 11 6 4 3 5 4 4 2 4;}
+    /* Style Definitions */
+    p.MsoNormal, li.MsoNormal, div.MsoNormal
+        {margin:0cm;
+        font-size:11.0pt;
+        font-family:"Calibri",sans-serif;
+        mso-fareast-language:EN-US;}
+    a:link, span.MsoHyperlink
+        {mso-style-priority:99;
+        color:#0563C1;
+        text-decoration:underline;}
+    p.Default, li.Default, div.Default
+        {mso-style-name:Default;
+        margin:0cm;
+        text-autospace:none;
+        font-size:12.0pt;
+        font-family:"Verdana",sans-serif;
+        color:black;}
+    span.EmailStyle20
+        {mso-style-type:personal-reply;
+        font-family:"Calibri",sans-serif;
+        color:windowtext;}
+    .MsoChpDefault
+        {mso-style-type:export-only;
+        font-size:10.0pt;
+        mso-ligatures:none;}
+    @page WordSection1
+        {size:612.0pt 792.0pt;
+        margin:3.0cm 2.0cm 3.0cm 2.0cm;}
+    div.WordSection1
+        {page:WordSection1;}
+    --></style><!--[if gte mso 9]><xml>
+    <o:shapedefaults v:ext="edit" spidmax="1026" />
+    </xml><![endif]--><!--[if gte mso 9]><xml>
+    <o:shapelayout v:ext="edit">
+    <o:idmap v:ext="edit" data="1" />
+    </o:shapelayout></xml><![endif]--></head><body lang=DA link="#0563C1" vlink="#954F72" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'>Til</span><span style='font-family:"Verdana",sans-serif'><o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif;mso-fareast-language:DA'>%VM%<o:p></o:p></span></p><p class=MsoNormal><b><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'>Bod for kvalitetsbrist<o:p></o:p></span></b></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'><o:p>&nbsp;</o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'>Midttrafik har d. %dato% registreret en kvalitetsbrist på  vognløb <b>%VL%,</b> der medfører en bod på kr. %bod%,- jf. FG8, side 52,   31, stk. 3, litra<o:p></o:p></span></p><p class=Default><o:p>&nbsp;</o:p></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'>%paragraf%<o:p></o:p></span></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'>Kvalitetsbristen bestod i, at %brist%<o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'><o:p>&nbsp;</o:p></span></p><div><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'>Beløbet vil blive modregnet i vognmandsafregningen.<o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'>Eventuel indsigelse skal foretages skriftligt inden 5 arbejdsdage.<o:p></o:p></span></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div><div><p class=MsoNormal style='mso-margin-top-alt:auto'><span style='font-size:10.0pt;font-family:"Verdana",sans-serif;mso-ligatures:standardcontextual;mso-fareast-language:DA'>Venlig hilsen<br><br>Flextrafiks Driftsafdeling<o:p></o:p></span></p><p class=MsoNormal style='mso-margin-bottom-alt:auto'><span style='font-size:8.0pt;font-family:"Verdana",sans-serif;mso-ligatures:standardcontextual;mso-fareast-language:DA'><br>Flextrafik - Trafikstyring<br>&nbsp;<br>70 11 22 10<br><u><span style='color:blue'><a href="mailto:planet@Midttrafik.dk">planet@Midttrafik.dk</a></span></u><br><br><span style='color:#9B1C3C'>Sender du fortrolige eller f lsomme personoplysninger til Midttrafik, skal det ske via en sikker mailforbindelse. Se Midttrafiks <a href="https://www.midttrafik.dk/kundeservice/privatlivspolitik"><span style='color:blue'>privatlivspolitik</span></a>.</span><o:p></o:p></span></p><p class=MsoNormal><a href="http://www.midttrafik.dk/"><span style='font-family:"Verdana",sans-serif;color:blue;mso-fareast-language:DA;text-decoration:none'><img border=0 width=141 height=131 style='width:1.4687in;height:1.3645in' id="Billede_x0020_1" src="cid:image001.png@01DA0104.C6BC5820"></span></a><span style='font-size:10.0pt;font-family:"Verdana",sans-serif;mso-ligatures:standardcontextual'><o:p></o:p></span></p></div><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
 
+
+
+)
 
 
 
@@ -297,7 +353,7 @@ Sender du fortrolige eller følsomme personoplysninger til Midttrafik, skal det 
 bodtemplate.To := email
 bodtemplate.CC := "oekonomi@midttrafik.dk"
 bodtemplate.subject := "Bod for kvalitetsbrist - vognløb " vl " d. " dato
-bodtemplate.body := test
+bodtemplate.htmlbody := html_test
 
 
 bodtemplate.display
