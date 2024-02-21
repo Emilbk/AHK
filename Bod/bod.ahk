@@ -96,8 +96,31 @@ controlgetfocus, guifokus
 return guifokus
 }
 
-+lbutton::
-{
+; +lbutton::
+; {
+; if (winactive("Planet - Indbakke - Planet - Outlook"))
+;     {
+;         sendinput, {rbutton}
+;         sleep 50
+;         sendinput, h
+;         sleep 50
+;         sendinput, {enter}
+;         sleep 200
+;         sendinput, {up}
+;         ; winactivate, Svigt FG8-FV8.xlsx - Excel
+;         return
+; ;     }
+; if (winactive("Svigt FG8-FV8.xlsx - Excel"))
+;     {
+;         sendinput, {click2}
+;         sleep 100
+;         sendinput, ^v{tab}
+;         return
+;     }
+; else
+;     {
+;         sendinput, +{click}
+;         sleep 150
 ; if (winactive("Planet - Indbakke - Planet - Outlook"))
 ;     {
 ;         sendinput, {rbutton}
@@ -110,32 +133,9 @@ return guifokus
 ;         ; winactivate, Svigt FG8-FV8.xlsx - Excel
 ;         return
 ;     }
-if (winactive("Svigt FG8-FV8.xlsx - Excel"))
-    {
-        sendinput, {click2}
-        sleep 100
-        sendinput, ^v{tab}
-        return
-    }
-else
-    {
-        sendinput, +{click}
-        sleep 150
-if (winactive("Planet - Indbakke - Planet - Outlook"))
-    {
-        sendinput, {rbutton}
-        sleep 50
-        sendinput, h
-        sleep 50
-        sendinput, {enter}
-        sleep 200
-        sendinput, {up}
-        ; winactivate, Svigt FG8-FV8.xlsx - Excel
-        return
-    }
-        return
-    }
-}
+;         return
+;     }
+; }
 ^q::
 {
 if (winactive("Planet - Indbakke - Planet - Outlook"))
@@ -168,9 +168,9 @@ return
 KeyWait, Alt
 if (winactive("Svigt FG8-FV8.xlsx - Excel"))
     {
-        winactivate Planet - Indbakke - Planet - Outlook
+        winactivate Planet - Svigt til behandling - Planet - Outlook
         sleep 100
-        controlfocus, outlookgrid1, Planet - Indbakke - Planet - Outlook
+        controlfocus, outlookgrid1, Planet - Svigt til behandling - Planet - Outlook
         sleep 500
         sendinput, {appskey}
         sleep 50
@@ -179,9 +179,9 @@ if (winactive("Svigt FG8-FV8.xlsx - Excel"))
         sendinput, {enter}
         sleep 1500
         sendinput, {up}
-        sleep 100
-        controlfocus, _WwG1 , Planet - Indbakke - Planet - Outlook
-        sleep 300
+        sleep 1500
+        controlfocus, _WwG1 , Planet - Svigt til behandling - Planet - Outlook
+        sleep 1000
         SendInput, +{down}
         ; winactivate, Svigt FG8-FV8.xlsx - Excel
         return
@@ -206,13 +206,33 @@ return
 #IfWinActive, Svigt FG8-FV8.xlsx - Excel
 !w::
     {
-        winactivate Planet - Indbakke - Planet - Outlook
+        winactivate Planet - Svigt til behandling - Planet - Outlook
         sleep 100
-        controlfocus, _WwG1 , Planet - Indbakke - Planet - Outlook
+        controlfocus, _WwG1 , Planet - Svigt til behandling - Planet - Outlook
         sleep 300
         clipboard :=
         sendinput, ^c
         clipwait, 1, 
+        omgang := 0
+        while (Clipboard = "")
+            {
+                if (omgang < 5)
+                    {
+                winactivate Planet - Svigt til behandling - Planet - Outlook
+                sleep 100
+                controlfocus, _WwG1 , Planet - Svigt til behandling - Planet - Outlook
+                sleep 300
+                clipboard :=
+                sendinput, ^c
+                clipwait, 1, 
+                omgang += 1
+                    }
+                Else
+                    {
+                        MsgBox, , , Fejl, 
+                        return
+                    }
+            }
         sleep 50
         winactivate, Svigt FG8-FV8.xlsx - Excel
         sleep 150
@@ -245,21 +265,21 @@ paragraf_opslag(paragraf_data)
                paragraf := paragraf_data[i][2]
             }
 return paragraf
-}
-!z::
-{
-    vm := paragraf_opslag(paragraf_data)   
-    msgbox, , , % vm, 
-    return
-}
-;; gui
+; }
+; !z::
+; {
+;     vm := paragraf_opslag(paragraf_data)   
+;     msgbox, , , % vm, 
+;     return
+; }
+; ;; gui
 
 
 
-!z::
-{
-gui vl_bod: show, w620 h442, window
-    return
+; !z::
+; {
+; gui vl_bod: show, w620 h442, window
+;     return
 
 }
 vl_bodguiescape:
