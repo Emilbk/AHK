@@ -63,6 +63,14 @@ for i,e in paragraf_data
 
     }
 
+;; OUTLOOK
+outlook_template := "C:\Users\ebk\Bod for kvalitetsbrist.oft"
+
+outlook := ComObjCreate("Outlook.application")
+
+bodtemplate := outlook.createitem(0)
+; bodtemplate := outlook.createitemfromtemplate(outlook_template)
+
 
 ;; STAMDATA
 
@@ -226,9 +234,11 @@ return
 ;; GUI-label
 vl_bodguiescape:
 vl_bodguiclose:
+    {
+    MsgBox, , , quit
     stamopl.quit()
     ExitApp
-
+    }
 vl_bodbuttonok:
 gui Submit, nohide
 if (fg != "-" and fv != "-")
@@ -247,7 +257,7 @@ if (fg != "-" and fv != "-")
         }
 
 
-FormatTime, dato, %dato%, dd-MM-yyyy
+FormatTime, dato, %dato%, dd.MM.yyyy
 
 test = 
 (
@@ -263,12 +273,34 @@ Kvalitetsbristen bestod i, at %brist%
  
 Beløbet vil blive modregnet i vognmandsafregningen.
 Eventuel indsigelse skal foretages skriftligt inden 5 arbejdsdage.
+
+Venlig hilsen
+
+Flextrafiks Driftcenter
+• 70112210
+ 
+planet@midttrafik.dk
+
+Sender du fortrolige eller følsomme personoplysninger til Midttrafik, skal det ske via en sikker mailforbindelse. Se Midttrafiks privatlivspolitik.
+ 
+
 )
 
-MsgBox, , , %test%
+; MsgBox, , , %test%
 
+
+
+
+
+
+
+bodtemplate.To := email
+bodtemplate.CC := "oekonomi@midttrafik.dk"
+bodtemplate.subject := "Bod for kvalitetsbrist - vognløb " vl " d. " dato
+bodtemplate.body := test
+
+
+bodtemplate.display
 
 guicontrol, vl_bod: , vl , 
 return
-
-
