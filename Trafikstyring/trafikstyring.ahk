@@ -4514,7 +4514,7 @@ return
 ; Opret svigt på VL. Kolonne 38
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     sys_genvej_start(38)
-    FormatTime, dato, , d/MM
+    FormatTime, dato, , d-MM-y
     ; FormatTime, tid, , HH:mm
     ; svigt := []
     gemtklip := ClipboardAll
@@ -4566,7 +4566,9 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     Gui Font, s9, Segoe UI
     Gui Add, Edit, vbeskrivelse x8 y120 w410 h126
     Gui Add, CheckBox, vgemt_ja x20 y261, Brug &forrige skærmklip
-    Gui Add, Button, gsvigtok x176 y256 w80 h23, &OK
+    Gui Add, Button, gsvigtok x176 y256 w60 h23, &OK
+    Gui Add, text , x260 y261, Anden &Dato
+    Gui Add, Edit , vny_dato x340 y256 w60, 
 
     Gui Show, w448 h297, Svigt
     ControlFocus, Button1, Svigt
@@ -4584,6 +4586,11 @@ svigtok:
     ; GuiControlGet, vl
     ; MsgBox, , Lukket kl, % tid
     ; MsgBox, , Garantitid, % tid_slet
+    if (ny_dato != "")
+        {
+            FormatTime, dato_tid, YYYYMMDDHH24MISS, d-MM-y
+            dato := SubStr(ny_dato, 1 , 2) . "-" SubStr(ny_dato, -1 , 2) "-" SubStr(dato, -1 , 2)
+        }
     beskrivelse := StrReplace(beskrivelse, "`n", " ")
     if (lukket = 1 and helt = 1)
     {
