@@ -195,7 +195,7 @@ return
 vl_bodguiescape:
 vl_bodguiclose:
     stamopl.quit()
-    ExitApp, [ ExitCode]
+    ExitApp
 
 vl_bodbuttonok:
 gui Submit, nohide

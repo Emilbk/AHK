@@ -246,22 +246,22 @@ paragraf_opslag(paragraf_data)
             }
 return paragraf
 }
-!z::
-{
-    vm := paragraf_opslag(paragraf_data)   
-    msgbox, , , % vm, 
-    return
-}
-;; gui
+; !z::
+; {
+;     vm := paragraf_opslag(paragraf_data)   
+;     msgbox, , , % vm, 
+;     return
+; }
+; ;; gui
 
 
 
-!z::
-{
-gui vl_bod: show, w620 h442, window
-    return
+; !z::
+; {
+; gui vl_bod: show, w620 h442, window
+;     return
 
-}
+; }
 vl_bodguiescape:
 vl_bodguiclose:
    gui vl_bod: hide 
