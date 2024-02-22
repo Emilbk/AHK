@@ -4494,8 +4494,6 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sys_afslut_genvej()
             return 
             }
-        if (sys_tjek = 0)
-            {
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
         IfMsgBox, Yes
         {
@@ -4519,7 +4517,6 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             sys_afslut_genvej()
             return
         }
-            }
     }
     if (valgt == "W")
     {
