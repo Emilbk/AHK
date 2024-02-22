@@ -4332,7 +4332,51 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         return
     }
 }
-    if (valgt = "k")
+if ( valgt = "k")
+    {
+     if (valgt = "K")
+        {
+    systjek := p6_tekst_tjek_for_system(styresystem)
+    if (systjek = 1)
+        {
+        sys_afslut_genvej()    
+        return
+        }
+
+        InputBox, stop, St. nummer, Hvilket stop?
+        if (ErrorLevel = "EndKey:Escape")
+            Return
+        if (ErrorLevel = "Timeout")
+            return 
+        InputBox, tid, FlexFinder ankomst, Hvornår faktisk ankommet? 4 cifre
+        if (ErrorLevel = "EndKey:Escape")
+            Return
+        if (ErrorLevel = "Timeout")
+            return 
+        P6_tekstTilChf("Er der glemt at bede om ny tur v. ankomst? Der skal altid trykkes for næste køreordre ved ankomst på en adresse, uanset om det er en afhentning eller en aflevering. Mvh. Midttrafik", kørselsaftale, styresystem)
+            sleep 500
+            MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+            IfMsgBox, Yes
+            {
+                SendInput, ^s
+                ; KeyWait, Ctrl
+                sleep 1000
+                SendInput, {enter}
+                P6_notat("St. " stop " ikke kvitteret, ankommet " tid " jf. FF. Tekst sendt til chf, bed om næste køreordre" initialer)
+                sys_afslut_genvej()
+                return
+            }
+            IfMsgBox, No
+            {
+                sleep 200
+                MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+                gui, cancel
+            }
+            sys_afslut_genvej()
+ 
+    }      
+    }
+    if (valgt = "K")
         {
     systjek := p6_tekst_tjek_for_system(styresystem)
     if (systjek = 1)
