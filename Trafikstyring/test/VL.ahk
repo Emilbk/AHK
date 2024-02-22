@@ -32,12 +32,15 @@ vl_billede(vl, dato)
 #IfWinActive, PLANET
 ^F12::
 {
-    KeyWait, Ctrl
+KeyWait, Ctrl
+gemt_klip := Clipboard
+sleep 40
 vl := hent_vl()
 SendInput, {tab}
 sleep 150
 dato := hent_dato()
 vl_billede(vl, dato)
+clipboard := gemt_klip
 return
 }
 
