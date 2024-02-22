@@ -4723,6 +4723,16 @@ l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     clipboard := ""
     SendInput, ^c
     ClipWait, 1.3, 0
+    if (clipboard = "")
+        {
+    SendInput, {click}
+    sleep 100
+    SendInput, {Click}
+    sleep 200
+    clipboard := ""
+    SendInput, ^c
+    ClipWait, 1.3, 0
+        }
     telefon := clipboard
     telefon := RegExReplace(telefon, "\D")
     GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
