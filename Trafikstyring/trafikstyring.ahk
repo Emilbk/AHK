@@ -4371,6 +4371,7 @@ if ( valgt = "k")
                 sleep 200
                 MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
                 gui, cancel
+                sys_afslut_genvej()
             }
             sys_afslut_genvej()
  
