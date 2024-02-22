@@ -5307,7 +5307,7 @@ svigtok:
     }
     Outlook_nymail()
     sleep 200
-    SendInput, planet
+    SendInput, planet@midttrafik.dk
     sleep 1000
     SendInput, {enter}
     sleep 250
