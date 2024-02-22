@@ -313,6 +313,11 @@ Gui note: Add, Button, x104 y240 w80 h23 gnote_opslag, &Opslag VL
 Gui note: Add, Button, x200 y240 w80 h23 gnote_slet, &Slet note
 Gui note: Add, checkbox, x319 y240 w76 h21 vnote_reminder, &Reminder
 Gui note: Add, Edit, x394 y240 w50 h21 number vnote_tid, 
+
+
+outlook := ComObjCreate("Outlook.application")
+MsgBox, , , asd, 
+;; END AUTOEXEC
 #IfWinActive VL-liste
     Enter::
     NumpadEnter::
@@ -1111,7 +1116,6 @@ return
 
 ;; FUNKTIONER
 ;; P6
-
 sys_afslut_genvej()
 {
     GuiControl, trio_genvej:text, Button1, Genvejsoversigt
@@ -5350,19 +5354,11 @@ svigtok:
         ; MsgBox, , 11, % emnefelt,
         gui, destroy
     }
-    Outlook_nymail()
-    sleep 200
-    SendInput, planet@midttrafik.dk
-    sleep 1000
-    SendInput, {enter}
-    sleep 250
-    SendInput, {Tab 2}
-    SendInput, %emnefelt%
-    sleep 400
-    SendInput, {tab} %beskrivelse%
-    sleep 500
-    SendInput, {Enter 2}
-    sleep 40
+    
+    ny_mail := outlook.createitem(0)
+    ny_mail.to := "planet@midttrafik.dk"
+    ny_mail.subject := emnefelt
+    ny_mail.htmlbody := beskrivelse "`n"
     if (gemt_ja = 1)
     {
         clipboard := gemtklip
@@ -5374,12 +5370,35 @@ svigtok:
         clipboard := klip
         SendInput, ^v
     }
-    SendInput, {Home}
-    ; sleep 2000
-    ; Clipboard = %gemtklip%
-    ; ClipWait, 2, 1
-    ; gemtklip :=
-    ; MsgBox, , , % emnefelt "`n" beskrivelse
+    MsgBox, , , %A_ScriptDir%\temp.jpg
+    FileAppend, %klip%, %A_ScriptDir%\temp.jpg, "RAW"
+    bodtemplate.attachments.add(%clipboard%, 0, 1)
+    ny_mail.display
+    ; Outlook_nymail()
+    ; sleep 200
+    ; SendInput, planet@midttrafik.dk
+    ; sleep 1000
+    ; SendInput, {enter}
+    ; sleep 250
+    ; SendInput, {Tab 2}
+    ; SendInput, %emnefelt%
+    ; sleep 400
+    ; SendInput, {tab} %beskrivelse%
+    ; sleep 500
+    ; SendInput, {Enter 2}
+    ; sleep 40
+    ; if (gemt_ja = 1)
+    ; {
+    ;     clipboard := gemtklip
+    ;     sleep 200
+    ;     SendInput, ^v
+    ; }
+    ; if (gemt_ja = 0)
+    ; {
+    ;     clipboard := klip
+    ;     SendInput, ^v
+    ; }
+    ; SendInput, {Home}
     gemtklip :=
     sys_afslut_genvej()
 Return
