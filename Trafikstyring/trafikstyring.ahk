@@ -4340,17 +4340,12 @@ if ( valgt = "k")
         sys_afslut_genvej()    
         return
         }
-
         InputBox, stop, St. nummer, Hvilket stop?
-        if (ErrorLevel = "EndKey:Escape")
+        if ErrorLevel
             Return
-        if (ErrorLevel = "Timeout")
-            return 
         InputBox, tid, FlexFinder ankomst, Hvornår faktisk ankommet? 4 cifre
-        if (ErrorLevel = "EndKey:Escape")
+        if ErrorLevel
             Return
-        if (ErrorLevel = "Timeout")
-            return 
         P6_tekstTilChf("Er der glemt at bede om ny tur v. ankomst? Der skal altid trykkes for næste køreordre ved ankomst på en adresse, uanset om det er en afhentning eller en aflevering. Mvh. Midttrafik", kørselsaftale, styresystem)
             sleep 500
             MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
@@ -4373,6 +4368,7 @@ if ( valgt = "k")
                 return
             }
             sys_afslut_genvej()
+
             return
  
     }      
