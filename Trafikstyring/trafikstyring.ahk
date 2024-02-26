@@ -4334,8 +4334,6 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
 }
 if ( valgt = "k")
     {
-     if (valgt = "K")
-        {
     systjek := p6_tekst_tjek_for_system(styresystem)
     if (systjek = 1)
         {
@@ -4372,11 +4370,12 @@ if ( valgt = "k")
                 MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
                 gui, cancel
                 sys_afslut_genvej()
+                return
             }
             sys_afslut_genvej()
+            return
  
     }      
-    }
     if (valgt = "K")
         {
     systjek := p6_tekst_tjek_for_system(styresystem)
