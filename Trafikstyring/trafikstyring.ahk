@@ -88,6 +88,7 @@ Hotkey, % bruger_genvej.28, l_trio_opkald_markeret ; !q
 
 Hotkey, IfWinActive, PLANET
 Hotkey, % bruger_genvej.38, l_outlook_svigt ; +F1
+Hotkey, % bruger_genvej.69, l_outlook_genåben ; +F1
 Hotkey, % bruger_genvej.5, l_p6_initialer ; F2
 Hotkey, % bruger_genvej.6, l_p6_initialer_skriv ; +F2
 Hotkey, % bruger_genvej.7, l_p6_vis_k_aftale ; F3
@@ -4336,27 +4337,26 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
         return
     }
 }
-if ( valgt = "k")
+if ( valgt == "k")
     {
-     if (valgt = "K")
-        {
     systjek := p6_tekst_tjek_for_system(styresystem)
     if (systjek = 1)
         {
         sys_afslut_genvej()    
         return
         }
-
         InputBox, stop, St. nummer, Hvilket stop?
-        if (ErrorLevel = "EndKey:Escape")
-            Return
-        if (ErrorLevel = "Timeout")
-            return 
+        if ErrorLevel
+            {
+                sys_afslut_genvej()   
+                Return
+            }
         InputBox, tid, FlexFinder ankomst, Hvornår faktisk ankommet? 4 cifre
-        if (ErrorLevel = "EndKey:Escape")
-            Return
-        if (ErrorLevel = "Timeout")
-            return 
+        if ErrorLevel
+            {
+                sys_afslut_genvej()
+                Return
+            }
         P6_tekstTilChf("Er der glemt at bede om ny tur v. ankomst? Der skal altid trykkes for næste køreordre ved ankomst på en adresse, uanset om det er en afhentning eller en aflevering. Mvh. Midttrafik", kørselsaftale, styresystem)
             sleep 500
             MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
@@ -4376,12 +4376,14 @@ if ( valgt = "k")
                 MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
                 gui, cancel
                 sys_afslut_genvej()
+                return
             }
             sys_afslut_genvej()
+
+            return
  
     }      
-    }
-    if (valgt = "K")
+    if (valgt == "K")
         {
     systjek := p6_tekst_tjek_for_system(styresystem)
     if (systjek = 1)
@@ -4721,10 +4723,7 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     
     sys_genvej_start(4)
     ControlGetText, koble_test, Button1, Trio Attendant
-    if ()
-        SendInput, % bruger_genvej[3] ; opr telenor-genvej
-    sleep 40
-    SendInput, % bruger_genvej[3] ; Misser den af og til?
+    SendInput, % bruger_genvej[68] ; Misser den af og til?
     sleep 40
     telefon := Trio_hent_tlf()
     sleep 40
@@ -5094,8 +5093,46 @@ genvejGuiClose:
     gui, destroy
     sys_afslut_genvej()
 return
-; Opret svigt på VL. Kolonne 38
-l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+    sys_genvej_start(69)
+    FormatTime, dato, , d-MM-y
+    ; FormatTime, tid, , HH:mm
+    ; svigt := []
+    gemtklip := ClipboardAll
+    vl := P6_hent_vl()
+    if (vl = 0)
+    {
+        sys_afslut_genvej()
+        return
+    }
+    k_aft := P6_hent_k()
+    sty_sys := P6_hent_s()
+    k_aftale := k_aft  "_" sty_sys
+    clipboard :=
+    p6_vl_vindue()
+    p6_vl_vindue_edit()
+    clipboard := 
+    SendInput, {enter}{tab}^c
+    ClipWait, 1
+    aabningstid := clipboard
+    sleep 500
+    SendInput, !{PrintScreen}
+    sleep 500
+    FileRead, gv_svigt, %A_linefile%\..\db\gv_svigt.txt
+    gv_svigt := StrSplit(gv_svigt, ["`n"])
+    for i, e in gv_svigt
+        {
+        gv_svigt[i] := SubStr(gv_svigt[i], 1 , -1)
+        gv_svigt[i] := StrSplit(gv_svigt[i], "`t")
+        }
+    for i,e in gv_svigt
+        {
+            if (k_aftale = gv_svigt[i][1])
+                opr_vl := gv_svigt[i][2]
+        }
+    return
+    ; ClipWait, 3,
+    l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     sys_genvej_start(38)
     FormatTime, dato, , d-MM-y
     ; FormatTime, tid, , HH:mm
@@ -5601,57 +5638,57 @@ p6_tag_alarm_vl_box()
 }
 ; Fra notatvindue - indsætter samme notat igen, til når der timeoutes - skal der tages hensyn til nye notater, der kan være skrevet i mellemtiden?
 
-+^e::FlexFinder_addresse()
-FlexFinder_addresse()
-{
-    ; SendInput, +{tab} {Down} {Tab}
-    If (WinExist("FlexDanmark FlexFinder"))
-    {
-        sleep 200
-        WinActivate, FlexDanmark FlexFinder
-        winwaitactive, FlexDanmark FlexFinder
-        sleep 40
-        SendInput, {Home}
-        sleep 400
-        SendInput, {PgUp}
-        sleep 200
-        WinGetPos, W_X, W_Y, , , FlexDanmark FlexFinder, , ,
-        if(W_X = "1920" or W_X = "-1920")
-        {
-            ; PixelSearch, Px, Py, 0, 0, , 11, 0xF26C5B, 0, Fast
-            sleep 200
-            click %Px% %Py%
-            sleep 999
-            SendInput, {tab 3} {down} {tab}
-            ; ControlClick, x322 y100, FlexDanmark FlexFinder
-            sleep 40
-            return
-        }
-        Else
-        {
-            ; PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6C2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
-            ImageSearch, Ix, Iy, 0 , 0, A_ScreenWidth , A_ScreenHeight *100 , /lib/ff.png
-            MsgBox, , , % ix
-            sleep 200
-            click %Px% %Py%
-            sleep 200
-            ControlClick, x322 y100, FlexDanmark FlexFinder
-            sleep 40
-            SendInput, +{tab}{down}{tab}
-            return
-        }
-        ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
-    }
-    Else
-        MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den forreste fane)
-    Return
-}
+; +^e::FlexFinder_addresse()
+; FlexFinder_addresse()
+; {
+;     ; SendInput, +{tab} {Down} {Tab}
+;     If (WinExist("FlexDanmark FlexFinder"))
+;     {
+;         sleep 200
+;         WinActivate, FlexDanmark FlexFinder
+;         winwaitactive, FlexDanmark FlexFinder
+;         sleep 40
+;         SendInput, {Home}
+;         sleep 400
+;         SendInput, {PgUp}
+;         sleep 200
+;         WinGetPos, W_X, W_Y, , , FlexDanmark FlexFinder, , ,
+;         if(W_X = "1920" or W_X = "-1920")
+;         {
+;             ; PixelSearch, Px, Py, 0, 0, , 11, 0xF26C5B, 0, Fast
+;             sleep 200
+;             click %Px% %Py%
+;             sleep 999
+;             SendInput, {tab 3} {down} {tab}
+;             ; ControlClick, x322 y100, FlexDanmark FlexFinder
+;             sleep 40
+;             return
+;         }
+;         Else
+;         {
+;             ; PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6C2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
+;             ImageSearch, Ix, Iy, 0 , 0, A_ScreenWidth , A_ScreenHeight *100 , /lib/ff.png
+;             MsgBox, , , % ix
+;             sleep 200
+;             click %Px% %Py%
+;             sleep 200
+;             ControlClick, x322 y100, FlexDanmark FlexFinder
+;             sleep 40
+;             SendInput, +{tab}{down}{tab}
+;             return
+;         }
+;         ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
+;     }
+;     Else
+;         MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den forreste fane)
+;     Return
+; }
 ;
 
-;; test
+; test
 ; ^z::
 ; {
-; sys_genvej_start(56)
+; SendInput, % sys_genvej_start(68)
 ; MsgBox, , , asd
 ; }
 
