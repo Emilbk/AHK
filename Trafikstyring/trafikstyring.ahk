@@ -5099,6 +5099,7 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     ; FormatTime, tid, , HH:mm
     ; svigt := []
     gemtklip := ClipboardAll
+    SendInput, ^{F10}
     vl := P6_hent_vl()
     if (vl = 0)
     {
@@ -5118,6 +5119,7 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     sleep 500
     SendInput, !{PrintScreen}
     sleep 500
+    SendInput, ^a
     FileRead, gv_svigt, %A_linefile%\..\db\gv_svigt.txt
     gv_svigt := StrSplit(gv_svigt, ["`n"])
     for i, e in gv_svigt
@@ -5130,6 +5132,35 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
             if (k_aftale = gv_svigt[i][1])
                 opr_vl := gv_svigt[i][2]
         }
+    gemtklip := ClipboardAll
+    clipboard :=
+    sleep 500
+    SendInput, !{PrintScreen}
+    ClipWait, 1, 
+    
+    if (vl = opr_vl)
+        emnefelt := vl " genåbnet som " vl " d. " dato " kl. " aabningstid
+    if (vl != opr_vl)
+        emnefelt := opr_vl " genåbnet som " vl " d. " dato " kl. " aabningstid
+    outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
+    svigt_template := outlook.createitemfromtemplate(outlook_template)
+
+    udklip := ImagePutFile(clipboardall, "genåbnet.png")
+    udklip_navn := SubStr(udklip, 3)
+    udklip_lok := A_ScriptDir "\" udklip_navn
+    
+    svigt_template.attachments.add(udklip_lok)
+    svigt_template.to := "planet@midttrafik.dk"
+    svigt_template.subject := emnefelt
+    html_tekst =
+    (
+    </o:shapelayout></xml><![endif]--></head><body lang=DA link="#0563C1" vlink="#954F72" style='tab-interval:65.2pt;word-wrap:break-word'><div class=WordSection1><img id="Billede_x0020_2" src="cid:%udklip_navn%"></span></p><div><p class=MsoNormal style='mso-margin-top-alt:auto'><span style='font-size:10.0pt;font-family:"Verdana",sans-serif;mso-fareast-language:DA'</o:p></span></p></div><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'><o:p>&nbsp;</o:p></span></p></div></body></html>
+    )
+    svigt_template.htmlbody := beskrivelse html_tekst
+
+
+    svigt_template.display
+    ImageDestroy(udklip)
     return
     ; ClipWait, 3,
     l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
@@ -5409,18 +5440,6 @@ svigtok:
     svigt_template.htmlbody := beskrivelse html_tekst
 
 
-    ; if (gemt_ja = 1)
-    ; {
-    ;     clipboard := gemtklip
-    ;     sleep 200
-    ;     SendInput, ^v
-    ; }
-    ; if (gemt_ja = 0)
-    ; {
-    ;     clipboard := klip
-    ;     SendInput, ^v
-    ; }
-    ; FileAppend, %klip%, %A_ScriptDir%\temp.jpg, "RAW"
     svigt_template.display
     ImageDestroy(udklip)
     ; Outlook_nymail()
