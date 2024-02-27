@@ -6,6 +6,7 @@ SetWorkingDir, %A_ScriptDir%
 ;; GUI
 Gui vl_bod: Font, s9, Segoe UI
 Menu KommandoerMenu, Add, &Find svigt`tF8, Outlook_find_svigt
+Menu KommandoerMenu, Add, &Ryd`tF5, Outlook_ryd
 Menu KommandoerMenu, Icon, &Find svigt`tF8, shell32.dll, 172
 Menu MenuBar, Add, &Kommandoer, :KommandoerMenu
 Gui vl_bod: Menu, MenuBar
@@ -189,6 +190,12 @@ Outlook_find_svigt:
     namespace_folders := namespace.folders("ebk@midttrafik.dk").Folders("Indbakke")
     outlook.advancedsearch("'Indbakke'", a)
 Return
+outlook_ryd:
+guicontrol, vl_bod: , vl , 
+guicontrol, vl_bod: , combobox1 , 
+guicontrol, vl_bod: , combobox2 , 
+guicontrol, vl_bod: , edit3 ,
+
 paragraf_slaa_op:
 {
     guicontrolget, vl, , edit2, 
