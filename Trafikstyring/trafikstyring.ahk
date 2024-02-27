@@ -88,6 +88,7 @@ Hotkey, % bruger_genvej.28, l_trio_opkald_markeret ; !q
 
 Hotkey, IfWinActive, PLANET
 Hotkey, % bruger_genvej.38, l_outlook_svigt ; +F1
+Hotkey, % bruger_genvej.69, l_outlook_genåben ; +F1
 Hotkey, % bruger_genvej.5, l_p6_initialer ; F2
 Hotkey, % bruger_genvej.6, l_p6_initialer_skriv ; +F2
 Hotkey, % bruger_genvej.7, l_p6_vis_k_aftale ; F3
@@ -5088,8 +5089,46 @@ genvejGuiClose:
     gui, destroy
     sys_afslut_genvej()
 return
-; Opret svigt på VL. Kolonne 38
-l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+    sys_genvej_start(69)
+    FormatTime, dato, , d-MM-y
+    ; FormatTime, tid, , HH:mm
+    ; svigt := []
+    gemtklip := ClipboardAll
+    vl := P6_hent_vl()
+    if (vl = 0)
+    {
+        sys_afslut_genvej()
+        return
+    }
+    k_aft := P6_hent_k()
+    sty_sys := P6_hent_s()
+    k_aftale := k_aft  "_" sty_sys
+    clipboard :=
+    p6_vl_vindue()
+    p6_vl_vindue_edit()
+    clipboard := 
+    SendInput, {enter}{tab}^c
+    ClipWait, 1
+    aabningstid := clipboard
+    sleep 500
+    SendInput, !{PrintScreen}
+    sleep 500
+    FileRead, gv_svigt, %A_linefile%\..\db\gv_svigt.txt
+    gv_svigt := StrSplit(gv_svigt, ["`n"])
+    for i, e in gv_svigt
+        {
+        gv_svigt[i] := SubStr(gv_svigt[i], 1 , -1)
+        gv_svigt[i] := StrSplit(gv_svigt[i], "`t")
+        }
+    for i,e in gv_svigt
+        {
+            if (k_aftale = gv_svigt[i][1])
+                opr_vl := gv_svigt[i][2]
+        }
+    return
+    ; ClipWait, 3,
+    l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     sys_genvej_start(38)
     FormatTime, dato, , d-MM-y
     ; FormatTime, tid, , HH:mm
