@@ -17,6 +17,7 @@ GroupAdd, trafikstyringsgruppe, ahk_class Transparent Windows Client
 ;; lib
 #Include, %A_linefile%\..\lib\AHKDb\ahkdb.ahk
 #Include, %A_linefile%\..\lib\JSON.ahk
+; #Include, %A_linefile%\..\lib\vis2\lib\vis2.ahk
 ;; TODO
 ; gemt-klip-funktion ved al brug af clipboard
 ; Trio gå til linie 1 hvis linie 2 aktiv
@@ -4378,7 +4379,7 @@ if ( valgt == "k")
             return
  
     }      
-    if (valgt == "K")
+    if (valgt = "K")
         {
     systjek := p6_tekst_tjek_for_system(styresystem)
     if (systjek = 1)
@@ -5627,10 +5628,9 @@ p6_tag_alarm_vl_box()
 ; }
 ;
 
-; test
 ; ^z::
 ; {
-; SendInput, % sys_genvej_start(68)
-; MsgBox, , , asd
+; tekst := ocr("PLANET")
+; MsgBox, , , % tekst
 ; }
 
