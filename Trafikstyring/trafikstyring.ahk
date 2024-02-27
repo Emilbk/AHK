@@ -5718,10 +5718,11 @@ p6_tag_alarm_vl_box()
 ; }
 ;
 
-; test
-; ^z::
-; {
-; SendInput, % sys_genvej_start(68)
-; MsgBox, , , asd
-; }
+^z::
+{
+if WinExist("+ ahk_exe Miralix OfficeClient.exe")
+    MsgBox, , , kald,
+Else
+    MsgBox, , , ikke kald
+}
 
