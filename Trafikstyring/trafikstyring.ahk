@@ -3262,13 +3262,15 @@ trio_tlf_knap(ByRef tlf := "")
 ; 244,215
 Flexfinder_opslag()
 {
-    KeyWait, Shift,
-    KeyWait, Ctrl
+    sys_genvej_start(36)
     If (WinExist("FlexDanmark FlexFinder"))
     {
         k_aftale := P6_hent_k()
         k_aftale := SubStr("000" . k_aftale, -3) ; indsætter nuller og tager sidste fire cifre i strengen (kun i spil når mindre end fire cifre ind).
-        ; MsgBox, , er 4 , % k_aftale
+        sty_sys := P6_hent_s()
+        sty_sys := SubStr("000" . sty_sys, -3) ; indsætter nuller og tager sidste fire cifre i strengen (kun i spil når mindre end fire cifre ind).
+        opslag := k_aftale "_" sty_sys
+        ; MsgBox, , er 4 , % k_aFtale
         sleep 200
         WinActivate, FlexDanmark FlexFinder
         winwaitactive, FlexDanmark FlexFinder
@@ -3288,9 +3290,9 @@ Flexfinder_opslag()
             sleep 40
             SendInput, +{tab}{up}{tab}
             sleep 200
-            SendInput, %k_aftale%
-            KeyWait, Enter, D, T7
-            sleep 200
+            SendInput, %opslag%
+            sleep 500
+            SendInput, {enter}
             WinActivate, PLANET
         }
         Else
@@ -3303,9 +3305,9 @@ Flexfinder_opslag()
             sleep 40
             SendInput, +{tab}{up}{tab}
             sleep 200
-            SendInput, %k_aftale%
-            KeyWait, Enter, D, T7
-            sleep 200
+            SendInput, %opslag%
+            sleep 500
+            SendInput, {enter}
             WinActivate, PLANET
         }
         ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
@@ -5159,7 +5161,7 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     svigt_template.htmlbody := beskrivelse html_tekst
 
 
-    svigt_template.display
+    svigt_template.send
     ImageDestroy(udklip)
     return
     ; ClipWait, 3,
