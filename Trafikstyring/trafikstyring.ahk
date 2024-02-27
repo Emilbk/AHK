@@ -17,6 +17,7 @@ GroupAdd, trafikstyringsgruppe, ahk_class Transparent Windows Client
 ;; lib
 #Include, %A_linefile%\..\lib\AHKDb\ahkdb.ahk
 #Include, %A_linefile%\..\lib\JSON.ahk
+#Include, %A_linefile%\..\lib\ImagePut-master\ImagePut (for v1).ahk
 ;; TODO
 ; gemt-klip-funktion ved al brug af clipboard
 ; Trio gå til linie 1 hvis linie 2 aktiv
@@ -317,7 +318,6 @@ Gui note: Add, Edit, x394 y240 w50 h21 number vnote_tid,
 
 
 outlook := ComObjCreate("Outlook.application")
-MsgBox, , , asd, 
 ;; END AUTOEXEC
 #IfWinActive VL-liste
     Enter::
@@ -5391,26 +5391,38 @@ svigtok:
         ; MsgBox, , 11, % emnefelt,
         gui, destroy
     }
+
+    outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
+    svigt_template := outlook.createitemfromtemplate(outlook_template)
+
+    udklip := ImagePutFile(clipboardall, "svigt.png")
+    udklip_navn := SubStr(udklip, 3)
+    udklip_lok := A_ScriptDir "\" udklip_navn
     
-    ny_mail := outlook.createitem(0)
-    ny_mail.to := "planet@midttrafik.dk"
-    ny_mail.subject := emnefelt
-    ny_mail.htmlbody := beskrivelse "`n"
-    if (gemt_ja = 1)
-    {
-        clipboard := gemtklip
-        sleep 200
-        SendInput, ^v
-    }
-    if (gemt_ja = 0)
-    {
-        clipboard := klip
-        SendInput, ^v
-    }
-    MsgBox, , , %A_ScriptDir%\temp.jpg
-    FileAppend, %klip%, %A_ScriptDir%\temp.jpg, "RAW"
-    bodtemplate.attachments.add(%clipboard%, 0, 1)
-    ny_mail.display
+    svigt_template.attachments.add(udklip_lok)
+    svigt_template.to := "planet@midttrafik.dk"
+    svigt_template.subject := emnefelt
+    html_tekst =
+    (
+    </o:shapelayout></xml><![endif]--></head><body lang=DA link="#0563C1" vlink="#954F72" style='tab-interval:65.2pt;word-wrap:break-word'><div class=WordSection1><img id="Billede_x0020_2" src="cid:%udklip_navn%"></span></p><div><p class=MsoNormal style='mso-margin-top-alt:auto'><span style='font-size:10.0pt;font-family:"Verdana",sans-serif;mso-fareast-language:DA'</o:p></span></p></div><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'><o:p>&nbsp;</o:p></span></p></div></body></html>
+    )
+    svigt_template.htmlbody := beskrivelse html_tekst
+
+
+    ; if (gemt_ja = 1)
+    ; {
+    ;     clipboard := gemtklip
+    ;     sleep 200
+    ;     SendInput, ^v
+    ; }
+    ; if (gemt_ja = 0)
+    ; {
+    ;     clipboard := klip
+    ;     SendInput, ^v
+    ; }
+    ; FileAppend, %klip%, %A_ScriptDir%\temp.jpg, "RAW"
+    svigt_template.display
+    ImageDestroy(udklip)
     ; Outlook_nymail()
     ; sleep 200
     ; SendInput, planet@midttrafik.dk
