@@ -5,33 +5,28 @@ SetBatchLines, -1
 SetWorkingDir, %A_ScriptDir%
 
 
-outlook_template := "C:\Users\ebk\Bod for kvalitetsbrist.oft"
+#Include, %A_linefile%\..\..\Trafikstyring\lib\ImagePut-master\ImagePut (for v1).ahk
+outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
 
 outlook := ComObjCreate("Outlook.application")
 
 bodtemplate := outlook.createitemfromtemplate(outlook_template)
 
-test = 
+; billede := ImagePutWindow(ClipboardAll)
+fil := ImagePutFile(clipboardall, "test.png")
+fil_navn := SubStr(fil, 3)
+fil_lok := A_ScriptDir "\" fil_navn
+; MsgBox, , , %A_ScriptDir% %fil_lok%, 
+html_test =
 (
-Til
-Reliable ApS
-Bod for kvalitetsbrist
- 
-Midttrafik har den %A_now% 12.02.24 registreret en kvalitetsbrist på vognløb 31261, der medfører en bod på kr. 2.000,- jf. FG8, side 52, § 31, stk. 3, litra
- 
-17) Hvis garantivognen eller reservemateriel ikke er til rådighed i den aftalte garanti- og rådighedsperiode jf. § 20, stk. 3. Se dog § 25 stk. 2.
- 
-Kvalitetsbristen bestod i, at der ikke indsættes reservevogn på vognløbet, efter det lukkes ved vognløbets start.
- 
-Beløbet vil blive modregnet i vognmandsafregningen.
-Eventuel indsigelse skal foretages skriftligt inden 5 arbejdsdage.
+    </o:shapelayout></xml><![endif]--></head><body lang=DA link="#0563C1" vlink="#954F72" style='tab-interval:65.2pt;word-wrap:break-word'><div class=WordSection1><p class=MsoNormal>Billede start</p><p class=MsoNormal><span style='mso-ligatures:none'><img id="Billede_x0020_2" src="cid:%fil_navn%"></span></p><div><p class=MsoNormal style='mso-margin-top-alt:auto'><span style='font-size:10.0pt;font-family:"Verdana",sans-serif;mso-fareast-language:DA'>Billede slut<o:p></o:p></span></p></div><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'><o:p>&nbsp;</o:p></span></p></div></body></html>
 )
-
-
-
-bodtemplate.To := "email@email.com"
+bodtemplate.To := "planet@midttrafik.dk"
 bodtemplate.subject := "Bod for kvalitetsbrist - " vl " den " dato
-bodtemplate.body := test
+bodtemplate.attachments.add(fil_lok)
+bodtemplate.htmlbody := html_test
 
 
 bodtemplate.display
+
+ImageDestroy(fil)
