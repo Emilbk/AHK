@@ -5139,9 +5139,9 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     ClipWait, 1, 
     
     if (vl = opr_vl)
-        emnefelt := vl " genåbnet som " vl " d. " dato " kl. " aabningstid
+        emnefelt := "VL " vl " genåbnet som VL " vl " d. " dato " kl. " aabningstid
     if (vl != opr_vl)
-        emnefelt := opr_vl " genåbnet som " vl " d. " dato " kl. " aabningstid
+        emnefelt := "VL " opr_vl " genåbnet som VL " vl " d. " dato " kl. " aabningstid
     outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
     svigt_template := outlook.createitemfromtemplate(outlook_template)
 
