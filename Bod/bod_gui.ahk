@@ -4,6 +4,11 @@ SendMode, Input
 SetBatchLines, -1
 SetWorkingDir, %A_ScriptDir%
 ;; GUI
+Gui vl_bod: Font, s9, Segoe UI
+Menu KommandoerMenu, Add, &Find svigt`tF8, Outlook_find_svigt
+Menu KommandoerMenu, Icon, &Find svigt`tF8, shell32.dll, 172
+Menu MenuBar, Add, &Kommandoer, :KommandoerMenu
+Gui vl_bod: Menu, MenuBar
 
 gui vl_bod: font
 gui vl_bod: font, bold
@@ -179,7 +184,11 @@ gui vl_bod: show, w620 h442, window
 
 
 ;; GUI-funktion
-
+Outlook_find_svigt:
+    namespace := outlook.getNameSpace("MAPI")
+    namespace_folders := namespace.folders("ebk@midttrafik.dk").Folders("Indbakke")
+    outlook.advancedsearch("'Indbakke'", a)
+Return
 paragraf_slaa_op:
 {
     guicontrolget, vl, , edit2, 

@@ -177,16 +177,16 @@ if (winactive("Svigt FG8-FV8.xlsx - Excel"))
         sendinput, h
         sleep 50
         sendinput, {enter}
-        sleep 1500
+        sleep 500
         sendinput, {up}
-        sleep 1500
+        sleep 500
         controlfocus, _WwG1 , Planet - Svigt til behandling - Planet - Outlook
         sleep 1000
         SendInput, +{down}
         ; winactivate, Svigt FG8-FV8.xlsx - Excel
         return
     }
-if (winactive("Planet - Indbakke - Planet - Outlook"))
+if (winactive("Planet - Svigt til behandling - Planet - Outlook"))
     {
         clipboard :=
         sendinput, ^c
@@ -196,7 +196,7 @@ if (winactive("Planet - Indbakke - Planet - Outlook"))
         sendinput, {f2}
         sendinput, ^v{tab}  
         sleep 40
-    SendInput, ^d{tab}
+    SendInput, mtebk{tab}
     sleep 40
     SendInput, !{down}
         return
@@ -239,7 +239,7 @@ return
         sendinput, {f2}
         sendinput, ^v{tab}  
         sleep 40
-    SendInput, ^d{tab}
+    SendInput, mtebk{tab}
     sleep 40
     SendInput, !{down}
         return
