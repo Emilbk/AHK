@@ -6,6 +6,7 @@
 2000	FG - Manglende benyttelse af trappetjener	21) Hvis trappemaskinen ikke anvendes ved transport af kørestole over mere end ét trin jf. § 24 stk. 6, 7 og 9."
 1000	FG - Manglende udførsel af kørsel	6) Manglende overholdelse af § 20 – Krav til kørslens udførelse. Se dog pkt. 16, 17 og 18.
 ?	FG - Udfordring med opladning	?
+1000	FG - Ingen fungerende betalingsløsning i bilen	8) Manglende overholdelse af § 23 – Generelle krav til alle vogntyper.
 1000	FG - Generelle krav til vogne, udstyr mv	8) Manglende overholdelse af § 23 – Generelle krav til alle vogntyper.
 1000	FG - Krav til vogntype	9) Manglende overholdelse af § 24 – Vogntyper. Se dog pkt. 21 og 22.
 1000	FG - Krav til chauffør	4) Manglende overholdelse af § 19 – Øvrige krav til personale. Se dog pkt. 15
@@ -22,6 +23,7 @@
 1000	FV - Manglende overholdelse af retningslinjer	1. Manglende overholdelse af § 10 – Retningslinjer for driften og serviceniveau
 1000	FV - Krav til chauffør	4. Manglende overholdelse af § 17 – Øvrige krav til personale. Se dog pkt. 15.
 2000	FV - Krav til chauffør - uddannelse	14. Manglende overholdelse af §§ 16, 16a og 16b – Uddannelseskrav.
+1000	FV - Ingen fungerende betalingsløsning i bilen	8) Manglende overholdelse af § 23 – Generelle krav til alle vogntyper.
 1000	FV - Generelle krav til vogne, udstyr mv	8. Manglende overholdelse af § 23 – Generelle krav til alle vogntyper.
 1000	FV - Krav til vogntype	9. Manglende overholdelse af § 24 – Vogntyper. Se dog pkt. 18 og 19.
 1000	FV - Svar på klager	3. Manglende overholdelse af tidsfristen på tre dage for indsendelse af udtalelser i forbindelse med kundehenvendelser, jf. § 13 - Leverandørs virksomhed.

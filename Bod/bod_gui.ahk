@@ -70,11 +70,10 @@ for i,e in paragraf_data
     }
 
 ;; OUTLOOK
+
 outlook_template := "C:\Users\ebk\Bod for kvalitetsbrist.oft"
 
 outlook := ComObjCreate("Outlook.application")
-
-bodtemplate := outlook.createitem(0)
 ; bodtemplate := outlook.createitemfromtemplate(outlook_template)
 
 
@@ -421,6 +420,7 @@ html_test_med_billede =
 
 
 
+bodtemplate := outlook.createitem(0)
 
 bodtemplate.SentOnBehalfOfName := "planet@midttrafik.dk"
 bodtemplate.To := email
@@ -433,4 +433,15 @@ bodtemplate.htmlbody := html_test_med_billede
 bodtemplate.display
 
 guicontrol, vl_bod: , vl , 
+guicontrol, vl_bod: , edit3 , 
+guicontrol, vl_bod: choose , combobox1 , 1
+guicontrol, vl_bod: choose , combobox2 , 1
 return
+
+
+^z::
+{
+    namespace := outlook.getnamespace("MAPI")
+    namespace_folder := namespace.Folders("planet@midttrafik.dk").Folders("Indskrevet")
+    fundet_mail := outlook.advancedsearch("Indskrevet", "urn:schemas:httpmail:subject='31251'")
+}
