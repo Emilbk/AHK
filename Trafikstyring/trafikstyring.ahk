@@ -38,6 +38,8 @@ GroupAdd, trafikstyringsgruppe, ahk_class Transparent Windows Client
 ;; Globale variabler
 
 brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
+if (brugerrække = 0)
+    brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", "xyz", ,1)
 bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
 genvej_ren := []
 genvej_navn := []
@@ -103,6 +105,7 @@ Hotkey, % bruger_genvej.13, l_p6_vl_luk ; #F5
 Hotkey, % bruger_genvej.62, l_p6_laas_vl ; #F5
 Hotkey, % bruger_genvej.14, l_p6_alarmer ; F7
 Hotkey, % bruger_genvej.15, l_p6_udraabsalarmer ; +F7
+Hotkey, % bruger_genvej.69, l_p6_billede_gui ; +F7
 ; Hotkey, % bruger_genvej.16, l_p6_ring_til_kunde ; +F8
 Hotkey, % bruger_genvej.17, l_p6_udregn_minut ; #t
 Hotkey, % bruger_genvej.18, l_p6_sygehus_ring_op ; ^+s
@@ -306,7 +309,86 @@ gui vl_liste: add, button, x740 y536 w131 h23 gvl_liste_slet, &slet
 gui vl_liste: add, button, x880 y536 w131 h23 gvl_liste_slet_alt_alle, slet &alt
 gui vl_liste: add, button, x1020 y536 w131 h23 gvl_liste_liste, l&iste
 
+;; GUI P6-billeder
+Gui p6_billede: Font, s9, Segoe UI
+Gui p6_billede: Add, Radio, x16 y32 w181 h23 vp6_billede_adresse, &Adresse
+Gui p6_billede: Add, Radio, x16 y56 w180 h23 vp6_billede_vg, Vogngruppeskema, &dag
+Gui p6_billede: Add, Radio, x16 y80 w181 h23 vp6_billede_styringsystem, &Styringssystem
+Gui p6_billede: Add, Radio, x16 y104 w178 h23 vp6_billede_vogngruppe, &Vogngruppe
+Gui p6_billede: Add, Radio, x16 y128 w179 h23 vp6_billede_vogngrupppe_fast, Vogngruppeskema, &fast
+Gui p6_billede: Add, Radio, x16 y152 w175 h23 vp6_billede_liste_vl, &Liste Vognløb
+Gui p6_billede: Add, Radio, x16 y176 w178 h23 vp6_billede_betaler, &Betaler
+Gui p6_billede: Add, Radio, x16 y200 w178 h23 vp6_billede_lange_rejser, Liste lange &rejser
+Gui p6_billede: Add, Button, x40 y272 w42 h23 gp6_billede_ok, &OK
+Gui p6_billede: Add, Button, x104 y272 w55 h23 gp6_billedeescape, Afbryd
+Gui p6_billede: Add, Text, x16 y8 w120 h23 +0x200, Hvilket billede vil du se?
 
+Return
+
+p6_billede_ok:
+gui p6_billede: Submit
+if (p6_billede_adresse = 1)
+    {
+        KeyWait, alt
+        P6_aktiver()
+        P6_alt_menu("{esc}{alt}", "gga")
+        return
+    }
+if (p6_billede_vg = 1)
+    {
+        KeyWait, alt
+        P6_aktiver()
+        P6_alt_menu("{alt}", "td")
+        return
+    }
+if (p6_billede_styringsystem = 1)
+    {
+        KeyWait, alt
+        P6_aktiver()
+        P6_alt_menu("{alt}", "ts")
+        return
+    }
+if (p6_billede_vogngruppe = 1)
+    {
+        KeyWait, alt
+        P6_aktiver()
+        P6_alt_menu("{alt}", "geg")
+        return
+    }
+if (p6_billede_vogngruppe_fast = 1)
+    {
+        KeyWait, alt
+        P6_aktiver()
+        P6_alt_menu("{alt}", "gef")
+        return
+    }
+if (p6_billede_liste_vl = 1)
+    {
+        KeyWait, alt
+        P6_aktiver()
+        P6_alt_menu("{alt}", "tv")
+        return
+    }
+if (p6_billede_betaler = 1)
+    {
+        KeyWait, alt
+        P6_aktiver()
+        P6_alt_menu("{alt}", "gøb")
+        return
+    }
+if (p6_billede_lange_rejser = 1)
+    {
+        KeyWait, alt
+        P6_aktiver()
+        P6_alt_menu("{alt}", "ti")
+        return
+    }
+return
+
+p6_billedeEscape:
+p6_billedeClose:
+gui p6_billede: hide
+Return
 
 ;; GUI vl-note
 gui note: +Labelnote
@@ -1116,7 +1198,15 @@ replvl:
     gui Hide
     p6_vaelg_vl(%valg%)
 return
-
+; P6_billede-labels
+p6_billede_adresse:
+P6_aktiver()
+SendInput, !gga
+return
+p6_billede_vg:
+P6_aktiver()
+SendInput, !td
+return
 ;; FUNKTIONER
 ;; P6
 sys_afslut_genvej()
@@ -4143,6 +4233,13 @@ plustidGuiClose:
     gui, cancel
     sys_afslut_genvej()
 return
+l_p6_billede_gui:
+{
+    sys_genvej_start(69)
+    Gui p6_billede: Show, w218 h303, Alt F9   
+    sys_afslut_genvej()
+    return
+}
 l_p6_tjek_andre_rejser:
     {
         sys_genvej_start(66)
