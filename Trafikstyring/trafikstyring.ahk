@@ -37,6 +37,8 @@ GroupAdd, trafikstyringsgruppe, ahk_class Transparent Windows Client
 ;; Globale variabler
 
 brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
+if (brugerrække = 0)
+    brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", "xyz", ,1)
 bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
 genvej_ren := []
 genvej_navn := []
