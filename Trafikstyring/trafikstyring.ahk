@@ -92,7 +92,7 @@ Hotkey, % bruger_genvej.28, l_trio_opkald_markeret ; !q
 
 Hotkey, IfWinActive, PLANET
 Hotkey, % bruger_genvej.38, l_outlook_svigt ; +F1
-Hotkey, % bruger_genvej.69, l_outlook_genåben ; +F1
+Hotkey, % bruger_genvej.70, l_outlook_genåben ; +F1
 Hotkey, % bruger_genvej.5, l_p6_initialer ; F2
 Hotkey, % bruger_genvej.6, l_p6_initialer_skriv ; +F2
 Hotkey, % bruger_genvej.7, l_p6_vis_k_aftale ; F3
