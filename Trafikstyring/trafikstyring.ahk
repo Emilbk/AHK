@@ -5768,6 +5768,7 @@ gui_svigt_send:
     svigt_template.send
     ImageDestroy(udklip)
     gemtklip :=
+    MsgBox, 64, Mail er sendt!, Mailen er afsendt, 2
     sys_afslut_genvej()
 Return
 
