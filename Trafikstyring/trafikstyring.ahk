@@ -50,6 +50,7 @@ tid :=
 s := bruger_genvej.41
 tlf :=
 trio_genvej := "Genvejsoversigt"
+outlook := ComObjCreate("Outlook.application")
 vl_repl := []
 ;; VL-liste-read
 vl_liste_tekst := "db\vl_liste\" A_UserName . "_vl_liste.txt"
@@ -401,7 +402,6 @@ Gui note: Add, checkbox, x319 y240 w76 h21 vnote_reminder, &Reminder
 Gui note: Add, Edit, x394 y240 w50 h21 number vnote_tid, 
 
 
-outlook := ComObjCreate("Outlook.application")
 ;; END AUTOEXEC
 #IfWinActive VL-liste
     Enter::
