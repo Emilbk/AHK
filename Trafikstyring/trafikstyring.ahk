@@ -4821,7 +4821,23 @@ Return
 
 ; Telenor accepter indgående kald, søg planet
 l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
+    if !WinExist("+ ahk_exe Miralix OfficeClient.exe") 
+        {
+            sys_genvej_start(4)
+            Trio_afslutopkald()
+            sys_afslut_genvej()
+            return
+        }
+    if WinExist("+4570112210 ahk_exe Miralix OfficeClient.exe") 
+        {
+            sys_genvej_start(4)
+            SendInput, % bruger_genvej[68] ; Misser den af og til?
+            sys_afslut_genvej()
+            return
+        }
     
+    if WinExist("+ ahk_exe Miralix OfficeClient.exe") 
+        {
     sys_genvej_start(4)
     ControlGetText, koble_test, Button1, Trio Attendant
     SendInput, % bruger_genvej[68] ; Misser den af og til?
@@ -4862,6 +4878,9 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
         sys_afslut_genvej()
         return
     }
+    return
+        }        
+
 ; Opkald på markeret tekst. Kolonne 28
 l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     sys_genvej_start(28)
