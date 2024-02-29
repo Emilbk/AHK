@@ -2162,9 +2162,11 @@ P6_input_sluttid()
     KeyWait, Shift,
     EnvAdd, nu_plus_5, 5, minutes
     FormatTime, nu_plus_5, %nu_plus_5%, HHmm
+    FormatTime, dato, YYYYMMDDHH24MISS, ddMM
     if (p6_input_sidste_slut_ops = "1")
     {
         luk := []
+        luk.InsertAt(4, dato)
         sleep 100
         InputBox, sidste_stop, Sidste stop, Tast tid for sidste stop. Enter uden noget giver luk nu. `n (4 cifre)
         if (ErrorLevel = "1")
@@ -2233,6 +2235,7 @@ P6_input_sluttid()
     {
         luk := []
         Input, sidste_stop, T10, {Enter}{escape}
+        luk.InsertAt(4, dato)
         if (ErrorLevel = "EndKey:Escape")
             Return 0
         if (ErrorLevel = "Timeout")
@@ -2244,7 +2247,7 @@ P6_input_sluttid()
             luk.1 := nu_plus_5
             return luk
         }
-        luk.Push(sidste_stop)
+        luk.InsertAt(1, sidste_stop)
         if (!InStr(luk.1, "/"))
         {
             luk.3 := "luk"
