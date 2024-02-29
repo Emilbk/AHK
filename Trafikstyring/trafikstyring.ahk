@@ -5236,6 +5236,12 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     SendInput, {enter}{tab}^c
     ClipWait, 1
     aabningstid := clipboard
+    clipboard := 
+    SendInput, {enter}!v+{up}
+    sleep 200
+    SendInput, ^c
+    ClipWait, 1
+    vl_notat := clipboard
     sleep 500
     SendInput, !{PrintScreen}
     sleep 500
@@ -5281,6 +5287,16 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
 
     svigt_template.send
     ImageDestroy(udklip)
+    P6_planvindue()
+    if (vl_notat = "")
+        {
+            MsgBox, 48, Mail sendt - husk notat på VL, Mail om genåbningen er blevet sendt - husk det faste notat på VL, 3
+        }
+    else
+ {
+     MsgBox, 64, Mail sendt, Mail om genåbningen er blevet sendt, 3
+
+ }       
     return
     
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
