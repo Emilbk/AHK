@@ -79,7 +79,7 @@ outlook := ComObjCreate("Outlook.application")
 
 ;; STAMDATA
 
-stamopl_sti := "C:\Users\ebk\Stamoplysninger FV8 og FG8.xlsx"
+stamopl_sti := "F:\Flextrafik\Fælles\Udbud\FG8 - FV8\Stamoplysninger FV8 og FG8.xlsx"
 
 stamopl:= ComObjCreate("Excel.application")
 ; stamopl.Workbooks.Open(stamopl_sti,, readonly := false)
@@ -102,7 +102,7 @@ vm_stam.RemoveAt(1)
 kontakt_stam.RemoveAt(1)
 stamopl.quit()
 
-stamopl_sti := "C:\Users\ebk\Svigt FG8-FV8.xlsx"
+stamopl_sti := "F:\Flextrafik\Fælles\Udbud\Svigt\Svigt FG8-FV8.xlsx"
 
 stamopl:= ComObjCreate("Excel.application")
 ; stamopl.Workbooks.Open(stamopl_sti,, readonly := false)
@@ -112,17 +112,28 @@ stamopl.visible := 0
 stamopl_ark := stamopl.sheets(4) ; after opening workbook its better to define sheet 
 stamopl_kolonne_a := stamopl_ark.range("A:A") 
 stamopl_kolonne_b := stamopl_ark.range("B:B") 
+stamopl_kolonne_d := stamopl_ark.range("D:D") 
+stamopl_kolonne_e := stamopl_ark.range("E:E") 
 r_a_sidste := stamopl_kolonne_a.end(-4121).row
 r_b_sidste := stamopl_kolonne_b.end(-4121).row
+r_d_sidste := stamopl_kolonne_d.end(-4121).row
+r_e_sidste := stamopl_kolonne_e.end(-4121).row
 
 vl_svigt := []
 vm_svigt := []
+vg_svigt := []
+central_svigt := []
 email_svigt := []
 fundet := []
 loop, %r_a_sidste%
     {
          vl_svigt.push(stamopl_ark.range("A" A_index).value)
          vm_svigt.push(stamopl_ark.range("B" A_index).value)
+    }
+loop, %r_d_sidste%
+    {
+         vg_svigt.push(stamopl_ark.range("D" A_index).value)
+         central_svigt.push(stamopl_ark.range("E" A_index).value)
     }
 stamopl.quit()
 for i,e in vl_svigt
@@ -139,7 +150,14 @@ for i,e in vl_svigt
     {
         stamdata[i] := [vl_svigt[i], vm_svigt[i]]
     }    
-
+midl := []
+stamdata_max_index := stamdata.MaxIndex()
+for i,e in vg_svigt
+    {
+        midl[i] := [vg_svigt[i], central_svigt[i]]
+        stamdata.Push(midl[i])
+    }
+    
 for i, e in vm_svigt
     {
         for i2, e2 in vm_stam
@@ -149,6 +167,16 @@ for i, e in vm_svigt
                 Break 1
                 }
     }
+for i, e in central_svigt
+    {
+        for i2, e2 in vm_stam
+            if (e = e2)
+                {
+                stamdata[i + stamdata_max_index].Push(kontakt_stam[i2])
+                Break 1
+                }
+    }
+
 
 
 ; for i,e in stamdata
@@ -439,9 +467,19 @@ guicontrol, vl_bod: choose , combobox2 , 1
 return
 
 
-^z::
-{
-    namespace := outlook.getnamespace("MAPI")
-    namespace_folder := namespace.Folders("planet@midttrafik.dk").Folders("Indskrevet")
-    fundet_mail := outlook.advancedsearch("Indskrevet", "urn:schemas:httpmail:subject='31251'")
-}
+; ^z::
+; {
+;     namespace := outlook.getnamespace("MAPI")
+;     namespace_folder := namespace.Folders("planet@midttrafik.dk").Folders("Indskrevet")
+;     fundet_mail := outlook.advancedsearch("Indskrevet", "urn:schemas:httpmail:subject='31251'")
+; }
+
+; z::
+; {
+;     if (vm_stam[171] = vm_svigt[653])
+;         {
+
+;             MsgBox, , , % vm_stam[171] "=" vm_svigt[653]
+;         }
+
+; }
