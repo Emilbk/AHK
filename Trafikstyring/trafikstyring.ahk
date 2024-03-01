@@ -324,6 +324,18 @@ Gui p6_billede: Add, Button, x40 y272 w42 h23 gp6_billede_ok, &OK
 Gui p6_billede: Add, Button, x104 y272 w55 h23 gp6_billedeescape, Afbryd
 Gui p6_billede: Add, Text, x16 y8 w120 h23 +0x200, Hvilket billede vil du se?
 
+gui note: +Labelnote
+Gui note: Font, s9, Segoe UI
+Gui note: Add, Edit, x16 y8 w438 h206 vnote_note
+Gui note: Add, Button, x8 y240 w80 h23 gnote_ok, &Gem
+Gui note: Add, Button, x104 y240 w80 h23 gnote_opslag, &Opslag VL
+Gui note: Add, Button, x200 y240 w80 h23 gnote_slet, &Slet note
+Gui note: Add, checkbox, x319 y240 w76 h21 vnote_reminder, &Reminder
+Gui note: Add, Edit, x394 y240 w50 h21 number vnote_tid, 
+
+;; GUI vl-note
+
+;; END AUTOEXEC
 Return
 
 p6_billede_ok:
@@ -391,18 +403,7 @@ p6_billedeClose:
 gui p6_billede: hide
 Return
 
-;; GUI vl-note
-gui note: +Labelnote
-Gui note: Font, s9, Segoe UI
-Gui note: Add, Edit, x16 y8 w438 h206 vnote_note
-Gui note: Add, Button, x8 y240 w80 h23 gnote_ok, &Gem
-Gui note: Add, Button, x104 y240 w80 h23 gnote_opslag, &Opslag VL
-Gui note: Add, Button, x200 y240 w80 h23 gnote_slet, &Slet note
-Gui note: Add, checkbox, x319 y240 w76 h21 vnote_reminder, &Reminder
-Gui note: Add, Edit, x394 y240 w50 h21 number vnote_tid, 
 
-
-;; END AUTOEXEC
 #IfWinActive VL-liste
     Enter::
     NumpadEnter::
@@ -666,7 +667,7 @@ Gui note: Show, w477 h277, Note VL %valg%
 ControlFocus, Edit1 , Note
 sleep 100
 
-
+return
 }
 ;; lav
 vl_liste_tilføj_note:
@@ -3679,16 +3680,24 @@ sys_genvej_til_ahk_tast(byref kolonne := "")
 }
 sys_genvej_keywait(byref genvej_mod := "")
 {
+    global bruger_genvej 
+    bruger_genvej_midl := []
+    for i,e in bruger_genvej
+        {
+            bruger_genvej_midl[i] := RegExReplace(bruger_genvej[i], "[\^!\^\+\#]")
+        }
+
     genvej_mod1 := genvej_mod.1
     genvej_mod2 := genvej_mod.2
     genvej_mod3 := genvej_mod.3
+    if (genvej_mod1 = "shift" or genvej_mod1 = "alt" or genvej_mod1 = "control" or genvej_mod1 = "lwin")
     KeyWait, %genvej_mod1%,
     if (genvej_mod2 = "shift" or genvej_mod2 = "alt" or genvej_mod2 = "control" or genvej_mod2 = "lwin")
         keywait, %genvej_mod2%
-    for i,e in ["F1", "w", "Numpadsub"]
+    for i, e in bruger_genvej_midl
         {
-        if (genvej_mod3 = e)
-            keywait, %genvej_mod3%
+            if (e = genvej_mod3)
+        keywait, %genvej_mod3%
         }
     return
 }
@@ -5362,12 +5371,14 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     ; FormatTime, tid, , HH:mm
     ; svigt := []
     gemtklip := ClipboardAll
+    P6_aktiver()
     vl := P6_hent_vl()
     if (vl = 0)
     {
         sys_afslut_genvej()
         return
     }
+    GuiControl, svigt:,  VL , %vl%
     clipboard :=
     sleep 500
     SendInput, !{PrintScreen}
