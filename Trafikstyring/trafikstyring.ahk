@@ -3685,11 +3685,9 @@ sys_genvej_keywait(byref genvej_mod := "")
     KeyWait, %genvej_mod1%,
     if (genvej_mod2 = "shift" or genvej_mod2 = "alt" or genvej_mod2 = "control" or genvej_mod2 = "lwin")
         keywait, %genvej_mod2%
-    for i,e in ["F1", "w", "Numpadsub"]
-        {
-        if (genvej_mod3 = e)
-            keywait, %genvej_mod3%
-        }
+    if (genvej_mod3 != "")
+        keywait, %genvej_mod3%
+       
     return
 }
 sys_initialer()
