@@ -5367,12 +5367,14 @@ gui, svigt: new
     ; FormatTime, tid, , HH:mm
     ; svigt := []
     gemtklip := ClipboardAll
+    P6_aktiver()
     vl := P6_hent_vl()
     if (vl = 0)
     {
         sys_afslut_genvej()
         return
     }
+    GuiControl, svigt:,  VL , %vl%
     clipboard :=
     sleep 500
     SendInput, !{PrintScreen}
