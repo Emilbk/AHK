@@ -3680,15 +3680,25 @@ sys_genvej_til_ahk_tast(byref kolonne := "")
 }
 sys_genvej_keywait(byref genvej_mod := "")
 {
+    global bruger_genvej 
+    bruger_genvej_midl := []
+    for i,e in bruger_genvej
+        {
+            bruger_genvej_midl[i] := RegExReplace(bruger_genvej[i], "[\^!\^\+\#]")
+        }
+
     genvej_mod1 := genvej_mod.1
     genvej_mod2 := genvej_mod.2
     genvej_mod3 := genvej_mod.3
+    if (genvej_mod1 = "shift" or genvej_mod1 = "alt" or genvej_mod1 = "control" or genvej_mod1 = "lwin")
     KeyWait, %genvej_mod1%,
     if (genvej_mod2 = "shift" or genvej_mod2 = "alt" or genvej_mod2 = "control" or genvej_mod2 = "lwin")
         keywait, %genvej_mod2%
-    if (genvej_mod3 != "")
+    for i, e in bruger_genvej_midl
+        {
+            if (e = genvej_mod3)
         keywait, %genvej_mod3%
-       
+        }
     return
 }
 sys_initialer()
