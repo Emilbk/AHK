@@ -3657,9 +3657,12 @@ sys_genveje_opslag()
 sys_genvej_til_ahk_tast(byref kolonne := "")
 {
     global bruger_genvej
-
-    genvej_mod := StrSplit(bruger_genvej[kolonne])
-
+    genvej_mod := []
+    genvej := RegExReplace(bruger_genvej[kolonne], "[\^!\^\+\#]")
+    
+    genvej_mod_midl := StrSplit(bruger_genvej[kolonne])
+    genvej_mod.Push(genvej_mod_midl[1], genvej_mod_midl[2])
+    genvej_mod.InsertAt(3, genvej)
     for i, e in genvej_mod
     {
         genvej_mod[i] := StrReplace(genvej_mod[i], "!", "alt")
@@ -3678,9 +3681,16 @@ sys_genvej_keywait(byref genvej_mod := "")
 {
     genvej_mod1 := genvej_mod.1
     genvej_mod2 := genvej_mod.2
+    genvej_mod3 := genvej_mod.3
     KeyWait, %genvej_mod1%,
     if (genvej_mod2 = "shift" or genvej_mod2 = "alt" or genvej_mod2 = "control" or genvej_mod2 = "lwin")
         keywait, %genvej_mod2%
+    for i,e in ["F1", "w", "Numpadsub"]
+        {
+        if (genvej_mod3 = e)
+            keywait, %genvej_mod3%
+        }
+    return
 }
 sys_initialer()
 {
@@ -4824,16 +4834,15 @@ Return
 
 ; Telenor accepter indgående kald, søg planet
 l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
+    sys_genvej_start(4)
     if (!WinExist("--- ahk_exe Miralix OfficeClient.exe") and !WinExist("+ ahk_exe Miralix OfficeClient.exe"))
         {
-            sys_genvej_start(4)
             Trio_afslutopkald()
             sys_afslut_genvej()
             return
         }
     if (WinExist("+4570112210 ahk_exe Miralix OfficeClient.exe"))
         {
-            sys_genvej_start(4)
             SendInput, % bruger_genvej[68] ; Misser den af og til?
             sys_afslut_genvej()
             return
@@ -4841,7 +4850,6 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     
     if (WinExist("--- ahk_exe Miralix OfficeClient.exe") OR WinExist("+ ahk_exe Miralix OfficeClient.exe"))
         {
-    sys_genvej_start(4)
     ControlGetText, koble_test, Button1, Trio Attendant
     SendInput, % bruger_genvej[68] ; Misser den af og til?
     sleep 40
@@ -6021,11 +6029,11 @@ p6_tag_alarm_vl_box()
 ; }
 ;
 
-^z::
-{
-if WinExist("+ ahk_exe Miralix OfficeClient.exe")
-    MsgBox, , , kald,
-Else
-    MsgBox, , , ikke kald
-}
+; ^z::
+; {
+; if WinExist("+ ahk_exe Miralix OfficeClient.exe")
+;     MsgBox, , , kald,
+; Else
+;     MsgBox, , , ikke kald
+; }
 
