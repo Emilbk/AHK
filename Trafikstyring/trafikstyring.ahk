@@ -4834,6 +4834,8 @@ Return
 
 ; Telenor accepter indgående kald, søg planet
 l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
+    if (bruger_genvej[71] = 1)
+        {
     sys_genvej_start(4)
     if (!WinExist("--- ahk_exe Miralix OfficeClient.exe") and !WinExist("+ ahk_exe Miralix OfficeClient.exe"))
         {
@@ -4890,7 +4892,51 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
         return
     }
     return
-        }        
+        } 
+        }    
+    Else
+        {
+             sys_genvej_start(4)
+    ControlGetText, koble_test, Button1, Trio Attendant
+    SendInput, % bruger_genvej[68] ; Misser den af og til?
+    sleep 40
+    telefon := Trio_hent_tlf()
+    sleep 40
+    P6_aktiver()
+    if (telefon = "")
+    {
+        MsgBox, , , Intet indgående telefonnummer el. hemmeligt nummer, 1
+        P6_aktiver()
+        sleep 100
+        p6_vaelg_vl()
+        sys_afslut_genvej()
+        return
+    }
+    vl := P6_hent_vl_fra_tlf(telefon)
+    if vl
+    {
+        sleep 200
+        P6_udfyld_k_og_s(vl)
+        sys_afslut_genvej()
+        Return
+    }
+    if (telefon = "78410222" OR telefon ="78410224") ; mangler yderligere?
+    {
+        ; MsgBox, ,CPR, CPR, 1
+        sleep 200
+        P6_rejsesogvindue()
+        SendInput, ^t
+        sys_afslut_genvej()
+        return
+    }
+    Else
+    {
+        sleep 200
+        P6_rejsesogvindue(telefon)
+        sys_afslut_genvej()
+        return
+    }
+        }
 
 ; Opkald på markeret tekst. Kolonne 28
 l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
