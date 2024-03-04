@@ -1362,7 +1362,7 @@ P6_hent_k()
     clipboard := ""
     Sendinput +{F10}c
     ClipWait 1
-    sleep s * 200
+    sleep s * 50
     loop_test := 0
     while (clipboard = "")
     {
@@ -1371,7 +1371,7 @@ P6_hent_k()
         clipboard := ""
         Sendinput +{F10}c
         ClipWait 1
-        sleep s * 400
+        sleep s * 50
     }
     kørselsaftale := clipboard
     return kørselsaftale
@@ -1440,7 +1440,7 @@ P6_hent_vl()
         ClipWait, 1, 0
         vl := clipboard
         loop_test += 1
-        if (loop_test > 7)
+        if (loop_test > 5)
         {
             MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
             return 0
@@ -3396,7 +3396,7 @@ Flexfinder_opslag()
             ControlClick, x322 y100, FlexDanmark FlexFinder
             sleep 40
             SendInput, +{tab}{up}{tab}
-            sleep 200
+            sleep 300
             SendInput, %opslag%
             sleep 500
             SendInput, {enter}
@@ -3411,7 +3411,7 @@ Flexfinder_opslag()
             ControlClick, x244 y215, FlexDanmark FlexFinder
             sleep 40
             SendInput, +{tab}{up}{tab}
-            sleep 200
+            sleep 300
             SendInput, %opslag%
             sleep 500
             SendInput, {enter}
@@ -4133,7 +4133,6 @@ sleep s * 100
     }
     ; Clipboard = %gemtklip%
     ; gemtklip :=
-    sleep 400
     WinActivate, PLANET
     P6_Planvindue()
     sleep 3000
