@@ -1488,7 +1488,7 @@ p6_vl_vindue()
     vl := clipboard
     return vl
 }
-
+; Ender i skridtet efter "æ"
 p6_vl_vindue_edit()
 {
     k_aftale := []
