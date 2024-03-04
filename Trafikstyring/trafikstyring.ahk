@@ -5330,15 +5330,67 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
 
     udklip_navn := SubStr(udklip, 3)
     udklip_lok := A_ScriptDir "\" udklip_navn
-    
+    signatur_navn := "image001.png"
+    signatur_lok := A_ScriptDir "\lib\" . signatur_navn
+
+ 
+    svigt_template.attachments.add(signatur_lok)
     svigt_template.attachments.add(udklip_lok)
     svigt_template.to := "planet@midttrafik.dk"
     svigt_template.subject := emnefelt
+    
+    signatur_mail := outlook.createitem(0)
+    signatur := signatur_mail.getinspector
+    signatur := signatur_mail.htmlbody 
+    signatur := RegExReplace(signatur, "\bimage001.png\b.{18}", "image001.png")    
+
     html_tekst =
-    (
-    </o:shapelayout></xml><![endif]--></head><body lang=DA link="#0563C1" vlink="#954F72" style='tab-interval:65.2pt;word-wrap:break-word'><div class=WordSection1><br><img id="Billede_x0020_2" src="cid:%udklip_navn%"></span></p><div><p class=MsoNormal style='mso-margin-top-alt:auto'><span style='font-size:10.0pt;font-family:"Verdana",sans-serif;mso-fareast-language:DA'</o:p></span></p></div><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'><o:p>&nbsp;</o:p></span></p></div></body></html>
+        (
+        <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40"><head><meta name=Generator content="Microsoft Word 15 (filtered medium)"><!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style><![endif]--><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+@font-face
+	{font-family:Aptos;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	font-size:11.0pt;
+	font-family:"Aptos",sans-serif;
+	mso-ligatures:standardcontextual;
+	mso-fareast-language:EN-US;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-size:10.0pt;
+	mso-ligatures:none;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:3.0cm 2.0cm 3.0cm 2.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext="edit" spidmax="1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext="edit">
+<o:idmap v:ext="edit" data="1" />
+</o:shapelayout></xml><![endif]--></head><body lang=DA link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal>%beskrivelse%<o:p></o:p></p><p class=MsoNormal><span style='mso-ligatures:none'><br><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%udklip_navn%"></span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
+
     )
-    svigt_template.htmlbody := beskrivelse html_tekst
+   
+     
+    svigt_template.htmlbody := beskrivelse html_tekst . signatur
 
 
     svigt_template.send
@@ -5861,9 +5913,19 @@ gui_svigt_send:
     udklip_navn := SubStr(udklip, 3)
     udklip_lok := A_ScriptDir "\" udklip_navn
     
+    signatur_navn := "image001.png"
+    signatur_lok := A_ScriptDir "\lib\" . signatur_navn
+
     svigt_template.attachments.add(udklip_lok)
+    svigt_template.attachments.add(signatur_lok)
     svigt_template.to := "planet@midttrafik.dk"
     svigt_template.subject := emnefelt
+    ; skaf auto-signatur med getinspector
+    signatur_mail := outlook.createitem(0)
+    signatur := signatur_mail.getinspector
+    signatur := signatur_mail.htmlbody
+
+
     html_tekst =
     (
         <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
@@ -5908,7 +5970,8 @@ div.WordSection1
 </o:shapelayout></xml><![endif]--></head><body lang=DA link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal>%beskrivelse%<o:p></o:p></p><p class=MsoNormal><span style='mso-ligatures:none'><br><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%udklip_navn%"></span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
 
     )
-    svigt_template.htmlbody := html_tekst
+    signatur := RegExReplace(signatur, "\bimage001.png\b.{18}", "image001.png")    
+    svigt_template.htmlbody := html_tekst . signatur
     svigt_template.send
     ImageDestroy(udklip)
     gemtklip :=
