@@ -446,7 +446,8 @@ html_test_med_billede =
 
 )
 
-
+; "C:\Users\ebk\AHK\MT-AHK\Bod\lib\signatur_logo.png"
+signatur := A_ScriptDir "\lib\signatur_logo.png"
 
 bodtemplate := outlook.createitem(0)
 
@@ -454,7 +455,7 @@ bodtemplate.SentOnBehalfOfName := "planet@midttrafik.dk"
 bodtemplate.To := email
 bodtemplate.CC := "oekonomi@midttrafik.dk"
 bodtemplate.subject := "Bod for kvalitetsbrist - vognløb " vl " d. " dato
-bodtemplate.attachments.add("C:\Users\ebk\signatur_logo.png", 0, 0)
+bodtemplate.attachments.add(signatur)
 bodtemplate.htmlbody := html_test_med_billede
 
 
