@@ -5269,33 +5269,16 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     ; FormatTime, tid, , HH:mm
     ; svigt := []
     gemtklip := ClipboardAll
-    SendInput, ^{F10}
-    vl := P6_hent_vl()
-    if (vl = 0)
-    {
-        sys_afslut_genvej()
-        return
-    }
-    k_aft := P6_hent_k()
-    sty_sys := P6_hent_s()
-    k_aftale := k_aft  "_" sty_sys
+    ClipWait, 2, 1
+    SendInput, ^a^{F12}
     clipboard :=
-    p6_vl_vindue()
-    p6_vl_vindue_edit()
-    clipboard := 
-    SendInput, {enter}{tab}^c
-    ClipWait, 1
-    aabningstid := clipboard
-    clipboard := 
-    SendInput, {enter}!v+{up}
-    sleep 200
-    SendInput, ^c
-    ClipWait, 1
-    vl_notat := clipboard
-    sleep 500
-    SendInput, !{PrintScreen}
-    sleep 500
-    SendInput, ^a
+    SendInput, {AppsKey}c
+    ClipWait, 2, 0
+    vl := clipboard
+    sys := p6_vl_vindue_edit()
+    k_aft := sys[1]
+    sty_sys := sys[3]
+    k_aftale := k_aft  "_" sty_sys
     FileRead, gv_svigt, %A_linefile%\..\db\gv_svigt.txt
     gv_svigt := StrSplit(gv_svigt, ["`n"])
     for i, e in gv_svigt
@@ -5308,11 +5291,33 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
             if (k_aftale = gv_svigt[i][1])
                 opr_vl := gv_svigt[i][2]
         }
-    gemtklip := ClipboardAll
+    if (opr_vl = "")
+        {
+            MsgBox, 16, Variabelt vognløb, Der skal ikke sendes genåbning på variable vognløb
+            SendInput, ^a
+            sys_afslut_genvej()
+            return
+        }
     clipboard :=
+    SendInput, {enter}
+    SendInput, {tab}{AppsKey}c
+    ClipWait, 1
+    aabningstid := clipboard
+    clipboard := 
+    SendInput, {enter}!v+{up}
+    sleep 200
+    SendInput, ^c
+    ClipWait, 1
+    vl_notat := clipboard 
+    SendInput, ^a
     sleep 500
     SendInput, !{PrintScreen}
-    ClipWait, 1, 
+    ClipWait, 2, 1
+    if (clipboard := "")
+        {
+            SendInput, !{PrintScreen}
+            ClipWait, 2, 1
+        }
     emnefelt := 
     if (vl = opr_vl)
         emnefelt := "VL " vl " genåbnet som VL " vl " d. " dato " kl. " aabningstid
