@@ -1488,7 +1488,7 @@ p6_vl_vindue()
     vl := clipboard
     return vl
 }
-; Ender i skridtet efter "æ"
+; 1 k_aftale, 2 drift el. vg, 3 sys. Ender i skridtet efter "æ"
 p6_vl_vindue_edit()
 {
     k_aftale := []
@@ -1521,6 +1521,26 @@ p6_vl_vindue_edit()
         }
     }
     k_aftale.1 := clipboard
+    SendInput, {tab}
+    clipboard :=
+    SendInput, +{F10}c
+    clipwait 0.5
+    loop_test := 0
+    while (clipboard = "")
+    {
+        SendInput, !k{tab}
+        sleep 400
+        clipboard :=
+        SendInput, +{F10}c
+        clipwait 1.5
+        loop_test += 1
+        if (loop_test > 10)
+        {
+            MsgBox, 16 , Fejl, Der er sket en fejl - Prøv igen
+            return 0
+        }
+    }
+    k_aftale.3 := clipboard
     clipboard :=
     ; tjek om drift eller vogngruppe
     SendInput, {tab 2}
