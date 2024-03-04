@@ -1897,14 +1897,25 @@ P6_ret_tlf_vl(ByRef telefon:=" ")
         sys_afslut_genvej()
         return
     }
-    sleep 100
-    sendinput ^æ
-    sleep s * 200
+    p6_vl_vindue_edit()
     SendInput {Enter}{Enter}
     sleep s * 40
     SendInput !ø
     sleep s * 40
     SendInput {tab}{tab}
+    clipboard :=
+    sendinput {AppsKey}c
+    clipwait 1
+    gammel_tlf := clipboard
+    gammel_tlf_længde := StrLen(gammel_tlf)
+    if (gammel_tlf_længde != 8)
+        {
+            sleep 100
+            MsgBox, 16, Fejl, Fejl, har ikke ramt rigtigt felt `nFeltet er %gammel_tlf_længde% tegn langt- prøv igen
+            SendInput, ^a
+            sys_afslut_genvej()
+            return
+        }
     SendInput, %telefon%
     SendInput, {enter}
     return
@@ -5283,7 +5294,7 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     sleep 500
     SendInput, !{PrintScreen}
     ClipWait, 1, 
-    
+    emnefelt := 
     if (vl = opr_vl)
         emnefelt := "VL " vl " genåbnet som VL " vl " d. " dato " kl. " aabningstid
     if (vl != opr_vl)
