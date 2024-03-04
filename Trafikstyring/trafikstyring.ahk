@@ -5245,7 +5245,7 @@ genvejGuiClose:
 return
 l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     sys_genvej_start(69)
-    FormatTime, dato, , d-MM-y
+    FormatTime, dato, , dd-MM-y
     ; FormatTime, tid, , HH:mm
     ; svigt := []
     gemtklip := ClipboardAll
@@ -5331,7 +5331,7 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     sys_genvej_start(38)
-    FormatTime, dato, , d-MM-y
+    FormatTime, dato, , dd-MM-y
 ; GUI svigt
 gui, svigt: new
     gui, svigt: +labelsvigt
@@ -5346,7 +5346,7 @@ gui, svigt: new
     Gui svigt: Font, s9, Segoe UI
     Gui svigt: Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
     Gui svigt: Add, Edit, vtid x200 y24 w79 h21, Hjemzone kl.
-    Gui svigt: Add, CheckBox, vhelt x160 y48 w120 h23, Ja, og VL &slettet:
+    Gui svigt: Add, CheckBox, vhelt x160 y48 w120 h23, Ja, og VL s&lettet:
     Gui svigt: Add, Edit, vtid_slet x170 y68 h21, Åbningstid garanti
     ; G svigt:ui Add, CheckBox, vhelt2 x160 y72 w120, GV garanti &slettet i variabel tid ; nødvendig?
     Gui svigt: Font
@@ -5401,7 +5401,7 @@ gui_svigt_vis:
 
     if (ny_dato != "")
         {
-            FormatTime, dato_tid, YYYYMMDDHH24MISS, d-MM-y
+            FormatTime, dato_tid, YYYYMMDDHH24MISS, dd-MM-y
             dato := SubStr(ny_dato, 1 , 2) . "-" SubStr(ny_dato, -1 , 2) "-" SubStr(dato, -1 , 2)
         }
     beskrivelse := StrReplace(beskrivelse, "`n", " ")
@@ -5604,7 +5604,7 @@ gui_svigt_send:
 
     if (ny_dato != "")
         {
-            FormatTime, dato_tid, YYYYMMDDHH24MISS, d-MM-y
+            FormatTime, dato_tid, YYYYMMDDHH24MISS, dd-MM-y
             dato := SubStr(ny_dato, 1 , 2) . "-" SubStr(ny_dato, -1 , 2) "-" SubStr(dato, -1 , 2)
         }
     beskrivelse := StrReplace(beskrivelse, "`n", " ")
