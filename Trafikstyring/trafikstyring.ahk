@@ -5288,8 +5288,12 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
         }
     for i,e in gv_svigt
         {
-            if (k_aftale = gv_svigt[i][1])
-                opr_vl := gv_svigt[i][2]
+
+                if (k_aftale = gv_svigt[i][1])
+                {
+                    opr_vl := gv_svigt[i][2]
+                    break
+                }
         }
     if (opr_vl = "")
         {
@@ -5322,7 +5326,7 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     udklip := ImagePutFile(clipboardall, "genåbnet.png")
     emnefelt := 
     if (vl = opr_vl)
-        emnefelt := "VL " vl " genåbnet som VL " vl " d. " dato " kl. " aabningstid
+        emnefelt := "VL " vl " genåbnet d. " dato " kl. " aabningstid
     if (vl != opr_vl)
         emnefelt := "VL " opr_vl " genåbnet som VL " vl " d. " dato " kl. " aabningstid
     outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
