@@ -32,7 +32,7 @@ gui vl_bod: font, s9, segoe ui
 gui vl_bod: add, text, x24 y170 w120 h23 +0x200, &Søg Paragraf
 gui vl_bod: add, edit, x24 y200 w120 h23 +0x200 vparagraf_søg gparagraf_slaa_op, 
 gui vl_bod: add, text, x24 y223 w120 h23 +0x200, &Paragraf
-gui vl_bod: add, dropdownlist, x23 y244 w414 vFG, 
+gui vl_bod: add, dropdownlist, x23 y244 w414 gvl_bod_fg_paragraf vFG, 
 gui vl_bod: add, dropdownlist, x23 y270 w414 vFV,
 gui vl_bod: font
 gui vl_bod: font, bold
@@ -282,6 +282,29 @@ vl_bodguiclose:
     stamopl.quit()
     ExitApp
     }
+vl_bod_fg_paragraf:
+{
+    GuiControlGet, fg_paragraf, , combobox1
+    {
+    if (fg_paragraf = "FG - Ikke i hjemzone fra start")
+        {
+            GuiControl, , brist, vognen ikke befinder sig i hjemzone ved vognløbets start.
+            return
+        }
+    if (fg_paragraf = "FG - vognløb lukket midt på vognløb")
+        {
+            GuiControl, , brist, der ikke rettidigt indsættes reservevogn, efter at vognløbet må lukkes grundet nedbrud.
+            return
+        }       
+    if (fg_paragraf = "FG - vognløb lukket helt")
+        {
+            GuiControl, , brist,der ikke indsættes reservevogn, efter at vognløbet lukkes før garantiperiodens start. 
+            return
+        } 
+            GuiControl, , brist    
+    }
+    return
+}
 vl_bodbuttonok:
 gui Submit, nohide
 if (fg != "-" and fv != "-")
