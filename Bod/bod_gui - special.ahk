@@ -9,9 +9,7 @@ outlook := ComObjCreate("Outlook.application")
 
 ;; Fileinstall
 
-
-; signatur := A_ScriptDir "\lib\signatur_logo.png"
-
+FileInstall, lib/bod_template.oft, temp.oft
 ;; GUI
 
 brugsanvisning =
@@ -140,6 +138,7 @@ guicontrol, vl_bod: , edit3 ,
 vl_bodguiescape:
 vl_bodguiclose:
     {
+    FileDelete, temp.oft
     ExitApp
     }
 
