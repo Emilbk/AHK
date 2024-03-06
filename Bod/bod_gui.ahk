@@ -194,7 +194,7 @@ guicontrol, vl_bod: choose, combobox1, 1
 guicontrol, vl_bod: choose, combobox2, 1
 
 
-gui vl_bod: show, w620 h442, window
+gui vl_bod: show, w620 h442, Ny Optimeret Bodsplatform
 
 +esc::
 {
@@ -246,16 +246,12 @@ paragraf_slaa_op:
         }
 return
 }
-tjek := 0
 vl_slaa_op:
 {
-    if (A_TimeIdleKeyboard < 500 and tjek = 0)
+    while (A_TimeIdleKeyboard < 400)
         {
-            sleep 600
-            tjek := 1
-            Goto, vl_slaa_op
+            return
         }
-    tjek := 0
     guicontrolget, vl, , edit1, 
     if (StrLen(vl) < 4)
         {
