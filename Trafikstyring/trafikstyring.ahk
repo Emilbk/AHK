@@ -5331,7 +5331,7 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
         emnefelt := "VL " vl " genåbnet d. " dato " kl. " aabningstid
     if (vl != opr_vl)
         emnefelt := "VL " opr_vl " genåbnet som VL " vl " d. " dato " kl. " aabningstid
-    outlook := ComObjCreate("Outlook.application")
+outlook := ComObjCreate("Outlook.application")
     outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
     svigt_template := outlook.createitemfromtemplate(outlook_template)
 
