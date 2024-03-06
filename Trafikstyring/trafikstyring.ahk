@@ -5331,6 +5331,7 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
         emnefelt := "VL " vl " genåbnet d. " dato " kl. " aabningstid
     if (vl != opr_vl)
         emnefelt := "VL " opr_vl " genåbnet som VL " vl " d. " dato " kl. " aabningstid
+    outlook := ComObjCreate("Outlook.application")
     outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
     svigt_template := outlook.createitemfromtemplate(outlook_template)
 
@@ -5663,6 +5664,7 @@ gui_svigt_vis:
         gui, hide
     }
 
+    outlook := ComObjCreate("Outlook.application")
     outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
     svigt_template := outlook.createitemfromtemplate(outlook_template)
 
@@ -5912,6 +5914,7 @@ gui_svigt_send:
         gui, hide
     }
 
+    outlook := ComObjCreate("Outlook.application")
     outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
     svigt_template := outlook.createitemfromtemplate(outlook_template)
 
@@ -5982,6 +5985,7 @@ div.WordSection1
     ImageDestroy(udklip)
     gemtklip :=
     MsgBox, 64, Mail er sendt!, Mailen er afsendt, 2
+
     sys_afslut_genvej()
 Return
 
