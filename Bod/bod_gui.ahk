@@ -307,6 +307,11 @@ vl_bod_fg_paragraf:
 }
 vl_bodbuttonok:
 gui Submit, nohide
+if (vm = "ikke gyldigt vl")
+    {
+    MsgBox, 16 , Ikke gyldigt VL! , Der er ikke fundet et gyldigt VL
+    return
+    }
 if (fg != "-" and fv != "-")
     {
         MsgBox, 16, Både FG og FV valgt, Der skal kun vælges fra ét udbud.
