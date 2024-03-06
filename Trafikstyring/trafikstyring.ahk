@@ -4498,12 +4498,14 @@ if ( valgt == "k")
         sys_afslut_genvej()    
         return
         }
+        sleep 40
         InputBox, stop, St. nummer, Hvilket stop?
         if ErrorLevel
             {
                 sys_afslut_genvej()   
                 Return
             }
+        sleep 40
         InputBox, tid, FlexFinder ankomst, Hvornår faktisk ankommet? 4 cifre
         if ErrorLevel
             {
