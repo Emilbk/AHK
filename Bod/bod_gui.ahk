@@ -225,9 +225,6 @@ guicontrol, vl_bod: , edit3 ,
 
 paragraf_slaa_op:
 {
-    guicontrolget, vl, , edit2, 
-    if (vl = "")
-        guicontrolget, vl, , edit2, 
     for i,e in paragraf_data
         {
             if (InStr(e[2], fg))
@@ -249,10 +246,24 @@ paragraf_slaa_op:
         }
 return
 }
-
+tjek := 0
 vl_slaa_op:
 {
+    if (A_TimeIdleKeyboard < 500 and tjek = 0)
+        {
+            sleep 600
+            tjek := 1
+            Goto, vl_slaa_op
+        }
+    tjek := 0
     guicontrolget, vl, , edit1, 
+    if (StrLen(vl) < 4)
+        {
+                               guicontrol, vl_bod: , vm , ikke gyldigt vl
+                    guicontrol, vl_bod: , email ,  
+                    vm := "ikke gyldigt vl" 
+                    return
+        }
     if (vl = "")
         guicontrolget, vl, , edit1, 
     for i,e in stamdata
@@ -270,10 +281,12 @@ vl_slaa_op:
 
                     guicontrol, vl_bod: , vm , ikke gyldigt vl
                     guicontrol, vl_bod: , email ,  
+                    vm := "ikke gyldigt vl"
                 }
         }
-return
-}
+    }
+    return
+
 ;; GUI-label
 vl_bodguiescape:
 vl_bodguiclose:
