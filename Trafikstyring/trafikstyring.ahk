@@ -2569,6 +2569,7 @@ P6_vl_luk(tid:="")
     }
     {
         if (k_aftale.2 = "drift")
+    {
         SendInput, {Enter}{Tab 2}
         SendInput, % dato
         SendInput, {tab}
@@ -5292,7 +5293,10 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
         }
     for i,e in gv_svigt
         {
-
+                if (InStr(SubStr(gv_svigt[i][1],1, 5), k_aftale))
+                    {
+                        MsgBox, , , SubStr(gv_svigt[i][1], 1, 5)
+                    }
                 if (k_aftale = gv_svigt[i][1])
                 {
                     opr_vl := gv_svigt[i][2]
@@ -5414,6 +5418,7 @@ div.WordSection1
      MsgBox, 64, Mail sendt, Mail om genåbningen er blevet sendt, 3
 
  }       
+    sys_afslut_genvej()
     return
     
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
