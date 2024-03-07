@@ -1543,12 +1543,13 @@ p6_vl_vindue_edit()
     k_aftale.3 := clipboard
     clipboard :=
     ; tjek om drift eller vogngruppe
+    SendInput, !k
     SendInput, {tab 2}
     sleep 40
     SendInput, +{F10}c
     clipwait 0.5
     k_aftale.2 := clipboard
-    if (k_aftale.1 = k_aftale.2)
+    if (k_aftale.1 = k_aftale.2 or k_aftale[2] = "")
     {
         k_aftale.2 := "drift"
     }
@@ -2198,7 +2199,6 @@ P6_input_sluttid()
     if (p6_input_sidste_slut_ops = "1")
     {
         luk := []
-        luk.InsertAt(4, dato)
         sleep 100
         InputBox, sidste_stop, Sidste stop, Tast tid for sidste stop. Enter uden noget giver luk nu. `n (4 cifre)
         if (ErrorLevel = "1")
@@ -2209,19 +2209,19 @@ P6_input_sluttid()
             return luk
         }
         luk.1 := sidste_stop
-        if (!InStr(luk.1, "/"))
-        {
-            luk.3 := "luk"
-        }
-        if (InStr(luk.1, "/"))
-        {
-            luk := StrSplit(sidste_stop, "/")
-            luk.3 := "åbnluk"
-            if (luk.2 = "")
-            {
-                luk.3 := "åbn"
-            }
-        }
+        ; if (!InStr(luk.1, "/"))
+        ; {
+        ;     luk.3 := "luk"
+        ; }
+        ; if (InStr(luk.1, "/"))
+        ; {
+        ;     luk := StrSplit(sidste_stop, "/")
+        ;     luk.3 := "åbnluk"
+        ;     if (luk.2 = "")
+        ;     {
+        ;         luk.3 := "åbn"
+        ;     }
+        ; }
         if (StrLen(luk.1)!= 4)
         {
             MsgBox, , Fejl i indtastning, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
@@ -2253,8 +2253,7 @@ P6_input_sluttid()
         {
             midl_luk := luk.1
             FormatTime, midl_luk, %midl_luk%, HHmm
-            luk.RemoveAt(1)
-            luk.InsertAt(1, midl_luk)
+            luk[1] := midl_luk
             return luk
         }
         midl_luk := luk.1
@@ -2266,8 +2265,8 @@ P6_input_sluttid()
     if (p6_input_sidste_slut_ops = "0")
     {
         luk := []
+        luk [4] := dato
         Input, sidste_stop, T10, {Enter}{escape}
-        luk.InsertAt(4, dato)
         if (ErrorLevel = "EndKey:Escape")
             Return 0
         if (ErrorLevel = "Timeout")
@@ -2279,20 +2278,20 @@ P6_input_sluttid()
             luk.1 := nu_plus_5
             return luk
         }
-        luk.InsertAt(1, sidste_stop)
-        if (!InStr(luk.1, "/"))
-        {
-            luk.3 := "luk"
-        }
-        if (InStr(luk.1, "/"))
-        {
-            luk := StrSplit(sidste_stop, "/")
-            luk.3 := "åbnluk"
-            if (luk.2 = "")
-            {
-                luk.3 := "åbn"
-            }
-        }
+        luk[1] := sidste_stop
+        ; if (!InStr(luk.1, "/"))
+        ; {
+        ;     luk.3 := "luk"
+        ; }
+        ; if (InStr(luk.1, "/"))
+        ; {
+        ;     luk := StrSplit(sidste_stop, "/")
+        ;     luk.3 := "åbnluk"
+        ;     if (luk.2 = "")
+        ;     {
+        ;         luk.3 := "åbn"
+        ;     }
+        ; }
         if (StrLen(luk.1) != 4)
         {
             MsgBox, , Fejl i indtastning, Der skal bruges fire tal, i formatet TTMM (f. eks. 1434).
@@ -2330,8 +2329,7 @@ P6_input_sluttid()
             ; formattime kan ikke tage array?
             midl_luk := luk.1
             FormatTime, midl_luk, %midl_luk%, HHmm
-            luk.RemoveAt(1)
-            luk.InsertAt(1, midl_luk)
+            luk[1] := midl_luk
             return luk
         }
         midl_luk := luk.1
@@ -2547,7 +2545,8 @@ P6_udregn_minut()
 P6_vl_luk(tid:="")
 {
     global s
-
+    FormatTime, dato, YYYYMMDDHH24MISS, d
+    
     vl := p6_vl_vindue()
     if (vl = 0)
     {
@@ -2568,51 +2567,54 @@ P6_vl_luk(tid:="")
         sys_afslut_genvej()
         return 0
     }
-    if (k_aftale.2 = "drift" or k_aftale.2 = "" and tid.3 = "luk")
     {
-        SendInput, {Enter}{Tab 3}
+        if (k_aftale.2 = "drift")
+        SendInput, {Enter}{Tab 2}
+        SendInput, % dato
+        SendInput, {tab}
         SendInput, % tid[1]
-        SendInput, {tab}{tab}
+        SendInput, {tab}
+        SendInput, % dato
+        SendInput, {tab}
         SendInput, % tid[1]
         SendInput, {enter}{enter}
         return
     }
-    if (k_aftale.2 = "drift" or k_aftale.2 = "" and tid.3 = "åbnluk")
-    {
-        SendInput, {Enter}{Tab}
-        SendInput, % tid.1
-        SendInput, {tab 2}
-        SendInput, % tid.2
-        SendInput, {tab 2}
-        SendInput, % tid.2
-        SendInput, {enter}{enter}
-        return
-    }
-    if (k_aftale.2 = "drift" or k_aftale.2 = "" and tid.3 = "åbn")
-    {
-        SendInput, {Enter}{Tab}
-        SendInput, % tid.1
-        return
-    }
-    if (k_aftale.2 != "") ; Skandstat er 7-serien. Ingen driftsVL?
+    ; if (k_aftale.2 = "drift" and tid.3 = "åbnluk")
+    ; {
+    ;     SendInput, {Enter}{Tab}
+    ;     SendInput, % tid.1
+    ;     SendInput, {tab 2}
+    ;     SendInput, % tid.2
+    ;     SendInput, {tab 2}
+    ;     SendInput, % tid.2
+    ;     SendInput, {enter}{enter}
+    ;     return
+    ; }
+    ; if (k_aftale.2 = "drift" and tid.3 = "åbn")
+    ; {
+    ;     SendInput, {Enter}{Tab}
+    ;     SendInput, % tid.1
+    ;     return
+    ; }
+    if (k_aftale.2 != "drift") ; Skandstat er 7-serien. Ingen driftsVL?
     {
         SendInput, {Enter}
-        FormatTime, dato, YYYYMMDDHH24MISS, d
         SendInput, %dato%
         SendInput, {tab}
         SendInput, % tid[1]
         SendInput, {enter}{enter}
         return
     }
-    Else ; bruges ikke
-    {
-        SendInput, {Enter}{Tab 3}
-        SendInput, % tid.1
-        SendInput, {tab}{tab}
-        SendInput, % tid.1
-        SendInput, {enter}{enter}
-        return
-    }
+    ; Else 
+    ; {
+    ;     SendInput, {Enter}{Tab 3}
+    ;     SendInput, % tid.1
+    ;     SendInput, {tab}{tab}
+    ;     SendInput, % tid.1
+    ;     SendInput, {enter}{enter}
+    ;     return
+    ; }
 }
 
 ; P6 ring op til markeret kunde i VL (telefon i bestilling)
