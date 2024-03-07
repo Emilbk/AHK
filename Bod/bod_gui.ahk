@@ -250,6 +250,7 @@ vl_slaa_op:
 {
     while (A_TimeIdleKeyboard < 400)
         {
+            Goto, vl_slaa_op
             return
         }
     guicontrolget, vl, , edit1, 
