@@ -2617,7 +2617,7 @@ P6_vl_luk(tid:="")
     ;     return
     ; }
 }
-
+}
 ; P6 ring op til markeret kunde i VL (telefon i bestilling)
 p6_hent_kunde_tlf(ByRef telefon:="")
 {
