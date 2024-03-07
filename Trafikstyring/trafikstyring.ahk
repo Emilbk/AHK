@@ -1442,7 +1442,7 @@ P6_hent_vl()
         loop_test += 1
         if (loop_test > 5)
         {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
             return 0
         }
     }
@@ -1514,9 +1514,9 @@ p6_vl_vindue_edit()
         SendInput, +{F10}c
         clipwait 1.5
         loop_test += 1
-        if (loop_test > 10)
+        if (loop_test > 5)
         {
-            MsgBox, 16 , Fejl, Der er sket en fejl - Prøv igen
+            MsgBox, 16 , Fejl, Der er sket en fejl - Prøv igen `n(virker ctrl+c ctrl+v fra P6 til Windows?)
             return 0
         }
     }
@@ -1536,7 +1536,7 @@ p6_vl_vindue_edit()
         loop_test += 1
         if (loop_test > 10)
         {
-            MsgBox, 16 , Fejl, Der er sket en fejl - Prøv igen
+            MsgBox, 16 , Fejl, Der er sket en fejl - Prøv igen `n(virker ctrl+c ctrl+v fra P6 til Windows?)
             return 0
         }
     }
@@ -1842,7 +1842,7 @@ P6_hent_vl_tlf()
         loop_test += 1
         if (loop_test > 5)
         {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen `n(virker ctrl+c ctrl+v fra P8 til Windows?)
             return 0
         }
     }
@@ -1880,7 +1880,7 @@ P6_hent_vm_tlf()
         loop_test += 1
         if (loop_test > 10)
         {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen `n(virker ctrl+c ctrl+v fra P6 til Windows?)
             return "fejl"
         }
     }
@@ -3173,7 +3173,7 @@ Trio_opkald(ByRef telefon)
         ControlGetText, tlf_test, Edit2, Trio Attendant
         if (loop_test > 10)
         {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen `n(virker ctrl+c ctrl+v fra P6 til Windows?)
             return 0
         }
     }
@@ -5305,7 +5305,8 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
         }
     if (opr_vl = "")
         {
-            MsgBox, 16, Variabelt vognløb, Der skal ikke sendes genåbning på variable vognløb
+            MsgBox, 16, Variabelt vognløb, Der skal ikke sendes genåbning på variable vognløb `n`n (Hvis du sender på en garantivogn, så tjek lige om styreystemet i GV-oversigten matcher P6)
+            sleep 100
             SendInput, ^a
             sys_afslut_genvej()
             return
