@@ -5475,7 +5475,9 @@ gui, svigt: new
     SendInput, !{PrintScreen}
     ; sleep 500
     ClipWait, 10, 1
+    sleep 200
     klip := ClipboardAll
+    sleep 200
     ; clipwait 3, 1 ; bedre løsning?
     Gui svigt: Show, w448 h297, Svigt
     ControlFocus, Button1, Svigt
