@@ -32,7 +32,7 @@ gui vl_bod: font, s9, segoe ui
 gui vl_bod: add, text, x24 y170 w120 h23 +0x200, &Søg Paragraf
 gui vl_bod: add, edit, x24 y200 w120 h23 +0x200 vparagraf_søg gparagraf_slaa_op, 
 gui vl_bod: add, text, x24 y223 w120 h23 +0x200, &Paragraf
-gui vl_bod: add, dropdownlist, x23 y244 w414 vFG, 
+gui vl_bod: add, dropdownlist, x23 y244 w414 gvl_bod_fg_paragraf vFG, 
 gui vl_bod: add, dropdownlist, x23 y270 w414 vFV,
 gui vl_bod: font
 gui vl_bod: font, bold
@@ -194,7 +194,7 @@ guicontrol, vl_bod: choose, combobox1, 1
 guicontrol, vl_bod: choose, combobox2, 1
 
 
-gui vl_bod: show, w620 h442, window
+gui vl_bod: show, w620 h442, Ny Optimeret Bodsplatform
 
 +esc::
 {
@@ -225,9 +225,6 @@ guicontrol, vl_bod: , edit3 ,
 
 paragraf_slaa_op:
 {
-    guicontrolget, vl, , edit2, 
-    if (vl = "")
-        guicontrolget, vl, , edit2, 
     for i,e in paragraf_data
         {
             if (InStr(e[2], fg))
@@ -249,10 +246,21 @@ paragraf_slaa_op:
         }
 return
 }
-
 vl_slaa_op:
 {
+    while (A_TimeIdleKeyboard < 400)
+        {
+            Goto, vl_slaa_op
+            return
+        }
     guicontrolget, vl, , edit1, 
+    if (StrLen(vl) < 4)
+        {
+                               guicontrol, vl_bod: , vm , ikke gyldigt vl
+                    guicontrol, vl_bod: , email ,  
+                    vm := "ikke gyldigt vl" 
+                    return
+        }
     if (vl = "")
         guicontrolget, vl, , edit1, 
     for i,e in stamdata
@@ -270,10 +278,12 @@ vl_slaa_op:
 
                     guicontrol, vl_bod: , vm , ikke gyldigt vl
                     guicontrol, vl_bod: , email ,  
+                    vm := "ikke gyldigt vl"
                 }
         }
-return
-}
+    }
+    return
+
 ;; GUI-label
 vl_bodguiescape:
 vl_bodguiclose:
@@ -282,8 +292,36 @@ vl_bodguiclose:
     stamopl.quit()
     ExitApp
     }
+vl_bod_fg_paragraf:
+{
+    GuiControlGet, fg_paragraf, , combobox1
+    {
+    if (fg_paragraf = "FG - Ikke i hjemzone fra start")
+        {
+            GuiControl, , brist, vognen ikke befinder sig i hjemzone ved vognløbets start.
+            return
+        }
+    if (fg_paragraf = "FG - vognløb lukket midt på vognløb")
+        {
+            GuiControl, , brist, der ikke rettidigt indsættes reservevogn, efter at vognløbet må lukkes grundet nedbrud.
+            return
+        }       
+    if (fg_paragraf = "FG - vognløb lukket helt")
+        {
+            GuiControl, , brist,der ikke indsættes reservevogn, efter at vognløbet lukkes før garantiperiodens start. 
+            return
+        } 
+            GuiControl, , brist    
+    }
+    return
+}
 vl_bodbuttonok:
 gui Submit, nohide
+if (vm = "ikke gyldigt vl")
+    {
+    MsgBox, 16 , Ikke gyldigt VL! , Der er ikke fundet et gyldigt VL
+    return
+    }
 if (fg != "-" and fv != "-")
     {
         MsgBox, 16, Både FG og FV valgt, Der skal kun vælges fra ét udbud.
@@ -446,7 +484,8 @@ html_test_med_billede =
 
 )
 
-
+; "C:\Users\ebk\AHK\MT-AHK\Bod\lib\signatur_logo.png"
+signatur := A_ScriptDir "\lib\signatur_logo.png"
 
 bodtemplate := outlook.createitem(0)
 
@@ -454,7 +493,7 @@ bodtemplate.SentOnBehalfOfName := "planet@midttrafik.dk"
 bodtemplate.To := email
 bodtemplate.CC := "oekonomi@midttrafik.dk"
 bodtemplate.subject := "Bod for kvalitetsbrist - vognløb " vl " d. " dato
-bodtemplate.attachments.add("C:\Users\ebk\signatur_logo.png", 0, 0)
+bodtemplate.attachments.add(signatur)
 bodtemplate.htmlbody := html_test_med_billede
 
 
