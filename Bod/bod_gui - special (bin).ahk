@@ -62,6 +62,8 @@ vl_tael:
     gui submit, nohide
     if (not InStr(vl, ","))
         {
+         vl_array := []
+         vl_array[1] := vl
          vl_antal := 1   
          bod := vl_antal * bod_kr
          GuiControl, , bod, %bod%
@@ -151,7 +153,7 @@ for i,e in vl_array
     {
         vl := vl_array[i]
     }
-    else if (A_Index = vl_array.MaxIndex())
+    else if (A_Index = vl_array.MaxIndex() and A_index >= 2)
         {
             vl .= " og " vl_array[i]
         }
@@ -239,7 +241,6 @@ bodtemplate.display
 guicontrol, vl_bod: , vogn , 
 guicontrol, vl_bod: , vl , 
 guicontrol, vl_bod: , edit3 , 
-guicontrol, vl_bod: choose , combobox1 , 1
-guicontrol, vl_bod: choose , combobox2 , 1
+GuiControl, focus, edit1
 return
 
