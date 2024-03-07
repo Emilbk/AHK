@@ -23,7 +23,6 @@ GroupAdd, trafikstyringsgruppe, ahk_class Transparent Windows Client
 ; Trio gå til linie 1 hvis linie 2 aktiv
 ; forstå pixelsearch
 ; Tilføj kommentar, der vises når VM ringer op
-
 ; hvis vm tlf
 ;     vis liste over tilknyttede vognløb, med markering for kommentar
 ;     vælg vl
@@ -1497,7 +1496,7 @@ p6_vl_vindue_edit()
     sendinput ^æ
     clipboard :=
     SendInput, ^c
-    clipwait 0.5
+    clipwait 1.5
     if (InStr(clipboard, A_Year))
     {
         return "lukket" ; VL lukket
@@ -1534,7 +1533,7 @@ p6_vl_vindue_edit()
         SendInput, +{F10}c
         clipwait 1.5
         loop_test += 1
-        if (loop_test > 10)
+        if (loop_test > 5)
         {
             MsgBox, 16 , Fejl, Der er sket en fejl - Prøv igen `n(virker ctrl+c ctrl+v fra P6 til Windows?)
             return 0
@@ -1878,7 +1877,7 @@ P6_hent_vm_tlf()
         ClipWait, 1.5
         sleep 400
         loop_test += 1
-        if (loop_test > 10)
+        if (loop_test > 5)
         {
             MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen `n(virker ctrl+c ctrl+v fra P6 til Windows?)
             return "fejl"
@@ -2616,10 +2615,11 @@ P6_vl_luk(tid:="")
     ;     SendInput, {enter}{enter}
     ;     return
     ; }
+return
 }
 }
 ; P6 ring op til markeret kunde i VL (telefon i bestilling)
-p6_hent_kunde_tlf(ByRef telefon:="")
+p6_hent_kunde_tlf(telefon:="")
 {
     global s
 
@@ -3171,7 +3171,7 @@ Trio_opkald(ByRef telefon)
         controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
         sleep 100
         ControlGetText, tlf_test, Edit2, Trio Attendant
-        if (loop_test > 10)
+        if (loop_test > 5)
         {
             MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen `n(virker ctrl+c ctrl+v fra P6 til Windows?)
             return 0
@@ -4501,14 +4501,14 @@ if ( valgt == "k")
         sys_afslut_genvej()    
         return
         }
-        sleep 40
+        sleep 100
         InputBox, stop, St. nummer, Hvilket stop?
         if ErrorLevel
             {
                 sys_afslut_genvej()   
                 Return
             }
-        sleep 40
+        sleep 100
         InputBox, tid, FlexFinder ankomst, Hvornår faktisk ankommet? 4 cifre
         if ErrorLevel
             {
@@ -5281,6 +5281,11 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     ClipWait, 2, 0
     vl := clipboard
     sys := p6_vl_vindue_edit()
+    if (sys = "lukket")
+        {
+            MsgBox, 16, VL lukket, VL er lukket
+            return
+        }
     k_aft := sys[1]
     sty_sys := sys[3]
     k_aftale := k_aft  "_" sty_sys
@@ -5293,10 +5298,6 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
         }
     for i,e in gv_svigt
         {
-                if (InStr(SubStr(gv_svigt[i][1],1, 5), k_aftale))
-                    {
-                        MsgBox, , , SubStr(gv_svigt[i][1], 1, 5)
-                    }
                 if (k_aftale = gv_svigt[i][1])
                 {
                     opr_vl := gv_svigt[i][2]
