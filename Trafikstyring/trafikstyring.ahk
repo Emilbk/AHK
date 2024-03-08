@@ -166,6 +166,8 @@ Hotkey, % bruger_genvej.53, l_excel_p6_id ; !Lbutton
 Hotkey, % bruger_genvej.54, l_excel_p6_cpr ; !Lbutton
 Hotkey, IfWinActive, ,
 ;; Trio-setup
+if (bruger_genvej.71 = 1)
+    {
 if not WinExist("ahk_class Agent Main GUI")
 {
     run "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Trio Enterprise\Contact Center\Agent Client.lnk"
@@ -178,7 +180,7 @@ if not WinExist("ahk_class Addressbook")
 {
     ControlClick, x368 y68, ahk_class Agent Main GUI , , ,, ,,
 }
-
+    }
 ;; GUI
 ; Ring til sygehus
 gui sygehus:+Labelsygehus
