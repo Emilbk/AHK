@@ -33,8 +33,8 @@ GroupAdd, trafikstyringsgruppe, ahk_class Transparent Windows Client
 ; klik for åben vl i planet
 
 ;; kendte fejl
-
 ;; Globale variabler
+
 
 brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
 if (brugerrække = 0)
@@ -5514,11 +5514,13 @@ gui, svigt: new
     Gui svigt: Font, s9, Segoe UI
     Gui svigt: Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
     Gui svigt: Add, Edit, vtid x200 y24 w79 h21, Hjemzone kl.
-    Gui svigt: Add, CheckBox, vhelt x160 y48 w120 h23, Ja, og VL s&lettet:
-    Gui svigt: Add, Edit, vtid_slet x170 y68 h21, Åbningstid garanti
+    Gui svigt: Add, CheckBox, vhelt x160 y48 w120 h23, &Ja, og VL slettet
+    Gui svigt: Add, Text, x175 y75 h35 w100 vgarantitid, Garantiperiode: %garanti_tid%
     ; G svigt:ui Add, CheckBox, vhelt2 x160 y72 w120, GV garanti &slettet i variabel tid ; nødvendig?
     Gui svigt: Font
     Gui svigt: Font, s9, Segoe UI
+    Gui svigt: Font, w600
+    Gui svigt: Add, Text, x16 y48 w120 h23 +0x200, &Årsag
     Gui svigt: Add, Edit, vårsag x16 y72 w120 h21
     Gui svigt: Font, w600
     Gui svigt: Font, s9, Segoe UI
@@ -5529,8 +5531,6 @@ gui, svigt: new
     Gui svigt: Add, Radio, x304 y24 w120 h16, &Garanti
     Gui svigt: Add, Radio, x304 y40 w120 h32, G&arantivognløb i variabel tid
     Gui svigt: Add, Radio, vtype x304 y72 w120 h23, &Variabel
-    Gui svigt: Font, w600
-    Gui svigt: Add, Text, x16 y48 w120 h23 +0x200, &Årsag
     Gui svigt: Add, Text, x8 y96 h23 +0x200, &Beskrivelse
     Gui svigt: Font
     Gui svigt: Font, s9, Segoe UI
@@ -5546,13 +5546,36 @@ gui, svigt: new
     ; svigt := []
     gemtklip := ClipboardAll
     P6_aktiver()
-    vl := P6_hent_vl()
+    vl_array := P6_hent_vl_k_s()
     if (vl = 0)
     {
         sys_afslut_genvej()
         return
     }
+    gv_svigt := []
+    FileRead, gv_svigt_ind, db\gv_svigt.txt
+    gv_svigt_ind := StrReplace(gv_svigt_ind, "`r", "")
+    gv_svigt_ind := StrSplit(gv_svigt_ind, "`n")
+    for i,e in gv_svigt_ind
+        {
+            gv_svigt[i] := StrSplit(gv_svigt_ind[i], "`t")
+        }
+    vl := vl_array.1
+    s_sys := vl_array.2
+    k_aftale := vl_array.2 "_" vl_array.3
+
+    for i, e in gv_svigt
+        {
+            if (k_aftale = gv_svigt[i][1])
+                {
+                    garantitid := gv_svigt[i][3]
+                    break
+                }
+            else
+                garantitid := "Variabelt vognløb"
+        }
     GuiControl, svigt:,  VL , %vl%
+    GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
     clipboard :=
     sleep 500
     SendInput, !{PrintScreen}
@@ -5607,15 +5630,6 @@ gui_svigt_vis:
         }
         tid := timer ":" min
     }
-    if (helt = 1 and StrLen(tid_slet) != 4)
-    {
-        sleep 100
-        MsgBox, 48 , Klokkeslæt for åbningstid skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
-        sleep 100
-        Gui Show, w448 h297, Svigt
-        SendInput, !s{space}{tab}
-        return
-    }
     if (StrLen(tid_slet) = 4)
     {
         timer := SubStr(tid_slet, 1, 2)
@@ -5667,7 +5681,7 @@ gui_svigt_vis:
     {
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 2, % emnefelt,
-        beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
+        beskrivelse := "GV (" garantitid ") lukket kl. " tid " — " . beskrivelse
         gui, hide
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
@@ -5685,7 +5699,7 @@ gui_svigt_vis:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 5, % emnefelt,
-        beskrivelse := "Vl slettet. Garantitid start: " tid_slet " — " . beskrivelse
+        beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
 
         gui, hide
     }
@@ -5693,7 +5707,7 @@ gui_svigt_vis:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
         ; MsgBox, , 5.1, % emnefelt,
-        beskrivelse := "Vl slettet. Garantitid start: " tid_slet " — " . beskrivelse
+        beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
         gui, hide
     }
     if (type = 2 and lukket = 0 and helt = 0 and årsag !="")
