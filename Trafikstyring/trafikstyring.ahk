@@ -1447,7 +1447,81 @@ P6_hent_vl()
     }
     return vl
 }
+;; 1 = vl, 2 = kørselsaftale, 3 = styresystem
+P6_hent_vl_k_s()
+{
+    global s
+    vl := []
 
+    P6_planvindue()
+    SendInput, !l
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    loop_test := 0
+    vl.1 := clipboard
+    while (vl.1 = "")
+    {
+        P6_planvindue()
+        SendInput, !l
+        sleep 500
+        SendInput, +{F10}c
+        ClipWait, 1, 0
+        vl.1 := clipboard
+        loop_test += 1
+        if (loop_test > 5)
+        {
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
+            return 0
+        }
+    }
+    SendInput, !k
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    vl.2 := clipboard
+    loop_test := 0
+    while (vl.2 = "")
+    {
+        P6_planvindue()
+        SendInput, !k
+        sleep 500
+        SendInput, +{F10}c
+        ClipWait, 1, 0
+        vl.2 := clipboard
+        loop_test += 1
+        if (loop_test > 5)
+        {
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
+            return 0
+        }
+    }
+    SendInput, {tab}
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    vl.3 := clipboard
+    loop_test := 0
+    while (vl.3 = "")
+    {
+        P6_planvindue()
+        SendInput, !k{tab}
+        sleep 500
+        SendInput, +{F10}c
+        ClipWait, 1, 0
+        vl.3 := clipboard
+        loop_test += 1
+        if (loop_test > 5)
+        {
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
+            return 0
+        }
+    }
+    return vl
+}
 p6_vl_vindue()
 {
     vl := P6_hent_vl()
