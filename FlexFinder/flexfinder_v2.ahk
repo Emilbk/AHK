@@ -110,7 +110,7 @@ FunkVisGruppe(gruppearray, indlaest_data, *)
         k := SubStr(k, 1, -2)
         k .= "."
     }
-    MsgBox("FlexFinder-gruppen er:" gruppearray[15][1][Valgt[1]] "`nVL er:`n" Vl "`nKørselsaftalerne er :`n" k)
+    MsgBox("FlexFinder-gruppen er: " gruppearray[15][1][Valgt[1]] "`nVL er:`n" Vl "`nKørselsaftalerne er :`n" k)
 }
 FunkOpretGruppe()
 {
@@ -143,7 +143,7 @@ IndlaesDataAlleOnevent(*)
 IndlaesDataFGOnevent(*)
 {
     vldata := Map("GVData", 0, "FVData", 0)
-    vldata["GVData"] := (FunkIndlaesDataFV())
+    vldata["GVData"] := (FunkIndlaesDataFG())
     return vldata
 }
 IndlaesDataFVOnevent(*)
@@ -218,6 +218,7 @@ FunkIndlaesDataFG()
     GVWorkBookSti := A_scriptdir "\lib\Ethics\Genudbud FG8 - FlexGaranti.xlsx"
     xl := ComObject("Excel.Application")
     GVWorkBook := xl.WorkBooks.Open(GVWorkBookSti, , readonly := True)
+    xl.visible := true
     GVActiveSheet := GVWorkBook.ActiveSheet
     GVUsedRange := GVActiveSheet.UsedRange
     GVAntalRækker := GVUsedRange.Rows.Count
