@@ -15,4 +15,4 @@ loop sarr.maxindex(1)
     MsgBox sarr[2, 4]
 
 ; for x,y in itemlist									; to show content
-; 	msgbox itemlist[x][1] " " itemlist[x][2] " " itemlist[x][3]
+; 	msgbox itemlist[x][1] " " itemlist[x][2] " " itemlist[x][3]f
