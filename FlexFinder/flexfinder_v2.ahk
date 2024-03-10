@@ -19,31 +19,100 @@ Persistent
 ; goo.btn_exit := goo.AddButton('xm ym w100', 'Exit Script')
 ; goo.btn_exit.OnEvent('Click', (*) => ExitApp())
 ; goo.Show('AutoSize')
-GruppeArray := ["GV", "GV Lift", "GV Lav", "GV TTJ Hjul", "GV TTJ Larve", "GV Type 7", "GV Type 8", "GV Type 9", "FV Alle", "FV Lav", "FV Lift", "FV TTJ Hjul", "FV TTJ Larve", "FV Type 7"]
-indlæst_data := Map()
-;; XL
+GruppeArrayString := ["Alle GV", "GV Lift", "GV Type 2", "GV TTJ Hjul", "GV TTJ Larve", "GV Type 7", "GV Type 8", "GV Type 9", "FV Alle", "FV Lav", "FV Lift", "FV TTJ Hjul", "FV TTJ Larve", "FV Type 7"]
+GruppeArray := [[[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [[], []], [GruppeArrayString]]
+indlaest_data := Map()
+;; Indlæs fra Json
 
+if !FileExist("lib\Ethics\Genudbud FG8 - FlexGaranti.xlsx") or !FileExist("lib\Ethics\FV8 - FlexVariabel.xlsx")
+{
+    MsgBox("Ingen Excel-data fundet!`n`nLæs Readme.", "Fejl", "Iconx")
+    ExitApp()
+}
+if !FileExist("lib\GVData.txt") or !FileExist("lib\FVData.txt")
+{
+    MsgBox("Ingen tidligere data fundet - Indlæser nye.`n`nDet kan tage lidt tid.", "Ingen data", "icon!")
+    IndlaesDataAlleOnevent()
+}
+GvData := FileRead("GVdata.txt")
+FvData := FileRead("FVData.txt")
+GVdata := Jxon_Load(&GVdata)
+FVData := Jxon_Load(&FVdata)
+indlaest_data["GVData"] := GvData
+indlaest_data["FVData"] := FvData
+indlaest_data["Opdateret GV"] := FormatTime(FileGetTime("lib\Ethics\Genudbud FG8 - FlexGaranti.xlsx"), "dd/MM/yyyy kl. HH:mm")
+indlaest_data["Opdateret FV"] := FormatTime(FileGetTime("lib\Ethics\FV8 - FlexVariabel.xlsx"), "dd/MM/yyyy kl. HH:mm")
+test := FunkIndelGrupper(GruppeArrayString, indlaest_data)
 ;; Menubar
 FFgui := Gui(, "FlexFinder-Grupper",)
 FilMenu := Menu()
-FilMenu.Add("&Indlæs data fra Excel`tCtrl+I", (*) => (indlæst_data["VLdata"] := indlæs_data_excel()))
+FilMenu.Add("&Indlæs alle data fra Excel`tCtrl+I", (*) => (indlaest_data["VLdata"] := IndlaesDataAlleOnevent(), TekstGruppe.text := "Tekst om grupper`nData senest opdateret: " FormatTime(FileGetTime("GVData.txt"), "dd/MM/yyyy kl. HH:mm:ss")))
+FilMenu.Add("&Indlæs GV fra Excel", (*) => (indlaest_data["GVdata"] := IndlaesDataFGOnevent(), TekstGruppe.text := "Tekst om grupper`nData senest opdateret: " FormatTime(FileGetTime("GVData.txt"), "dd/MM/yyyy kl. HH:mm:ss")))
+FilMenu.Add("&Indlæs FV fra Excel", (*) => (indlaest_data["FVdata"] := IndlaesDataFVOnevent(), TekstGruppe.text := "Tekst om grupper`nData senest opdateret: " FormatTime(FileGetTime("GVData.txt"), "dd/MM/yyyy kl. HH:mm:ss")))
 FilMenu.Add()
-; FilMenu.Add("Exit", gui_exit)
+FilMenu.Add("Afslut", (*) => ExitApp())
 FFMenuBar := MenuBar()
 FFMenuBar.Add("&Fil", Filmenu)
+FFMenuBar.Add("&?", Filmenu, "Right")
 FFgui.MenuBar := FFMenuBar
 
-
 FFgui.AddGroupBox("W300 H200", "Grupper")
-ListboxGruppe := FFgui.AddListbox("Choose1 R10 T32 YP20 XP5 Section Multi", GruppeArray)
+ListboxGruppe := FFgui.AddListbox("Choose1 R10 T32 YP20 XP5 Section Multi", GruppeArrayString)
 KnapOpretGruppe := FFgui.AddButton("XP", "&Opret gruppe")
-TekstGruppe := FFgui.Addtext("YS W150", "Tekst om grupper`nBlasdlkasjdlkjasdl asdlkja sldkasjd lkasjd`nASdlkjasd lkasjdl kjasdlkj asdlkj asldjk")
-; KnapOpretGruppe.OnEvent("Click", (*) => indlæs_data_excel())
-KnapOpretGruppe.OnEvent("Click", (*) => OpretGruppe())
+KnapVisGruppe := FFgui.AddButton("YP", "&Vis gruppe")
+TekstGruppe := FFgui.Addtext("YS W130", "Data senest opdateret:`nGV - " indlaest_data["Opdateret GV"] "`nFV - " indlaest_data["Opdateret FV"])
+KnapOpretGruppe.OnEvent("Click", (*) => FunkOpretGruppe())
+KnapVisGruppe.OnEvent("Click", FunkVisGruppe.Bind(GruppeArray, indlaest_data))
+KnapVisTest := FFgui.AddButton("XP", "&Test")
+KnapVisTest.OnEvent("Click", (*) => TekstGruppe.Text := ("Tekst om gruppret: " indlaest_data["Opdateret"]))
 FFgui.show("Autosize")
 
+FunkIndelGrupper(gruppearay, indlaest_data)
+{
 
-OpretGruppe()
+    ; Alle GV
+    for i, e in indlaest_data["GVData"]
+    {
+        GruppeArray[1][1].push(e[3][1])
+        GruppeArray[1][2].push(e[3][2])
+    }
+    ; Lift [2]
+    for i, e in indlaest_data["GVData"]
+        for i2, e2 in ["Type 5", "Type 6", "Type 7", "Type 8", "Type 9"]
+            if (instr(e[3][3], e2))
+            {
+                GruppeArray[2][1].push(e[3][1])
+                GruppeArray[2][2].push(e[3][2])
+            }
+    ; Lav [3]
+    for i, e in indlaest_data["GVData"]
+        if (e[3][3] = "Type 2")
+        {
+            GruppeArray[3][1].push(e[3][1])
+            GruppeArray[3][2].push(e[3][1])
+        }
+    return GruppeArray
+}
+
+FunkVisGruppe(gruppearray, indlaest_data, *)
+{
+    Valgt := ListboxGruppe.Value
+    vl := ""
+    k := ""
+    if (Valgt[1] = 1) ; Alle GV
+    {
+        for i, e in gruppearray[1][1]
+            vl .= e ", "
+        vl := SubStr(vl, 1, -2)
+        vl .= "."
+        for i, e in gruppearray[1][2]
+            k .= e ", "
+        k := SubStr(k, 1, -2)
+        k .= "."
+    }
+    MsgBox("FlexFinder-gruppen er:" gruppearray[15][1][Valgt[1]] "`nVL er:`n" Vl "`nKørselsaftalerne er :`n" k)
+}
+FunkOpretGruppe()
 {
     ValgtGruppeTekst := ListboxGruppe.Text
     ValgtGruppeRække := ListboxGruppe.Value
@@ -64,21 +133,32 @@ OpretGruppe()
     }
 
 }
-indlæs_data_excel(*)
+IndlaesDataAlleOnevent(*)
 {
     vldata := Map("GVData", 0, "FVData", 0)
-    ; gvdata := []
-    vldata["GVData"] := (indlæs_data_gv())
-    vldata["FVData"] := (indlæs_data_fv())
-    ; vldata["GVdata"] := gvdata
+    vldata["GVData"] := (FunkIndlaesDataFG())
+    vldata["FVData"] := (FunkIndlaesDataFV())
+    return vldata
+}
+IndlaesDataFGOnevent(*)
+{
+    vldata := Map("GVData", 0, "FVData", 0)
+    vldata["GVData"] := (FunkIndlaesDataFV())
+    return vldata
+}
+IndlaesDataFVOnevent(*)
+{
+    vldata := Map("GVData", 0, "FVData", 0)
+    vldata["FVData"] := (FunkIndlaesDataFV())
     return vldata
 }
 
-indlæs_data_fv()
+
+FunkIndlaesDataFV()
 {
     FVData := [[]]
 
-    FVWorkBookSti := "Z:\delt\dokumenter\AHK\FV8 - FlexVariabel.xlsx"
+    FVWorkBookSti := A_ScriptDir "\lib\Ethics\FV8 - FlexVariabel.xlsx"
     xl := ComObject("Excel.Application")
     FVWorkBook := xl.WorkBooks.Open(FVWorkBookSti, , readonly := True)
     FVActiveSheet := FVWorkBook.ActiveSheet
@@ -124,16 +204,18 @@ indlæs_data_fv()
             FVData[i].Push("VG")
     }
     JsonArray := Jxon_Dump(FVData, indent := 0)
-    FileDelete("FVData.txt")
-    FileAppend(JsonArray, "FVData.txt")
-    MsgBox "Data er indlæst", "Done!"
+    datafil := A_ScriptDir "\lib\FVData.txt"
+    if FileExist(datafil)
+        FileDelete(datafil)
+    FileAppend(JsonArray, datafil)
+    MsgBox "FV-data er indlæst", "Done!"
     return FVdata
 }
-indlæs_data_gv()
+FunkIndlaesDataFG()
 {
     GVData := [[]]
 
-    GVWorkBookSti := "Z:\delt\dokumenter\AHK\Genudbud FG8 - FlexGaranti.xlsx"
+    GVWorkBookSti := A_scriptdir "\lib\Ethics\Genudbud FG8 - FlexGaranti.xlsx"
     xl := ComObject("Excel.Application")
     GVWorkBook := xl.WorkBooks.Open(GVWorkBookSti, , readonly := True)
     GVActiveSheet := GVWorkBook.ActiveSheet
@@ -175,9 +257,11 @@ indlæs_data_gv()
 
     }
     JsonArray := Jxon_Dump(GVData, indent := 0)
-    FileDelete("GVData.txt")
-    FileAppend(JsonArray, "GVData.txt")
-    MsgBox "Data er indlæst", "Done!"
+    datafil := A_ScriptDir "\lib\GVData.txt"
+    if FileExist(datafil)
+        FileDelete(datafil)
+    FileAppend(JsonArray, datafil)
+    MsgBox "GV-data er indlæst", "Done!"
     return GVdata
 }
 ; vaelg_fil := Gui(, "GUI",)
@@ -219,7 +303,7 @@ indlæs_data_gv()
 
 ; indlæs_data()
 ; {
-;     MsgBox("Data er indlæst", "Vognløbsdata", "iconi")
+;     MsgBox("Data er indlaest", "Vognløbsdata", "iconi")
 ; }
 
 ; gui_exit(a, x, y)
