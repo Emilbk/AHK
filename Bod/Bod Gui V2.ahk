@@ -64,6 +64,7 @@ ButtonOK.OnEvent("Click", FunkKnapOK)
 myGui.OnEvent('Close', (*) => ExitApp())
 myGui.Title := "Ny Optimeret Bodsudskriver"
 
+VLSoeg.Focus()
 MyGui.Show("W442 H544")
 
 FunkParagrafVaelg(AktivControl, *)
@@ -154,12 +155,12 @@ OnEventHandler(*)
 FunkKnapOK(*)
 {
     valg := ""
-    if FormatTime(DatoVaelg.Value,"ddMM") = FormatTime(A_Now, "ddMM")
+    if FormatTime(DatoVaelg.Value, "ddMM") = FormatTime(A_Now, "ddMM")
         valg := MsgBox("Sikker på dags dato?", "Korrekt Dato?", "YN Icon!")
     if valg = "Yes"
         MsgBox "OK"
-    If Valg = "No"
-        return
+    VLSoeg.Focus()
+    return
 }
 #HotIf WinActive("Ny")
 !g::
