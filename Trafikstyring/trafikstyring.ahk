@@ -321,7 +321,7 @@ Gui p6_billede: Add, Radio, x16 y128 w179 h23 vp6_billede_vogngrupppe_fast, Vogn
 Gui p6_billede: Add, Radio, x16 y152 w175 h23 vp6_billede_liste_vl, &Liste Vognløb
 Gui p6_billede: Add, Radio, x16 y176 w178 h23 vp6_billede_betaler, &Betaler
 Gui p6_billede: Add, Radio, x16 y200 w178 h23 vp6_billede_lange_rejser, Liste lange &rejser
-Gui p6_billede: Add, Button, x40 y272 w42 h23 gp6_billede_ok, &OK
+Gui p6_billede: Add, Button, x40 y272 w42 h23 +default gp6_billede_ok, &OK
 Gui p6_billede: Add, Button, x104 y272 w55 h23 gp6_billedeescape, Afbryd
 Gui p6_billede: Add, Text, x16 y8 w120 h23 +0x200, Hvilket billede vil du se?
 
