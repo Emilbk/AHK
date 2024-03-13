@@ -3258,14 +3258,14 @@ Trio_opkald(ByRef telefon)
     sleep 100
     ControlGetText, kobl_test, Button1, Trio Attendant
     GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
-    if (kobl_test = "Koble")
+    ; if (kobl_test = "Koble")
+    ; {
+    ;     controlsend, , {ShiftDown}{enter}{ShiftUp}, ahk_class Addressbook
+    ;     return
+    ; }
+    ; Else
     {
         controlsend, , {ShiftDown}{enter}{ShiftUp}, ahk_class Addressbook
-        return
-    }
-    Else
-    {
-        controlsend, , {enter}, ahk_class Addressbook
         Return
     }
 }
