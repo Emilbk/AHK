@@ -3922,10 +3922,12 @@ Opkaldtaxa(p*){
     trio_klar()
 }
 TaxaGuiClose:
+    sys_afslut_genvej()
     gui, Destroy
 return
 
 TaxaGuiEscape:
+    sys_afslut_genvej()
     Gui, Destroy
 return
 
