@@ -5540,7 +5540,7 @@ gui, svigt: new
     Gui svigt: Font, s9, Segoe UI
     Gui svigt: Add, Edit, vbeskrivelse x8 y120 w410 h126
     Gui svigt: Add, CheckBox, vgemt_ja x5 y261, Brug &forrige skærmklip
-    Gui svigt: Add, Button, x150 y256 w60 h23 vvis ggui_svigt_vis, &Vis
+    Gui svigt: Add, Button, x150 y256 w60 h23 vvis ggui_svigt_vis +default, &Vis
     Gui svigt: Add, Button, x210 y256 w60 h23 vsend ggui_svigt_send, &Send
     Gui svigt: Add, text , x280 y261, Anden &Dato
     Gui svigt: Add, Edit , vny_dato x360 y256 w60, 
@@ -5633,22 +5633,6 @@ gui_svigt_vis:
             return
         }
         tid := timer ":" min
-    }
-    if (StrLen(tid_slet) = 4)
-    {
-        timer := SubStr(tid_slet, 1, 2)
-        min := SubStr(tid_slet, 3, 2)
-        tid_tjek := A_YYYY A_MM A_DD timer min
-        if tid_tjek is not Time
-        {
-            sleep 100
-            MsgBox, 48 , Åbningstid ikke korrekt , Klokkeslæt for åbningstid skal være et gyldigt tidspunkt
-            sleep 100
-            Gui Show, w448 h297, Svigt
-            SendInput, !s{space}{tab}
-            return
-        }
-        tid_slet := timer ":" min
     }
     if (type = 0)
     {
@@ -5873,31 +5857,6 @@ gui_svigt_send:
             return
         }
         tid := timer ":" min
-    }
-    if (helt = 1 and StrLen(tid_slet) != 4)
-    {
-        sleep 100
-        MsgBox, 48 , Klokkeslæt for åbningstid skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
-        sleep 100
-        Gui Show, w448 h297, Svigt
-        SendInput, !s{space}{tab}
-        return
-    }
-    if (StrLen(tid_slet) = 4)
-    {
-        timer := SubStr(tid_slet, 1, 2)
-        min := SubStr(tid_slet, 3, 2)
-        tid_tjek := A_YYYY A_MM A_DD timer min
-        if tid_tjek is not Time
-        {
-            sleep 100
-            MsgBox, 48 , Åbningstid ikke korrekt , Klokkeslæt for åbningstid skal være et gyldigt tidspunkt
-            sleep 100
-            Gui Show, w448 h297, Svigt
-            SendInput, !s{space}{tab}
-            return
-        }
-        tid_slet := timer ":" min
     }
     if (type = 0)
     {
