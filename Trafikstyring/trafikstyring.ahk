@@ -5715,7 +5715,7 @@ gui_svigt_vis:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 7.1, % emnefelt,
-        beskrivelse := "GV slettet i variabel kørsel. Garantitid start: " tid_slet " — " . beskrivelse
+        beskrivelse := "GV slettet i variabel kørsel. Garantitid " garantitid " — " . beskrivelse
         gui, hide
     }
     if (type = 2 and lukket = 1 and årsag != "")
@@ -5723,7 +5723,7 @@ gui_svigt_vis:
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 8, % emnefelt,
         if (tid_slet != "Åbningstid garanti")
-            beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
+            beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garantitid. " garanti " — " . beskrivelse
         Else
             beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, hide
@@ -5733,7 +5733,7 @@ gui_svigt_vis:
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 9, % emnefelt,
         if (tid_slet != "Åbningstid garanti")
-            beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
+            beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garantitid " garanti " — " . beskrivelse
         Else
             beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, hide
@@ -5754,7 +5754,7 @@ gui_svigt_vis:
     outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
     svigt_template := outlook.createitemfromtemplate(outlook_template)
 
-    ; udklip := ImagePutFile(clipboardall, "svigt.png")
+    udklip := ImagePutFile(clipboardall, "svigt.png")
     udklip_navn := SubStr(udklip, 3)
     udklip_lok := A_ScriptDir "\" udklip_navn
     signatur := A_ScriptDir "\lib\signatur_logo.png"
@@ -5912,7 +5912,7 @@ gui_svigt_send:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 5, % emnefelt,
-        beskrivelse := "Vl slettet. Garantitid start: " tid_slet " — " . beskrivelse
+        beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
 
         gui, hide
     }
@@ -5920,7 +5920,7 @@ gui_svigt_send:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
         ; MsgBox, , 5.1, % emnefelt,
-        beskrivelse := "Vl slettet. Garantitid start: " tid_slet " — " . beskrivelse
+        beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
         gui, hide
     }
     if (type = 2 and lukket = 0 and helt = 0 and årsag !="")
@@ -5939,7 +5939,7 @@ gui_svigt_send:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 7.1, % emnefelt,
-        beskrivelse := "GV slettet i variabel kørsel. Garantitid start: " tid_slet " — " . beskrivelse
+        beskrivelse := "GV slettet i variabel kørsel. Garantitid " garantitid " — " . beskrivelse
         gui, hide
     }
     if (type = 2 and lukket = 1 and årsag != "")
@@ -5947,7 +5947,7 @@ gui_svigt_send:
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 8, % emnefelt,
         if (tid_slet != "Åbningstid garanti")
-            beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
+            beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garanti " garantitid " — " . beskrivelse
         Else
             beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, hide
@@ -5957,7 +5957,7 @@ gui_svigt_send:
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 9, % emnefelt,
         if (tid_slet != "Åbningstid garanti")
-            beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
+            beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garanti " garantitid " — " . beskrivelse
         Else
             beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, hide
@@ -6209,6 +6209,11 @@ return
     :b0:/ryk::
         {
             p6_notat_hotstr("st. rykker initialer")
+            return
+        }
+    :b0:/tlf::
+        {
+            p6_notat_hotstr("vl-tlf rettet initialer")
             return
         }
 #IfWinActive, Vognløbsnotering
