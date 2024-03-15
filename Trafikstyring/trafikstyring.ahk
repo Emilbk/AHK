@@ -4,7 +4,7 @@
 ;FileEncoding UTF-8
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input ; Recommended for new scripts due to its superior speed and reliability.
-SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
+SetWorkingDir %A_ScriptDir% ; Ensures a consiste-nt starting directory.
 SetTitleMatchMode, 1 ; matcher så længe et ord er der
 #SingleInstance, force
 ; Define the group: gruppe
@@ -4862,7 +4862,7 @@ if ( valgt == "k")
             SendInput, ^s
             sleep 1000
             SendInput, {enter}
-            P6_notat("Ingen kontakt til chf, tekst sendt (ring til driften)" initialer " ")
+            P6_notat("Ingen kontakt til chf, tekst sendt (ring til driften - har vi rigtigt tlf-nr?)" initialer " ")
             gui, cancel
             sys_afslut_genvej()
             return
