@@ -5723,7 +5723,7 @@ gui_svigt_vis:
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 8, % emnefelt,
         if (tid_slet != "Åbningstid garanti")
-            beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garantitid. " garanti " — " . beskrivelse
+            beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garantitid. " garantitid " — " . beskrivelse
         Else
             beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, hide
@@ -5733,7 +5733,7 @@ gui_svigt_vis:
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 9, % emnefelt,
         if (tid_slet != "Åbningstid garanti")
-            beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garantitid " garanti " — " . beskrivelse
+            beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garantitid " garantitid " — " . beskrivelse
         Else
             beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, hide
