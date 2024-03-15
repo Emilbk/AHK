@@ -5491,7 +5491,7 @@ div.WordSection1
     P6_planvindue()
     if (vl_notat = "")
         {
-            MsgBox, 48, Mail sendt - husk notat på VL, Mail om genåbningen er blevet sendt - husk det faste notat på VL, 3
+            MsgBox, 48, Mail sendt - husk notat på VL, Mail om genåbningen er blevet sendt - husk det faste notat på VL (garanti-tider osv.), 3
         }
     else
  {
