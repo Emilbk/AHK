@@ -1571,8 +1571,9 @@ p6_vl_vindue_edit()
 
     sendinput ^æ
     clipboard :=
+    sleep 40
     SendInput, ^c
-    clipwait 1.5
+    clipwait 0.5
     if (InStr(clipboard, A_Year))
     {
         return "lukket" ; VL lukket
@@ -1584,10 +1585,10 @@ p6_vl_vindue_edit()
     while (clipboard = "")
     {
         SendInput, !k
-        sleep 400
+        sleep 100
         clipboard :=
         SendInput, +{F10}c
-        clipwait 1.5
+        clipwait 0.5
         loop_test += 1
         if (loop_test > 5)
         {
@@ -1604,10 +1605,10 @@ p6_vl_vindue_edit()
     while (clipboard = "")
     {
         SendInput, !k{tab}
-        sleep 400
+        sleep 100
         clipboard :=
         SendInput, +{F10}c
-        clipwait 1.5
+        clipwait 0.5
         loop_test += 1
         if (loop_test > 5)
         {
@@ -5586,13 +5587,13 @@ gui, svigt: new
     ; sleep 500
     ClipWait, 10, 1
     sleep 200
-    klip := ClipboardAll
+    udklip := ImagePutFile(clipboardall, "svigt.png")
     sleep 200
     ; clipwait 3, 1 ; bedre løsning?
     Gui svigt: Show, w448 h297, Svigt
     ControlFocus, Button1, Svigt
     mod_up()
-Return
+Return 
 gui_svigt_vis:
     gui, submit
     if (ny_dato != "")
@@ -5753,7 +5754,7 @@ gui_svigt_vis:
     outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
     svigt_template := outlook.createitemfromtemplate(outlook_template)
 
-    udklip := ImagePutFile(clipboardall, "svigt.png")
+    ; udklip := ImagePutFile(clipboardall, "svigt.png")
     udklip_navn := SubStr(udklip, 3)
     udklip_lok := A_ScriptDir "\" udklip_navn
     signatur := A_ScriptDir "\lib\signatur_logo.png"
