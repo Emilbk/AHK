@@ -5,8 +5,12 @@
 #SingleInstance Force
 ;; XL
 Excel := ComObject("Excel.Application")
-ExcelDBStamdata := A_ScriptDir "\db\Stamoplysninger FV8 og FG8.xlsx"
-ExcelDBSvigt := A_ScriptDir "\db\Svigt FG8-FV8.xlsx"
+ExcelDBStamdata := "F:\Flextrafik\Fælles\Udbud\FG8 - FV8\Stamoplysninger FV8 og FG8.xlsx"
+ExcelDBSvigt := "F:\Flextrafik\Fælles\Udbud\Svigt\Svigt FG8-FV8.xlsx"
+; Outlook
+Outlook := ComObject("Outlook.Application")
+signatur := A_ScriptDir "\lib\signatur_logo.png"
+
 ; Excel.Visible := true
 ExcelSvigtWorkbok := Excel.Workbooks.Open(ExcelDBSvigt, , readonly := True)
 ExcelSvigtWorksheet := ExcelSvigtWorkbok.worksheets.item("Vognløbsdata")
