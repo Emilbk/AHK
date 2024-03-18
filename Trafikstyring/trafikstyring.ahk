@@ -4,7 +4,7 @@
 ;FileEncoding UTF-8
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input ; Recommended for new scripts due to its superior speed and reliability.
-SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
+SetWorkingDir %A_ScriptDir% ; Ensures a consiste-nt starting directory.
 SetTitleMatchMode, 1 ; matcher så længe et ord er der
 #SingleInstance, force
 ; Define the group: gruppe
@@ -33,8 +33,8 @@ GroupAdd, trafikstyringsgruppe, ahk_class Transparent Windows Client
 ; klik for åben vl i planet
 
 ;; kendte fejl
-
 ;; Globale variabler
+
 
 brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
 if (brugerrække = 0)
@@ -166,6 +166,8 @@ Hotkey, % bruger_genvej.53, l_excel_p6_id ; !Lbutton
 Hotkey, % bruger_genvej.54, l_excel_p6_cpr ; !Lbutton
 Hotkey, IfWinActive, ,
 ;; Trio-setup
+if (bruger_genvej.71 = 1)
+    {
 if not WinExist("ahk_class Agent Main GUI")
 {
     run "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Trio Enterprise\Contact Center\Agent Client.lnk"
@@ -178,7 +180,7 @@ if not WinExist("ahk_class Addressbook")
 {
     ControlClick, x368 y68, ahk_class Agent Main GUI , , ,, ,,
 }
-
+    }
 ;; GUI
 ; Ring til sygehus
 gui sygehus:+Labelsygehus
@@ -319,7 +321,7 @@ Gui p6_billede: Add, Radio, x16 y128 w179 h23 vp6_billede_vogngrupppe_fast, Vogn
 Gui p6_billede: Add, Radio, x16 y152 w175 h23 vp6_billede_liste_vl, &Liste Vognløb
 Gui p6_billede: Add, Radio, x16 y176 w178 h23 vp6_billede_betaler, &Betaler
 Gui p6_billede: Add, Radio, x16 y200 w178 h23 vp6_billede_lange_rejser, Liste lange &rejser
-Gui p6_billede: Add, Button, x40 y272 w42 h23 gp6_billede_ok, &OK
+Gui p6_billede: Add, Button, x40 y272 w42 h23 +default gp6_billede_ok, &OK
 Gui p6_billede: Add, Button, x104 y272 w55 h23 gp6_billedeescape, Afbryd
 Gui p6_billede: Add, Text, x16 y8 w120 h23 +0x200, Hvilket billede vil du se?
 
@@ -1447,7 +1449,81 @@ P6_hent_vl()
     }
     return vl
 }
+;; 1 = vl, 2 = kørselsaftale, 3 = styresystem
+P6_hent_vl_k_s()
+{
+    global s
+    vl := []
 
+    P6_planvindue()
+    SendInput, !l
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    loop_test := 0
+    vl.1 := clipboard
+    while (vl.1 = "")
+    {
+        P6_planvindue()
+        SendInput, !l
+        sleep 500
+        SendInput, +{F10}c
+        ClipWait, 1, 0
+        vl.1 := clipboard
+        loop_test += 1
+        if (loop_test > 5)
+        {
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
+            return 0
+        }
+    }
+    SendInput, !k
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    vl.2 := clipboard
+    loop_test := 0
+    while (vl.2 = "")
+    {
+        P6_planvindue()
+        SendInput, !k
+        sleep 500
+        SendInput, +{F10}c
+        ClipWait, 1, 0
+        vl.2 := clipboard
+        loop_test += 1
+        if (loop_test > 5)
+        {
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
+            return 0
+        }
+    }
+    SendInput, {tab}
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    vl.3 := clipboard
+    loop_test := 0
+    while (vl.3 = "")
+    {
+        P6_planvindue()
+        SendInput, !k{tab}
+        sleep 500
+        SendInput, +{F10}c
+        ClipWait, 1, 0
+        vl.3 := clipboard
+        loop_test += 1
+        if (loop_test > 5)
+        {
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
+            return 0
+        }
+    }
+    return vl
+}
 p6_vl_vindue()
 {
     vl := P6_hent_vl()
@@ -1495,8 +1571,9 @@ p6_vl_vindue_edit()
 
     sendinput ^æ
     clipboard :=
+    sleep 40
     SendInput, ^c
-    clipwait 1.5
+    clipwait 0.5
     if (InStr(clipboard, A_Year))
     {
         return "lukket" ; VL lukket
@@ -1508,10 +1585,10 @@ p6_vl_vindue_edit()
     while (clipboard = "")
     {
         SendInput, !k
-        sleep 400
+        sleep 100
         clipboard :=
         SendInput, +{F10}c
-        clipwait 1.5
+        clipwait 0.5
         loop_test += 1
         if (loop_test > 5)
         {
@@ -1528,10 +1605,10 @@ p6_vl_vindue_edit()
     while (clipboard = "")
     {
         SendInput, !k{tab}
-        sleep 400
+        sleep 100
         clipboard :=
         SendInput, +{F10}c
-        clipwait 1.5
+        clipwait 0.5
         loop_test += 1
         if (loop_test > 5)
         {
@@ -3182,14 +3259,14 @@ Trio_opkald(ByRef telefon)
     sleep 100
     ControlGetText, kobl_test, Button1, Trio Attendant
     GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
-    if (kobl_test = "Koble")
+    ; if (kobl_test = "Koble")
+    ; {
+    ;     controlsend, , {ShiftDown}{enter}{ShiftUp}, ahk_class Addressbook
+    ;     return
+    ; }
+    ; Else
     {
         controlsend, , {ShiftDown}{enter}{ShiftUp}, ahk_class Addressbook
-        return
-    }
-    Else
-    {
-        controlsend, , {enter}, ahk_class Addressbook
         Return
     }
 }
@@ -3846,10 +3923,12 @@ Opkaldtaxa(p*){
     trio_klar()
 }
 TaxaGuiClose:
+    sys_afslut_genvej()
     gui, Destroy
 return
 
 TaxaGuiEscape:
+    sys_afslut_genvej()
     Gui, Destroy
 return
 
@@ -4784,7 +4863,7 @@ if ( valgt == "k")
             SendInput, ^s
             sleep 1000
             SendInput, {enter}
-            P6_notat("Ingen kontakt til chf, tekst sendt (ring til driften)" initialer " ")
+            P6_notat("Ingen kontakt til chf, tekst sendt (ring til driften - har vi rigtigt tlf-nr?)" initialer " ")
             gui, cancel
             sys_afslut_genvej()
             return
@@ -5413,7 +5492,7 @@ div.WordSection1
     P6_planvindue()
     if (vl_notat = "")
         {
-            MsgBox, 48, Mail sendt - husk notat på VL, Mail om genåbningen er blevet sendt - husk det faste notat på VL, 3
+            MsgBox, 48, Mail sendt - husk notat på VL, Mail om genåbningen er blevet sendt - husk det faste notat på VL (garanti-tider osv.), 3
         }
     else
  {
@@ -5440,11 +5519,13 @@ gui, svigt: new
     Gui svigt: Font, s9, Segoe UI
     Gui svigt: Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
     Gui svigt: Add, Edit, vtid x200 y24 w79 h21, Hjemzone kl.
-    Gui svigt: Add, CheckBox, vhelt x160 y48 w120 h23, Ja, og VL s&lettet:
-    Gui svigt: Add, Edit, vtid_slet x170 y68 h21, Åbningstid garanti
+    Gui svigt: Add, CheckBox, vhelt x160 y48 w120 h23, &Ja, og VL slettet
+    Gui svigt: Add, Text, x175 y75 h35 w100 vgarantitid, Garantiperiode: %garanti_tid%
     ; G svigt:ui Add, CheckBox, vhelt2 x160 y72 w120, GV garanti &slettet i variabel tid ; nødvendig?
     Gui svigt: Font
     Gui svigt: Font, s9, Segoe UI
+    Gui svigt: Font, w600
+    Gui svigt: Add, Text, x16 y48 w120 h23 +0x200, &Årsag
     Gui svigt: Add, Edit, vårsag x16 y72 w120 h21
     Gui svigt: Font, w600
     Gui svigt: Font, s9, Segoe UI
@@ -5455,14 +5536,12 @@ gui, svigt: new
     Gui svigt: Add, Radio, x304 y24 w120 h16, &Garanti
     Gui svigt: Add, Radio, x304 y40 w120 h32, G&arantivognløb i variabel tid
     Gui svigt: Add, Radio, vtype x304 y72 w120 h23, &Variabel
-    Gui svigt: Font, w600
-    Gui svigt: Add, Text, x16 y48 w120 h23 +0x200, &Årsag
     Gui svigt: Add, Text, x8 y96 h23 +0x200, &Beskrivelse
     Gui svigt: Font
     Gui svigt: Font, s9, Segoe UI
     Gui svigt: Add, Edit, vbeskrivelse x8 y120 w410 h126
     Gui svigt: Add, CheckBox, vgemt_ja x5 y261, Brug &forrige skærmklip
-    Gui svigt: Add, Button, x150 y256 w60 h23 vvis ggui_svigt_vis, &Vis
+    Gui svigt: Add, Button, x150 y256 w60 h23 vvis ggui_svigt_vis +default, &Vis
     Gui svigt: Add, Button, x210 y256 w60 h23 vsend ggui_svigt_send, &Send
     Gui svigt: Add, text , x280 y261, Anden &Dato
     Gui svigt: Add, Edit , vny_dato x360 y256 w60, 
@@ -5472,26 +5551,49 @@ gui, svigt: new
     ; svigt := []
     gemtklip := ClipboardAll
     P6_aktiver()
-    vl := P6_hent_vl()
+    vl_array := P6_hent_vl_k_s()
     if (vl = 0)
     {
         sys_afslut_genvej()
         return
     }
+    gv_svigt := []
+    FileRead, gv_svigt_ind, db\gv_svigt.txt
+    gv_svigt_ind := StrReplace(gv_svigt_ind, "`r", "")
+    gv_svigt_ind := StrSplit(gv_svigt_ind, "`n")
+    for i,e in gv_svigt_ind
+        {
+            gv_svigt[i] := StrSplit(gv_svigt_ind[i], "`t")
+        }
+    vl := vl_array.1
+    s_sys := vl_array.2
+    k_aftale := vl_array.2 "_" vl_array.3
+
+    for i, e in gv_svigt
+        {
+            if (k_aftale = gv_svigt[i][1])
+                {
+                    garantitid := gv_svigt[i][3]
+                    break
+                }
+            else
+                garantitid := "Variabelt vognløb"
+        }
     GuiControl, svigt:,  VL , %vl%
+    GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
     clipboard :=
     sleep 500
     SendInput, !{PrintScreen}
     ; sleep 500
     ClipWait, 10, 1
     sleep 200
-    udklip := ClipboardAll
+    udklip := ImagePutFile(clipboardall, "svigt.png")
     sleep 200
     ; clipwait 3, 1 ; bedre løsning?
     Gui svigt: Show, w448 h297, Svigt
     ControlFocus, Button1, Svigt
     mod_up()
-Return
+Return 
 gui_svigt_vis:
     gui, submit
     if (ny_dato != "")
@@ -5533,31 +5635,6 @@ gui_svigt_vis:
         }
         tid := timer ":" min
     }
-    if (helt = 1 and StrLen(tid_slet) != 4)
-    {
-        sleep 100
-        MsgBox, 48 , Klokkeslæt for åbningstid skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
-        sleep 100
-        Gui Show, w448 h297, Svigt
-        SendInput, !s{space}{tab}
-        return
-    }
-    if (StrLen(tid_slet) = 4)
-    {
-        timer := SubStr(tid_slet, 1, 2)
-        min := SubStr(tid_slet, 3, 2)
-        tid_tjek := A_YYYY A_MM A_DD timer min
-        if tid_tjek is not Time
-        {
-            sleep 100
-            MsgBox, 48 , Åbningstid ikke korrekt , Klokkeslæt for åbningstid skal være et gyldigt tidspunkt
-            sleep 100
-            Gui Show, w448 h297, Svigt
-            SendInput, !s{space}{tab}
-            return
-        }
-        tid_slet := timer ":" min
-    }
     if (type = 0)
     {
         sleep 100
@@ -5593,7 +5670,7 @@ gui_svigt_vis:
     {
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 2, % emnefelt,
-        beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
+        beskrivelse := "GV (" garantitid ") lukket kl. " tid " — " . beskrivelse
         gui, hide
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
@@ -5611,7 +5688,7 @@ gui_svigt_vis:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 5, % emnefelt,
-        beskrivelse := "Vl slettet. Garantitid start: " tid_slet " — " . beskrivelse
+        beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
 
         gui, hide
     }
@@ -5619,7 +5696,7 @@ gui_svigt_vis:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
         ; MsgBox, , 5.1, % emnefelt,
-        beskrivelse := "Vl slettet. Garantitid start: " tid_slet " — " . beskrivelse
+        beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
         gui, hide
     }
     if (type = 2 and lukket = 0 and helt = 0 and årsag !="")
@@ -5638,7 +5715,7 @@ gui_svigt_vis:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 7.1, % emnefelt,
-        beskrivelse := "GV slettet i variabel kørsel. Garantitid start: " tid_slet " — " . beskrivelse
+        beskrivelse := "GV slettet i variabel kørsel. Garantitid " garantitid " — " . beskrivelse
         gui, hide
     }
     if (type = 2 and lukket = 1 and årsag != "")
@@ -5646,7 +5723,7 @@ gui_svigt_vis:
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 8, % emnefelt,
         if (tid_slet != "Åbningstid garanti")
-            beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
+            beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garantitid. " garantitid " — " . beskrivelse
         Else
             beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, hide
@@ -5656,7 +5733,7 @@ gui_svigt_vis:
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 9, % emnefelt,
         if (tid_slet != "Åbningstid garanti")
-            beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
+            beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garantitid " garantitid " — " . beskrivelse
         Else
             beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, hide
@@ -5782,31 +5859,6 @@ gui_svigt_send:
         }
         tid := timer ":" min
     }
-    if (helt = 1 and StrLen(tid_slet) != 4)
-    {
-        sleep 100
-        MsgBox, 48 , Klokkeslæt for åbningstid skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
-        sleep 100
-        Gui Show, w448 h297, Svigt
-        SendInput, !s{space}{tab}
-        return
-    }
-    if (StrLen(tid_slet) = 4)
-    {
-        timer := SubStr(tid_slet, 1, 2)
-        min := SubStr(tid_slet, 3, 2)
-        tid_tjek := A_YYYY A_MM A_DD timer min
-        if tid_tjek is not Time
-        {
-            sleep 100
-            MsgBox, 48 , Åbningstid ikke korrekt , Klokkeslæt for åbningstid skal være et gyldigt tidspunkt
-            sleep 100
-            Gui Show, w448 h297, Svigt
-            SendInput, !s{space}{tab}
-            return
-        }
-        tid_slet := timer ":" min
-    }
     if (type = 0)
     {
         sleep 100
@@ -5860,7 +5912,7 @@ gui_svigt_send:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 5, % emnefelt,
-        beskrivelse := "Vl slettet. Garantitid start: " tid_slet " — " . beskrivelse
+        beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
 
         gui, hide
     }
@@ -5868,7 +5920,7 @@ gui_svigt_send:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
         ; MsgBox, , 5.1, % emnefelt,
-        beskrivelse := "Vl slettet. Garantitid start: " tid_slet " — " . beskrivelse
+        beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
         gui, hide
     }
     if (type = 2 and lukket = 0 and helt = 0 and årsag !="")
@@ -5887,7 +5939,7 @@ gui_svigt_send:
     {
         emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 7.1, % emnefelt,
-        beskrivelse := "GV slettet i variabel kørsel. Garantitid start: " tid_slet " — " . beskrivelse
+        beskrivelse := "GV slettet i variabel kørsel. Garantitid " garantitid " — " . beskrivelse
         gui, hide
     }
     if (type = 2 and lukket = 1 and årsag != "")
@@ -5895,7 +5947,7 @@ gui_svigt_send:
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 8, % emnefelt,
         if (tid_slet != "Åbningstid garanti")
-            beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
+            beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garanti " garantitid " — " . beskrivelse
         Else
             beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, hide
@@ -5905,7 +5957,7 @@ gui_svigt_send:
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 9, % emnefelt,
         if (tid_slet != "Åbningstid garanti")
-            beskrivelse := "Variabel kørsel, lukket kl. " tid ". GV start kl. " tid_slet " — " . beskrivelse
+            beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garanti " garantitid " — " . beskrivelse
         Else
             beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
         gui, hide
@@ -6157,6 +6209,11 @@ return
     :b0:/ryk::
         {
             p6_notat_hotstr("st. rykker initialer")
+            return
+        }
+    :b0:/tlf::
+        {
+            p6_notat_hotstr("vl-tlf rettet initialer")
             return
         }
 #IfWinActive, Vognløbsnotering
