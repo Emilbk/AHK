@@ -5485,7 +5485,7 @@ gui, svigt: new
     ; sleep 500
     ClipWait, 10, 1
     sleep 200
-    klip := ClipboardAll
+    udklip := ClipboardAll
     sleep 200
     ; clipwait 3, 1 ; bedre løsning?
     Gui svigt: Show, w448 h297, Svigt
@@ -5677,7 +5677,7 @@ gui_svigt_vis:
     outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
     svigt_template := outlook.createitemfromtemplate(outlook_template)
 
-    udklip := ImagePutFile(clipboardall, "svigt.png")
+    ; udklip := ImagePutFile(clipboardall, "svigt.png")
     udklip_navn := SubStr(udklip, 3)
     udklip_lok := A_ScriptDir "\" udklip_navn
     signatur := A_ScriptDir "\lib\signatur_logo.png"
@@ -5927,7 +5927,7 @@ gui_svigt_send:
     outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
     svigt_template := outlook.createitemfromtemplate(outlook_template)
 
-    udklip := ImagePutFile(clipboardall, "svigt.png")
+    ; udklip := ImagePutFile(clipboardall, "svigt.png")
     udklip_navn := SubStr(udklip, 3)
     udklip_lok := A_ScriptDir "\" udklip_navn
     
