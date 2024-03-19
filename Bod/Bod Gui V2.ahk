@@ -10,6 +10,7 @@ ExcelDBSvigt := "F:\Flextrafik\Fælles\Udbud\Svigt\Svigt FG8-FV8.xlsx"
 ; Outlook
 Outlook := ComObject("Outlook.Application")
 signatur := A_ScriptDir "\lib\signatur_logo.png"
+bodtemplate := outlook.createitem(0)
 
 ; Excel.Visible := true
 ExcelSvigtWorkbok := Excel.Workbooks.Open(ExcelDBSvigt, , readonly := True)
@@ -302,6 +303,9 @@ FunkKnapOK(VD, *)
 
 )"
 
+
+
+bodtemplate.display
     return 
 }
 #HotIf WinActive("Ny")
