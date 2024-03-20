@@ -52,7 +52,7 @@ outlook := ComObjCreate("Outlook.application")
             {
                 Clipboard := mailbody[9]
                 sleep 150
-                sendinput, {tab}{f2} ^v
+                sendinput, {f2} ^v
                 SendInput, {tab}
                 sleep 40
                 SendInput, mtebk{tab}
@@ -66,7 +66,7 @@ outlook := ComObjCreate("Outlook.application")
                     mailbody.RemoveAt(1)
                 Clipboard := mailbody[1]
                 sleep 150
-                sendinput, {tab}{f2}^v
+                sendinput, {f2}^v
                 SendInput, {tab}
                 sleep 40
                 SendInput, mtebk{tab}
