@@ -103,13 +103,13 @@ myGui.Add("Text", "x16 y360 w221 h23 +0x200", "&Kvalitetsbristen bestod i, at...
 Kvalitetsbrist := myGui.Add("Edit", "x16 y384 w373 h99 VKvalitetsbrist", "Kvalitetsbrist")
 ButtonOK := myGui.Add("Button", "x173 y496 w95 h27", "&OK")
 VLSoeg.OnEvent("LoseFocus", (*) => (mygui.VmData := FunkVLSoeg()))
-DatoVaelg.OnEvent("Change", OnEventHandler)
+; DatoVaelg.OnEvent("Change", OnEventHandler)
 ParagrafSoegFG.OnEvent("Change", FunkparagrafSoeg)
 ParagrafSoegFV.OnEvent("Change", FunkparagrafSoeg)
 ParagrafFG.OnEvent("Change", FunkParagrafVaelg)
 ParagrafFV.OnEvent("Change", FunkParagrafVaelg)
 ; KvalitetsBrist.OnEvent()
-BodVaelg.OnEvent("Change", OnEventHandler)
+; BodVaelg.OnEvent("Change", OnEventHandler)
 ButtonOK.OnEvent("Click", (*) => FunkKnapOK(mygui.Vmdata))
 myGui.OnEvent('Close', (*) => ExitApp())
 myGui.Title := "Ny Optimeret Bodsudskriver"
@@ -205,33 +205,21 @@ FunkVLSoeg(*)
     return ud
 }
 
-OnEventHandler(*)
-{
-    ToolTip("Click! This is a sample action.`n"
-        . "Active GUI element values include:`n"
-        . "Edit1 => " VLSoeg.Value "`n"
-        . "DateTime1 => " DatoVaelg.Value "`n"
-        . "DropDownList1 => " ParagrafFG.Text "`n"
-        . "DropDownList2 => " ParagrafFV.Text "`n"
-        . "Edit2 => " KvalitetsBrist.Value "`n"
-        . "Edit3 => " BodVaelg.Value "`n"
-        . "Edit4 => " ParagrafSoegFG.Value "`n"
-        . "ButtonOK => " ButtonOK.Text "`n", 77, 277)
-    SetTimer () => ToolTip(), -3000 ; tooltip timer
-}
 FunkKnapOK(VD, *)
 {
     valg := ""
     vl := ""
     bod := ""
-    Kvalitetsbrist := ""
+    brist := ""
     paragraf := ""
+    bod := ""
+    dato := ""
     if FormatTime(DatoVaelg.Value, "ddMM") = FormatTime(A_Now, "ddMM")
         valg := MsgBox("Sikker på dags dato?", "Korrekt Dato?", "YN Icon!")
     if valg = "Yes"
         MsgBox "OK"
-    GuiSubmit := mygui.Submit()
-    msgbox FormatTime(Guisubmit.Datoresultat, "dd.MM.yyyy")
+    GuiSubmit := mygui.Submit("Nohide")
+    dato := formattime(Guisubmit.Datoresultat, "dd.MM.yyyy")
     Vl := GuiSubmit.VLResultat
     Bod := Guisubmit.Bod
     Kvalitetsbrist := GuiSubmit.Kvalitetsbrist
@@ -239,9 +227,6 @@ FunkKnapOK(VD, *)
         Paragraf := GuiSubmit.ParagrafFGResultat
     if GuiSubmit.ParagrafFVResultat != ""
         Paragraf := GuiSubmit.ParagrafFVResultat
-    for i,e in GuiSubmit.OwnProps()
-        if e = ""
-            MsgBox(GuiSubmit.i " er tom.")
     msgbox("Bod er: " bod "`nVl er: " vl "`nKvalitetsbrist er: " Kvalitetsbrist "`nVM er: " VD[1] "`nKontaktinfo er: " VD[2] "`nParagraf er: " paragraf)
     VLSoeg.Focus()
     
@@ -297,12 +282,21 @@ FunkKnapOK(VD, *)
     </xml><![endif]--><!--[if gte mso 9]><xml>
     <o:shapelayout v:ext=`"edit`">
     <o:idmap v:ext=`"edit`" data=`"1`" />
-    </o:shapelayout></xml><![endif]--></head><body lang=DA link=`"#0563C1`" vlink=`"#954F72`" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Til</span><span style='font-family:`"Verdana`",sans-serif'><o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif;mso-fareast-language:DA'>" VM "<o:p></o:p></span></p><p class=MsoNormal><b><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Bod for kvalitetsbrist<o:p></o:p></span></b></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'><o:p>&nbsp;</o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Midttrafik har d. " dato " registreret en kvalitetsbrist på  vognløb <b>" VL ",</b> der medfører en bod på kr. " bod ",- jf. FG8, side 52,   31, stk. 3, litra<o:p></o:p></span></p><p class=Default><o:p>&nbsp;</o:p></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>" paragraf "<o:p></o:p></span></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Kvalitetsbristen bestod i, at " brist "<o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'><o:p>&nbsp;</o:p></span></p><div><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Beløbet vil blive modregnet i vognmandsafregningen.<o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Eventuel indsigelse skal foretages skriftligt inden 5 arbejdsdage.<o:p></o:p></span></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div><div><p class=MsoNormal style='mso-margin-top-alt:auto'><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif;mso-ligatures:standardcontextual;mso-fareast-language:DA'>Venlig hilsen<br><br>Flextrafiks Driftsafdeling<o:p></o:p></span></p><p class=MsoNormal style='mso-margin-bottom-alt:auto'><span style='font-size:8.0pt;font-family:`"Verdana`",sans-serif;mso-ligatures:standardcontextual;mso-fareast-language:DA'><br>Flextrafik - Trafikstyring<br>&nbsp;<br>70 11 22 10<br><u><span style='color:blue'><a href=`"mailto:planet@Midttrafik.dk`">planet@Midttrafik.dk</a></span></u><br><br><span style='color:#9B1C3C'>Sender du fortrolige eller følsomme personoplysninger til Midttrafik, skal det ske via en sikker mailforbindelse. Se Midttrafiks <a href=`"https://www.midttrafik.dk/kundeservice/privatlivspolitik`"><span style='color:blue'>privatlivspolitik</span></a>.</span><o:p></o:p></span></p><p class=MsoNormal><a href=`"http://www.midttrafik.dk/`"><span style='font-family:`"Verdana`",sans-serif;color:blue;mso-fareast-language:DA;text-decoration:none'><img border=0 width=141 height=131 style='width:1.4687in;height:1.3645in' src=`"cid:signatur_logo.png`"></span></a><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif;mso-ligatures:standardcontextual'><o:p></o:p></span></p></div><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
+    </o:shapelayout></xml><![endif]--></head><body lang=DA link=`"#0563C1`" vlink=`"#954F72`" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Til</span><span style='font-family:`"Verdana`",sans-serif'><o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif;mso-fareast-language:DA'>" VM "<o:p></o:p></span></p><p class=MsoNormal><b><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Bod for kvalitetsbrist<o:p></o:p></span></b></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'><o:p>&nbsp;</o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Midttrafik har d. " dato " registreret en kvalitetsbrist på  vognløb <b>" VL ",</b> der medfører en bod på kr. " bod ",- jf. FG8, side 52, § 31, stk. 3, litra<o:p></o:p></span></p><p class=Default><o:p>&nbsp;</o:p></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>" paragraf "<o:p></o:p></span></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Kvalitetsbristen bestod i, at " brist "<o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'><o:p>&nbsp;</o:p></span></p><div><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Beløbet vil blive modregnet i vognmandsafregningen.<o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Eventuel indsigelse skal foretages skriftligt inden 5 arbejdsdage.<o:p></o:p></span></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div><div><p class=MsoNormal style='mso-margin-top-alt:auto'><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif;mso-ligatures:standardcontextual;mso-fareast-language:DA'>Venlig hilsen<br><br>Flextrafiks Driftsafdeling<o:p></o:p></span></p><p class=MsoNormal style='mso-margin-bottom-alt:auto'><span style='font-size:8.0pt;font-family:`"Verdana`",sans-serif;mso-ligatures:standardcontextual;mso-fareast-language:DA'><br>Flextrafik - Trafikstyring<br>&nbsp;<br>70 11 22 10<br><u><span style='color:blue'><a href=`"mailto:planet@Midttrafik.dk`">planet@Midttrafik.dk</a></span></u><br><br><span style='color:#9B1C3C'>Sender du fortrolige eller følsomme personoplysninger til Midttrafik, skal det ske via en sikker mailforbindelse. Se Midttrafiks <a href=`"https://www.midttrafik.dk/kundeservice/privatlivspolitik`"><span style='color:blue'>privatlivspolitik</span></a>.</span><o:p></o:p></span></p><p class=MsoNormal><a href=`"http://www.midttrafik.dk/`"><span style='font-family:`"Verdana`",sans-serif;color:blue;mso-fareast-language:DA;text-decoration:none'><img border=0 width=141 height=131 style='width:1.4687in;height:1.3645in' src=`"cid:signatur_logo.png`"></span></a><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif;mso-ligatures:standardcontextual'><o:p></o:p></span></p></div><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
 
 
 
 )"
 
+
+bodtemplate := outlook.createitem(0)
+
+bodtemplate.SentOnBehalfOfName := "planet@midttrafik.dk"
+bodtemplate.To := email
+bodtemplate.CC := "oekonomi@midttrafik.dk"
+bodtemplate.subject := "Bod for kvalitetsbrist - vognløb " vl " d. " dato
+bodtemplate.attachments.add(signatur)
+bodtemplate.htmlbody := html_test_med_billede
 
 
 bodtemplate.display
