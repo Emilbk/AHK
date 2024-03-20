@@ -5674,14 +5674,14 @@ gui_svigt_vis:
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 1 , % emnefelt,
         ; beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
-        beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
+        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
         gui, hide
     }
     if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
     {
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 2, % emnefelt,
-        beskrivelse := "GV (" garantitid ") lukket kl. " tid " — " . beskrivelse
+        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
         gui, hide
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
@@ -5898,14 +5898,14 @@ gui_svigt_send:
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 1 , % emnefelt,
         ; beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
-        beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
+        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
         gui, hide
     }
     if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
     {
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 2, % emnefelt,
-        beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
+        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
         gui, hide
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
