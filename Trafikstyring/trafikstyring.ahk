@@ -5356,10 +5356,20 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     gemtklip := ClipboardAll
     ClipWait, 2, 1
     SendInput, ^a^{F12}
+    sleep 100
     clipboard :=
     SendInput, {AppsKey}c
     ClipWait, 2, 0
     vl := clipboard
+    loop_test := ""
+    while vl = ""
+        {
+            clipboard := ""
+            SendInput, !l
+            SendInput, {AppsKey}c
+            ClipWait, 0.3
+            loop_test += 1
+        }
     sys := p6_vl_vindue_edit()
     if (sys = "lukket")
         {
