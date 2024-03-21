@@ -3259,16 +3259,17 @@ Trio_opkald(ByRef telefon)
     sleep 100
     ControlGetText, kobl_test, Button1, Trio Attendant
     GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
+    ; virker ikke hos Brøgger???
     ; if (kobl_test = "Koble")
     ; {
     ;     controlsend, , {ShiftDown}{enter}{ShiftUp}, ahk_class Addressbook
     ;     return
     ; }
     ; Else
-    {
+    ; {
         controlsend, , {ShiftDown}{enter}{ShiftUp}, ahk_class Addressbook
         Return
-    }
+    ; }
 }
 
 ; ***
@@ -5355,10 +5356,20 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     gemtklip := ClipboardAll
     ClipWait, 2, 1
     SendInput, ^a^{F12}
+    sleep 100
     clipboard :=
     SendInput, {AppsKey}c
     ClipWait, 2, 0
     vl := clipboard
+    loop_test := ""
+    while vl = ""
+        {
+            clipboard := ""
+            SendInput, !l
+            SendInput, {AppsKey}c
+            ClipWait, 0.3
+            loop_test += 1
+        }
     sys := p6_vl_vindue_edit()
     if (sys = "lukket")
         {
@@ -5663,14 +5674,14 @@ gui_svigt_vis:
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 1 , % emnefelt,
         ; beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
-        beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
+        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
         gui, hide
     }
     if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
     {
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 2, % emnefelt,
-        beskrivelse := "GV (" garantitid ") lukket kl. " tid " — " . beskrivelse
+        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
         gui, hide
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
@@ -5887,14 +5898,14 @@ gui_svigt_send:
         emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 1 , % emnefelt,
         ; beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
-        beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
+        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
         gui, hide
     }
     if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
     {
         emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 2, % emnefelt,
-        beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
+        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
         gui, hide
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
