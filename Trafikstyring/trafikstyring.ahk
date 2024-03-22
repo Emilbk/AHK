@@ -1549,6 +1549,7 @@ p6_vl_vindue()
     vl_opslag := clipboard
     while (vl_opslag != vl)
     {
+        P6_aktiver()
         SendInput, !l
         Send, +{F10}c
         ClipWait, 1
@@ -1584,6 +1585,7 @@ p6_vl_vindue_edit()
     loop_test := 0
     while (clipboard = "")
     {
+        P6_aktiver()
         SendInput, !k
         sleep 100
         clipboard :=
@@ -1604,6 +1606,7 @@ p6_vl_vindue_edit()
     loop_test := 0
     while (clipboard = "")
     {
+        P6_aktiver()
         SendInput, !k{tab}
         sleep 100
         clipboard :=
@@ -1910,6 +1913,7 @@ P6_hent_vl_tlf()
     ClipWait, 1
     while (StrLen(clipboard) != 8)
     {
+        P6_aktiver()
         SendInput, !ø{tab 2}
         clipboard :=
         SendInput ^c
@@ -1948,6 +1952,7 @@ P6_hent_vm_tlf()
     ClipWait, 1.5
     while (StrLen(clipboard) != 8)
     {
+        P6_aktiver()
         SendInput, !a{tab4}
         clipboard :=
         SendInput ^c
@@ -3245,12 +3250,14 @@ Trio_opkald(ByRef telefon)
     ControlGetText, tlf_test, Edit2, Trio Attendant
     while (tlf_test != "")
     {
+        if !WinExist("ahk_class Addressbook")
+            ControlClick, ToolbarWindow321, ahk_class Agent Main GUI
         controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
         sleep 100
         ControlGetText, tlf_test, Edit2, Trio Attendant
         if (loop_test > 5)
         {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen `n(virker ctrl+c ctrl+v fra P6 til Windows?)
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
             return 0
         }
     }
@@ -5362,13 +5369,21 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     ClipWait, 2, 0
     vl := clipboard
     loop_test := ""
-    while vl = ""
+    while (vl = "" and loop_test < 10)
         {
+            P6_aktiver()
             clipboard := ""
             SendInput, !l
             SendInput, {AppsKey}c
             ClipWait, 0.3
+            vl := clipboard
             loop_test += 1
+        }
+    if (vl = "")
+        {
+            MsgBox, 16, Fejl, Prøv igen
+            sys_afslut_genvej()
+            Return
         }
     sys := p6_vl_vindue_edit()
     if (sys = "lukket")
