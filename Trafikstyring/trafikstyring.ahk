@@ -349,7 +349,6 @@ Gui svigt: Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
 Gui svigt: Add, Edit, vtid x200 y24 w79 h21, Hjemzone kl.
 Gui svigt: Add, CheckBox, vhelt x160 y48 w120 h23, &Ja, og VL slettet
 Gui svigt: Add, Text, x175 y75 h35 w100 vgarantitid, Garantiperiode: %garanti_tid%
-; G svigt:ui Add, CheckBox, vhelt2 x160 y72 w120, GV garanti &slettet i variabel tid ; nødvendig?
 Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
 Gui svigt: Font, w600
@@ -6363,6 +6362,10 @@ gui_svigt_vis:
 
     l_outlook_svigt:
     sys_genvej_start(38)
+    p6_dan_svigt()
+
+    p6_dan_svigt()
+    {    
     FormatTime, dato, , dd-MM-y
 
     gemtklip := ClipboardAll
@@ -6409,3 +6412,6 @@ gui_svigt_vis:
     Gui svigt: Show, w448 h297, Svigt
     ControlFocus, Button1, Svigt
     mod_up()
+    
+    return
+    }
