@@ -3963,6 +3963,7 @@ Opkaldtaxa(p*){
     WinActivate, PLANET, , ,
     sleep 3000
     trio_klar()
+    sys_afslut_genvej()
 }
 VogngrupperGuiClose:
     sys_afslut_genvej()
