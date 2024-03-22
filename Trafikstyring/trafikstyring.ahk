@@ -3250,6 +3250,8 @@ Trio_opkald(ByRef telefon)
     ControlGetText, tlf_test, Edit2, Trio Attendant
     while (tlf_test != "")
     {
+        if !WinExist("ahk_class Addressbook")
+            ControlClick, ToolbarWindow321, ahk_class Agent Main GUI
         controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
         sleep 100
         ControlGetText, tlf_test, Edit2, Trio Attendant
