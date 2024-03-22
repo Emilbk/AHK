@@ -1549,6 +1549,7 @@ p6_vl_vindue()
     vl_opslag := clipboard
     while (vl_opslag != vl)
     {
+        P6_aktiver()
         SendInput, !l
         Send, +{F10}c
         ClipWait, 1
@@ -1584,6 +1585,7 @@ p6_vl_vindue_edit()
     loop_test := 0
     while (clipboard = "")
     {
+        P6_aktiver()
         SendInput, !k
         sleep 100
         clipboard :=
@@ -1604,6 +1606,7 @@ p6_vl_vindue_edit()
     loop_test := 0
     while (clipboard = "")
     {
+        P6_aktiver()
         SendInput, !k{tab}
         sleep 100
         clipboard :=
@@ -1910,6 +1913,7 @@ P6_hent_vl_tlf()
     ClipWait, 1
     while (StrLen(clipboard) != 8)
     {
+        P6_aktiver()
         SendInput, !ø{tab 2}
         clipboard :=
         SendInput ^c
@@ -1948,6 +1952,7 @@ P6_hent_vm_tlf()
     ClipWait, 1.5
     while (StrLen(clipboard) != 8)
     {
+        P6_aktiver()
         SendInput, !a{tab4}
         clipboard :=
         SendInput ^c
