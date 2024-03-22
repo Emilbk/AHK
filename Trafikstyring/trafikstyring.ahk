@@ -3257,7 +3257,7 @@ Trio_opkald(ByRef telefon)
         ControlGetText, tlf_test, Edit2, Trio Attendant
         if (loop_test > 5)
         {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen `n(virker ctrl+c ctrl+v fra P6 til Windows?)
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
             return 0
         }
     }
