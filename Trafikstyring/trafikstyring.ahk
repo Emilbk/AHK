@@ -1586,6 +1586,7 @@ p6_vl_vindue()
     vl_opslag := clipboard
     while (vl_opslag != vl)
     {
+        P6_aktiver()
         SendInput, !l
         Send, +{F10}c
         ClipWait, 1
@@ -1621,6 +1622,7 @@ p6_vl_vindue_edit()
     loop_test := 0
     while (clipboard = "")
     {
+        P6_aktiver()
         SendInput, !k
         sleep 100
         clipboard :=
@@ -1641,6 +1643,7 @@ p6_vl_vindue_edit()
     loop_test := 0
     while (clipboard = "")
     {
+        P6_aktiver()
         SendInput, !k{tab}
         sleep 100
         clipboard :=
@@ -1947,6 +1950,7 @@ P6_hent_vl_tlf()
     ClipWait, 1
     while (StrLen(clipboard) != 8)
     {
+        P6_aktiver()
         SendInput, !ø{tab 2}
         clipboard :=
         SendInput ^c
@@ -1985,6 +1989,7 @@ P6_hent_vm_tlf()
     ClipWait, 1.5
     while (StrLen(clipboard) != 8)
     {
+        P6_aktiver()
         SendInput, !a{tab4}
         clipboard :=
         SendInput ^c
@@ -3279,12 +3284,14 @@ Trio_opkald(ByRef telefon)
     ControlGetText, tlf_test, Edit2, Trio Attendant
     while (tlf_test != "")
     {
+        if !WinExist("ahk_class Addressbook")
+            ControlClick, ToolbarWindow321, ahk_class Agent Main GUI
         controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
         sleep 100
         ControlGetText, tlf_test, Edit2, Trio Attendant
         if (loop_test > 5)
         {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen `n(virker ctrl+c ctrl+v fra P6 til Windows?)
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
             return 0
         }
     }
@@ -5387,10 +5394,28 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     gemtklip := ClipboardAll
     ClipWait, 2, 1
     SendInput, ^a^{F12}
+    sleep 100
     clipboard :=
     SendInput, {AppsKey}c
     ClipWait, 2, 0
     vl := clipboard
+    loop_test := ""
+    while (vl = "" and loop_test < 10)
+        {
+            P6_aktiver()
+            clipboard := ""
+            SendInput, !l
+            SendInput, {AppsKey}c
+            ClipWait, 0.3
+            vl := clipboard
+            loop_test += 1
+        }
+    if (vl = "")
+        {
+            MsgBox, 16, Fejl, Prøv igen
+            sys_afslut_genvej()
+            Return
+        }
     sys := p6_vl_vindue_edit()
     if (sys = "lukket")
     {
@@ -5598,126 +5623,126 @@ w\:* {behavior:url(#default#VML);}
         s_sys := vl_array.2
         k_aftale := vl_array.2 "_" vl_array.3
 
-        for i, e in gv_svigt
-            {
-                if (k_aftale = gv_svigt[i][1])
-                    {
-                        garantitid := gv_svigt[i][3]
-                        break
-                    }
-                else
-                    garantitid := "Variabelt vognløb"
-            }
-        GuiControl, svigt:,  VL , %vl%
-        GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
-        clipboard :=
-        sleep 500
-        SendInput, !{PrintScreen}
-        ; sleep 500
-        ClipWait, 10, 1
-        sleep 200
-        udklip := ImagePutFile(clipboardall, "svigt.png")
-        sleep 200
-        ; clipwait 3, 1 ; bedre løsning?
-        Gui svigt: Show, w448 h297, Svigt
-        ControlFocus, Button1, Svigt
-        mod_up()
-    Return
-    gui_svigt_vis:
-        gui, submit
-        if (ny_dato != "")
-            {
-                FormatTime, dato_tid, YYYYMMDDHH24MISS, dd-MM-y
-                dato := SubStr(ny_dato, 1 , 2) . "-" SubStr(ny_dato, -1 , 2) "-" SubStr(dato, -1 , 2)
-            }
-        beskrivelse := StrReplace(beskrivelse, "`n", " ")
-        if (lukket = 1 and helt = 1)
+    for i, e in gv_svigt
         {
-            sleep 100
-            MsgBox, 48 , Vælg kun én, Vælg enten lukket eller slettet VL
-            sleep 100
-            Gui Show, w448 h297, Svigt
-            return
+            if (k_aftale = gv_svigt[i][1])
+                {
+                    garantitid := gv_svigt[i][3]
+                    break
+                }
+            else
+                garantitid := "Variabelt vognløb"
         }
-        if (lukket = 1 and StrLen(tid) != 4)
+    GuiControl, svigt:,  VL , %vl%
+    GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
+    clipboard :=
+    sleep 500
+    SendInput, !{PrintScreen}
+    ; sleep 500
+    ClipWait, 10, 1
+    sleep 200
+    udklip := ImagePutFile(clipboardall, "svigt.png")
+    sleep 200
+    ; clipwait 3, 1 ; bedre løsning?
+    Gui svigt: Show, w448 h297, Svigt
+    ControlFocus, Button1, Svigt
+    mod_up()
+Return 
+gui_svigt_vis:
+    gui, submit
+    if (ny_dato != "")
         {
-            sleep 100
-            MsgBox, 48 , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
-            sleep 100
-            Gui Show, w448 h297, Svigt
-            SendInput, !l{tab}^a
-            return
+            FormatTime, dato_tid, YYYYMMDDHH24MISS, dd-MM-y
+            dato := SubStr(ny_dato, 1 , 2) . "-" SubStr(ny_dato, -1 , 2) "-" SubStr(dato, -1 , 2)
         }
-        if (StrLen(tid) = 4)
-        {
-            timer := SubStr(tid, 1, 2)
-            min := SubStr(tid, 3, 2)
-            tid_tjek := A_YYYY A_MM A_DD timer min
-            if tid_tjek is not Time
-            {
-                sleep 100
-                MsgBox, 48 , Klokkeslæt ikke gyldigt , Skal være et gyldigt tidspunkt
-                sleep 100
-                Gui Show, w448 h297, Svigt
-                SendInput, ^a
-                return
-            }
-            tid := timer ":" min
-        }
-        if (type = 0)
+    beskrivelse := StrReplace(beskrivelse, "`n", " ")
+    if (lukket = 1 and helt = 1)
+    {
+        sleep 100
+        MsgBox, 48 , Vælg kun én, Vælg enten lukket eller slettet VL
+        sleep 100
+        Gui Show, w448 h297, Svigt
+        return
+    }
+    if (lukket = 1 and StrLen(tid) != 4)
+    {
+        sleep 100
+        MsgBox, 48 , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
+        sleep 100
+        Gui Show, w448 h297, Svigt
+        SendInput, !l{tab}^a
+        return
+    }
+    if (StrLen(tid) = 4)
+    {
+        timer := SubStr(tid, 1, 2)
+        min := SubStr(tid, 3, 2)
+        tid_tjek := A_YYYY A_MM A_DD timer min
+        if tid_tjek is not Time
         {
             sleep 100
-            MsgBox, 48 , Mangler VL-type, Husk at krydse af i typen af VL.
+            MsgBox, 48 , Klokkeslæt ikke gyldigt , Skal være et gyldigt tidspunkt
             sleep 100
             Gui Show, w448 h297, Svigt
+            SendInput, ^a
             return
         }
-        if (type = 1)
-            vl_type := "GV"
-        if (type = 2)
-            vl_type := "(Variabel tid)"
-        if (type = 3)
-            vl_type :=
-        if (beskrivelse = "")
-        {
-            sleep 100
-            MsgBox, 48 , Udfyld beskrivelse, Mangler beskrivelse af svigtet,
-            sleep 100
-            Gui Show, w448 h297, Svigt
-            SendInput, !b
-            return
-        }
-        if (type = 1 and lukket = 1 and helt = 0 and årsag != "")
-        {
-            emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
-            ; MsgBox, , 1 , % emnefelt,
-            ; beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
-            beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
-            gui, hide
-        }
-        if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
-        {
-            emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
-            ; MsgBox, , 2, % emnefelt,
-            beskrivelse := "GV (" garantitid ") lukket kl. " tid " — " . beskrivelse
-            gui, hide
-        }
-        if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
-        {
-            emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - d. " dato
-            ; MsgBox, , 3, % emnefelt,
-            gui, hide
-        }
-        if (type = 1 and lukket = 0 and helt = 0 and årsag = "")
-        {
-            emnefelt := "Svigt VL " vl " d. " dato
-            gui, hide
-        }
-        if (type = 1 and helt = 1 and årsag = "")
-        {
-            emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
-            ; MsgBox, , 5, % emnefelt,
-            beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
+        tid := timer ":" min
+    }
+    if (type = 0)
+    {
+        sleep 100
+        MsgBox, 48 , Mangler VL-type, Husk at krydse af i typen af VL.
+        sleep 100
+        Gui Show, w448 h297, Svigt
+        return
+    }
+    if (type = 1)
+        vl_type := "GV"
+    if (type = 2)
+        vl_type := "(Variabel tid)"
+    if (type = 3)
+        vl_type :=
+    if (beskrivelse = "")
+    {
+        sleep 100
+        MsgBox, 48 , Udfyld beskrivelse, Mangler beskrivelse af svigtet,
+        sleep 100
+        Gui Show, w448 h297, Svigt
+        SendInput, !b
+        return
+    }
+    if (type = 1 and lukket = 1 and helt = 0 and årsag != "")
+    {
+        emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
+        ; MsgBox, , 1 , % emnefelt,
+        ; beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
+        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
+        gui, hide
+    }
+    if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
+    {
+        emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
+        ; MsgBox, , 2, % emnefelt,
+        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
+        gui, hide
+    }
+    if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
+    {
+        emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - d. " dato
+        ; MsgBox, , 3, % emnefelt,
+        gui, hide
+    }
+    if (type = 1 and lukket = 0 and helt = 0 and årsag = "")
+    {
+        emnefelt := "Svigt VL " vl " d. " dato
+        gui, hide
+    }
+    if (type = 1 and helt = 1 and årsag = "")
+    {
+        emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
+        ; MsgBox, , 5, % emnefelt,
+        beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
 
             gui, hide
         }
@@ -5849,99 +5874,99 @@ w\:* {behavior:url(#default#VML);}
     gui_svigt_send:
         gui, submit
 
-        if (ny_dato != "")
-            {
-                FormatTime, dato_tid, YYYYMMDDHH24MISS, dd-MM-y
-                dato := SubStr(ny_dato, 1 , 2) . "-" SubStr(ny_dato, -1 , 2) "-" SubStr(dato, -1 , 2)
-            }
-        beskrivelse := StrReplace(beskrivelse, "`n", " ")
-        if (lukket = 1 and helt = 1)
+    if (ny_dato != "")
         {
-            sleep 100
-            MsgBox, 48 , Vælg kun én, Vælg enten lukket eller slettet VL
-            sleep 100
-            Gui Show, w448 h297, Svigt
-            return
+            FormatTime, dato_tid, YYYYMMDDHH24MISS, dd-MM-y
+            dato := SubStr(ny_dato, 1 , 2) . "-" SubStr(ny_dato, -1 , 2) "-" SubStr(dato, -1 , 2)
         }
-        if (lukket = 1 and StrLen(tid) != 4)
+    beskrivelse := StrReplace(beskrivelse, "`n", " ")
+    if (lukket = 1 and helt = 1)
+    {
+        sleep 100
+        MsgBox, 48 , Vælg kun én, Vælg enten lukket eller slettet VL
+        sleep 100
+        Gui Show, w448 h297, Svigt
+        return
+    }
+    if (lukket = 1 and StrLen(tid) != 4)
+    {
+        sleep 100
+        MsgBox, 48 , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
+        sleep 100
+        Gui Show, w448 h297, Svigt
+        SendInput, !l{tab}^a
+        return
+    }
+    if (StrLen(tid) = 4)
+    {
+        timer := SubStr(tid, 1, 2)
+        min := SubStr(tid, 3, 2)
+        tid_tjek := A_YYYY A_MM A_DD timer min
+        if tid_tjek is not Time
         {
             sleep 100
-            MsgBox, 48 , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
-            sleep 100
-            Gui Show, w448 h297, Svigt
-            SendInput, !l{tab}^a
-            return
-        }
-        if (StrLen(tid) = 4)
-        {
-            timer := SubStr(tid, 1, 2)
-            min := SubStr(tid, 3, 2)
-            tid_tjek := A_YYYY A_MM A_DD timer min
-            if tid_tjek is not Time
-            {
-                sleep 100
-                MsgBox, 48 , Klokkeslæt ikke gyldigt , Skal være et gyldigt tidspunkt
-                sleep 100
-                Gui Show, w448 h297, Svigt
-                SendInput, ^a
-                return
-            }
-            tid := timer ":" min
-        }
-        if (type = 0)
-        {
-            sleep 100
-            MsgBox, 48 , Mangler VL-type, Husk at krydse af i typen af VL.
+            MsgBox, 48 , Klokkeslæt ikke gyldigt , Skal være et gyldigt tidspunkt
             sleep 100
             Gui Show, w448 h297, Svigt
+            SendInput, ^a
             return
         }
-        if (type = 1)
-            vl_type := "GV"
-        if (type = 2)
-            vl_type := "(Variabel tid)"
-        if (type = 3)
-            vl_type :=
-        if (beskrivelse = "")
-        {
-            sleep 100
-            MsgBox, 48 , Udfyld beskrivelse, Mangler beskrivelse af svigtet,
-            sleep 100
-            Gui Show, w448 h297, Svigt
-            SendInput, !b
-            return
-        }
-        if (type = 1 and lukket = 1 and helt = 0 and årsag != "")
-        {
-            emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
-            ; MsgBox, , 1 , % emnefelt,
-            ; beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
-            beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
-            gui, hide
-        }
-        if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
-        {
-            emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
-            ; MsgBox, , 2, % emnefelt,
-            beskrivelse := "GV lukket kl. " tid " — " . beskrivelse
-            gui, hide
-        }
-        if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
-        {
-            emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - d. " dato
-            ; MsgBox, , 3, % emnefelt,
-            gui, hide
-        }
-        if (type = 1 and lukket = 0 and helt = 0 and årsag = "")
-        {
-            emnefelt := "Svigt VL " vl " d. " dato
-            gui, hide
-        }
-        if (type = 1 and helt = 1 and årsag = "")
-        {
-            emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
-            ; MsgBox, , 5, % emnefelt,
-            beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
+        tid := timer ":" min
+    }
+    if (type = 0)
+    {
+        sleep 100
+        MsgBox, 48 , Mangler VL-type, Husk at krydse af i typen af VL.
+        sleep 100
+        Gui Show, w448 h297, Svigt
+        return
+    }
+    if (type = 1)
+        vl_type := "GV"
+    if (type = 2)
+        vl_type := "(Variabel tid)"
+    if (type = 3)
+        vl_type :=
+    if (beskrivelse = "")
+    {
+        sleep 100
+        MsgBox, 48 , Udfyld beskrivelse, Mangler beskrivelse af svigtet,
+        sleep 100
+        Gui Show, w448 h297, Svigt
+        SendInput, !b
+        return
+    }
+    if (type = 1 and lukket = 1 and helt = 0 and årsag != "")
+    {
+        emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
+        ; MsgBox, , 1 , % emnefelt,
+        ; beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
+        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
+        gui, hide
+    }
+    if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
+    {
+        emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
+        ; MsgBox, , 2, % emnefelt,
+        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
+        gui, hide
+    }
+    if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
+    {
+        emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - d. " dato
+        ; MsgBox, , 3, % emnefelt,
+        gui, hide
+    }
+    if (type = 1 and lukket = 0 and helt = 0 and årsag = "")
+    {
+        emnefelt := "Svigt VL " vl " d. " dato
+        gui, hide
+    }
+    if (type = 1 and helt = 1 and årsag = "")
+    {
+        emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
+        ; MsgBox, , 5, % emnefelt,
+        beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
 
             gui, hide
         }
