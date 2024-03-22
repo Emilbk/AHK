@@ -3904,6 +3904,9 @@ l_p6_central_ring_op:
     Gui,Add,Button,vtaxa3,&Dantaxi
     Gui,Add,Button,vtaxa4,Taxa &Midt
     Gui,Add,Button,vtaxa5,D&K Taxi
+    menu, FileMenu, add, &Vogngrupper`tAlt+v,central_menu
+    menu, centralmenu, add, &Vogngrupper, :Filemenu
+    gui, menu, centralmenu
     Gui,Show, AutoSize Center , Ring op til central
     taxaknap1:=Func("opkaldtaxa").Bind("89484892")
     taxaknap2:=Func("opkaldtaxa").Bind("89484837")
@@ -3916,6 +3919,40 @@ l_p6_central_ring_op:
     GuiControl,+g,taxa4,%taxaknap4%
     GuiControl,+g,taxa5,%taxaknap5%
 return
+central_menu:
+{
+    gui, Taxa:Default
+    Gui,Add,Button,vcentral1,&Århusstat
+    Gui,Add,Button,vcentral2,&Horstat
+    Gui,Add,Button,vcentral3,H&olsstat
+    Gui,Add,Button,vcentral4,&Silketstat1
+    Gui,Add,Button,vcentral5,S&kandstat
+    Gui,Add,Button,vcentral6,&Viborgstat
+    Gui,Add,Button,vcentral7,&Hernistcar
+    Gui,Add,Button,vcentral8,&Silherstat
+    menu, FileMenu, add, &Vogngrupper`tAlt+v,central_menu
+    menu, centralmenu, add, &Fil, :Filemenu
+    gui, menu, centralmenu
+    Gui,Show, AutoSize Center , Ring op til central
+    centralknap1:=Func("opkaldtaxa").Bind("89484892")
+    centralknap2:=Func("opkaldtaxa").Bind("89484892")
+    centralknap3:=Func("opkaldtaxa").Bind("87113030")
+    centralknap4:=Func("opkaldtaxa").Bind("96341121")
+    centralknap5:=Func("opkaldtaxa").Bind("96341121")
+    centralknap6:=Func("opkaldtaxa").Bind("96341121")
+    centralknap7:=Func("opkaldtaxa").Bind("97120777")
+    centralknap8:=Func("opkaldtaxa").Bind("97120777")
+    GuiControl,+g,central1,%centralknap1%
+    GuiControl,+g,central2,%centralknap2%
+    GuiControl,+g,central3,%centralknap3%
+    GuiControl,+g,central4,%centralknap4%
+    GuiControl,+g,central5,%centralknap5%
+    GuiControl,+g,central6,%centralknap6%
+    GuiControl,+g,central7,%centralknap7%
+    GuiControl,+g,central8,%centralknap8%
+    MsgBox, , , test
+    return
+}
 Opkaldtaxa(p*){
     Gui, taxa: Destroy
     telefon := % p.1
