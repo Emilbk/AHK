@@ -3921,7 +3921,8 @@ l_p6_central_ring_op:
 return
 central_menu:
 {
-    gui, Taxa:Default
+    gui taxa: hide
+    gui, Vogngrupper:Default
     Gui,Add,Button,vcentral1,&Århusstat
     Gui,Add,Button,vcentral2,&Horstat
     Gui,Add,Button,vcentral3,H&olsstat
@@ -3930,9 +3931,6 @@ central_menu:
     Gui,Add,Button,vcentral6,&Viborgstat
     Gui,Add,Button,vcentral7,&Hernistcar
     Gui,Add,Button,vcentral8,&Silherstat
-    menu, FileMenu, add, &Vogngrupper`tAlt+v,central_menu
-    menu, centralmenu, add, &Fil, :Filemenu
-    gui, menu, centralmenu
     Gui,Show, AutoSize Center , Ring op til central
     centralknap1:=Func("opkaldtaxa").Bind("89484892")
     centralknap2:=Func("opkaldtaxa").Bind("89484892")
@@ -3950,7 +3948,6 @@ central_menu:
     GuiControl,+g,central6,%centralknap6%
     GuiControl,+g,central7,%centralknap7%
     GuiControl,+g,central8,%centralknap8%
-    MsgBox, , , test
     return
 }
 Opkaldtaxa(p*){
@@ -3967,6 +3964,17 @@ Opkaldtaxa(p*){
     sleep 3000
     trio_klar()
 }
+VogngrupperGuiClose:
+    sys_afslut_genvej()
+    gui, Destroy
+return
+
+VogngrupperGuiEscape:
+    sys_afslut_genvej()
+    Gui, Destroy
+return
+
+
 TaxaGuiClose:
     sys_afslut_genvej()
     gui, Destroy
