@@ -1474,7 +1474,7 @@ P6_hent_vl_k_s()
         loop_test += 1
         if (loop_test > 5)
         {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (virker ctrl+c ctrl+v fra P6 til Windows?)
             return 0
         }
     }
@@ -1496,7 +1496,7 @@ P6_hent_vl_k_s()
         loop_test += 1
         if (loop_test > 5)
         {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (Der skal være sat bil på, hvis VG)
             return 0
         }
     }
