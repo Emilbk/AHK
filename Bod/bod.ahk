@@ -51,6 +51,8 @@ outlook := ComObjCreate("Outlook.application")
             if mailbody[mailbody.MaxIndex()] = "FD"
             {
                 Clipboard := mailbody[9]
+                if (mailbody[9] = "")
+                    Clipboard := mailbody[10]
                 sleep 150
                 sendinput, {f2} ^v
                 SendInput, {tab}
@@ -116,12 +118,6 @@ Fdsvigt(outlook)
     {
         mailbody := StrSplit(outlookMail.body,"`r`n")
         mailbody[9] := SubStr(mailbody[9], 28)
-        test := SubStr(mailbody[9], 1, 1)
-        while (test = "")
-        {
-            test := SubStr(mailbody[9], 1, 1)
-            mailbody[9] := SubStr(mailbody[9], 2)
-        }
         mailbody.Push("FD")
 
         ; MsgBox, , Er FDSvigt, % mailbody
@@ -130,11 +126,6 @@ Fdsvigt(outlook)
     {
         mailbody := StrSplit(outlookMail.body,"`r`n")
         test := SubStr(mailbody[1], 1, 1)
-        while (test = "")
-        {
-            test := SubStr(mailbody[1], 1, 1)
-            mailbody[1] := SubStr(mailbody[1], 2)
-        }
         mailbody.Push("Ikke FD")
         ; MsgBox, , Er ikke FDSvigt, % mailbody[1]
     }
