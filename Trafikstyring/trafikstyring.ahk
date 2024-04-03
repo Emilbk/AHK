@@ -3506,7 +3506,7 @@ Flexfinder_opslag()
             SendInput, +{tab}{up}{tab}
             sleep 300
             SendInput, %opslag%
-            sleep 500
+            sleep 700
             SendInput, {enter}
             WinActivate, PLANET
         }
@@ -3521,7 +3521,7 @@ Flexfinder_opslag()
             SendInput, +{tab}{up}{tab}
             sleep 300
             SendInput, %opslag%
-            sleep 500
+            sleep 700
             SendInput, {enter}
             WinActivate, PLANET
         }
