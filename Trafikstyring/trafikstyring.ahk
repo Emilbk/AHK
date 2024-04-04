@@ -5406,7 +5406,8 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     FormatTime, dato, , dd-MM-y
     ; FormatTime, tid, , HH:mm
     ; svigt := []
-    gemtklip := ClipboardAll
+    tidligere_notat := clipboard
+    gemtklip := ClipboardAlldd
     ClipWait, 2, 1
     SendInput, ^a^{F12}
     sleep 100
@@ -5471,11 +5472,23 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     clipboard := 
     SendInput, {enter}!v+{up}
     sleep 200
+    if (InStr(tidligere_notat, "GV") or InStr(tidligere_notat, "garanti"))
+        {
+            clipboard := tidligere_notat
+            sleep 200
+            SendInput, ^v{enter}
+            sleep 200
+            tidligere_notat := 1
+
+        }
+    if (tidligere_notat != 1)
+        {
     SendInput, ^c
     ClipWait, 1
-    vl_notat := clipboard 
+    vl_notat := clipboard
     SendInput, ^a
     sleep 500
+        }
     clipboard :=
     SendInput, !{PrintScreen}
     ClipWait, 10, 1
@@ -5562,8 +5575,9 @@ div.WordSection1
     svigt_template.send
     ImageDestroy(udklip)
     P6_planvindue()
-    if (vl_notat = "")
+    if (vl_notat = "" and tidligere_notat != 1)
         {
+
             MsgBox, 48, Mail sendt - husk notat på VL, Mail om genåbningen er blevet sendt - husk det faste notat på VL (garanti-tider osv.), 3
         }
     else
