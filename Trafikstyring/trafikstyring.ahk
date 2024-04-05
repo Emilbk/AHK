@@ -1096,8 +1096,16 @@ trio_genvej:
     return
 tlfKopi:
     {
+        GetKeyState, tjek_key, Shift, 
         clipboard :=
         GuiControlGet, tlfkopi, , , 
+        if (tjek_key = "D")
+            {
+            tlfkopi := Trio_hent_tlf()
+            Clipboard := tlfkopi
+            ClipWait, 3,
+            return
+            }
         if (tlfkopi = "Tlf: ")
             {
                 tlfkopi := Trio_hent_tlf()
@@ -1105,7 +1113,6 @@ tlfKopi:
         Else
             {
                 tlfkopi := RegExReplace(tlfkopi, "\D")
-                MsgBox, , , %tlfkopi%
             }
         Clipboard := tlfkopi
         ClipWait, 3,
