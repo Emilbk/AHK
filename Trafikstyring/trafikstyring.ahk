@@ -5609,7 +5609,7 @@ div.WordSection1
     if (vl_notat = "" and tidligere_notat != 1)
         {
 
-            MsgBox, 48, Mail sendt - husk notat på VL, Mail om genåbningen er blevet sendt - husk det faste notat på VL (garanti-tider osv.), 3
+            MsgBox, 48, Mail sendt - husk notat på VL, Mail om genåbningen er blevet sendt - husk det faste notat på VL (garanti-tider osv.), 
         }
     else
  {
