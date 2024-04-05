@@ -5468,6 +5468,7 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
                     MsgBox, 16, VL må ikke genåbnes, Dette vognløb må ikke genåbnes før det er godkendt , 
                     sleep 100
                     SendInput, ^a
+                    sys_afslut_genvej()
                     return
                 }
         }
