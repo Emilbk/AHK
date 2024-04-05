@@ -5457,7 +5457,8 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     k_aft := sys[1]
     sty_sys := sys[3]
     k_aftale := k_aft  "_" sty_sys
-    FileAppend, , %A_LineFile%\..\db\vognkontrol_lukkede_vogne.txt
+    if (!FileExist("db\vognkontrol_lukkede_vogne.txt"))
+        FileAppend, , %A_LineFile%\..\db\vognkontrol_lukkede_vogne.txt
     FileRead, vl_luk, %A_LineFile%\..\db\vognkontrol_lukkede_vogne.txt
     vl_luk := StrSplit(vl_luk, "`r`n")
     FileRead, gv_svigt, %A_linefile%\..\db\gv_svigt.txt
