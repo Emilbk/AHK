@@ -5457,7 +5457,20 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     k_aft := sys[1]
     sty_sys := sys[3]
     k_aftale := k_aft  "_" sty_sys
+    FileAppend, , %A_LineFile%\..\db\vognkontrol_lukkede_vogne.txt
+    FileRead, vl_luk, %A_LineFile%\..\db\vognkontrol_lukkede_vogne.txt
+    vl_luk := StrSplit(vl_luk, "`r`n")
     FileRead, gv_svigt, %A_linefile%\..\db\gv_svigt.txt
+    for i,e in vl_luk
+        {
+            if (e = vl)
+                {
+                    MsgBox, 16, VL må ikke genåbnes, Dette vognløb må ikke genåbnes før det er godkendt , 
+                    sleep 100
+                    SendInput, ^a
+                    return
+                }
+        }
     gv_svigt := StrSplit(gv_svigt, ["`n"])
     for i, e in gv_svigt
         {
