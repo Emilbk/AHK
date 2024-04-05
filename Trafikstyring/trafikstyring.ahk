@@ -1096,9 +1096,25 @@ trio_genvej:
     return
 tlfKopi:
     {
+        GetKeyState, tjek_key, Shift, 
         clipboard :=
-        tlf := Trio_hent_tlf()
-        Clipboard := tlf
+        GuiControlGet, tlfkopi, , , 
+        if (tjek_key = "D")
+            {
+            tlfkopi := Trio_hent_tlf()
+            Clipboard := tlfkopi
+            ClipWait, 3,
+            return
+            }
+        if (tlfkopi = "Tlf: ")
+            {
+                tlfkopi := Trio_hent_tlf()
+            }
+        Else
+            {
+                tlfkopi := RegExReplace(tlfkopi, "\D")
+            }
+        Clipboard := tlfkopi
         ClipWait, 3,
         return
     }
@@ -3506,7 +3522,7 @@ Flexfinder_opslag()
             SendInput, +{tab}{up}{tab}
             sleep 300
             SendInput, %opslag%
-            sleep 500
+            sleep 700
             SendInput, {enter}
             WinActivate, PLANET
         }
@@ -3521,7 +3537,7 @@ Flexfinder_opslag()
             SendInput, +{tab}{up}{tab}
             sleep 300
             SendInput, %opslag%
-            sleep 500
+            sleep 700
             SendInput, {enter}
             WinActivate, PLANET
         }
@@ -5406,7 +5422,8 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     FormatTime, dato, , dd-MM-y
     ; FormatTime, tid, , HH:mm
     ; svigt := []
-    gemtklip := ClipboardAll
+    tidligere_notat := clipboard
+    gemtklip := ClipboardAlldd
     ClipWait, 2, 1
     SendInput, ^a^{F12}
     sleep 100
@@ -5440,7 +5457,22 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     k_aft := sys[1]
     sty_sys := sys[3]
     k_aftale := k_aft  "_" sty_sys
+    if (!FileExist("db\vognkontrol_lukkede_vogne.txt"))
+        FileAppend, , %A_LineFile%\..\db\vognkontrol_lukkede_vogne.txt
+    FileRead, vl_luk, %A_LineFile%\..\db\vognkontrol_lukkede_vogne.txt
+    vl_luk := StrSplit(vl_luk, "`r`n")
     FileRead, gv_svigt, %A_linefile%\..\db\gv_svigt.txt
+    for i,e in vl_luk
+        {
+            if (e = vl)
+                {
+                    MsgBox, 16, VL må ikke genåbnes, Dette vognløb må ikke genåbnes før det er godkendt , 
+                    sleep 100
+                    SendInput, ^a
+                    sys_afslut_genvej()
+                    return
+                }
+        }
     gv_svigt := StrSplit(gv_svigt, ["`n"])
     for i, e in gv_svigt
         {
@@ -5471,11 +5503,23 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     clipboard := 
     SendInput, {enter}!v+{up}
     sleep 200
+    if (InStr(tidligere_notat, "GV") or InStr(tidligere_notat, "garanti"))
+        {
+            clipboard := tidligere_notat
+            sleep 200
+            SendInput, ^v{enter}
+            sleep 200
+            tidligere_notat := 1
+
+        }
+    if (tidligere_notat != 1)
+        {
     SendInput, ^c
     ClipWait, 1
-    vl_notat := clipboard 
+    vl_notat := clipboard
     SendInput, ^a
     sleep 500
+        }
     clipboard :=
     SendInput, !{PrintScreen}
     ClipWait, 10, 1
@@ -5562,8 +5606,9 @@ div.WordSection1
     svigt_template.send
     ImageDestroy(udklip)
     P6_planvindue()
-    if (vl_notat = "")
+    if (vl_notat = "" and tidligere_notat != 1)
         {
+
             MsgBox, 48, Mail sendt - husk notat på VL, Mail om genåbningen er blevet sendt - husk det faste notat på VL (garanti-tider osv.), 3
         }
     else
