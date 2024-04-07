@@ -362,16 +362,17 @@ Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
 Gui svigt: Add, Radio, x304 y24 w120 h16, &Garanti
 Gui svigt: Add, Radio, x304 y40 w120 h32, G&arantivognløb i variabel tid
-Gui svigt: Add, Radio, vtype x304 y72 w120 h23, &Variabel
+Gui svigt: Add, Radio, vtype x304 y72 w120 h23, Va&riabel
 Gui svigt: Add, Text, x8 y96 h23 +0x200, &Beskrivelse
 Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
 Gui svigt: Add, Edit, vbeskrivelse x8 y120 w410 h126
 Gui svigt: Add, CheckBox, vgemt_ja x5 y261, Brug &forrige skærmklip
-Gui svigt: Add, Button, x150 y256 w60 h23 vvis ggui_svigt_vis +default, &Vis
-Gui svigt: Add, Button, x210 y256 w60 h23 vsend ggui_svigt_send, &Send
+Gui svigt: Add, Button, x150 y256 w60 h23 vvis ggui_svigt_vis_mail +default, &Vis
+Gui svigt: Add, Button, x210 y256 w60 h23 vsend ggui_svigt_send_mail, &Send
 Gui svigt: Add, text , x280 y261, Anden &Dato
 Gui svigt: Add, Edit , vny_dato x360 y256 w60,
+
 
 ;; GUI vl-note
 
@@ -5556,51 +5557,10 @@ w\:* {behavior:url(#default#VML);}
         sys_afslut_genvej()
         return
 
-    l_outlook_svigt_ny: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         sys_genvej_start(38)
         FormatTime, dato, , dd-MM-y
-    ; GUI svigt
-    gui, svigt: new
-        gui, svigt: +labelsvigt
-        Gui svigt: Font, w600
-        Gui svigt: Add, Text, x16 y0 w120 h23 +0x200, Vognløbs&nummer
-        Gui svigt: Font
-        Gui svigt: Add, Edit, vVL x16 y24 w120 h21, %vl%
-        Gui svigt: Font, s9, Segoe UI
-        Gui svigt: Font, w600
-        Gui svigt: Add, Text, x161 y0 w130 h25 +0x200, &Lukket? (Afkryds én)
-        Gui svigt: Font
-        Gui svigt: Font, s9, Segoe UI
-        Gui svigt: Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
-        Gui svigt: Add, Edit, vtid x200 y24 w79 h21, Hjemzone kl.
-        Gui svigt: Add, CheckBox, vhelt x160 y48 w120 h23, &Ja, og VL slettet
-        Gui svigt: Add, Text, x175 y75 h35 w100 vgarantitid, Garantiperiode: %garanti_tid%
-        ; G svigt:ui Add, CheckBox, vhelt2 x160 y72 w120, GV garanti &slettet i variabel tid ; nødvendig?
-        Gui svigt: Font
-        Gui svigt: Font, s9, Segoe UI
-        Gui svigt: Font, w600
-        Gui svigt: Add, Text, x16 y48 w120 h23 +0x200, &Årsag
-        Gui svigt: Add, Edit, vårsag x16 y72 w120 h21
-        Gui svigt: Font, w600
-        Gui svigt: Font, s9, Segoe UI
-        Gui svigt: Font, w600
-        Gui svigt: Add, Text, x304 y0 w120 h23 +0x200, Garanti eller Var.
-        Gui svigt: Font
-        Gui svigt: Font, s9, Segoe UI
-        Gui svigt: Add, Radio, x304 y24 w120 h16, &Garanti
-        Gui svigt: Add, Radio, x304 y40 w120 h32, G&arantivognløb i variabel tid
-        Gui svigt: Add, Radio, vtype x304 y72 w120 h23, &Variabel
-        Gui svigt: Add, Text, x8 y96 h23 +0x200, &Beskrivelse
-        Gui svigt: Font
-        Gui svigt: Font, s9, Segoe UI
-        Gui svigt: Add, Edit, vbeskrivelse x8 y120 w410 h126
-        Gui svigt: Add, CheckBox, vgemt_ja x5 y261, Brug &forrige skærmklip
-        Gui svigt: Add, Button, x150 y256 w60 h23 vvis ggui_svigt_vis +default, &Vis
-        Gui svigt: Add, Button, x210 y256 w60 h23 vsend ggui_svigt_send, &Send
-        Gui svigt: Add, text , x280 y261, Anden &Dato
-        Gui svigt: Add, Edit , vny_dato x360 y256 w60,
-
-        ; FormatTime, tid, , HH:mm
+         ; FormatTime, tid, , HH:mm
         ; svigt := []
         gemtklip := ClipboardAll
         P6_aktiver()
@@ -5634,21 +5594,46 @@ w\:* {behavior:url(#default#VML);}
         }
     GuiControl, svigt:,  VL , %vl%
     GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
+    GuiControl, svigt:,  beskrivelse ,
+    GuiControl, svigt:,  lukket , 0 
+    GuiControl, svigt:,  helt , 0
+    GuiControl, svigt:,  Button3 , 0 
+    GuiControl, svigt:,  Button4 , 0 
+    GuiControl, svigt:,  Button5 , 0 
+    GuiControl, svigt:,  gemt_ja , 0
+    GuiControl, svigt:,  ny_dato , 
+    GuiControl, svigt:,  årsag , 
+    GuiControl, svigt:,  tid , Hjemzone kl.
+
     clipboard :=
     sleep 500
     SendInput, !{PrintScreen}
     ; sleep 500
-    ClipWait, 10, 1
+    ClipWait, 3, 1
     sleep 200
-    udklip := ImagePutFile(clipboardall, "svigt.png")
+    skærmprint := ImagePutBuffer(clipboardall)
     sleep 200
     ; clipwait 3, 1 ; bedre løsning?
     Gui svigt: Show, w448 h297, Svigt
     ControlFocus, Button1, Svigt
     mod_up()
 Return 
-gui_svigt_vis:
+gui_svigt_vis_mail:
     gui, submit
+    gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl)
+    gui_svigt_vis(gui_svigt_tekst, skærmprint)
+    return
+gui_svigt_send_mail:
+    gui, submit
+    gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl)
+    gui_svigt_send(gui_svigt_tekst, skærmprint)
+    return
+
+
+
+gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl)
+{
+    mail_indhold := {emnefelt: "", broedtekst: ""}
     if (ny_dato != "")
         {
             FormatTime, dato_tid, YYYYMMDDHH24MISS, dd-MM-y
@@ -5713,101 +5698,113 @@ gui_svigt_vis:
     }
     if (type = 1 and lukket = 1 and helt = 0 and årsag != "")
     {
-        emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
-        ; MsgBox, , 1 , % emnefelt,
-        ; beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
-        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
+        mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
+        ; MsgBox, , 1 , % mail_indhold.emnefelt,
+        ; mail_indhold.broedtekst := "GV lukket kl. " tid ": " . mail_indhold.broedtekst
+        mail_indhold.broedtekst := "GV (" garantitid "): lukket kl. " tid " — " . mail_indhold.broedtekst
         gui, hide
     }
     if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
     {
-        emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
-        ; MsgBox, , 2, % emnefelt,
-        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
+        mail_indhold.emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
+        ; MsgBox, , 2, % mail_indhold.emnefelt,
+        mail_indhold.broedtekst := "GV (" garantitid "): lukket kl. " tid " — " . mail_indhold.broedtekst
         gui, hide
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
     {
-        emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - d. " dato
-        ; MsgBox, , 3, % emnefelt,
+        mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - d. " dato
+        ; MsgBox, , 3, % mail_indhold.emnefelt,
+        mail_indhold.broedtekst := beskrivelse
         gui, hide
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag = "")
     {
-        emnefelt := "Svigt VL " vl " d. " dato
+        mail_indhold.emnefelt := "Svigt VL " vl " d. " dato
+        mail_indhold.broedtekst := beskrivelse
         gui, hide
     }
     if (type = 1 and helt = 1 and årsag = "")
     {
-        emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
-        ; MsgBox, , 5, % emnefelt,
-        beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
+        mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
+        ; MsgBox, , 5, % mail_indhold.emnefelt,
+        mail_indhold.broedtekst := "Vl slettet. Garantitid " garantitid " — " . mail_indhold.broedtekst
+        mail_indhold.broedtekst := beskrivelse
 
             gui, hide
         }
         if (type = 1 and helt = 1 and årsag != "")
         {
-            emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
-            ; MsgBox, , 5.1, % emnefelt,
-            beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
+            mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
+            ; MsgBox, , 5.1, % mail_indhold.emnefelt,
+            mail_indhold.broedtekst := "Vl slettet. Garantitid " garantitid " — " . mail_indhold.broedtekst
             gui, hide
         }
         if (type = 2 and lukket = 0 and helt = 0 and årsag !="")
         {
-            emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - " dato
-            ; MsgBox, , 6, % emnefelt,
+            mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - " dato
+            ; MsgBox, , 6, % mail_indhold.emnefelt,
+        mail_indhold.broedtekst := beskrivelse
             gui, hide
         }
         if (type = 2 and lukket = 0 and helt = 0 and årsag = "")
         {
-            emnefelt := "Svigt VL " vl " " vl_type " d. " dato
-            ; MsgBox, , 7, % emnefelt,
+            mail_indhold.emnefelt := "Svigt VL " vl " " vl_type " d. " dato
+            ; MsgBox, , 7, % mail_indhold.emnefelt,
+        mail_indhold.broedtekst := beskrivelse
             gui, hide
         }
         if (type = 2 and lukket = 0 and helt = 1 and årsag = "")
         {
-            emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
-            ; MsgBox, , 7.1, % emnefelt,
-            beskrivelse := "GV slettet i variabel kørsel. Garantitid " garantitid " — " . beskrivelse
+            mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
+            ; MsgBox, , 7.1, % mail_indhold.emnefelt,
+            mail_indhold.broedtekst := "GV slettet i variabel kørsel. Garantitid " garantitid " — " . mail_indhold.broedtekst
             gui, hide
         }
         if (type = 2 and lukket = 1 and årsag != "")
         {
-            emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
-            ; MsgBox, , 8, % emnefelt,
+            mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
+            ; MsgBox, , 8, % mail_indhold.emnefelt,
             if (tid_slet != "Åbningstid garanti")
-                beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garantitid. " garantitid " — " . beskrivelse
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid ". Garantitid. " garantitid " — " . mail_indhold.broedtekst
             Else
-                beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid " — " . mail_indhold.broedtekst
             gui, hide
         }
         if (type = 2 and lukket = 1 and årsag = "")
         {
-            emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
-            ; MsgBox, , 9, % emnefelt,
+            mail_indhold.emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
+            ; MsgBox, , 9, % mail_indhold.emnefelt,
             if (tid_slet != "Åbningstid garanti")
-                beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garantitid " garantitid " — " . beskrivelse
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid ". Garantitid " garantitid " — " . mail_indhold.broedtekst
             Else
-                beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid " — " . mail_indhold.broedtekst
             gui, hide
         }
         if (type = 3 and årsag != "")
         {
-            emnefelt := "Svigt VL " vl ": " årsag " - d. " dato
-            ; MsgBox, , 10, % emnefelt,
+            mail_indhold.emnefelt := "Svigt VL " vl ": " årsag " - d. " dato
+            ; MsgBox, , 10, % mail_indhold.emnefelt,
+        mail_indhold.broedtekst := beskrivelse
             gui, hide
         }
         if (type = 3 and årsag = "")
         {
-            emnefelt := "Svigt VL " vl " d. " dato
-            ; MsgBox, , 11, % emnefelt,
+            mail_indhold.emnefelt := "Svigt VL " vl " d. " dato
+            ; MsgBox, , 11, % mail_indhold.emnefelt,
+        mail_indhold.broedtekst := beskrivelse
             gui, hide
         }
+return mail_indhold
+    }
+gui_svigt_vis(mail_indhold, skærmprint)
+{
+
        outlook := ComObjCreate("Outlook.application")
         outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
         svigt_template := outlook.createitemfromtemplate(outlook_template)
 
-        udklip := ImagePutFile(clipboardall, "svigt.png")
+        udklip := ImagePutFile(skærmprint, "svigt.png")
         udklip_navn := SubStr(udklip, 3)
         udklip_lok := A_ScriptDir "\" udklip_navn
         signatur := A_ScriptDir "\lib\signatur_logo.png"
@@ -5815,7 +5812,8 @@ gui_svigt_vis:
         svigt_template.attachments.add(udklip_lok)
         ; svigt_template.attachments.add(signatur)
         svigt_template.to := "planet@midttrafik.dk"
-        svigt_template.subject := emnefelt
+        svigt_template.subject := mail_indhold.emnefelt
+        broedtekst := mail_indhold.broedtekst
         html_tekst =
         (
             <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
@@ -5857,7 +5855,7 @@ gui_svigt_vis:
     </xml><![endif]--><!--[if gte mso 9]><xml>
     <o:shapelayout v:ext="edit">
     <o:idmap v:ext="edit" data="1" />
-    </o:shapelayout></xml><![endif]--></head><body lang=DA link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal>%beskrivelse%<o:p></o:p></p><p class=MsoNormal><span style='mso-ligatures:none'><br><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%udklip_navn%"></span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
+    </o:shapelayout></xml><![endif]--></head><body lang=DA link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal>%broedtekst%<o:p></o:p></p><p class=MsoNormal><span style='mso-ligatures:none'><br><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%udklip_navn%"></span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
 
         )
         html_tekst_back =
@@ -5870,169 +5868,15 @@ gui_svigt_vis:
         gemtklip :=
         sys_afslut_genvej()
     Return
-    gui_svigt_send:
-        gui, submit
-
-    if (ny_dato != "")
-        {
-            FormatTime, dato_tid, YYYYMMDDHH24MISS, dd-MM-y
-            dato := SubStr(ny_dato, 1 , 2) . "-" SubStr(ny_dato, -1 , 2) "-" SubStr(dato, -1 , 2)
         }
-    beskrivelse := StrReplace(beskrivelse, "`n", " ")
-    if (lukket = 1 and helt = 1)
-    {
-        sleep 100
-        MsgBox, 48 , Vælg kun én, Vælg enten lukket eller slettet VL
-        sleep 100
-        Gui Show, w448 h297, Svigt
-        return
-    }
-    if (lukket = 1 and StrLen(tid) != 4)
-    {
-        sleep 100
-        MsgBox, 48 , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
-        sleep 100
-        Gui Show, w448 h297, Svigt
-        SendInput, !l{tab}^a
-        return
-    }
-    if (StrLen(tid) = 4)
-    {
-        timer := SubStr(tid, 1, 2)
-        min := SubStr(tid, 3, 2)
-        tid_tjek := A_YYYY A_MM A_DD timer min
-        if tid_tjek is not Time
-        {
-            sleep 100
-            MsgBox, 48 , Klokkeslæt ikke gyldigt , Skal være et gyldigt tidspunkt
-            sleep 100
-            Gui Show, w448 h297, Svigt
-            SendInput, ^a
-            return
-        }
-        tid := timer ":" min
-    }
-    if (type = 0)
-    {
-        sleep 100
-        MsgBox, 48 , Mangler VL-type, Husk at krydse af i typen af VL.
-        sleep 100
-        Gui Show, w448 h297, Svigt
-        return
-    }
-    if (type = 1)
-        vl_type := "GV"
-    if (type = 2)
-        vl_type := "(Variabel tid)"
-    if (type = 3)
-        vl_type :=
-    if (beskrivelse = "")
-    {
-        sleep 100
-        MsgBox, 48 , Udfyld beskrivelse, Mangler beskrivelse af svigtet,
-        sleep 100
-        Gui Show, w448 h297, Svigt
-        SendInput, !b
-        return
-    }
-    if (type = 1 and lukket = 1 and helt = 0 and årsag != "")
-    {
-        emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
-        ; MsgBox, , 1 , % emnefelt,
-        ; beskrivelse := "GV lukket kl. " tid ": " . beskrivelse
-        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
-        gui, hide
-    }
-    if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
-    {
-        emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
-        ; MsgBox, , 2, % emnefelt,
-        beskrivelse := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
-        gui, hide
-    }
-    if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
-    {
-        emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - d. " dato
-        ; MsgBox, , 3, % emnefelt,
-        gui, hide
-    }
-    if (type = 1 and lukket = 0 and helt = 0 and årsag = "")
-    {
-        emnefelt := "Svigt VL " vl " d. " dato
-        gui, hide
-    }
-    if (type = 1 and helt = 1 and årsag = "")
-    {
-        emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
-        ; MsgBox, , 5, % emnefelt,
-        beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
-
-            gui, hide
-        }
-        if (type = 1 and helt = 1 and årsag != "")
-        {
-            emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
-            ; MsgBox, , 5.1, % emnefelt,
-            beskrivelse := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
-            gui, hide
-        }
-        if (type = 2 and lukket = 0 and helt = 0 and årsag !="")
-        {
-            emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - " dato
-            ; MsgBox, , 6, % emnefelt,
-            gui, hide
-        }
-        if (type = 2 and lukket = 0 and helt = 0 and årsag = "")
-        {
-            emnefelt := "Svigt VL " vl " " vl_type " d. " dato
-            ; MsgBox, , 7, % emnefelt,
-            gui, hide
-        }
-        if (type = 2 and lukket = 0 and helt = 1 and årsag = "")
-        {
-            emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
-            ; MsgBox, , 7.1, % emnefelt,
-            beskrivelse := "GV slettet i variabel kørsel. Garantitid " garantitid " — " . beskrivelse
-            gui, hide
-        }
-        if (type = 2 and lukket = 1 and årsag != "")
-        {
-            emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
-            ; MsgBox, , 8, % emnefelt,
-            if (tid_slet != "Åbningstid garanti")
-                beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garanti " garantitid " — " . beskrivelse
-            Else
-                beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
-            gui, hide
-        }
-        if (type = 2 and lukket = 1 and årsag = "")
-        {
-            emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
-            ; MsgBox, , 9, % emnefelt,
-            if (tid_slet != "Åbningstid garanti")
-                beskrivelse := "Variabel kørsel, lukket kl. " tid ". Garanti " garantitid " — " . beskrivelse
-            Else
-                beskrivelse := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
-            gui, hide
-        }
-        if (type = 3 and årsag != "")
-        {
-            emnefelt := "Svigt VL " vl ": " årsag " - d. " dato
-            ; MsgBox, , 10, % emnefelt,
-            gui, hide
-        }
-        if (type = 3 and årsag = "")
-        {
-            emnefelt := "Svigt VL " vl " d. " dato
-            ; MsgBox, , 11, % emnefelt,
-            gui, hide
-        }
+gui_svigt_send(mail_indhold, skærmprint)
+{
 
         outlook := ComObjCreate("Outlook.application")
         outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
         svigt_template := outlook.createitemfromtemplate(outlook_template)
 
-        udklip := ImagePutFile(clipboardall, "svigt.png")
+        udklip := ImagePutFile(skærmprint, "svigt.png")
         udklip_navn := SubStr(udklip, 3)
         udklip_lok := A_ScriptDir "\" udklip_navn
 
@@ -6042,12 +5886,12 @@ gui_svigt_vis:
         svigt_template.attachments.add(udklip_lok)
         svigt_template.attachments.add(signatur_lok)
         svigt_template.to := "planet@midttrafik.dk"
-        svigt_template.subject := emnefelt
+        svigt_template.subject := mail_indhold.emnefelt
         ; skaf auto-signatur med getinspector
         signatur_mail := outlook.createitem(0)
         signatur := signatur_mail.getinspector
         signatur := signatur_mail.htmlbody
-
+        broedtekst := mail_indhold.broedtekst
         html_tekst =
         (
             <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
@@ -6089,7 +5933,7 @@ gui_svigt_vis:
     </xml><![endif]--><!--[if gte mso 9]><xml>
     <o:shapelayout v:ext="edit">
     <o:idmap v:ext="edit" data="1" />
-    </o:shapelayout></xml><![endif]--></head><body lang=DA link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal>%beskrivelse%<o:p></o:p></p><p class=MsoNormal><span style='mso-ligatures:none'><br><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%udklip_navn%"></span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
+    </o:shapelayout></xml><![endif]--></head><body lang=DA link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal>%broedtekst%<o:p></o:p></p><p class=MsoNormal><span style='mso-ligatures:none'><br><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%udklip_navn%"></span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
 
         )
         signatur := RegExReplace(signatur, "\bimage001.png\b.{18}", "image001.png")
@@ -6101,7 +5945,7 @@ gui_svigt_vis:
 
         sys_afslut_genvej()
     Return
-
+        }
     svigtEscape:
     svigtClose:
     Gui, hide
@@ -6359,59 +6203,3 @@ gui_svigt_vis:
     ; Else
     ;     MsgBox, , , ikke kald
     ; }
-
-    l_outlook_svigt:
-    sys_genvej_start(38)
-    p6_dan_svigt()
-
-    p6_dan_svigt()
-    {    
-    FormatTime, dato, , dd-MM-y
-
-    gemtklip := ClipboardAll
-    P6_aktiver()
-    vl_array := P6_hent_vl_k_s()
-    if (vl = 0)
-    {
-        sys_afslut_genvej()
-        return
-    }
-    gv_svigt := []
-    FileRead, gv_svigt_ind, db\gv_svigt.txt
-    gv_svigt_ind := StrReplace(gv_svigt_ind, "`r", "")
-    gv_svigt_ind := StrSplit(gv_svigt_ind, "`n")
-    for i,e in gv_svigt_ind
-        {
-            gv_svigt[i] := StrSplit(gv_svigt_ind[i], "`t")
-        }
-    vl := vl_array.1
-    s_sys := vl_array.2
-    k_aftale := vl_array.2 "_" vl_array.3
-
-    for i, e in gv_svigt
-        {
-            if (k_aftale = gv_svigt[i][1])
-                {
-                    garantitid := gv_svigt[i][3]
-                    break
-                }
-            else
-                garantitid := "Variabelt vognløb"
-        }
-    GuiControl, svigt:,  VL , %vl%
-    GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
-    clipboard :=
-    sleep 500
-    SendInput, !{PrintScreen}
-    ; sleep 500
-    ClipWait, 10, 1
-    sleep 200
-    udklip := ImagePutFile(clipboardall, "svigt.png")
-    sleep 200
-    ; clipwait 3, 1 ; bedre løsning?
-    Gui svigt: Show, w448 h297, Svigt
-    ControlFocus, Button1, Svigt
-    mod_up()
-    
-    return
-    }
