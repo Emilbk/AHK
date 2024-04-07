@@ -90,7 +90,7 @@ Hotkey, % bruger_genvej.28, l_trio_opkald_markeret ; !q
 
 Hotkey, IfWinActive, PLANET
 Hotkey, % bruger_genvej.38, l_outlook_svigt ; +F1
-Hotkey, % bruger_genvej.70, l_outlook_genåben ; +F1
+Hotkey, % bruger_genvej.70, l_outlook_genaaben ; +F1
 Hotkey, % bruger_genvej.5, l_p6_initialer ; F2
 Hotkey, % bruger_genvej.6, l_p6_initialer_skriv ; +F2
 Hotkey, % bruger_genvej.7, l_p6_vis_k_aftale ; F3
@@ -5448,7 +5448,7 @@ genvejGuiClose:
     gui, destroy
     sys_afslut_genvej()
 return
-l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+l_outlook_genaaben: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     sys_genvej_start(70)
     FormatTime, dato, , dd-MM-y
     ; FormatTime, tid, , HH:mm
@@ -5497,7 +5497,7 @@ l_outlook_genåben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
         {
             if (e = vl)
                 {
-                    MsgBox, 16, VL må ikke genåbnes, Dette vognløb må ikke genåbnes før det er godkendt , 
+                    MsgBox, 16, VL må ikke genåbnes!, Dette vognløb må ikke genåbnes før det er godkendt til genåbning., 
                     sleep 100
                     SendInput, ^a
                     sys_afslut_genvej()
