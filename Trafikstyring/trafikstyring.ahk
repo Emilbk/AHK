@@ -371,8 +371,8 @@ Gui svigt: Add, Edit, vbeskrivelse x8 y120 w410 h126
 Gui svigt: Add, CheckBox, vgemt_ja x5 y261, Brug &forrige skærmklip
 Gui svigt: Add, Button, x150 y256 w60 h23 vvis ggui_svigt_vis_mail +default, &Vis
 Gui svigt: Add, Button, x210 y256 w60 h23 vsend ggui_svigt_send_mail, &Send
-Gui svigt: Add, text , x280 y261, Anden &Dato
-Gui svigt: Add, Edit , vny_dato x360 y256 w60,
+; Gui svigt: Add, text , x280 y261, Anden &Dato
+; Gui svigt: Add, Edit , vny_dato x360 y256 w60,
 
 
 ;; GUI vl-note
