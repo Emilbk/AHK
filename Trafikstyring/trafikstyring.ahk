@@ -5653,7 +5653,10 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
          ; FormatTime, tid, , HH:mm
         ; svigt := []
         if DllCall("IsClipboardFormatAvailable", "Uint", 2)
+            {
             gemtklip := ImagePutBuffer(clipboardall)
+            GuiControl, svigt: enable, Button6
+            }
         Else
             GuiControl, svigt: disable, Button6
         P6_aktiver()
@@ -5901,7 +5904,7 @@ gui_svigt_vis(mail_indhold, skærmprint, gemt_ja, gemtklip)
         if (gemt_ja = 1)
             udklip := ImagePutFile(gemtklip, "svigt.png")
         else 
-            udklip= ImagePutFile(skærmprint, "svigt.png")
+            udklip := ImagePutFile(skærmprint, "svigt.png")
         udklip_navn := SubStr(udklip, 3)
         udklip_lok := A_ScriptDir "\" udklip_navn
         signatur := A_ScriptDir "\lib\signatur_logo.png"
@@ -5973,7 +5976,10 @@ gui_svigt_send(mail_indhold, skærmprint, gemt_ja, gemtklip)
         outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
         svigt_template := outlook.createitemfromtemplate(outlook_template)
 
-        udklip := ImagePutFile(skærmprint, "svigt.png")
+        if (gemt_ja = 1)
+            udklip := ImagePutFile(gemtklip, "svigt.png")
+        else 
+            udklip := ImagePutFile(skærmprint, "svigt.png")
         udklip_navn := SubStr(udklip, 3)
         udklip_lok := A_ScriptDir "\" udklip_navn
 
