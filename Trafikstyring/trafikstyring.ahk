@@ -1528,7 +1528,7 @@ P6_hent_vl_k_s()
         if (loop_test > 5)
         {
             MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (virker ctrl+c ctrl+v fra P6 til Windows?)
-            return 0
+            return "fejl"
         }
     }
     SendInput, !k
@@ -1550,7 +1550,7 @@ P6_hent_vl_k_s()
         if (loop_test > 5)
         {
             MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (Der skal være sat bil på, hvis VG)
-            return 0
+            return "fejl"
         }
     }
     SendInput, {tab}
@@ -1572,7 +1572,7 @@ P6_hent_vl_k_s()
         if (loop_test > 5)
         {
             MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
-            return 0
+            return "fejl"
         }
     }
     return vl
@@ -5652,10 +5652,10 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         FormatTime, dato, , dd-MM-y
          ; FormatTime, tid, , HH:mm
         ; svigt := []
-        gemtklip := ClipboardAll
+        gemtklip := ImagePutBuffer(clipboardall)
         P6_aktiver()
         vl_array := P6_hent_vl_k_s()
-        if (vl = 0)
+        if (vl_array = "fejl")
         {
             sys_afslut_genvej()
             return
@@ -5699,29 +5699,30 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     sleep 500
     SendInput, !{PrintScreen}
     ; sleep 500
-    ClipWait, 3, 1
+    ClipWait, 10, 1
     sleep 200
     skærmprint := ImagePutBuffer(clipboardall)
     sleep 200
     ; clipwait 3, 1 ; bedre løsning?
     Gui svigt: Show, w448 h297, Svigt
+    sleep 100
     ControlFocus, Button1, Svigt
     mod_up()
 Return 
 gui_svigt_vis_mail:
     gui, submit
-    gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl)
-    gui_svigt_vis(gui_svigt_tekst, skærmprint)
+    gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
+    gui_svigt_vis(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip)
     return
 gui_svigt_send_mail:
     gui, submit
-    gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl)
-    gui_svigt_send(gui_svigt_tekst, skærmprint)
+    gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
+    gui_svigt_send(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip)
     return
 
 
 
-gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl)
+gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
 {
     mail_indhold := {emnefelt: "", broedtekst: ""}
     if (ny_dato != "")
@@ -5887,14 +5888,17 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         }
 return mail_indhold
     }
-gui_svigt_vis(mail_indhold, skærmprint)
+gui_svigt_vis(mail_indhold, skærmprint, gemt_ja, gemtklip)
 {
 
        outlook := ComObjCreate("Outlook.application")
         outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
         svigt_template := outlook.createitemfromtemplate(outlook_template)
 
-        udklip := ImagePutFile(skærmprint, "svigt.png")
+        if (gemt_ja = 1)
+            udklip := ImagePutFile(gemtklip, "svigt.png")
+        else 
+            udklip= ImagePutFile(skærmprint, "svigt.png")
         udklip_navn := SubStr(udklip, 3)
         udklip_lok := A_ScriptDir "\" udklip_navn
         signatur := A_ScriptDir "\lib\signatur_logo.png"
@@ -5959,7 +5963,7 @@ gui_svigt_vis(mail_indhold, skærmprint)
         sys_afslut_genvej()
     Return
         }
-gui_svigt_send(mail_indhold, skærmprint)
+gui_svigt_send(mail_indhold, skærmprint, gemt_ja, gemtklip)
 {
 
         outlook := ComObjCreate("Outlook.application")
