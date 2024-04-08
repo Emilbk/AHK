@@ -5652,7 +5652,10 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         FormatTime, dato, , dd-MM-y
          ; FormatTime, tid, , HH:mm
         ; svigt := []
-        gemtklip := ImagePutBuffer(clipboardall)
+        if DllCall("IsClipboardFormatAvailable", "Uint", 2)
+            gemtklip := ImagePutBuffer(clipboardall)
+        Else
+            GuiControl, svigt: disable, Button6
         P6_aktiver()
         vl_array := P6_hent_vl_k_s()
         if (vl_array = "fejl")
