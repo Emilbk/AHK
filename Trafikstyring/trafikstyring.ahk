@@ -2027,7 +2027,7 @@ p6_soeg_hylde_dagsdato()
     FormatTime, dato, YYYYMMDDHH24MISS, dd
     P6_aktiver()
     P6_rejsesogvindue()
-    sleep 400
+    sleep 300
     SendInput, ^t
     sleep 40
     SendInput, !f %dato% {tab 2} %dato%
