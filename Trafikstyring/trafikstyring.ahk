@@ -105,6 +105,7 @@ Hotkey, % bruger_genvej.62, l_p6_laas_vl ; #F5
 Hotkey, % bruger_genvej.14, l_p6_alarmer ; F7
 Hotkey, % bruger_genvej.15, l_p6_udraabsalarmer ; +F7
 Hotkey, % bruger_genvej.69, l_p6_billede_gui ; +F7
+Hotkey, % bruger_genvej.72, l_p6_soeg_hylde_dagsdato ; +F7
 ; Hotkey, % bruger_genvej.16, l_p6_ring_til_kunde ; +F8
 Hotkey, % bruger_genvej.17, l_p6_udregn_minut ; #t
 Hotkey, % bruger_genvej.18, l_p6_sygehus_ring_op ; ^+s
@@ -1922,6 +1923,19 @@ p6_tjek_andre_rejser()
     sleep 200
     SendInput, !r{F5}{down}
     return
+}
+p6_soeg_hylde_dagsdato()
+{
+    FormatTime, dato, YYYYMMDDHH24MISS, dd
+    P6_aktiver()
+    P6_rejsesogvindue()
+    sleep 200
+    SendInput, ^t
+    sleep 40
+    SendInput, !f %dato% {tab 2} %dato%
+    sleep 40
+    SendInput, !h{Space}^r
+return
 }
 ; ***
 ;
@@ -4485,7 +4499,13 @@ l_p6_tjek_andre_rejser:
         sys_afslut_genvej()
         return
     }
-
+l_p6_soeg_hylde_dagsdato:
+{
+    sys_genvej_start(72)
+    p6_soeg_hylde_dagsdato()
+    sys_afslut_genvej()
+    return
+}
 l_p6_alarmer:
     sys_genvej_start(14)
     P6_alarmer()
@@ -6305,4 +6325,9 @@ gui_svigt_send(mail_indhold, skærmprint, gemt_ja, gemtklip)
     ;     MsgBox, , , kald,
     ; Else
     ;     MsgBox, , , ikke kald
+    ; }
+
+    ; ^+z::
+    ; {
+    ;     p6_soeg_hylde_dagsdato()
     ; }
