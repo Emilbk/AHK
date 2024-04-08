@@ -1578,6 +1578,104 @@ P6_hent_vl_k_s()
     }
     return vl
 }
+; array - 1. VL, 2. k-aftale, 3. stysys, 4. vl-dato
+P6_hent_vl_d_k_s()
+{
+    global s
+    vl := []
+
+    P6_planvindue()
+    SendInput, !l
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    loop_test := 0
+    vl.1 := clipboard
+    while (vl.1 = "")
+    {
+        P6_planvindue()
+        SendInput, !l
+        sleep 500
+        SendInput, +{F10}c
+        ClipWait, 1, 0
+        vl.1 := clipboard
+        loop_test += 1
+        if (loop_test > 5)
+        {
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (virker ctrl+c ctrl+v fra P6 til Windows?)
+            return "fejl"
+        }
+    }
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
+    SendInput, {tab}^c
+    ClipWait, 1, 0
+    loop_test := 0
+    vl.4 := clipboard
+    while (vl.4 = "")
+    {
+        P6_planvindue()
+        SendInput, !l{tab}
+        sleep 500
+        SendInput, ^c
+        ClipWait, 1, 0
+        vl.4 := clipboard
+        loop_test += 1
+        if (loop_test > 5)
+        {
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (virker ctrl+c ctrl+v fra P6 til Windows?)
+            return "fejl"
+        }
+    }
+    SendInput, !k
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    vl.2 := clipboard
+    loop_test := 0
+    while (vl.2 = "")
+    {
+        P6_planvindue()
+        SendInput, !k
+        sleep 500
+        SendInput, +{F10}c
+        ClipWait, 1, 0
+        vl.2 := clipboard
+        loop_test += 1
+        if (loop_test > 5)
+        {
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (Der skal være sat bil på, hvis VG)
+            return "fejl"
+        }
+    }
+    SendInput, {tab}
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    vl.3 := clipboard
+    loop_test := 0
+    while (vl.3 = "")
+    {
+        P6_planvindue()
+        SendInput, !k{tab}
+        sleep 500
+        SendInput, +{F10}c
+        ClipWait, 1, 0
+        vl.3 := clipboard
+        loop_test += 1
+        if (loop_test > 5)
+        {
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
+            return "fejl"
+        }
+    }
+    return vl
+}
+
+
 p6_vl_vindue()
 {
     vl := P6_hent_vl()
