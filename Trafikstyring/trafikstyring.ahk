@@ -5767,7 +5767,7 @@ w\:* {behavior:url(#default#VML);}
 
 l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         sys_genvej_start(38)
-        FormatTime, dato, , dd-MM-y
+        ; FormatTime, dato, , dd-MM-y
          ; FormatTime, tid, , HH:mm
         ; svigt := []
         if DllCall("IsClipboardFormatAvailable", "Uint", 2)
@@ -5778,7 +5778,7 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         Else
             GuiControl, svigt: disable, Button6
         P6_aktiver()
-        vl_array := P6_hent_vl_k_s()
+        vl_array := P6_hent_vl_d_k_s()
         if (vl_array = "fejl")
         {
             sys_afslut_genvej()
@@ -5795,7 +5795,7 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         vl := vl_array.1
         s_sys := vl_array.2
         k_aftale := vl_array.2 "_" vl_array.3
-
+        dato := vl_array.4
     for i, e in gv_svigt
         {
             if (k_aftale = gv_svigt[i][1])
