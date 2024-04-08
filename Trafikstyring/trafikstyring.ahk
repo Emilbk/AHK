@@ -2135,7 +2135,7 @@ P6_initialer()
         If (initialer_fjernet) = ""
             initialer_fjernet := " "
         Clipboard :=
-        sleep 100
+        sleep 200
         Clipboard := initialer_fjernet
         ClipWait, 1, 0
         sendinput ^a^v
@@ -2146,7 +2146,7 @@ P6_initialer()
     if (substr(notering,1, 6) != initialer_udentid)
     {
         Clipboard :=
-        sleep s * 40
+        sleep s * 100
         clipboard := initialer
         ClipWait, 1, 0
         SendInput, {Left}
