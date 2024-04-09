@@ -5916,14 +5916,14 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 1 , % mail_indhold.emnefelt,
         ; mail_indhold.broedtekst := "GV lukket kl. " tid ": " . mail_indhold.broedtekst
-        mail_indhold.broedtekst := "GV (" garantitid "): lukket kl. " tid " — " . mail_indhold.broedtekst
+        mail_indhold.broedtekst := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
         gui, hide
     }
     if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
     {
         mail_indhold.emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 2, % mail_indhold.emnefelt,
-        mail_indhold.broedtekst := "GV (" garantitid "): lukket kl. " tid " — " . mail_indhold.broedtekst
+        mail_indhold.broedtekst := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
         gui, hide
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
@@ -5943,16 +5943,14 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
     {
         mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 5, % mail_indhold.emnefelt,
-        mail_indhold.broedtekst := "Vl slettet. Garantitid " garantitid " — " . mail_indhold.broedtekst
-        mail_indhold.broedtekst := beskrivelse
-
+        mail_indhold.broedtekst := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
             gui, hide
         }
         if (type = 1 and helt = 1 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
             ; MsgBox, , 5.1, % mail_indhold.emnefelt,
-            mail_indhold.broedtekst := "Vl slettet. Garantitid " garantitid " — " . mail_indhold.broedtekst
+            mail_indhold.broedtekst := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
             gui, hide
         }
         if (type = 2 and lukket = 0 and helt = 0 and årsag !="")
@@ -5973,7 +5971,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
             ; MsgBox, , 7.1, % mail_indhold.emnefelt,
-            mail_indhold.broedtekst := "GV slettet i variabel kørsel. Garantitid " garantitid " — " . mail_indhold.broedtekst
+            mail_indhold.broedtekst := "GV slettet i variabel kørsel. Garantitid " garantitid " — " . beskrivelse
             gui, hide
         }
         if (type = 2 and lukket = 1 and årsag != "")
@@ -5981,9 +5979,9 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
             ; MsgBox, , 8, % mail_indhold.emnefelt,
             if (tid_slet != "Åbningstid garanti")
-                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid ". Garantitid. " garantitid " — " . mail_indhold.broedtekst
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid ". Garantitid. " garantitid " — " . beskrivelse
             Else
-                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid " — " . mail_indhold.broedtekst
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
             gui, hide
         }
         if (type = 2 and lukket = 1 and årsag = "")
@@ -5991,9 +5989,9 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
             ; MsgBox, , 9, % mail_indhold.emnefelt,
             if (tid_slet != "Åbningstid garanti")
-                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid ". Garantitid " garantitid " — " . mail_indhold.broedtekst
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid ". Garantitid " garantitid " — " . beskrivelse
             Else
-                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid " — " . mail_indhold.broedtekst
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
             gui, hide
         }
         if (type = 3 and årsag != "")
