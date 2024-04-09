@@ -51,6 +51,7 @@ trio_genvej := "Genvejsoversigt"
 outlook := ComObjCreate("Outlook.application")
 vl_repl := []
 VGPrint := []
+FileCreateDir svigt\%A_UserName%_svigt
 ;; VL-liste-read
 vl_liste_tekst := "db\vl_liste\" A_UserName . "_vl_liste.txt"
 ; tjek dato for modification, hvis ikke samme dag slet data
@@ -364,7 +365,8 @@ Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
 Gui svigt: Add, Radio, x304 y24 w120 h16, &Garanti
 Gui svigt: Add, Radio, x304 y40 w120 h32, G&arantivognløb i variabel tid
-Gui svigt: Add, Radio, vtype x304 y72 w120 h23, Va&riabel
+Gui svigt: Add, Radio, x304 y72 w120 h23, Va&riabel
+Gui svigt: Add, Radio, vtype x304 y92 w120 h32, V&ogngruppe
 Gui svigt: Add, Text, x8 y96 h23 +0x200, &Beskrivelse
 Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
@@ -373,12 +375,12 @@ Gui svigt: Add, CheckBox, vgemt_ja x5 y261, Brug &forrige skærmklip
 Gui svigt: Add, Button, x150 y256 w60 h23 vvis ggui_svigt_vis_mail +default, &Vis
 Gui svigt: Add, Button, x210 y256 w60 h23 vsend ggui_svigt_send_mail, &Send
 ; Gui svigt: Add, text , x280 y261, Anden &Dato
-Gui svigt: Add, Button , vvogngruppesvigt x360 y256 w60, &Hent skærmklip til vogngruppesvigt
+Gui svigt: Add, Button , vvogngruppesvigt gp6_vgsvigt x360 y256 w60, Op&ret vogngruppesvigt
 
 Gui vgSvigt: new 
 gui vgSvigt: add, Text, X+M y+M , Hvilken vogngruppe skal der registreres svigt for?
-Gui vgSvigt: add, DropDownList, vValgtVG, Aarhusstat|Horstat|blalal
-Gui vgSvigt: add, Button, Default vVGOK gp6_vgsvigt_skærmprint , &OK
+Gui vgSvigt: add, DropDownList, vValgtVG, Århusstat|Horstat|blalal
+Gui vgSvigt: add, Button, Default vVGOK gp6_vgsvigt_skprint , &OK
 Gui vgSvigt: add, Button, x+25 vVGAfbryd , &Afbryd
 ;; GUI vl-note
 
@@ -400,7 +402,9 @@ Return
     sendinput, %valgtvg% {enter}
     sleep 500
     clipboard :=
+    sleep 200
     SendInput, !{PrintScreen}
+    sleep 200
     ClipWait, 3, 1
     print.1 := ImagePutBuffer(clipboardall)
     p6_alt_menu("{esc}{alt}", "tv")
@@ -412,7 +416,9 @@ Return
     SendInput, {tab 2}%tid_2%{enter}
     sleep 500
     clipboard :=
+    sleep 200
     SendInput, !{PrintScreen}
+    sleep 200
     ClipWait, 3, 1
     print.2 := ImagePutBuffer(clipboardall)
     ImageShow(print.2)
@@ -421,41 +427,130 @@ Return
 
 }
 
-p6_vgsvigt_skærmprint()
+p6_vgsvigt()
+{
+           vg_svigt := 1
+       gui svigt: hide
+       gui vgsvigt: show, AutoSize Center, Vogngruppesvigt
+       WinWaitActive, Vogngruppesvigt
+       WinWaitClose, Vogngruppesvigt
+    ; ImageShow(VGprint.1)
+    ; ImageShow(VGprint.2)
+        GuiControl, svigt: , Type, 1
+        Gui svigt: Show, w448 h297, Svigt
+
+        
+    return
+}
+p6_vgsvigt_skprint()
 {
     global ValgtVG
     global VGPrint
     gui vgsvigt: Submit
-    VGprint := []
+    VGprint := [[], [], valgtvg]
     EnvAdd, tid, -1 , hours
     FormatTime, tid, %tid%, HH:mm
-    EnvAdd, tid_2, 4 , hours
+    EnvAdd, tid_2, 2 , hours
     FormatTime, tid_2, %tid_2%, HH:mm
     
     p6_aktiver()
     sleep 500
     p6_alt_menu("{esc}{alt}", "td")
     sleep 1000
-    sendinput, %valgtvg% {enter}
+    sendinput, %valgtvg%{enter}
     sleep 500
     clipboard :=
     SendInput, !{PrintScreen}
     ClipWait, 3, 1
-    VGprint.1 := ImagePutBuffer(clipboardall)
+    VGprint[1][1] := ImagePutBuffer(clipboardall)
     p6_alt_menu("{esc}{alt}", "tv")
     sleep 1000
-    SendInput, !g%valgtvg%{Enter}
+    SendInput, !g%valgtvg%
     sleep 100
-    SendInput, !s%tid%
+    SendInput, !s{tab}%tid%
     sleep 100
     SendInput, {tab 2}%tid_2%{enter}
-    sleep 500
+    sleep 4000
     clipboard :=
     SendInput, !{PrintScreen}
     ClipWait, 3, 1
-    VGprint.2 := ImagePutBuffer(clipboardall)
-    
-    return 
+    VGprint[1][2] := ImagePutBuffer(clipboardall)
+    P6_planvindue()
+    sleep 100
+    SendInput, !l
+    sleep 100
+    clipboard :=
+    SendInput, +{AppsKey}c
+    ClipWait, 2
+    VGprint[2][3] := clipboard
+    clipboard :=
+    SendInput, !{PrintScreen}
+    ClipWait, 3, 1
+    VGprint[1][3] := ImagePutBuffer(clipboardall)
+    sleep 100
+    MsgBox, 36, Yderligere vognløb?, % "Vognløb " VGprint[2][3] " er registreret.`n Skal der registeres svigt på flere vognløb?"
+    IfMsgBox, no
+        return 
+    IfMsgBox, Yes
+        {
+            sleep 100
+            P6_aktiver()
+            sleep 100
+            P6_alt_menu("{esc}{alt}", "tv")
+            sleep 100
+            SendInput, ^{Del}
+            sleep 100
+            MsgBox, 64, Føj svigt til liste, Marker de valgte vognløb i vognløbslisten, afslut med CTRL+l.`n`nEscape for escape
+            ; WinWait, Føj svigt til liste
+            ; WinWaitClose, Føj svigt til liste
+            GuiControl, trio_genvej:text, Button1, Markér yderligere svigt
+            Input, inputtekst, M E V, % Chr(12)
+            nu_vl := 1
+            tidligere_vl := 2
+            GuiControl, trio_genvej:text, Button1, Tager skærmprint
+            P6_planvindue()
+                    sleep 500
+                    SendInput, !{Down}
+                    sleep 500
+                    clipboard :=
+                    SendInput, !{PrintScreen}
+                    sleep 300
+                    ClipWait, 3, 1
+                    VGPrint[1].push(ImagePutBuffer(clipboardall))
+                    clipboard :=
+                    SendInput, !l
+                    sleep 20
+                    SendInput, +{AppsKey}c
+                    ClipWait, 3
+                    nu_vl := clipboard
+                    VGPrint[2].Push(nu_vl)
+                    tidligere_vl := nu_vl
+                    nu_vl :=
+            while (nu_vl != tidligere_vl)
+                {
+                    tidligere_vl := nu_vl
+                    P6_planvindue()
+                    SendInput, !{Down}
+                    sleep 500
+                    clipboard :=
+                    SendInput, !{PrintScreen}
+                    sleep 300
+                    ClipWait, 3, 1
+                    VGPrint[1].push(ImagePutBuffer(clipboardall))
+                    clipboard :=
+                    SendInput, !l
+                    sleep 20
+                    SendInput, +{AppsKey}c
+                    ClipWait, 3
+                    nu_vl := clipboard
+                    VGPrint[2].Push(nu_vl)
+                }
+            VGprint[1].RemoveAt(VGprint[1].MaxIndex())
+            VGprint[2].RemoveAt(VGprint[2].MaxIndex())
+            return
+
+
+        }
 }
 
 p6_billede_ok:
@@ -5855,19 +5950,21 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         sys_genvej_start(38)
         ; FormatTime, dato, , dd-MM-y
          ; FormatTime, tid, , HH:mm
-        ; svigt := []
+        vg_svigt := 0
+        VGPrint := [[], [], "ikke vg"]
+        ;tjek om billede i udklipsholder
         if DllCall("IsClipboardFormatAvailable", "Uint", 2)
             {
             gemtklip := ImagePutBuffer(clipboardall)
-            GuiControl, svigt: enable, Button6
+            GuiControl, svigt: enable, Button7
             }
         Else
-            GuiControl, svigt: disable, Button6
+            GuiControl, svigt: disable, Button7
         P6_aktiver()
-        ; vl_array := P6_hent_vl_d_k_s()
-        vl_array := []
-        vl_array.2 := "ingen k" 
-        vl_array.3 := "32" 
+        vl_array := P6_hent_vl_d_k_s()
+        ; vl_array := []
+        ; vl_array.2 := "ingen k" 
+        ; vl_array.3 := "32" 
         if (vl_array = "fejl")
         {
             sys_afslut_genvej()
@@ -5897,13 +5994,7 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         }
     if (vl_array.2 = "ingen k" and vl_array.3 != "")
        {
-       gui vgsvigt: show, AutoSize Center, Vogngruppesvigt
-       WinWaitActive, Vogngruppesvigt
-       WinWaitClose, Vogngruppesvigt
-    ImageShow(VGprint.1)
-    ImageShow(VGprint.2)
-
-       return
+        p6_vgsvigt()
        }       
     GuiControl, svigt:,  VL , %vl%
     GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
@@ -5913,11 +6004,13 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     GuiControl, svigt:,  Button3 , 0 
     GuiControl, svigt:,  Button4 , 0 
     GuiControl, svigt:,  Button5 , 0 
+    GuiControl, svigt:,  Button6 , 0 
     GuiControl, svigt:,  gemt_ja , 0
     GuiControl, svigt:,  ny_dato , 
     GuiControl, svigt:,  årsag , 
     GuiControl, svigt:,  tid , Hjemzone kl.
-
+    if (vg_svigt = 0)
+        {
     clipboard :=
     sleep 500
     SendInput, !{PrintScreen}
@@ -5926,6 +6019,7 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     sleep 200
     skærmprint := ImagePutBuffer(clipboardall)
     sleep 200
+        }
     ; clipwait 3, 1 ; bedre løsning?
     Gui svigt: Show, w448 h297, Svigt
     sleep 100
@@ -5935,18 +6029,22 @@ Return
 gui_svigt_vis_mail:
     gui, submit
     gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
-    gui_svigt_vis(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip)
+    if (gui_svigt_tekst = 0)
+        return
+    gui_svigt_vis(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip, VGPrint)
     return
 gui_svigt_send_mail:
     gui, submit
     gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
-    gui_svigt_send(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip)
+    gui_svigt_send(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip, VGPrint)
     return
 
 
 
 gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
 {
+    global vgprint
+    
     mail_indhold := {emnefelt: "", broedtekst: ""}
     if (ny_dato != "")
         {
@@ -5960,7 +6058,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         MsgBox, 48 , Vælg kun én, Vælg enten lukket eller slettet VL
         sleep 100
         Gui Show, w448 h297, Svigt
-        return
+        return 0
     }
     if (lukket = 1 and StrLen(tid) != 4)
     {
@@ -5969,7 +6067,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         sleep 100
         Gui Show, w448 h297, Svigt
         SendInput, !l{tab}^a
-        return
+        return 0
     }
     if (StrLen(tid) = 4)
     {
@@ -5983,7 +6081,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
             sleep 100
             Gui Show, w448 h297, Svigt
             SendInput, ^a
-            return
+            return 0
         }
         tid := timer ":" min
     }
@@ -5993,7 +6091,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         MsgBox, 48 , Mangler VL-type, Husk at krydse af i typen af VL.
         sleep 100
         Gui Show, w448 h297, Svigt
-        return
+        return 0
     }
     if (type = 1)
         vl_type := "GV"
@@ -6008,7 +6106,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         sleep 100
         Gui Show, w448 h297, Svigt
         SendInput, !b
-        return
+        return 0
     }
     if (type = 1 and lukket = 1 and helt = 0 and årsag != "")
     {
@@ -6109,24 +6207,69 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         mail_indhold.broedtekst := beskrivelse
             gui, hide
         }
+        if (type = 4)
+        {
+            mail_indhold.emnefelt := "Svigt " vgprint[3] " d. " dato
+            ; MsgBox, , 11, % mail_indhold.emnefelt,
+        for i,e in VGPrint
+            if (i = 2)
+                {
+            for i2,e2 in e
+            {
+                if (i2 >= 3)
+                    {
+                    if (i2 = VGPrint[2].MaxIndex())
+                        vg_vl := vg_vl . "og " e2
+                    else
+                        vg_vl := vg_vl . e2 ", "
+                    }
+            }
+        }
+            ; vg_vl := SubStr(vg_vl, 1, -2)
+        mail_indhold.broedtekst := "svigt " VGPrint[3] ", vognløb " vg_vl " — " beskrivelse
+            gui, hide
+        }
 return mail_indhold
     }
-gui_svigt_vis(mail_indhold, skærmprint, gemt_ja, gemtklip)
+gui_svigt_vis(mail_indhold, skærmprint, gemt_ja, gemtklip, VGPrint)
 {
 
        outlook := ComObjCreate("Outlook.application")
         outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
         svigt_template := outlook.createitemfromtemplate(outlook_template)
-
+        svigtdir := A_ScriptDir "\svigt\" A_UserName "_svigt\" 
+        if (VGPrint[3] = "ikke vg")
+            {
         if (gemt_ja = 1)
-            udklip := ImagePutFile(gemtklip, "svigt.png")
+            udklip := ImagePutFile(gemtklip, svigtdir "svigt.png")   
         else 
-            udklip := ImagePutFile(skærmprint, "svigt.png")
-        udklip_navn := SubStr(udklip, 3)
-        udklip_lok := A_ScriptDir "\" udklip_navn
-        signatur := A_ScriptDir "\lib\signatur_logo.png"
-
+            udklip := ImagePutFile(skærmprint, svigtdir "svigt.png")   
+        udklip_array := StrSplit(udklip, "\")
+        udklip_navn := udklip_array[udklip_array.MaxIndex()]
+        udklip_lok := A_ScriptDir "\svigt\" A_UserName "_svigt\" udklip_navn
+        html_billede = <img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="asdasdasd" src="cid:%udklip_navn%">
         svigt_template.attachments.add(udklip_lok)
+            }
+        if (VGPrint[3] != "")
+            for i,e in VGPrint
+                {
+                    if (i = 1)
+                        {
+                        for i2, e2 in e
+                            {
+                                udklip_%i2% := ImagePutFile(e2, svigtdir "svigt_" i2 ".png")
+                                udklip_array := StrSplit(udklip_%i2%, "\")
+                                udklip_navn_%i2% :=  udklip_array[udklip_array.MaxIndex()]
+                                udklip_lok_%i2% := svigtdir udklip_navn_%i2%
+                                svigt_template.attachments.add(udklip_lok_%i2%)
+                                html_billede_ind = <img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="asdasdasd" src="cid:xyz">
+                                html_billede_ind := StrReplace(html_billede_ind, "xyz", udklip_navn_%i2%)
+                                html_billede := html_billede . html_billede_ind
+                            }
+                        }
+                    }
+            signatur := A_ScriptDir "\lib\signatur_logo.png"
+
         ; svigt_template.attachments.add(signatur)
         svigt_template.to := "planet@midttrafik.dk"
         svigt_template.subject := mail_indhold.emnefelt
@@ -6172,21 +6315,34 @@ gui_svigt_vis(mail_indhold, skærmprint, gemt_ja, gemtklip)
     </xml><![endif]--><!--[if gte mso 9]><xml>
     <o:shapelayout v:ext="edit">
     <o:idmap v:ext="edit" data="1" />
-    </o:shapelayout></xml><![endif]--></head><body lang=DA link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal>%broedtekst%<o:p></o:p></p><p class=MsoNormal><span style='mso-ligatures:none'><br><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%udklip_navn%"></span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
+    </o:shapelayout></xml><![endif]--></head><body lang=DA link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal>%broedtekst%<o:p></o:p></p><p class=MsoNormal><span style='mso-ligatures:none'><br>%html_billede%</span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
 
         )
+        FileAppend, %html_tekst%, test.txt
         html_tekst_back =
         (
         </o:shapelayout></xml><![endif]--></head><body lang=DA link="#0563C1" vlink="#954F72" style='tab-interval:65.2pt;word-wrap:break-word'><div class=WordSection1><img id="Billede_x0020_2" src="cid:%udklip_navn%"></span></p><div><p class=MsoNormal style='mso-margin-top-alt:auto'><span style='font-size:10.0pt;font-family:"Verdana",sans-serif;mso-fareast-language:DA'</o:p></span></p></div><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'><o:p>&nbsp;</o:p></span></p></div></body></html>
         )
         svigt_template.htmlbody := html_tekst
         svigt_template.display
-        ImageDestroy(udklip)
+        if (VGPrint[3] != "")
+            for i,e in VGPrint
+                {
+                    if (i = 1)
+                        {
+                        for i2, e2 in e
+                            {
+                                ImageDestroy(udklip_%i2%)
+                            }
+                        }
+                    }
+        else
+            ImageDestroy(udklip)
         gemtklip :=
         sys_afslut_genvej()
     Return
         }
-gui_svigt_send(mail_indhold, skærmprint, gemt_ja, gemtklip)
+gui_svigt_send(mail_indhold, skærmprint, gemt_ja, gemtklip, VGPrint)
 {
 
         outlook := ComObjCreate("Outlook.application")
