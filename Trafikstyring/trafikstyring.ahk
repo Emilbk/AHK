@@ -374,11 +374,22 @@ Gui svigt: Add, Button, x210 y256 w60 h23 vsend ggui_svigt_send_mail, &Send
 ; Gui svigt: Add, text , x280 y261, Anden &Dato
 Gui svigt: Add, Button , vvogngruppesvigt x360 y256 w60, &Hent skærmklip til vogngruppesvigt
 
-
+Gui vgSvigt: new 
+gui vgSvigt: add, Text, X+M y+M , Hvilken vogngruppe skal der registreres svigt for?
+Gui vgSvigt: add, DropDownList, vValgtVG, Aarhusstat|Horstat|blalal
+Gui vgSvigt: add, Button, Default vVGOK , &OK
+Gui vgSvigt: add, Button, x+25 vVGAfbryd , &Afbryd
 ;; GUI vl-note
 
 ;; END AUTOEXEC
 Return
++^z::
+{
+    WinGetTitle, titel, A
+    MsgBox, , , %titel%
+    return
+}
+
 
 p6_billede_ok:
     gui p6_billede: Submit
@@ -1595,6 +1606,7 @@ P6_hent_vl_d_k_s()
     vl.1 := clipboard
     while (vl.1 = "")
     {
+        P6_aktiver()
         P6_planvindue()
         SendInput, !l
         sleep 500
@@ -1616,6 +1628,7 @@ P6_hent_vl_d_k_s()
     vl.4 := clipboard
     while (vl.4 = "")
     {
+        P6_aktiver()
         P6_planvindue()
         SendInput, !l{tab}
         sleep 500
@@ -1638,6 +1651,7 @@ P6_hent_vl_d_k_s()
     loop_test := 0
     while (vl.2 = "")
     {
+        P6_aktiver()
         P6_planvindue()
         SendInput, !k
         sleep 500
@@ -1645,7 +1659,7 @@ P6_hent_vl_d_k_s()
         ClipWait, 1, 0
         vl.2 := clipboard
         loop_test += 1
-        if (loop_test > 3)
+        if (loop_test > 2)
         {
             ; MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (Der skal være sat bil på, hvis VG)
             vl.2 := "ingen k"
@@ -1660,6 +1674,7 @@ P6_hent_vl_d_k_s()
     loop_test := 0
     while (vl.3 = "")
     {
+        P6_aktiver()
         P6_planvindue()
         SendInput, !k{tab}
         sleep 500
@@ -5814,7 +5829,11 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         }
     if (vl_array.2 = "ingen k" and vl_array.3 != "")
        {
-            MsgBox, 33 , , VG?,
+       gui vgsvigt: show, AutoSize Center, Vogngrupppe-svigt
+       WinWaitActive, Vogngruppe-svigt
+       WinWaitClose, Vogngruppe-svigt
+       MsgBox, , , sdf, 
+       return
        }       
     GuiControl, svigt:,  VL , %vl%
     GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
