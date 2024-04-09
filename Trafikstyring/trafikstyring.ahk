@@ -50,6 +50,7 @@ tlf :=
 trio_genvej := "Genvejsoversigt"
 outlook := ComObjCreate("Outlook.application")
 vl_repl := []
+VGPrint := []
 ;; VL-liste-read
 vl_liste_tekst := "db\vl_liste\" A_UserName . "_vl_liste.txt"
 ; tjek dato for modification, hvis ikke samme dag slet data
@@ -377,7 +378,7 @@ Gui svigt: Add, Button , vvogngruppesvigt x360 y256 w60, &Hent skærmklip til vo
 Gui vgSvigt: new 
 gui vgSvigt: add, Text, X+M y+M , Hvilken vogngruppe skal der registreres svigt for?
 Gui vgSvigt: add, DropDownList, vValgtVG, Aarhusstat|Horstat|blalal
-Gui vgSvigt: add, Button, Default vVGOK , &OK
+Gui vgSvigt: add, Button, Default vVGOK gp6_vgsvigt_skærmprint , &OK
 Gui vgSvigt: add, Button, x+25 vVGAfbryd , &Afbryd
 ;; GUI vl-note
 
@@ -385,11 +386,77 @@ Gui vgSvigt: add, Button, x+25 vVGAfbryd , &Afbryd
 Return
 +^z::
 {
-    WinGetTitle, titel, A
-    MsgBox, , , %titel%
+    print := []
+    EnvAdd, tid, -1 , hours
+    FormatTime, tid, %tid%, HH:mm
+    EnvAdd, tid_2, 4 , hours
+    FormatTime, tid_2, %tid_2%, HH:mm
+    KeyWait, alt
+    KeyWait, ctrl
+    valgtvg := "århusstat"
+    p6_aktiver()
+    p6_alt_menu("{esc}{alt}", "td")
+    sleep 500
+    sendinput, %valgtvg% {enter}
+    sleep 500
+    clipboard :=
+    SendInput, !{PrintScreen}
+    ClipWait, 3, 1
+    print.1 := ImagePutBuffer(clipboardall)
+    p6_alt_menu("{esc}{alt}", "tv")
+    sleep 500
+    SendInput, !g%valgtvg%{Enter}
+    sleep 100
+    SendInput, !s%tid%
+    sleep 100
+    SendInput, {tab 2}%tid_2%{enter}
+    sleep 500
+    clipboard :=
+    SendInput, !{PrintScreen}
+    ClipWait, 3, 1
+    print.2 := ImagePutBuffer(clipboardall)
+    ImageShow(print.2)
     return
+
+
 }
 
+p6_vgsvigt_skærmprint()
+{
+    global ValgtVG
+    global VGPrint
+    gui vgsvigt: Submit
+    VGprint := []
+    EnvAdd, tid, -1 , hours
+    FormatTime, tid, %tid%, HH:mm
+    EnvAdd, tid_2, 4 , hours
+    FormatTime, tid_2, %tid_2%, HH:mm
+    
+    p6_aktiver()
+    sleep 500
+    p6_alt_menu("{esc}{alt}", "td")
+    sleep 1000
+    sendinput, %valgtvg% {enter}
+    sleep 500
+    clipboard :=
+    SendInput, !{PrintScreen}
+    ClipWait, 3, 1
+    VGprint.1 := ImagePutBuffer(clipboardall)
+    p6_alt_menu("{esc}{alt}", "tv")
+    sleep 1000
+    SendInput, !g%valgtvg%{Enter}
+    sleep 100
+    SendInput, !s%tid%
+    sleep 100
+    SendInput, {tab 2}%tid_2%{enter}
+    sleep 500
+    clipboard :=
+    SendInput, !{PrintScreen}
+    ClipWait, 3, 1
+    VGprint.2 := ImagePutBuffer(clipboardall)
+    
+    return 
+}
 
 p6_billede_ok:
     gui p6_billede: Submit
@@ -2453,8 +2520,6 @@ P6_input_sluttid()
 {
     brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
     p6_input_sidste_slut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,42)
-    KeyWait, Ctrl,
-    KeyWait, Shift,
     EnvAdd, nu_plus_5, 5, minutes
     FormatTime, nu_plus_5, %nu_plus_5%, HHmm
     FormatTime, dato, YYYYMMDDHH24MISS, ddMM
@@ -5799,7 +5864,10 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         Else
             GuiControl, svigt: disable, Button6
         P6_aktiver()
-        vl_array := P6_hent_vl_d_k_s()
+        ; vl_array := P6_hent_vl_d_k_s()
+        vl_array := []
+        vl_array.2 := "ingen k" 
+        vl_array.3 := "32" 
         if (vl_array = "fejl")
         {
             sys_afslut_genvej()
@@ -5829,10 +5897,12 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         }
     if (vl_array.2 = "ingen k" and vl_array.3 != "")
        {
-       gui vgsvigt: show, AutoSize Center, Vogngrupppe-svigt
-       WinWaitActive, Vogngruppe-svigt
-       WinWaitClose, Vogngruppe-svigt
-       MsgBox, , , sdf, 
+       gui vgsvigt: show, AutoSize Center, Vogngruppesvigt
+       WinWaitActive, Vogngruppesvigt
+       WinWaitClose, Vogngruppesvigt
+    ImageShow(VGprint.1)
+    ImageShow(VGprint.2)
+
        return
        }       
     GuiControl, svigt:,  VL , %vl%
