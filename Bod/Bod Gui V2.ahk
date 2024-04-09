@@ -26,7 +26,7 @@ loop ExcelSvigtInputDrift.MaxIndex(1)
 }
 for i, e in StamData
 {
-    if i > 1
+    if i > 1 and e[1] != ""
     {
         e[1] := Format("{:.0i}", e[1])
         e[1] := Format("{:s}", e[1])
@@ -211,23 +211,29 @@ FunkKnapOK(VD, *)
     vl := ""
     bod := ""
     brist := ""
-    paragraf := ""
+    ParagrafBeskrivelse := ""
+    Paragraf := ParagrafTekst.Text
     bod := ""
     dato := ""
+    email := VD[2]
+    vm := VD[1]
     if FormatTime(DatoVaelg.Value, "ddMM") = FormatTime(A_Now, "ddMM")
         valg := MsgBox("Sikker på dags dato?", "Korrekt Dato?", "YN Icon!")
-    if valg = "Yes"
-        MsgBox "OK"
+    if valg = "No"
+        {
+        DatoVaelg.Focus()
+        return
+        }
     GuiSubmit := mygui.Submit("Nohide")
     dato := formattime(Guisubmit.Datoresultat, "dd.MM.yyyy")
     Vl := GuiSubmit.VLResultat
     Bod := Guisubmit.Bod
     Kvalitetsbrist := GuiSubmit.Kvalitetsbrist
     if GuiSubmit.ParagrafFGResultat != ""
-        Paragraf := GuiSubmit.ParagrafFGResultat
+        ParagrafBeskrivelse := GuiSubmit.ParagrafFGResultat
     if GuiSubmit.ParagrafFVResultat != ""
-        Paragraf := GuiSubmit.ParagrafFVResultat
-    msgbox("Bod er: " bod "`nVl er: " vl "`nKvalitetsbrist er: " Kvalitetsbrist "`nVM er: " VD[1] "`nKontaktinfo er: " VD[2] "`nParagraf er: " paragraf)
+        ParagrafBeskrivelse := GuiSubmit.ParagrafFVResultat
+    ; msgbox("Bod er: " bod "`nVl er: " vl "`nKvalitetsbrist er: " Kvalitetsbrist "`nVM er: " VD[1] "`nKontaktinfo er: " VD[2] "`nParagraf er: " ParagrafBeskrivelse)
     VLSoeg.Focus()
     
     html_test_med_billede := 
@@ -282,7 +288,7 @@ FunkKnapOK(VD, *)
     </xml><![endif]--><!--[if gte mso 9]><xml>
     <o:shapelayout v:ext=`"edit`">
     <o:idmap v:ext=`"edit`" data=`"1`" />
-    </o:shapelayout></xml><![endif]--></head><body lang=DA link=`"#0563C1`" vlink=`"#954F72`" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Til</span><span style='font-family:`"Verdana`",sans-serif'><o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif;mso-fareast-language:DA'>" VM "<o:p></o:p></span></p><p class=MsoNormal><b><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Bod for kvalitetsbrist<o:p></o:p></span></b></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'><o:p>&nbsp;</o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Midttrafik har d. " dato " registreret en kvalitetsbrist på  vognløb <b>" VL ",</b> der medfører en bod på kr. " bod ",- jf. FG8, side 52, § 31, stk. 3, litra<o:p></o:p></span></p><p class=Default><o:p>&nbsp;</o:p></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>" paragraf "<o:p></o:p></span></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Kvalitetsbristen bestod i, at " brist "<o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'><o:p>&nbsp;</o:p></span></p><div><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Beløbet vil blive modregnet i vognmandsafregningen.<o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Eventuel indsigelse skal foretages skriftligt inden 5 arbejdsdage.<o:p></o:p></span></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div><div><p class=MsoNormal style='mso-margin-top-alt:auto'><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif;mso-ligatures:standardcontextual;mso-fareast-language:DA'>Venlig hilsen<br><br>Flextrafiks Driftsafdeling<o:p></o:p></span></p><p class=MsoNormal style='mso-margin-bottom-alt:auto'><span style='font-size:8.0pt;font-family:`"Verdana`",sans-serif;mso-ligatures:standardcontextual;mso-fareast-language:DA'><br>Flextrafik - Trafikstyring<br>&nbsp;<br>70 11 22 10<br><u><span style='color:blue'><a href=`"mailto:planet@Midttrafik.dk`">planet@Midttrafik.dk</a></span></u><br><br><span style='color:#9B1C3C'>Sender du fortrolige eller følsomme personoplysninger til Midttrafik, skal det ske via en sikker mailforbindelse. Se Midttrafiks <a href=`"https://www.midttrafik.dk/kundeservice/privatlivspolitik`"><span style='color:blue'>privatlivspolitik</span></a>.</span><o:p></o:p></span></p><p class=MsoNormal><a href=`"http://www.midttrafik.dk/`"><span style='font-family:`"Verdana`",sans-serif;color:blue;mso-fareast-language:DA;text-decoration:none'><img border=0 width=141 height=131 style='width:1.4687in;height:1.3645in' src=`"cid:signatur_logo.png`"></span></a><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif;mso-ligatures:standardcontextual'><o:p></o:p></span></p></div><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
+    </o:shapelayout></xml><![endif]--></head><body lang=DA link=`"#0563C1`" vlink=`"#954F72`" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Til</span><span style='font-family:`"Verdana`",sans-serif'><o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif;mso-fareast-language:DA'>" VM "<o:p></o:p></span></p><p class=MsoNormal><b><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Bod for kvalitetsbrist<o:p></o:p></span></b></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'><o:p>&nbsp;</o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Midttrafik har d. " dato " registreret en kvalitetsbrist på  vognløb <b>" VL ",</b> der medfører en bod på kr. " bod ",- jf. FG8, side 52, § 31, stk. 3, litra<o:p></o:p></span></p><p class=Default><o:p>&nbsp;</o:p></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>" Paragraf "<o:p></o:p></span></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Kvalitetsbristen bestod i, at " Kvalitetsbrist "<o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'><o:p>&nbsp;</o:p></span></p><div><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Beløbet vil blive modregnet i vognmandsafregningen.<o:p></o:p></span></p><p class=MsoNormal><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif'>Eventuel indsigelse skal foretages skriftligt inden 5 arbejdsdage.<o:p></o:p></span></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div><div><p class=MsoNormal style='mso-margin-top-alt:auto'><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif;mso-ligatures:standardcontextual;mso-fareast-language:DA'>Venlig hilsen<br><br>Flextrafiks Driftsafdeling<o:p></o:p></span></p><p class=MsoNormal style='mso-margin-bottom-alt:auto'><span style='font-size:8.0pt;font-family:`"Verdana`",sans-serif;mso-ligatures:standardcontextual;mso-fareast-language:DA'><br>Flextrafik - Trafikstyring<br>&nbsp;<br>70 11 22 10<br><u><span style='color:blue'><a href=`"mailto:planet@Midttrafik.dk`">planet@Midttrafik.dk</a></span></u><br><br><span style='color:#9B1C3C'>Sender du fortrolige eller følsomme personoplysninger til Midttrafik, skal det ske via en sikker mailforbindelse. Se Midttrafiks <a href=`"https://www.midttrafik.dk/kundeservice/privatlivspolitik`"><span style='color:blue'>privatlivspolitik</span></a>.</span><o:p></o:p></span></p><p class=MsoNormal><a href=`"http://www.midttrafik.dk/`"><span style='font-family:`"Verdana`",sans-serif;color:blue;mso-fareast-language:DA;text-decoration:none'><img border=0 width=141 height=131 style='width:1.4687in;height:1.3645in' src=`"cid:signatur_logo.png`"></span></a><span style='font-size:10.0pt;font-family:`"Verdana`",sans-serif;mso-ligatures:standardcontextual'><o:p></o:p></span></p></div><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
 
 
 
