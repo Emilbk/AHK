@@ -372,7 +372,7 @@ Gui svigt: Add, CheckBox, vgemt_ja x5 y261, Brug &forrige skærmklip
 Gui svigt: Add, Button, x150 y256 w60 h23 vvis ggui_svigt_vis_mail +default, &Vis
 Gui svigt: Add, Button, x210 y256 w60 h23 vsend ggui_svigt_send_mail, &Send
 ; Gui svigt: Add, text , x280 y261, Anden &Dato
-; Gui svigt: Add, Edit , vny_dato x360 y256 w60,
+Gui svigt: Add, Button , vvogngruppesvigt x360 y256 w60, &Hent skærmklip til vogngruppesvigt
 
 
 ;; GUI vl-note
@@ -1584,6 +1584,7 @@ P6_hent_vl_d_k_s()
     global s
     vl := []
 
+
     P6_planvindue()
     SendInput, !l
     clipboard := ""
@@ -1604,7 +1605,7 @@ P6_hent_vl_d_k_s()
         if (loop_test > 5)
         {
             MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (virker ctrl+c ctrl+v fra P6 til Windows?)
-            return "fejl"
+            vl.1 := "intet vl"
         }
     }
     clipboard := ""
@@ -1625,7 +1626,7 @@ P6_hent_vl_d_k_s()
         if (loop_test > 5)
         {
             MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (virker ctrl+c ctrl+v fra P6 til Windows?)
-            return "fejl"
+            vl.4 := "ingen dato"
         }
     }
     SendInput, !k
@@ -1644,10 +1645,10 @@ P6_hent_vl_d_k_s()
         ClipWait, 1, 0
         vl.2 := clipboard
         loop_test += 1
-        if (loop_test > 5)
+        if (loop_test > 3)
         {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (Der skal være sat bil på, hvis VG)
-            return "fejl"
+            ; MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (Der skal være sat bil på, hvis VG)
+            vl.2 := "ingen k"
         }
     }
     SendInput, {tab}
@@ -1666,10 +1667,10 @@ P6_hent_vl_d_k_s()
         ClipWait, 1, 0
         vl.3 := clipboard
         loop_test += 1
-        if (loop_test > 5)
+        if (loop_test > 3)
         {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
-            return "fejl"
+            ; MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
+            vl.3 := "ingen s"
         }
     }
     return vl
@@ -2866,6 +2867,11 @@ P6_vl_luk(tid:="")
     }
 }
 ; P6 ring op til markeret kunde i VL (telefon i bestilling)
+p6_skaermprint_vg()
+{
+    P6_aktiver()
+    P6_alt_menu()
+}
 p6_hent_kunde_tlf(telefon:="")
 {
     global s
@@ -5806,6 +5812,10 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
             else
                 garantitid := "Variabelt vognløb"
         }
+    if (vl_array.2 = "ingen k" and vl_array.3 != "")
+       {
+            MsgBox, 33 , , VG?,
+       }       
     GuiControl, svigt:,  VL , %vl%
     GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
     GuiControl, svigt:,  beskrivelse ,
