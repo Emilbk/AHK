@@ -73,6 +73,7 @@ outlook := ComObjCreate("Outlook.application")
                 sendinput, {f2}
                 sleep 40
                 sendinput ^v
+                sleep 40
                 SendInput, {tab}
                 sleep 40
                 SendInput, mtebk{tab}
