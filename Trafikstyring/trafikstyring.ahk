@@ -2130,6 +2130,7 @@ P6_hent_vm_tlf()
             return "fejl"
         }
     }
+
     SendInput, {enter}
     SendInput ^a
     vm_tlf := Clipboard
@@ -6035,7 +6036,7 @@ w\:* {behavior:url(#default#VML);}
             gui, hide
             return mail_indhold
         }
-    MsgBox, 16, Alarm!, Mail bliver sendt tom! Prøv igen...
+    MsgBox, 16, Alarm!, Mail bliver sendt tom! Giv mig lige besked om fejlen
     return "fejl"
     }
     gui_svigt_vis(mail_indhold, skærmprint, gemt_ja, gemtklip)
