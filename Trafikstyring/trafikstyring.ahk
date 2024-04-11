@@ -51,6 +51,7 @@ trio_genvej := "Genvejsoversigt"
 outlook := ComObjCreate("Outlook.application")
 vl_repl := []
 ;; VL-liste-read
+FileCreateDir db\vl_liste
 vl_liste_tekst := "db\vl_liste\" A_UserName . "_vl_liste.txt"
 ; tjek dato for modification, hvis ikke samme dag slet data
 FileGetTime, vl_liste_tekst_dato, %vl_liste_tekst%, M
