@@ -5773,9 +5773,13 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         if DllCall("IsClipboardFormatAvailable", "Uint", 2)
             {
             gemtklip := ImagePutBuffer(clipboardall)
+            gemt_ja := 1
             GuiControl, svigt: enable, Button6
             }
         Else
+            {
+            gemtklip :=
+            gemt_ja :=
             GuiControl, svigt: disable, Button6
         P6_aktiver()
         vl_array := P6_hent_vl_d_k_s()
