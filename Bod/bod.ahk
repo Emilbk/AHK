@@ -23,16 +23,16 @@ outlook := ComObjCreate("Outlook.application")
     !q::
         {
             winactivate Planet - Svigt til behandling - Planet - Outlook
-            sleep 100
+            sleep 150
             controlfocus, outlookgrid1, Planet - Svigt til behandling - Planet - Outlook
-            sleep 100
+            sleep 150
             sendinput, {appskey}
             ; ControlClick, Outlookgrid1, Planet - Svigt til behandling - Planet - Outlook, , Right, 1
             ; ControlSend, Outlookgrid1, {AppsKey}, Planet - Svigt til behandling - Planet - Outlook
             ; return
-            sleep 100
+            sleep 240
             sendinput, h
-            sleep 50
+            sleep 90
             sendinput, {enter}
             ; ; sleep 500
             ; ; sendinput, {up}
@@ -70,7 +70,10 @@ outlook := ComObjCreate("Outlook.application")
                 Clipboard := mailbody[1]
                 sleep 150
                 SendInput, {tab}
-                sendinput, {f2}^v
+                sendinput, {f2}
+                sleep 40
+                sendinput ^v
+                sleep 40
                 SendInput, {tab}
                 sleep 40
                 SendInput, mtebk{tab}

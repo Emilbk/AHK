@@ -375,6 +375,8 @@ Gui svigt: Add, CheckBox, vgemt_ja x5 y261, Brug &forrige skærmklip
 Gui svigt: Add, Button, x150 y256 w60 h23 vvis ggui_svigt_vis_mail +default, &Vis
 Gui svigt: Add, Button, x210 y256 w60 h23 vsend ggui_svigt_send_mail, &Send
 ; Gui svigt: Add, text , x280 y261, Anden &Dato
+; Gui svigt: Add, Edit , vny_dato x360 y256 w60,
+
 Gui svigt: Add, Button , vvogngruppesvigt gp6_vgsvigt x360 y256 w60, Op&ret vogngruppesvigt
 
 Gui vgSvigt: new 
@@ -1307,24 +1309,24 @@ trio_genvej:
 return
 tlfKopi:
     {
-        GetKeyState, tjek_key, Shift, 
+        GetKeyState, tjek_key, Shift,
         clipboard :=
-        GuiControlGet, tlfkopi, , , 
+        GuiControlGet, tlfkopi, , ,
         if (tjek_key = "D")
-            {
+        {
             tlfkopi := Trio_hent_tlf()
             Clipboard := tlfkopi
             ClipWait, 3,
             return
-            }
+        }
         if (tlfkopi = "Tlf: ")
-            {
-                tlfkopi := Trio_hent_tlf()
-            }
+        {
+            tlfkopi := Trio_hent_tlf()
+        }
         Else
-            {
-                tlfkopi := RegExReplace(tlfkopi, "\D")
-            }
+        {
+            tlfkopi := RegExReplace(tlfkopi, "\D")
+        }
         Clipboard := tlfkopi
         ClipWait, 3,
         return
@@ -1853,7 +1855,6 @@ P6_hent_vl_d_k_s()
     return vl
 }
 
-
 p6_vl_vindue()
 {
     vl := P6_hent_vl()
@@ -2211,7 +2212,7 @@ p6_soeg_hylde_dagsdato()
     SendInput, !f %dato% {tab 2} %dato%
     sleep 40
     SendInput, !h{Space}^r
-return
+    return
 }
 ; ***
 ;
@@ -4263,51 +4264,51 @@ l_p6_central_ring_op:
     GuiControl,+g,taxa5,%taxaknap5%
 return
 central_menu:
-{
-    gui taxa: hide
-    gui, Vogngrupper:Default
-    Gui,Add,Button,vcentral1,&Århusstat
-    Gui,Add,Button,vcentral2,&Horstat
-    Gui,Add,Button,vcentral3,H&olsstat
-    Gui,Add,Button,vcentral4,&Silketstat1
-    Gui,Add,Button,vcentral5,S&kandstat
-    Gui,Add,Button,vcentral6,&Viborgstat
-    Gui,Add,Button,vcentral7,&Hernistcar
-    Gui,Add,Button,vcentral8,&Silherstat
-    Gui,Show, AutoSize Center , Ring op til central
-    centralknap1:=Func("opkaldtaxa").Bind("89484892")
-    centralknap2:=Func("opkaldtaxa").Bind("89484892")
-    centralknap3:=Func("opkaldtaxa").Bind("87113030")
-    centralknap4:=Func("opkaldtaxa").Bind("96341121")
-    centralknap5:=Func("opkaldtaxa").Bind("96341121")
-    centralknap6:=Func("opkaldtaxa").Bind("96341121")
-    centralknap7:=Func("opkaldtaxa").Bind("97120777")
-    centralknap8:=Func("opkaldtaxa").Bind("97120777")
-    GuiControl,+g,central1,%centralknap1%
-    GuiControl,+g,central2,%centralknap2%
-    GuiControl,+g,central3,%centralknap3%
-    GuiControl,+g,central4,%centralknap4%
-    GuiControl,+g,central5,%centralknap5%
-    GuiControl,+g,central6,%centralknap6%
-    GuiControl,+g,central7,%centralknap7%
-    GuiControl,+g,central8,%centralknap8%
-    return
-}
-Opkaldtaxa(p*){
-    Gui, taxa: Destroy
-    telefon := % p.1
-    sleep 100
-    tjek := Trio_opkald(telefon)
-    if (tjek = 0)
     {
-        sys_afslut_genvej()
+        gui taxa: hide
+        gui, Vogngrupper:Default
+        Gui,Add,Button,vcentral1,&Århusstat
+        Gui,Add,Button,vcentral2,&Horstat
+        Gui,Add,Button,vcentral3,H&olsstat
+        Gui,Add,Button,vcentral4,&Silketstat1
+        Gui,Add,Button,vcentral5,S&kandstat
+        Gui,Add,Button,vcentral6,&Viborgstat
+        Gui,Add,Button,vcentral7,&Hernistcar
+        Gui,Add,Button,vcentral8,&Silherstat
+        Gui,Show, AutoSize Center , Ring op til central
+        centralknap1:=Func("opkaldtaxa").Bind("89484892")
+        centralknap2:=Func("opkaldtaxa").Bind("89484892")
+        centralknap3:=Func("opkaldtaxa").Bind("87113030")
+        centralknap4:=Func("opkaldtaxa").Bind("96341121")
+        centralknap5:=Func("opkaldtaxa").Bind("96341121")
+        centralknap6:=Func("opkaldtaxa").Bind("96341121")
+        centralknap7:=Func("opkaldtaxa").Bind("97120777")
+        centralknap8:=Func("opkaldtaxa").Bind("97120777")
+        GuiControl,+g,central1,%centralknap1%
+        GuiControl,+g,central2,%centralknap2%
+        GuiControl,+g,central3,%centralknap3%
+        GuiControl,+g,central4,%centralknap4%
+        GuiControl,+g,central5,%centralknap5%
+        GuiControl,+g,central6,%centralknap6%
+        GuiControl,+g,central7,%centralknap7%
+        GuiControl,+g,central8,%centralknap8%
         return
     }
-    WinActivate, PLANET, , ,
-    sleep 3000
-    trio_klar()
-    sys_afslut_genvej()
-}
+    Opkaldtaxa(p*){
+        Gui, taxa: Destroy
+        telefon := % p.1
+        sleep 100
+        tjek := Trio_opkald(telefon)
+        if (tjek = 0)
+        {
+            sys_afslut_genvej()
+            return
+        }
+        WinActivate, PLANET, , ,
+        sleep 3000
+        trio_klar()
+        sys_afslut_genvej()
+    }
 VogngrupperGuiClose:
     sys_afslut_genvej()
     gui, Destroy
@@ -4317,7 +4318,6 @@ VogngrupperGuiEscape:
     sys_afslut_genvej()
     Gui, Destroy
 return
-
 
 TaxaGuiClose:
     sys_afslut_genvej()
@@ -4779,12 +4779,12 @@ l_p6_tjek_andre_rejser:
         return
     }
 l_p6_soeg_hylde_dagsdato:
-{
-    sys_genvej_start(72)
-    p6_soeg_hylde_dagsdato()
-    sys_afslut_genvej()
-    return
-}
+    {
+        sys_genvej_start(72)
+        p6_soeg_hylde_dagsdato()
+        sys_afslut_genvej()
+        return
+    }
 l_p6_alarmer:
     sys_genvej_start(14)
     P6_alarmer()
@@ -5763,21 +5763,21 @@ l_outlook_genaaben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     vl := clipboard
     loop_test := ""
     while (vl = "" and loop_test < 10)
-        {
-            P6_aktiver()
-            clipboard := ""
-            SendInput, !l
-            SendInput, {AppsKey}c
-            ClipWait, 0.3
-            vl := clipboard
-            loop_test += 1
-        }
+    {
+        P6_aktiver()
+        clipboard := ""
+        SendInput, !l
+        SendInput, {AppsKey}c
+        ClipWait, 0.3
+        vl := clipboard
+        loop_test += 1
+    }
     if (vl = "")
-        {
-            MsgBox, 16, Fejl, Prøv igen
-            sys_afslut_genvej()
-            Return
-        }
+    {
+        MsgBox, 16, Fejl, Prøv igen
+        sys_afslut_genvej()
+        Return
+    }
     sys := p6_vl_vindue_edit()
     if (sys = "lukket")
     {
@@ -5786,23 +5786,23 @@ l_outlook_genaaben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     }
     k_aft := sys[1]
     sty_sys := sys[3]
-    k_aftale := k_aft  "_" sty_sys
+    k_aftale := k_aft "_" sty_sys
     if (!FileExist("db\vognkontrol_lukkede_vogne.txt"))
         FileAppend, , %A_LineFile%\..\db\vognkontrol_lukkede_vogne.txt
     FileRead, vl_luk, %A_LineFile%\..\db\vognkontrol_lukkede_vogne.txt
     vl_luk := StrSplit(vl_luk, "`r`n")
     FileRead, gv_svigt, %A_linefile%\..\db\gv_svigt.txt
     for i,e in vl_luk
+    {
+        if (e = vl)
         {
-            if (e = vl)
-                {
-                    MsgBox, 16, VL må ikke genåbnes!, Dette vognløb må ikke genåbnes før det er godkendt til genåbning., 
-                    sleep 100
-                    SendInput, ^a
-                    sys_afslut_genvej()
-                    return
-                }
+            MsgBox, 16, VL må ikke genåbnes!, Dette vognløb må ikke genåbnes før det er godkendt til genåbning.,
+            sleep 100
+            SendInput, ^a
+            sys_afslut_genvej()
+            return
         }
+    }
     gv_svigt := StrSplit(gv_svigt, ["`n"])
     for i, e in gv_svigt
     {
@@ -5834,21 +5834,21 @@ l_outlook_genaaben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     SendInput, {enter}!v+{up}
     sleep 200
     if (InStr(tidligere_notat, "GV") or InStr(tidligere_notat, "garanti"))
-        {
-            clipboard := tidligere_notat
-            sleep 200
-            SendInput, ^v{enter}
-            sleep 200
-            tidligere_notat := 1
+    {
+        clipboard := tidligere_notat
+        sleep 200
+        SendInput, ^v{enter}
+        sleep 200
+        tidligere_notat := 1
 
-        }
+    }
     if (tidligere_notat != 1)
-        {
-    SendInput, ^c
-    ClipWait, 1
-    vl_notat := clipboard
-    sleep 500
-        }
+    {
+        SendInput, ^c
+        ClipWait, 1
+        vl_notat := clipboard
+        sleep 500
+    }
     clipboard :=
     SendInput, !{PrintScreen}
     ClipWait, 3, 1
@@ -5926,10 +5926,8 @@ w\:* {behavior:url(#default#VML);}
     </o:shapelayout></xml><![endif]--></head><body lang=DA link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal><o:p></o:p></p><p class=MsoNormal><span style='mso-ligatures:none'><br><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%udklip_navn%"></span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
 
     )
-   
-     
-    svigt_template.htmlbody :=  html_tekst . signatur
 
+    svigt_template.htmlbody :=  html_tekst . signatur
 
     svigt_template.send
     ImageDestroy(udklip)
@@ -5938,15 +5936,16 @@ w\:* {behavior:url(#default#VML);}
             MsgBox, 48, Mail sendt - husk notat på VL, Mail om genåbningen er blevet sendt - husk det faste notat på VL (garanti-tider osv.)
         }
     else
- {
+     {
      MsgBox, 64, Mail sendt, Mail om genåbningen er blevet sendt, 3
      SendInput, ^a
      P6_planvindue()
      }
+
         sys_afslut_genvej()
         return
-
-l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+;; Svigt til outlook
+    l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         sys_genvej_start(38)
         ; FormatTime, dato, , dd-MM-y
          ; FormatTime, tid, , HH:mm
@@ -5956,10 +5955,15 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         if DllCall("IsClipboardFormatAvailable", "Uint", 2)
             {
             gemtklip := ImagePutBuffer(clipboardall)
-            GuiControl, svigt: enable, Button7
+            gemt_ja := 1
+            GuiControl, svigt: enable, Button6
             }
         Else
-            GuiControl, svigt: disable, Button7
+            {
+            gemtklip :=
+            gemt_ja :=
+            GuiControl, svigt: disable, Button6
+            }
         P6_aktiver()
         vl_array := P6_hent_vl_d_k_s()
         ; vl_array := []
@@ -5999,15 +6003,15 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     GuiControl, svigt:,  VL , %vl%
     GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
     GuiControl, svigt:,  beskrivelse ,
-    GuiControl, svigt:,  lukket , 0 
+    GuiControl, svigt:,  lukket , 0
     GuiControl, svigt:,  helt , 0
     GuiControl, svigt:,  Button3 , 0 
     GuiControl, svigt:,  Button4 , 0 
     GuiControl, svigt:,  Button5 , 0 
     GuiControl, svigt:,  Button6 , 0 
     GuiControl, svigt:,  gemt_ja , 0
-    GuiControl, svigt:,  ny_dato , 
-    GuiControl, svigt:,  årsag , 
+    GuiControl, svigt:,  ny_dato ,
+    GuiControl, svigt:,  årsag ,
     GuiControl, svigt:,  tid , Hjemzone kl.
     if (vg_svigt = 0)
         {
@@ -6025,18 +6029,17 @@ l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     sleep 100
     ControlFocus, Button1, Svigt
     mod_up()
-Return 
-gui_svigt_vis_mail:
+    Return
+    gui_svigt_vis_mail:
     gui, submit
     gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
     if (gui_svigt_tekst = 0)
         return
     gui_svigt_vis(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip, VGPrint)
     return
-gui_svigt_send_mail:
+    gui_svigt_send_mail:
     gui, submit
     gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
-    gui_svigt_send(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip, VGPrint)
     return
 
 
@@ -6108,20 +6111,22 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         SendInput, !b
         return 0
     }
-    if (type = 1 and lukket = 1 and helt = 0 and årsag != "")
+    if (type = 1 and lukket = 1 and årsag != "")
     {
         mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 1 , % mail_indhold.emnefelt,
         ; mail_indhold.broedtekst := "GV lukket kl. " tid ": " . mail_indhold.broedtekst
-        mail_indhold.broedtekst := "GV (" garantitid "): lukket kl. " tid " — " . mail_indhold.broedtekst
+        mail_indhold.broedtekst := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
         gui, hide
+        return mail_indhold
     }
-    if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
+    if (type = 1 and lukket = 1 and årsag = "")
     {
         mail_indhold.emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 2, % mail_indhold.emnefelt,
-        mail_indhold.broedtekst := "GV (" garantitid "): lukket kl. " tid " — " . mail_indhold.broedtekst
+        mail_indhold.broedtekst := "GV (" garantitid "): lukket kl. " tid " — " . beskrivelse
         gui, hide
+        return mail_indhold
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
     {
@@ -6129,81 +6134,98 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         ; MsgBox, , 3, % mail_indhold.emnefelt,
         mail_indhold.broedtekst := beskrivelse
         gui, hide
+        return mail_indhold
     }
     if (type = 1 and lukket = 0 and helt = 0 and årsag = "")
     {
         mail_indhold.emnefelt := "Svigt VL " vl " d. " dato
         mail_indhold.broedtekst := beskrivelse
         gui, hide
+        return mail_indhold
     }
     if (type = 1 and helt = 1 and årsag = "")
     {
         mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 5, % mail_indhold.emnefelt,
-        mail_indhold.broedtekst := "Vl slettet. Garantitid " garantitid " — " . mail_indhold.broedtekst
-        mail_indhold.broedtekst := beskrivelse
-
+        mail_indhold.broedtekst := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
             gui, hide
+            return mail_indhold
         }
         if (type = 1 and helt = 1 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
             ; MsgBox, , 5.1, % mail_indhold.emnefelt,
-            mail_indhold.broedtekst := "Vl slettet. Garantitid " garantitid " — " . mail_indhold.broedtekst
+            mail_indhold.broedtekst := "Vl slettet. Garantitid " garantitid " — " . beskrivelse
             gui, hide
+            return mail_indhold
         }
-        if (type = 2 and lukket = 0 and helt = 0 and årsag !="")
+        if (type = 2 and lukket = 0 and helt = 0 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - " dato
-            ; MsgBox, , 6, % mail_indhold.emnefelt,
+        ; MsgBox, , 6, % mail_indhold.emnefelt,
         mail_indhold.broedtekst := beskrivelse
             gui, hide
+            return mail_indhold
         }
         if (type = 2 and lukket = 0 and helt = 0 and årsag = "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type " d. " dato
-            ; MsgBox, , 7, % mail_indhold.emnefelt,
+        ; MsgBox, , 7, % mail_indhold.emnefelt,
         mail_indhold.broedtekst := beskrivelse
             gui, hide
+            return mail_indhold
         }
-        if (type = 2 and lukket = 0 and helt = 1 and årsag = "")
+        if (type = 2 and helt = 1 and årsag = "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
             ; MsgBox, , 7.1, % mail_indhold.emnefelt,
-            mail_indhold.broedtekst := "GV slettet i variabel kørsel. Garantitid " garantitid " — " . mail_indhold.broedtekst
+            mail_indhold.broedtekst := "GV slettet i variabel kørsel. Garantitid " garantitid " — " . beskrivelse
             gui, hide
+            return mail_indhold
         }
+        if (type = 2 and helt = 1 and årsag != "")
+        {
+            mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - VL slettet d. " dato
+            ; MsgBox, , 7.1, % mail_indhold.emnefelt,
+            mail_indhold.broedtekst := "GV slettet i variabel kørsel. Garantitid " garantitid " — " . beskrivelse
+            gui, hide
+            return mail_indhold
+        }
+        ; skrives om, tid_slet bruges ikke
         if (type = 2 and lukket = 1 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
             ; MsgBox, , 8, % mail_indhold.emnefelt,
             if (tid_slet != "Åbningstid garanti")
-                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid ". Garantitid. " garantitid " — " . mail_indhold.broedtekst
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid ". Garantitid. " garantitid " — " . beskrivelse
             Else
-                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid " — " . mail_indhold.broedtekst
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
             gui, hide
+            return mail_indhold
         }
         if (type = 2 and lukket = 1 and årsag = "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
             ; MsgBox, , 9, % mail_indhold.emnefelt,
             if (tid_slet != "Åbningstid garanti")
-                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid ". Garantitid " garantitid " — " . mail_indhold.broedtekst
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid ". Garantitid " garantitid " — " . beskrivelse
             Else
-                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid " — " . mail_indhold.broedtekst
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
             gui, hide
+            return mail_indhold
         }
         if (type = 3 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl ": " årsag " - d. " dato
-            ; MsgBox, , 10, % mail_indhold.emnefelt,
+        ; MsgBox, , 10, % mail_indhold.emnefelt,
         mail_indhold.broedtekst := beskrivelse
             gui, hide
+            return mail_indhold
         }
         if (type = 3 and årsag = "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " d. " dato
-            ; MsgBox, , 11, % mail_indhold.emnefelt,
+        ; MsgBox, , 11, % mail_indhold.emnefelt,
         mail_indhold.broedtekst := beskrivelse
             gui, hide
         }
@@ -6229,7 +6251,10 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         mail_indhold.broedtekst := "svigt " VGPrint[3] ", vognløb " vg_vl " — " beskrivelse
             gui, hide
         }
-return mail_indhold
+MsgBox, 16, Alarm!, Mail bliver afsendt tom!
+        sleep 100
+        Gui Show, w448 h297, Svigt
+return 
     }
 gui_svigt_vis(mail_indhold, skærmprint, gemt_ja, gemtklip, VGPrint)
 {
@@ -6350,7 +6375,7 @@ gui_svigt_send(mail_indhold, skærmprint, gemt_ja, gemtklip, VGPrint)
 
         if (gemt_ja = 1)
             udklip := ImagePutFile(gemtklip, "svigt.png")
-        else 
+        else
             udklip := ImagePutFile(skærmprint, "svigt.png")
         udklip_navn := SubStr(udklip, 3)
         udklip_lok := A_ScriptDir "\" udklip_navn
@@ -6622,64 +6647,64 @@ gui_svigt_send(mail_indhold, skærmprint, gemt_ja, gemtklip, VGPrint)
         SendInput, !{Down}
         return
     }
-    ; Fra notatvindue - indsætter samme notat igen, til når der timeoutes - skal der tages hensyn til nye notater, der kan være skrevet i mellemtiden?
+; Fra notatvindue - indsætter samme notat igen, til når der timeoutes - skal der tages hensyn til nye notater, der kan være skrevet i mellemtiden?
 
-    ; +^e::FlexFinder_addresse()
-    ; FlexFinder_addresse()
-    ; {
-    ;     ; SendInput, +{tab} {Down} {Tab}
-    ;     If (WinExist("FlexDanmark FlexFinder"))
-    ;     {
-    ;         sleep 200
-    ;         WinActivate, FlexDanmark FlexFinder
-    ;         winwaitactive, FlexDanmark FlexFinder
-    ;         sleep 40
-    ;         SendInput, {Home}
-    ;         sleep 400
-    ;         SendInput, {PgUp}
-    ;         sleep 200
-    ;         WinGetPos, W_X, W_Y, , , FlexDanmark FlexFinder, , ,
-    ;         if(W_X = "1920" or W_X = "-1920")
-    ;         {
-    ;             ; PixelSearch, Px, Py, 0, 0, , 11, 0xF26C5B, 0, Fast
-    ;             sleep 200
-    ;             click %Px% %Py%
-    ;             sleep 999
-    ;             SendInput, {tab 3} {down} {tab}
-    ;             ; ControlClick, x322 y100, FlexDanmark FlexFinder
-    ;             sleep 40
-    ;             return
-    ;         }
-    ;         Else
-    ;         {
-    ;             ; PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6C2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
-    ;             ImageSearch, Ix, Iy, 0 , 0, A_ScreenWidth , A_ScreenHeight *100 , /lib/ff.png
-    ;             MsgBox, , , % ix
-    ;             sleep 200
-    ;             click %Px% %Py%
-    ;             sleep 200
-    ;             ControlClick, x322 y100, FlexDanmark FlexFinder
-    ;             sleep 40
-    ;             SendInput, +{tab}{down}{tab}
-    ;             return
-    ;         }
-    ;         ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
-    ;     }
-    ;     Else
-    ;         MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den forreste fane)
-    ;     Return
-    ; }
-    ;
+; +^e::FlexFinder_addresse()
+; FlexFinder_addresse()
+; {
+;     ; SendInput, +{tab} {Down} {Tab}
+;     If (WinExist("FlexDanmark FlexFinder"))
+;     {
+;         sleep 200
+;         WinActivate, FlexDanmark FlexFinder
+;         winwaitactive, FlexDanmark FlexFinder
+;         sleep 40
+;         SendInput, {Home}
+;         sleep 400
+;         SendInput, {PgUp}
+;         sleep 200
+;         WinGetPos, W_X, W_Y, , , FlexDanmark FlexFinder, , ,
+;         if(W_X = "1920" or W_X = "-1920")
+;         {
+;             ; PixelSearch, Px, Py, 0, 0, , 11, 0xF26C5B, 0, Fast
+;             sleep 200
+;             click %Px% %Py%
+;             sleep 999
+;             SendInput, {tab 3} {down} {tab}
+;             ; ControlClick, x322 y100, FlexDanmark FlexFinder
+;             sleep 40
+;             return
+;         }
+;         Else
+;         {
+;             ; PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6C2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
+;             ImageSearch, Ix, Iy, 0 , 0, A_ScreenWidth , A_ScreenHeight *100 , /lib/ff.png
+;             MsgBox, , , % ix
+;             sleep 200
+;             click %Px% %Py%
+;             sleep 200
+;             ControlClick, x322 y100, FlexDanmark FlexFinder
+;             sleep 40
+;             SendInput, +{tab}{down}{tab}
+;             return
+;         }
+;         ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
+;     }
+;     Else
+;         MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den forreste fane)
+;     Return
+; }
+;
 
-    ; ^z::
-    ; {
-    ; if WinExist("+ ahk_exe Miralix OfficeClient.exe")
-    ;     MsgBox, , , kald,
-    ; Else
-    ;     MsgBox, , , ikke kald
-    ; }
+; ^z::
+; {
+; if WinExist("+ ahk_exe Miralix OfficeClient.exe")
+;     MsgBox, , , kald,
+; Else
+;     MsgBox, , , ikke kald
+; }
 
-    ; ^+z::
-    ; {
-    ;     p6_soeg_hylde_dagsdato()
-    ; }
+; ^+z::
+; {
+;     p6_soeg_hylde_dagsdato()
+; }
