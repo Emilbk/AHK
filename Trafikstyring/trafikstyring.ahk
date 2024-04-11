@@ -52,6 +52,7 @@ outlook := ComObjCreate("Outlook.application")
 vl_repl := []
 VGPrint := []
 FileCreateDir svigt\%A_UserName%_svigt
+FileDelete, svigt\%A_UserName%_svigt\*.png
 ;; VL-liste-read
 vl_liste_tekst := "db\vl_liste\" A_UserName . "_vl_liste.txt"
 ; tjek dato for modification, hvis ikke samme dag slet data
