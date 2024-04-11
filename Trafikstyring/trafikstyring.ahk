@@ -5837,11 +5837,15 @@ w\:* {behavior:url(#default#VML);}
     gui_svigt_vis_mail:
     gui, submit
     gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
+    if (gui_svigt_tekst = "fejl")
+        return
     gui_svigt_vis(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip)
     return
     gui_svigt_send_mail:
     gui, submit
     gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
+    if (gui_svigt_tekst = "fejl")
+        return
     gui_svigt_send(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip)
     return
 
@@ -5958,7 +5962,7 @@ w\:* {behavior:url(#default#VML);}
             gui, hide
             return mail_indhold
         }
-        if (type = 2 and lukket = 0 and helt = 0 and årsag !="")
+        if (type = 2 and lukket = 0 and helt = 0 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - " dato
         ; MsgBox, , 6, % mail_indhold.emnefelt,
@@ -5977,6 +5981,14 @@ w\:* {behavior:url(#default#VML);}
         if (type = 2 and lukket = 0 and helt = 1 and årsag = "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
+            ; MsgBox, , 7.1, % mail_indhold.emnefelt,
+            mail_indhold.broedtekst := "GV slettet i variabel kørsel. Garantitid " garantitid " — " . beskrivelse
+            gui, hide
+            return mail_indhold
+        }
+        if (type = 2 and lukket = 0 and helt = 1 and årsag != "")
+        {
+            mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - VL slettet d. " dato
             ; MsgBox, , 7.1, % mail_indhold.emnefelt,
             mail_indhold.broedtekst := "GV slettet i variabel kørsel. Garantitid " garantitid " — " . beskrivelse
             gui, hide
@@ -6021,7 +6033,8 @@ w\:* {behavior:url(#default#VML);}
             gui, hide
             return mail_indhold
         }
-    return mail_indhold
+    MsgBox, 16, Alarm!, Mail bliver sendt tom! Prøv igen...
+    return "fejl"
     }
     gui_svigt_vis(mail_indhold, skærmprint, gemt_ja, gemtklip)
     {
