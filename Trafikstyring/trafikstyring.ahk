@@ -2114,6 +2114,7 @@ P6_hent_vm_tlf()
     clipboard :=
     SendInput ^c
     ClipWait, 1.5
+    clipboard := RegExReplace(clipboard, "\D")
     while (StrLen(clipboard) != 8)
     {
         P6_aktiver()
