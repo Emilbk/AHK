@@ -5997,22 +5997,25 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
             Else
                 mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " tid " — " . beskrivelse
             gui, hide
+            return mail_indhold
         }
         if (type = 3 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl ": " årsag " - d. " dato
-            ; MsgBox, , 10, % mail_indhold.emnefelt,
+        ; MsgBox, , 10, % mail_indhold.emnefelt,
         mail_indhold.broedtekst := beskrivelse
             gui, hide
+            return mail_indhold
         }
         if (type = 3 and årsag = "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " d. " dato
-            ; MsgBox, , 11, % mail_indhold.emnefelt,
+        ; MsgBox, , 11, % mail_indhold.emnefelt,
         mail_indhold.broedtekst := beskrivelse
             gui, hide
+            return mail_indhold
         }
-return mail_indhold
+    return mail_indhold
     }
 gui_svigt_vis(mail_indhold, skærmprint, gemt_ja, gemtklip)
 {
