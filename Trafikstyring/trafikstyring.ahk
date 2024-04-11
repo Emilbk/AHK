@@ -5914,7 +5914,7 @@ w\:* {behavior:url(#default#VML);}
         SendInput, !b
         return
     }
-    if (type = 1 and lukket = 1 and helt = 0 and årsag != "")
+    if (type = 1 and lukket = 1 and årsag != "")
     {
         mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - lukket kl. " tid " d. " dato
         ; MsgBox, , 1 , % mail_indhold.emnefelt,
@@ -5923,7 +5923,7 @@ w\:* {behavior:url(#default#VML);}
         gui, hide
         return mail_indhold
     }
-    if (type = 1 and lukket = 1 and helt = 0 and årsag = "")
+    if (type = 1 and lukket = 1 and årsag = "")
     {
         mail_indhold.emnefelt := "Svigt VL " vl " " vl_type " - lukket kl. " tid " d. " dato
         ; MsgBox, , 2, % mail_indhold.emnefelt,
@@ -5978,7 +5978,7 @@ w\:* {behavior:url(#default#VML);}
             gui, hide
             return mail_indhold
         }
-        if (type = 2 and lukket = 0 and helt = 1 and årsag = "")
+        if (type = 2 and helt = 1 and årsag = "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
             ; MsgBox, , 7.1, % mail_indhold.emnefelt,
@@ -5986,7 +5986,7 @@ w\:* {behavior:url(#default#VML);}
             gui, hide
             return mail_indhold
         }
-        if (type = 2 and lukket = 0 and helt = 1 and årsag != "")
+        if (type = 2 and helt = 1 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - VL slettet d. " dato
             ; MsgBox, , 7.1, % mail_indhold.emnefelt,
