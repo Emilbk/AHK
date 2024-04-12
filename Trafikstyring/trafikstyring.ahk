@@ -74,6 +74,18 @@ else if (vl_liste_array_json != "")
     vl_liste_array := json.load(vl_liste_array_json)
 
 SetTimer, note_tjek_tid, 60000
+
+SpecialAdresseArray := ["! Offentlige kontorer, posthuse, færger, lufthavne", "% Apoteker", "$ Banker", "_ Banegårde og rutebilstationer", ". Forsamlingshuse og beboerhuse", ") Terapi; fod-, fysio- og zoneterapi, kiropraktor", "; Haveforeninger/Kolonihaver", ": Sportshaller", "/ Indkøbscenter, supermarkeder, kiosker", "+ Kirker og kirkegårde", "= Læger", "& Pladser og torve", "> Plejehjem, boenheder, institutioner, aktivitetscentre", "( Restauranter - Hoteller", "* Skoler", "< Sygehuse", "- Flextur - Flexbus", "# Bo- og aktivitetscentre"]
+SpecialAdresseString := 
+for i,e in SpecialAdresseArray
+    {
+        if (i = SpecialAdresseArray.MaxIndex())
+            {
+            SpecialAdresseString := SpecialAdresseString . e
+            break
+            }
+        SpecialAdresseString := SpecialAdresseString . e "|"
+    }
 ;   bruger_genvej  telenor_opr     telenor_ahk
 ; FileRead, vl_repl_liste, %vl_repl_tekst%
 
@@ -375,10 +387,158 @@ Gui svigt: Add, Button, x210 y256 w60 h23 vsend ggui_svigt_send_mail, &Send
 ; Gui svigt: Add, text , x280 y261, Anden &Dato
 ; Gui svigt: Add, Edit , vny_dato x360 y256 w60,
 
+Gui svigt: Add, Button , vvogngruppesvigt gp6_vgsvigt x360 y256 w60, Op&ret vogngruppesvigt
+
+Gui vgSvigt: new 
+gui vgSvigt: add, Text, X+M y+M , Hvilken vogngruppe skal der registreres svigt for?
+Gui vgSvigt: add, DropDownList, vValgtVG, Århusstat|Horstat|blalal
+Gui vgSvigt: add, Button, Default vVGOK gp6_vgsvigt_skprint , &OK
+Gui vgSvigt: add, Button, x+25 vVGAfbryd , &Afbryd
+
+
+Gui specialadresser: new
+Gui specialadresser: add, DropDownList, Choose 1 W300 vValgtSpecialadresse 1, % SpecialAdresseString
+
 ;; GUI vl-note
 
 ;; END AUTOEXEC
 Return
++^z::
+{
+
+    MouseGetPos, musposx, musposy
+    gui, specialadresser: Show, x%musposx% y%musposy%, Specialadresser
+    WinWaitActive, Specialadresser
+    SendInput, !{down}
+    return
+
+}
+
+p6_vgsvigt()
+{
+           vg_svigt := 1
+       gui svigt: hide
+       gui vgsvigt: show, AutoSize Center, Vogngruppesvigt
+       WinWaitActive, Vogngruppesvigt
+       WinWaitClose, Vogngruppesvigt
+    ; ImageShow(VGprint.1)
+    ; ImageShow(VGprint.2)
+        GuiControl, svigt: , Type, 1
+        Gui svigt: Show, w448 h297, Svigt
+
+        
+    return
+}
+p6_vgsvigt_skprint()
+{
+    global ValgtVG
+    global VGPrint
+    gui vgsvigt: Submit
+    VGprint := [[], [], valgtvg]
+    EnvAdd, tid, -1 , hours
+    FormatTime, tid, %tid%, HH:mm
+    EnvAdd, tid_2, 2 , hours
+    FormatTime, tid_2, %tid_2%, HH:mm
+    
+    p6_aktiver()
+    sleep 500
+    p6_alt_menu("{esc}{alt}", "td")
+    sleep 1000
+    sendinput, %valgtvg%{enter}
+    sleep 500
+    clipboard :=
+    SendInput, !{PrintScreen}
+    ClipWait, 3, 1
+    VGprint[1][1] := ImagePutBuffer(clipboardall)
+    p6_alt_menu("{esc}{alt}", "tv")
+    sleep 1000
+    SendInput, !g%valgtvg%
+    sleep 100
+    SendInput, !s{tab}%tid%
+    sleep 100
+    SendInput, {tab 2}%tid_2%{enter}
+    sleep 4000
+    clipboard :=
+    SendInput, !{PrintScreen}
+    ClipWait, 3, 1
+    VGprint[1][2] := ImagePutBuffer(clipboardall)
+    P6_planvindue()
+    sleep 100
+    SendInput, !l
+    sleep 100
+    clipboard :=
+    SendInput, +{AppsKey}c
+    ClipWait, 2
+    VGprint[2][3] := clipboard
+    clipboard :=
+    SendInput, !{PrintScreen}
+    ClipWait, 3, 1
+    VGprint[1][3] := ImagePutBuffer(clipboardall)
+    sleep 100
+    MsgBox, 36, Yderligere vognløb?, % "Vognløb " VGprint[2][3] " er registreret.`n Skal der registeres svigt på flere vognløb?"
+    IfMsgBox, no
+        return 
+    IfMsgBox, Yes
+        {
+            sleep 100
+            P6_aktiver()
+            sleep 100
+            P6_alt_menu("{esc}{alt}", "tv")
+            sleep 100
+            SendInput, ^{Del}
+            sleep 100
+            MsgBox, 64, Føj svigt til liste, Marker de valgte vognløb i vognløbslisten, afslut med CTRL+l.`n`nEscape for escape
+            ; WinWait, Føj svigt til liste
+            ; WinWaitClose, Føj svigt til liste
+            GuiControl, trio_genvej:text, Button1, Markér yderligere svigt
+            Input, inputtekst, M E V, % Chr(12)
+            nu_vl := 1
+            tidligere_vl := 2
+            GuiControl, trio_genvej:text, Button1, Tager skærmprint
+            P6_planvindue()
+                    sleep 500
+                    SendInput, !{Down}
+                    sleep 500
+                    clipboard :=
+                    SendInput, !{PrintScreen}
+                    sleep 300
+                    ClipWait, 3, 1
+                    VGPrint[1].push(ImagePutBuffer(clipboardall))
+                    clipboard :=
+                    SendInput, !l
+                    sleep 20
+                    SendInput, +{AppsKey}c
+                    ClipWait, 3
+                    nu_vl := clipboard
+                    VGPrint[2].Push(nu_vl)
+                    tidligere_vl := nu_vl
+                    nu_vl :=
+            while (nu_vl != tidligere_vl)
+                {
+                    tidligere_vl := nu_vl
+                    P6_planvindue()
+                    SendInput, !{Down}
+                    sleep 500
+                    clipboard :=
+                    SendInput, !{PrintScreen}
+                    sleep 300
+                    ClipWait, 3, 1
+                    VGPrint[1].push(ImagePutBuffer(clipboardall))
+                    clipboard :=
+                    SendInput, !l
+                    sleep 20
+                    SendInput, +{AppsKey}c
+                    ClipWait, 3
+                    nu_vl := clipboard
+                    VGPrint[2].Push(nu_vl)
+                }
+            VGprint[1].RemoveAt(VGprint[1].MaxIndex())
+            VGprint[2].RemoveAt(VGprint[2].MaxIndex())
+            return
+
+
+        }
+}
 
 p6_billede_ok:
     gui p6_billede: Submit
@@ -6199,6 +6359,18 @@ w\:* {behavior:url(#default#VML);}
     Gui, hide
     sys_afslut_genvej()
     Return
+
+#IfWinActive, Specialadresser
+Enter::
+{
+    Gui, Specialadresser: Submit
+    P6_aktiver()
+    sleep 100
+    ValgtSpecialAdresse := SubStr(valgtSpecialAdresse, 1, 1)
+    SendInput, % ValgtSpecialAdresse
+
+}
+#IfWinActive
 
     test()
     {
