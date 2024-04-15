@@ -5253,7 +5253,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             return
         }
         tlf := P6_hent_vl_tlf()
-        P6_tekstTilChf("Jeg kan ikke ringe dig op på telefonnummer " tlf ". Ring til driften, 70112210. Mvh Midttrafik.", kørselsaftale, styresystem)
+        P6_tekstTilChf("Jeg kan ikke ringe dig op på telefonnummer " tlf ". Hvad er det korrekte telefonnummer? Ring til driften, 70112210. Mvh Midttrafik.", kørselsaftale, styresystem)
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?
         IfMsgBox, Yes
