@@ -50,9 +50,15 @@ outlook := ComObjCreate("Outlook.application")
             mailbody := Fdsvigt(outlook)
             if mailbody[mailbody.MaxIndex()] = "FD"
             {
-                Clipboard := mailbody[9]
-                if (mailbody[9] = "")
-                    Clipboard := mailbody[10]
+                for i, e in mailbody
+                    {
+                        if InStr(mailbody[i], "Beskrivelse af driftsvigt")
+                            {
+                                Clipboard := substr(mailbody[i], 28)
+                                break
+                            }
+                    }
+                
                 sleep 150
                 SendInput, {tab}
                 sendinput, {f2} ^v
@@ -122,7 +128,7 @@ Fdsvigt(outlook)
     if InStr(outlookMail.subject, "Driftsvigt")
     {
         mailbody := StrSplit(outlookMail.body,"`r`n")
-        mailbody[9] := SubStr(mailbody[9], 28)
+        ; mailbody[9] := SubStr(mailbody[9], 28)
         mailbody.Push("FD")
 
         ; MsgBox, , Er FDSvigt, % mailbody
