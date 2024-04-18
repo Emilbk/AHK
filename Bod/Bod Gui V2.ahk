@@ -82,6 +82,18 @@ for i, e in ParagrafDataArray
     }
 }
 
+KvalitetsBristAltTekstLukketHelt :=
+    [
+    "standard a",
+    "der ikke indsættes reservevogn, efter at vognløbet lukkes ved garantiperiodens start, da planlagt kørsel ikke udføres, og det ikke er muligt at komme i kontakt med chauffør."
+    ]
+
+KvalitetsBristAltTekstHjemzone :=
+    [
+    "vognen ikke befinder sig i hjemzone ved vognløbets start.", 
+    "vognløbet efter nedlukning genåbnes med rådighed fra kl. TID, på trods af, at vognen på dette tidspunkt ikke befinder sig i vognløbets hjemzone."
+    ]
+    KvalitetsBristAltTekst := KvalitetsBristAltTekstLukketHelt
 myGui := Gui()
 myGui.VmData := ""
 mygui.ParagrafDataUdbud := ["FG", "FV"]
@@ -100,6 +112,7 @@ ParagrafTekst := myGui.Add("Text", "x16 y248 w384 h51 VParagrafTekst", "")
 myGui.Add("Text", "x16 y302 w120 h23 +0x200", "Bod:")
 BodVaelg := myGui.Add("Edit", "x16 y326 w120 h21 VBod", "1000")
 myGui.Add("Text", "x16 y360 w221 h23 +0x200", "&Kvalitetsbristen bestod i, at...")
+myGui.AddDropDownList("Choose1 x250 y355", KvalitetsBristAltTekst)
 Kvalitetsbrist := myGui.Add("Edit", "x16 y384 w373 h99 VKvalitetsbrist", "Kvalitetsbrist")
 ButtonOK := myGui.Add("Button", "x173 y496 w95 h27", "&OK")
 VLSoeg.OnEvent("LoseFocus", (*) => (mygui.VmData := FunkVLSoeg()))
