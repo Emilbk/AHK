@@ -12,12 +12,19 @@ Outlook := ComObject("Outlook.Application")
 signatur := A_ScriptDir "\lib\signatur_logo.png"
 bodtemplate := outlook.createitem(0)
 
+outlookMail := outlook.ActiveExplorer.Selection.Item(1)
+mailbody := outlookMail.body
+OutlookMailOverskrift := outlookMail.subject
+
+
+
 ; Excel.Visible := true
 ExcelSvigtWorkbok := Excel.Workbooks.Open(ExcelDBSvigt, , readonly := True)
 ExcelSvigtWorksheet := ExcelSvigtWorkbok.worksheets.item("Vognløbsdata")
 ExcelSvigtWorksheet.Select
 ; MsgBox Excel.ActiveSheet.Name
 ExcelSvigtInputDrift := Excel.Intersect(Excel.Columns("A:B"), excel.Activesheet.UsedRange).value
+
 
 StamData := []
 loop ExcelSvigtInputDrift.MaxIndex(1)
@@ -114,7 +121,11 @@ BodVaelg := myGui.Add("Edit", "x16 y326 w120 h21 VBod", "1000")
 myGui.Add("Text", "x16 y360 w221 h23 +0x200", "&Kvalitetsbristen bestod i, at...")
 myGui.AddDropDownList("Choose1 x250 y355", KvalitetsBristAltTekst)
 Kvalitetsbrist := myGui.Add("Edit", "x16 y384 w373 h99 VKvalitetsbrist", "Kvalitetsbrist")
-ButtonOK := myGui.Add("Button", "x173 y496 w95 h27", "&OK")
+MailOverskriftTekst := myGui.AddText(, "Aktiv mail i Outlook")
+MailOverskrift := myGui.AddText(, OutlookMailOverskrift)
+MailOverskriftKnap := myGui.AddButton(,"Hent mail")
+MailOverskriftKnap.OnEvent("Click", (*) => hentMailFunk())
+ButtonOK := myGui.Add("Button", "x173 y696 w95 h27", "&OK")
 VLSoeg.OnEvent("LoseFocus", (*) => (mygui.VmData := FunkVLSoeg()))
 ; DatoVaelg.OnEvent("Change", OnEventHandler)
 ParagrafSoegFG.OnEvent("Change", FunkparagrafSoeg)
@@ -128,7 +139,7 @@ myGui.OnEvent('Close', (*) => ExitApp())
 myGui.Title := "Ny Optimeret Bodsudskriver"
 
 VLSoeg.Focus()
-MyGui.Show("W442 H544")
+MyGui.Show("W442 H744")
 
 
 FunkParagrafVaelg(AktivControl, *)
@@ -331,6 +342,16 @@ bodtemplate.htmlbody := html_test_med_billede
 
 bodtemplate.display
     return 
+}
+
+hentMailFunk()
+{
+    outlookMail := outlook.ActiveExplorer.Selection.Item(1)
+    ;mailbody := outlookMail.body
+    MailOverskrift.text := outlookMail.subject
+
+
+
 }
 #HotIf WinActive("Ny")
 !g::
