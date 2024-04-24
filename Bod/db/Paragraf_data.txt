@@ -32,4 +32,4 @@
 ?	FV - Vognkontrol	?	
 1000	FV - ikke rettidig tilmelding jul	7. Manglende levering af oplysninger til planlægning af kørsel § 20 – Kørsel jul/nytår. Boden kan udstedes pr. dag pr. vogn som leverandør ikke indmelder vognen.	
 10000	FV - Ikke kørt jul	20. Manglende rådighed over vogn efter § 20 – Kørsel jul/nytår.	
-	Special - alt		
+1000	FV - manglende opdatering af oplysninger i Ethics	2. Manglende overholdelse af § 11 – Opdatering af oplysninger i Ethics	

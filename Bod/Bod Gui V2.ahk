@@ -61,7 +61,7 @@ ParagrafDataFV := []
 ParagrafDataInd := FileRead("db\paragraf_data.txt")
 ParagrafDataInd := StrReplace(ParagrafDataInd, "`n", "")
 ParagrafDataArray := StrSplit(ParagrafDataInd, "`r")
-ParagrafDataArray.RemoveAt(ParagrafDataArray.length)
+; ParagrafDataArray.RemoveAt(ParagrafDataArray.length)
 for i, e in ParagrafDataArray
 {
     ParagrafDataArray[i] := StrSplit(e, "`t")
