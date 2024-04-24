@@ -6251,6 +6251,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
             ; vg_vl := SubStr(vg_vl, 1, -2)
         mail_indhold.broedtekst := "svigt " VGPrint[3] ", vognløb " vg_vl " — " beskrivelse
             gui, hide
+            return mail_indhold
         }
 MsgBox, 16, Alarm!, Mail bliver afsendt tom!
         sleep 100
