@@ -6229,10 +6229,10 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         ; MsgBox, , 11, % mail_indhold.emnefelt,
         mail_indhold.broedtekst := beskrivelse
             gui, hide
+            return mail_indhold
         }
         if (type = 4)
         {
-            mail_indhold.emnefelt := "Svigt " vgprint[3] " d. " dato
             ; MsgBox, , 11, % mail_indhold.emnefelt,
         for i,e in VGPrint
             if (i = 2)
