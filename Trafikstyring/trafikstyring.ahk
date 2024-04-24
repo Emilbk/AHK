@@ -378,13 +378,13 @@ Gui svigt: Add, Button, x210 y256 w60 h23 vsend ggui_svigt_send_mail, &Send
 ; Gui svigt: Add, text , x280 y261, Anden &Dato
 ; Gui svigt: Add, Edit , vny_dato x360 y256 w60,
 
-Gui svigt: Add, Button , vvogngruppesvigt gp6_vgsvigt x360 y256 w60, Op&ret vogngruppesvigt
+Gui svigt: Add, Button , vvogngruppesvigt gp6_vgsvigt x320 y251 w80, Op&ret vogngruppesvigt
 
 Gui vgSvigt: new 
 gui vgSvigt: add, Text, X+M y+M , Hvilken vogngruppe skal der registreres svigt for?
 Gui vgSvigt: add, DropDownList, vValgtVG, Århusstat|Horstat|blalal
 Gui vgSvigt: add, Button, Default vVGOK gp6_vgsvigt_skprint , &OK
-Gui vgSvigt: add, Button, x+25 vVGAfbryd , &Afbryd
+Gui vgSvigt: add, Button, x+25 gVGSvigtAfbryd vVGAfbryd , &Afbryd
 ;; GUI vl-note
 
 ;; END AUTOEXEC
@@ -429,10 +429,15 @@ Return
 
 
 }
-
+vgSvigtAfbryd:
+{
+   gui vgsvigt: hide
+   sleep 100 
+   Gui svigt: Show, w448 h297, Svigt
+}
 p6_vgsvigt()
 {
-           vg_svigt := 1
+       vg_svigt := 1
        gui svigt: hide
        gui vgsvigt: show, AutoSize Center, Vogngruppesvigt
        WinWaitActive, Vogngruppesvigt
@@ -459,14 +464,18 @@ p6_vgsvigt_skprint()
     
     p6_aktiver()
     sleep 500
+    GuiControl, trio_genvej:text, Button1, Slår VG-skema op
     p6_alt_menu("{esc}{alt}", "td")
     sleep 1000
     sendinput, %valgtvg%{enter}
     sleep 500
     clipboard :=
+    GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
+    Input, tast , B L1 T5, {Esc},{Enter}
     SendInput, !{PrintScreen}
     ClipWait, 3, 1
     VGprint[1][1] := ImagePutBuffer(clipboardall)
+    GuiControl, trio_genvej:text, Button1, Slår VG-liste op
     p6_alt_menu("{esc}{alt}", "tv")
     sleep 1000
     SendInput, !g%valgtvg%
@@ -474,12 +483,15 @@ p6_vgsvigt_skprint()
     SendInput, !s{tab}%tid%
     sleep 100
     SendInput, {tab 2}%tid_2%{enter}
-    sleep 4000
     clipboard :=
+    sleep 500
+    GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
+    Input, tast , B L1 T5, {Esc},{Enter}
     SendInput, !{PrintScreen}
     ClipWait, 3, 1
     VGprint[1][2] := ImagePutBuffer(clipboardall)
     P6_planvindue()
+    GuiControl, trio_genvej:text, Button1, Tager skærmprint af vl
     sleep 100
     SendInput, !l
     sleep 100
@@ -488,11 +500,14 @@ p6_vgsvigt_skprint()
     ClipWait, 2
     VGprint[2][3] := clipboard
     clipboard :=
+    GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
+    Input, tast , B L1 T5, {Esc},{Enter}
     SendInput, !{PrintScreen}
     ClipWait, 3, 1
     VGprint[1][3] := ImagePutBuffer(clipboardall)
     sleep 100
-    MsgBox, 36, Yderligere vognløb?, % "Vognløb " VGprint[2][3] " er registreret.`n Skal der registeres svigt på flere vognløb?"
+    GuiControl, trio_genvej:text, Button1, Yderligere vognløb?
+    MsgBox, 36, Yderligere vognløb?, % "Vognløb " VGprint[2][3] " er registreret.`nSkal der registeres svigt på flere vognløb i vogngruppen?"
     IfMsgBox, no
         return 
     IfMsgBox, Yes
@@ -504,53 +519,58 @@ p6_vgsvigt_skprint()
             sleep 100
             SendInput, ^{Del}
             sleep 100
-            MsgBox, 64, Føj svigt til liste, Marker de valgte vognløb i vognløbslisten, afslut med CTRL+l.`n`nEscape for escape
-            ; WinWait, Føj svigt til liste
-            ; WinWaitClose, Føj svigt til liste
             GuiControl, trio_genvej:text, Button1, Markér yderligere svigt
+            MsgBox, 64, Føj svigt til liste, Marker de valgte vognløb i vognløbslisten, afslut med CTRL+L.`n`nEscape for escape
             Input, inputtekst, M E V, % Chr(12)
             nu_vl := 1
             tidligere_vl := 2
-            GuiControl, trio_genvej:text, Button1, Tager skærmprint
             P6_planvindue()
-                    sleep 500
-                    SendInput, !{Down}
-                    sleep 500
-                    clipboard :=
-                    SendInput, !{PrintScreen}
-                    sleep 300
-                    ClipWait, 3, 1
-                    VGPrint[1].push(ImagePutBuffer(clipboardall))
-                    clipboard :=
-                    SendInput, !l
-                    sleep 20
-                    SendInput, +{AppsKey}c
-                    ClipWait, 3
-                    nu_vl := clipboard
-                    VGPrint[2].Push(nu_vl)
-                    tidligere_vl := nu_vl
-                    nu_vl :=
+            SendInput, !{Down}
+            GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
+            Input, tast , B L1 T5, {Esc},{Enter}
+            clipboard :=
+            GuiControl, trio_genvej:text, Button1, Tager skærmprint
+            SendInput, !{PrintScreen}
+            sleep 300
+            ClipWait, 3, 1
+            VGPrint[1].push(ImagePutBuffer(clipboardall))
+            clipboard :=
+            SendInput, !l
+            sleep 20
+            SendInput, +{AppsKey}c
+            ClipWait, 3
+            nu_vl := clipboard
+            VGPrint[2].Push(nu_vl)
+            tidligere_vl := nu_vl
+            nu_vl :=
             while (nu_vl != tidligere_vl)
                 {
                     tidligere_vl := nu_vl
                     P6_planvindue()
+                    GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
                     SendInput, !{Down}
-                    sleep 500
-                    clipboard :=
-                    SendInput, !{PrintScreen}
-                    sleep 300
-                    ClipWait, 3, 1
-                    VGPrint[1].push(ImagePutBuffer(clipboardall))
+                    sleep 40
                     clipboard :=
                     SendInput, !l
                     sleep 20
                     SendInput, +{AppsKey}c
                     ClipWait, 3
                     nu_vl := clipboard
+                    if (nu_vl = tidligere_vl)
+                        break
+                    Input, tast , B L1 T5, {Esc},{Enter}
+                    clipboard :=
+                    GuiControl, trio_genvej:text, Button1, Tager skærmprint
+                    SendInput, !{PrintScreen}
+                    sleep 300
+                    ClipWait, 3, 1
+                    VGPrint[1].push(ImagePutBuffer(clipboardall))
+
                     VGPrint[2].Push(nu_vl)
                 }
-            VGprint[1].RemoveAt(VGprint[1].MaxIndex())
-            VGprint[2].RemoveAt(VGprint[2].MaxIndex())
+            MsgBox, 48, Skærmprint taget!, Der er nu taget skærmprint af de valgte vognløb, 3
+            ; VGprint[1].RemoveAt(VGprint[1].MaxIndex())
+            ; VGprint[2].RemoveAt(VGprint[2].MaxIndex())
             return
 
 
