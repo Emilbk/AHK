@@ -439,13 +439,15 @@ p6_vgsvigt()
 {
        vg_svigt := 1
        gui svigt: hide
+       sleep 100
        gui vgsvigt: show, AutoSize Center, Vogngruppesvigt
        WinWaitActive, Vogngruppesvigt
        WinWaitClose, Vogngruppesvigt
     ; ImageShow(VGprint.1)
     ; ImageShow(VGprint.2)
         GuiControl, svigt: , Type, 1
-        Gui svigt: Show, w448 h297, Svigt
+        sleep 100
+        Gui svigt: Show, w448 h297, Svigt 
 
         
     return
@@ -455,6 +457,12 @@ p6_vgsvigt_skprint()
     global ValgtVG
     global VGPrint
     GuiControl, svigt: enable, Button6
+    GuiControl, svigt: disable, Button7
+    GuiControl, svigt: disable, Button5
+    GuiControl, svigt: disable, Button4
+    GuiControl, svigt: disable, Button3
+    GuiControl, svigt: disable, Button2
+    GuiControl, svigt: disable, Button1
     gui vgsvigt: Submit
     VGprint := [[], [], valgtvg]
     EnvAdd, tid, -1 , hours
@@ -508,6 +516,7 @@ p6_vgsvigt_skprint()
     sleep 100
     GuiControl, trio_genvej:text, Button1, Yderligere vognløb?
     MsgBox, 36, Yderligere vognløb?, % "Vognløb " VGprint[2][3] " er registreret.`nSkal der registeres svigt på flere vognløb i vogngruppen?"
+    sleep 100
     IfMsgBox, no
         return 
     IfMsgBox, Yes
@@ -568,9 +577,25 @@ p6_vgsvigt_skprint()
 
                     VGPrint[2].Push(nu_vl)
                 }
-            MsgBox, 48, Skærmprint taget!, Der er nu taget skærmprint af de valgte vognløb, 3
-            ; VGprint[1].RemoveAt(VGprint[1].MaxIndex())
-            ; VGprint[2].RemoveAt(VGprint[2].MaxIndex())
+            vl_dobbelt := 0
+            for i,e in VGPrint
+                for i2, e2 in e
+                    {
+                        if (i = 2)
+                        {
+                        sammenlignVL := e2
+                        sammenlignVLindex := i2
+                        for i2, e2 in e
+                            {
+                                if (i2 != sammenlignVLindex)
+                                    if (e2 = sammenlignVL)
+                                        vl_dobbelt := i2
+                            }
+                        }
+                    }
+            MsgBox, 64, Skærmprint taget!, Der er nu taget skærmprint af de valgte vognløb, 3
+            VGprint[1].RemoveAt(vl_dobbelt)
+            VGprint[2].RemoveAt(vl_dobbelt)
             return
 
 
@@ -5971,6 +5996,7 @@ w\:* {behavior:url(#default#VML);}
         sys_genvej_start(38)
         ; FormatTime, dato, , dd-MM-y
          ; FormatTime, tid, , HH:mm
+        GuiControl, svigt: disable, Button6
         vg_svigt := 0
         VGPrint := [[], [], "ikke vg"]
         ;tjek om billede i udklipsholder
@@ -5986,6 +6012,11 @@ w\:* {behavior:url(#default#VML);}
             gemt_ja :=
             GuiControl, svigt: disable, Button7
             }
+        GuiControl, svigt: enable, Button5
+            GuiControl, svigt: enable, Button4
+            GuiControl, svigt: enable, Button3
+            GuiControl, svigt: enable, Button2
+            GuiControl, svigt: enable, Button1
         P6_aktiver()
         vl_array := P6_hent_vl_d_k_s()
         ; vl_array := []
@@ -6265,14 +6296,25 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
             {
                 if (i2 >= 3)
                     {
-                    if (i2 = VGPrint[2].MaxIndex())
-                        vg_vl := vg_vl . "og " e2
-                    else
+                    if (VGPrint[2].MaxIndex() > 3)
+                        {
+                        if (i2 = VGPrint[2].MaxIndex())
+                        {
+                            vg_vl := SubStr(vg_vl, 1, -2)
+                        vg_vl := vg_vl . " og " e2
+                        }
+                        else
                         vg_vl := vg_vl . e2 ", "
+                        }
+                    if (VGPrint[2].MaxIndex() = 3)
+                        {
+                    if (i2 = VGPrint[2].MaxIndex())
+                            vg_vl := e2
+                }
                     }
             }
         }
-        mail_indhold.emnefelt := "Svigt " VGPrint[3] " - d. " dato
+        mail_indhold.emnefelt := "Svigt " VGPrint[3] " - vognløb  " vg_vl " - d. " dato
         mail_indhold.broedtekst := "svigt " VGPrint[3] ", vognløb " vg_vl " — " beskrivelse
             gui, hide
             return mail_indhold
