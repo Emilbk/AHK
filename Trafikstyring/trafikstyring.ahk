@@ -349,10 +349,12 @@ Gui svigt: Font, w600
 Gui svigt: Add, Text, x161 y0 w130 h25 +0x200, &Lukket? (Afkryds én)
 Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
-Gui svigt: Add, CheckBox, vlukket x160 y24 w39 h23, &Ja
-Gui svigt: Add, Edit, vtid x200 y24 w79 h21, Hjemzone kl.
-Gui svigt: Add, CheckBox, vhelt x160 y48 w120 h23, &Ja, og VL slettet
-Gui svigt: Add, Text, x175 y75 h35 w100 vgarantitid, Garantiperiode: %garanti_tid%
+Gui svigt: Add, CheckBox, vlukket x160 y19 w39 h23, &Ja
+Gui svigt: Add, Edit, vtid x200 y19 w79 h21, Hjemzone kl.
+Gui svigt: Add, CheckBox, vhelt x160 y38 w115 h23, &Ja, og VL slettet
+Gui svigt: Add, Text, x175 y105 h35 w100 vgarantitid, Garantiperiode: %garanti_tid%
+Gui svigt: Add, CheckBox, vvmKontakt x160 y60 w120 h23, V&M kontaktet ca. kl.
+Gui svigt: Add, Edit, vvmKontaktTid x200 y80 w79 h21, %tidforsvigt%
 Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
 Gui svigt: Font, w600
@@ -368,10 +370,10 @@ Gui svigt: Add, Radio, x304 y24 w120 h16, &Garanti
 Gui svigt: Add, Radio, x304 y40 w120 h32, G&arantivognløb i variabel tid
 Gui svigt: Add, Radio, x304 y72 w120 h23, Va&riabel
 Gui svigt: Add, Radio, vtype x304 y92 w120 h32, V&ogngruppe
-Gui svigt: Add, Text, x8 y96 h23 +0x200, &Beskrivelse
+Gui svigt: Add, Text, x8 y116 h23 +0x200, &Beskrivelse
 Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
-Gui svigt: Add, Edit, vbeskrivelse x8 y120 w410 h126
+Gui svigt: Add, Edit, vbeskrivelse x8 y140 w410 h106
 Gui svigt: Add, CheckBox, vgemt_ja x5 y261, Brug &forrige skærmklip
 Gui svigt: Add, Button, x150 y256 w60 h23 vvis ggui_svigt_vis_mail +default, &Vis
 Gui svigt: Add, Button, x210 y256 w60 h23 vsend ggui_svigt_send_mail, &Send
@@ -456,13 +458,13 @@ p6_vgsvigt_skprint()
 {
     global ValgtVG
     global VGPrint
-    GuiControl, svigt: enable, Button6
-    GuiControl, svigt: disable, Button7
+    GuiControl, svigt: enable, Button7
+    GuiControl, svigt: disable, Button8
+    GuiControl, svigt: disable, Button6
     GuiControl, svigt: disable, Button5
     GuiControl, svigt: disable, Button4
     GuiControl, svigt: disable, Button3
     GuiControl, svigt: disable, Button2
-    GuiControl, svigt: disable, Button1
     gui vgsvigt: Submit
     VGprint := [[], [], valgtvg]
     EnvAdd, tid, -1 , hours
@@ -5995,8 +5997,8 @@ w\:* {behavior:url(#default#VML);}
     l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         sys_genvej_start(38)
         ; FormatTime, dato, , dd-MM-y
-         ; FormatTime, tid, , HH:mm
-        GuiControl, svigt: disable, Button6
+         FormatTime, tidForSvigt, , HH:mm
+        GuiControl, svigt: disable, Button7
         vg_svigt := 0
         VGPrint := [[], [], "ikke vg"]
         ;tjek om billede i udklipsholder
@@ -6004,15 +6006,16 @@ w\:* {behavior:url(#default#VML);}
             {
             gemtklip := ImagePutBuffer(clipboardall)
             gemt_ja := 1
-            GuiControl, svigt: enable, Button7
+            GuiControl, svigt: enable, Button8
             }
         Else
             {
             gemtklip :=
             gemt_ja :=
-            GuiControl, svigt: disable, Button7
+            GuiControl, svigt: disable, Button8
             }
-        GuiControl, svigt: enable, Button5
+        GuiControl, svigt: enable, Button6
+            GuiControl, svigt: enable, Button5
             GuiControl, svigt: enable, Button4
             GuiControl, svigt: enable, Button3
             GuiControl, svigt: enable, Button2
@@ -6054,6 +6057,7 @@ w\:* {behavior:url(#default#VML);}
         p6_vgsvigt()
        }       
     GuiControl, svigt:,  VL , %vl%
+    GuiControl, svigt:,  vmKontakttid , %tidForSvigt%
     GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
     GuiControl, svigt:,  beskrivelse ,
     GuiControl, svigt:,  lukket , 0
@@ -6078,21 +6082,21 @@ w\:* {behavior:url(#default#VML);}
     sleep 200
         }
     ; clipwait 3, 1 ; bedre løsning?
-    Gui svigt: Show, w448 h297, Svigt
+    Gui svigt: Show, w448 h297, Svigt vl. %vl% kl. %tidForSvigt%
     sleep 100
     ControlFocus, Button1, Svigt
     mod_up()
     Return
     gui_svigt_vis_mail:
     gui, submit
-    gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
+    gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip, vmKontakt, vmKontaktTid)
     if (gui_svigt_tekst = 0)
         return
     gui_svigt_vis(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip, VGPrint)
     return
     gui_svigt_send_mail:
     gui, submit
-    gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
+    gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip, vmkontakt, vmkontakttid)
     if (gui_svigt_tekst = 0)
         return
     gui_svigt_send(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip, VGPrint)
@@ -6100,7 +6104,7 @@ w\:* {behavior:url(#default#VML);}
 
 
 
-gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
+gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip, vmKontakt, vmKontaktTid)
 {
     global vgprint
     
@@ -6144,6 +6148,42 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         }
         tid := timer ":" min
     }
+    if (InStr(vmKontaktTid, ":"))
+        vmKontaktTid := SubStr(vmKontaktTid, 1, 2) . SubStr(vmKontaktTid, 4, 2)
+    if (vmKontakt = 1 and StrLen(vmKontaktTid) != 4)
+    {
+        sleep 100
+        MsgBox, 48 , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
+        sleep 100
+        Gui Show, w448 h297, Svigt
+        SendInput, !l{tab}^a
+        return 0
+    }
+    if (StrLen(vmKontaktTid) = 4)
+    {
+        timer := SubStr(vmKontaktTid, 1, 2)
+        min := SubStr(vmKontaktTid, 3, 2)
+        tid_tjek := A_YYYY A_MM A_DD timer min
+        if tid_tjek is not Time
+        {
+            sleep 100
+            MsgBox, 48 , Klokkeslæt ikke gyldigt , Skal være et gyldigt tidspunkt
+            sleep 100
+            Gui Show, w448 h297, Svigt
+            SendInput, ^a
+            return 0
+        }
+        tid := timer ":" min
+    }
+    if (lukket = 0 or helt = 0)
+        if vmKontakt = 0
+        {
+            sleep 100
+            MsgBox, 48 , Husk VM , Er vognmand informeret/Ring op/Reminder om 5 min 
+            sleep 100
+            Gui Show, w448 h297, Svigt
+            return 0
+        }    
     if (type = 0)
     {
         sleep 100
