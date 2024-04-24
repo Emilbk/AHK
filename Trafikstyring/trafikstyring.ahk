@@ -5957,13 +5957,13 @@ w\:* {behavior:url(#default#VML);}
             {
             gemtklip := ImagePutBuffer(clipboardall)
             gemt_ja := 1
-            GuiControl, svigt: enable, Button6
+            GuiControl, svigt: enable, Button7
             }
         Else
             {
             gemtklip :=
             gemt_ja :=
-            GuiControl, svigt: disable, Button6
+            GuiControl, svigt: disable, Button7
             }
         P6_aktiver()
         vl_array := P6_hent_vl_d_k_s()
