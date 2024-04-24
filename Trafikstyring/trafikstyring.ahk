@@ -449,6 +449,7 @@ p6_vgsvigt_skprint()
 {
     global ValgtVG
     global VGPrint
+    GuiControl, svigt: enable, Button6
     gui vgsvigt: Submit
     VGprint := [[], [], valgtvg]
     EnvAdd, tid, -1 , hours
@@ -6251,7 +6252,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
                     }
             }
         }
-            ; vg_vl := SubStr(vg_vl, 1, -2)
+        mail_indhold.emnefelt := "Svigt " VGPrint[3] " - d. " dato
         mail_indhold.broedtekst := "svigt " VGPrint[3] ", vognløb " vg_vl " — " beskrivelse
             gui, hide
             return mail_indhold
@@ -6354,7 +6355,7 @@ gui_svigt_vis(mail_indhold, skærmprint, gemt_ja, gemtklip, VGPrint)
         )
         svigt_template.htmlbody := html_tekst
         svigt_template.display
-        if (VGPrint[3] != "")
+        if (VGPrint[3] != "ikke vg")
             for i,e in VGPrint
                 {
                     if (i = 1)
@@ -6377,18 +6378,45 @@ gui_svigt_send(mail_indhold, skærmprint, gemt_ja, gemtklip, VGPrint)
         outlook := ComObjCreate("Outlook.application")
         outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
         svigt_template := outlook.createitemfromtemplate(outlook_template)
-
+        svigtdir := A_ScriptDir "\svigt\" A_UserName "_svigt\" 
+        if (VGPrint[3] = "ikke vg")
+            {
         if (gemt_ja = 1)
-            udklip := ImagePutFile(gemtklip, "svigt.png")
-        else
-            udklip := ImagePutFile(skærmprint, "svigt.png")
-        udklip_navn := SubStr(udklip, 3)
-        udklip_lok := A_ScriptDir "\" udklip_navn
+            udklip := ImagePutFile(gemtklip, svigtdir "svigt.png")   
+        else 
+            udklip := ImagePutFile(skærmprint, svigtdir "svigt.png")   
+        udklip_array := StrSplit(udklip, "\")
+        udklip_navn := udklip_array[udklip_array.MaxIndex()]
+        udklip_lok := A_ScriptDir "\svigt\" A_UserName "_svigt\" udklip_navn
+        html_billede = <img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="asdasdasd" src="cid:%udklip_navn%">
+        svigt_template.attachments.add(udklip_lok)
+            }
+
 
         signatur_navn := "image001.png"
         signatur_lok := A_ScriptDir "\lib\" . signatur_navn
 
-        svigt_template.attachments.add(udklip_lok)
+            
+        if (VGPrint[3] != "")
+            for i,e in VGPrint
+                {
+                    if (i = 1)
+                        {
+                        for i2, e2 in e
+                            {
+                                udklip_%i2% := ImagePutFile(e2, svigtdir "svigt_" i2 ".png")
+                                udklip_array := StrSplit(udklip_%i2%, "\")
+                                udklip_navn_%i2% :=  udklip_array[udklip_array.MaxIndex()]
+                                udklip_lok_%i2% := svigtdir udklip_navn_%i2%
+                                svigt_template.attachments.add(udklip_lok_%i2%)
+                                html_billede_ind = <img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="asdasdasd" src="cid:xyz">
+                                html_billede_ind := StrReplace(html_billede_ind, "xyz", udklip_navn_%i2%)
+                                html_billede := html_billede . html_billede_ind
+                            }
+                        }
+                    }
+
+
         svigt_template.attachments.add(signatur_lok)
         svigt_template.to := "planet@midttrafik.dk"
         svigt_template.subject := mail_indhold.emnefelt
@@ -6444,7 +6472,19 @@ gui_svigt_send(mail_indhold, skærmprint, gemt_ja, gemtklip, VGPrint)
         signatur := RegExReplace(signatur, "\bimage001.png\b.{18}", "image001.png")
         svigt_template.htmlbody := html_tekst . signatur
         svigt_template.send
-        ImageDestroy(udklip)
+                if (VGPrint[3] != "Ikke vg")
+            for i,e in VGPrint
+                {
+                    if (i = 1)
+                        {
+                        for i2, e2 in e
+                            {
+                                ImageDestroy(udklip_%i2%)
+                            }
+                        }
+                    }
+        else
+            ImageDestroy(udklip)
         gemtklip :=
         MsgBox, 64, Mail er sendt!, Mailen er afsendt, 2
 
