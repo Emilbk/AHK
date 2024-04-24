@@ -6041,6 +6041,9 @@ w\:* {behavior:url(#default#VML);}
     gui_svigt_send_mail:
     gui, submit
     gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
+    if (gui_svigt_tekst = 0)
+        return
+    gui_svigt_send(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip, VGPrint)
     return
 
 
