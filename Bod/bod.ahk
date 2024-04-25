@@ -19,10 +19,36 @@ outlook := ComObjCreate("Outlook.application")
 ; else
 ;     MsgBox, , Er ikke FDSvigt, % outlookmail.Body
 
+; genåbnet indenfor 2 tim
+#IfWinActive, Svigt FG8-FV8.xlsx - Excel
+!g::
+{
+    KeyWait, alt
+    KeyWait, g
+    SendInput, {tab 2}
+    sleep 100
+    SendInput, {AltDown}{Down}{AltUp}
+    sleep 200
+    SendInput, {down 3}
+    sleep 500
+    SendInput, {enter}
+    sleep 100
+    SendInput, {ShiftDown}{tab 4}{ShiftUp}
+    sleep 100
+    SendInput, fg - vognløb lukket/
+    sleep 40
+    SendInput, {return}
+    return
+}
 #IfWinActive, Svigt FG8-FV8.xlsx - Excel
     !q::
         {
             winactivate Planet - Svigt til behandling - Planet - Outlook
+            if (!WinExist("Planet - Svigt til behandling - Planet - Outlook"))
+                {
+                    MsgBox, , , Svigtmappe ikke åben
+                    return
+                }
             sleep 150
             controlfocus, outlookgrid1, Planet - Svigt til behandling - Planet - Outlook
             sleep 150
@@ -62,6 +88,7 @@ outlook := ComObjCreate("Outlook.application")
                 sleep 150
                 SendInput, {tab}
                 sendinput, {f2} ^v
+                sleep 100
                 SendInput, {tab}
                 sleep 40
                 SendInput, mtebk{tab}
@@ -79,7 +106,7 @@ outlook := ComObjCreate("Outlook.application")
                 sendinput, {f2}
                 sleep 40
                 sendinput ^v
-                sleep 40
+                sleep 80
                 SendInput, {tab}
                 sleep 40
                 SendInput, mtebk{tab}
