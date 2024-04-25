@@ -411,7 +411,11 @@ return
 ;; END AUTOEXEC
 Return
 +^z::
-
+{
+    ControlGetText, test, ComboBox1, ahk_class Agent Main GUI
+    MsgBox, , , %test%
+    return
+}
 
 p6_vgsvigt()
 {
@@ -3562,6 +3566,8 @@ Trio_opkald(ByRef telefon)
         ControlClick, x365 y18, Trio Agent, , ,, ,, ; Skrivebordsværkstøjsline
         sleep 100
     }
+    ; ControlGetText, OutputVar [, Control, WinTitle, WinText, ExcludeTitle, ExcludeText]
+    ; if (Con)
     trio_pause()
     sleep 100
     SendInput, {CtrlUp}{AltUp}
