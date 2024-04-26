@@ -5222,6 +5222,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             P6_notat("Ingen kontakt til chf, VL låst" initialer " ")
             gui, cancel
             sys_afslut_genvej()
+            return
         }
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør? Husk at låse VL,
