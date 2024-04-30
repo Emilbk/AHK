@@ -423,12 +423,13 @@ p6_vgsvigt()
        vg_svigt := 1
        gui svigt: hide
        sleep 100
+       GuiControl, vgsvigt:, Edit1, Vognløb
        gui vgsvigt: show, AutoSize Center, Vogngruppesvigt
+       GuiControl, svigt: , Type, 1
        WinWaitActive, Vogngruppesvigt
        WinWaitClose, Vogngruppesvigt
     ; ImageShow(VGprint.1)
     ; ImageShow(VGprint.2)
-        GuiControl, svigt: , Type, 1
         sleep 100
         Gui svigt: Show, w448 h297, Svigt 
 
@@ -558,7 +559,6 @@ p6_vgsvigt_skprint()
                     sleep 300
                     ClipWait, 3, 1
                     VGPrint[1].push(ImagePutBuffer(clipboardall))
-
                     VGPrint[2].Push(nu_vl)
                 }
             vl_dobbelt := 0
@@ -6052,6 +6052,7 @@ w\:* {behavior:url(#default#VML);}
     GuiControl, svigt:,  Button4 , 0 
     GuiControl, svigt:,  Button5 , 0 
     GuiControl, svigt:,  Button6 , 0 
+    GuiControl, svigt:,  Button7 , 0 
     GuiControl, svigt:,  gemt_ja , 0
     GuiControl, svigt:,  ny_dato ,
     GuiControl, svigt:,  årsag ,
