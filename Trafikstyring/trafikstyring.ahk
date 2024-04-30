@@ -6337,7 +6337,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
             {
                 if (i2 >= 3)
                     {
-                    if (VGPrint[2].MaxIndex() > 3)
+                    if (VGPrint[2].MaxIndex() >= 3)
                         {
                         if (i2 = VGPrint[2].MaxIndex())
                         {
