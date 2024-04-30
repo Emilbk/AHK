@@ -178,6 +178,7 @@ Hotkey, ifWinActive, MD0121
 Hotkey, % bruger_genvej.52, l_excel_mange_ture ; !Lbutton
 Hotkey, % bruger_genvej.53, l_excel_p6_id ; !Lbutton
 Hotkey, % bruger_genvej.54, l_excel_p6_cpr ; !Lbutton
+; Hotkey, % bruger_genvej.74, l_excel_p6_faerge ; !Lbutton
 Hotkey, IfWinActive, ,
 ;; Trio-setup
 if (bruger_genvej.71 = 1)
@@ -195,6 +196,10 @@ if (bruger_genvej.71 = 1)
         ControlClick, x368 y68, ahk_class Agent Main GUI , , ,, ,,
     }
 }
+;if not WinExist("ahk_exe OUTLOOK.EXE")
+ ;  {
+   ; run "C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
+    ;}
 ;; GUI
 ; Ring til sygehus
 gui sygehus:+Labelsygehus
@@ -412,9 +417,10 @@ return
 Return
 +^z::
 {
-    ControlGetText, test, ComboBox1, ahk_class Agent Main GUI
-    MsgBox, , , %test%
-    return
+    excel_p6_faerge()
+    ; ControlGetText, test, ComboBox1, ahk_class Agent Main GUI
+    ; MsgBox, , , %test%
+    ; return
 }
 
 p6_vgsvigt()
@@ -4054,6 +4060,103 @@ excel_p6_cpr()
 
     return
 }
+excel_p6_faerge()
+{
+    outlook := ComObjCreate("Outlook.application")
+    outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
+    faerge_template := outlook.createitemfromtemplate(outlook_template)
+    faerge_template.to := "planet@midttrafik.dk"
+
+    KeyWait, ctrl
+    KeyWait, shift
+    FormatTime, dato, YYYYMMDDHH24MISS, dd
+    P6_aktiver()
+    P6_rejsesogvindue()
+    sleep 100
+    SendInput, ^t!a
+    sleep 100
+    SendInput, {!}hou
+    SendInput, !f%dato%{tab 2}
+    sleep 20
+    SendInput, %dato%^r
+    sleep 5000
+    clipboard :=
+    SendInput, !{PrintScreen}
+    ClipWait, 3, 1
+    hou := ImagePutBuffer(clipboardall)
+    sleep 100
+    SendInput, ^t!a
+    sleep 100
+    SendInput, {!}snap
+    SendInput, !f%dato%{tab 2}
+    sleep 20
+    SendInput, %dato%^r
+    sleep 5000
+    clipboard :=
+    SendInput, !{PrintScreen}
+    ClipWait, 3, 1
+    snap := ImagePutBuffer(clipboardall)
+    hou := ImagePutFile(hou, "hou.png")
+    snap := ImagePutFile(snap, "snap.png")
+    hou_navn := SubStr(hou, 3)
+    snap_navn := SubStr(snap, 3)
+    hou_lok := A_ScriptDir "\" hou_navn
+    snap_lok := A_ScriptDir "\" snap_navn
+    faerge_template.attachments.add(hou_lok)
+    faerge_template.attachments.add(snap_lok)
+    html_tekst =
+(
+            <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40"><head><meta name=Generator content="Microsoft Word 15 (filtered medium)"><!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
+    o\:* {behavior:url(#default#VML);}
+    w\:* {behavior:url(#default#VML);}
+    .shape {behavior:url(#default#VML);}
+    </style><![endif]--><style><!--
+    /* Font Definitions */
+    @font-face
+    	{font-family:"Cambria Math";
+    	panose-1:2 4 5 3 5 4 6 3 2 4;}
+    @font-face
+    	{font-family:Calibri;
+    	panose-1:2 15 5 2 2 2 4 3 2 4;}
+    @font-face
+    	{font-family:Verdana;
+    	panose-1:2 11 6 4 3 5 4 4 2 4;}
+    @font-face
+    {font-family:Aptos;}
+    /* Style Definitions */
+    p.MsoNormal, li.MsoNormal, div.MsoNormal
+    	{margin:0cm;
+    	font-size:11.0pt;
+    	font-family:"Aptos",sans-serif;
+    	mso-ligatures:standardcontextual;
+    	mso-fareast-language:EN-US;}
+    .MsoChpDefault
+    	{mso-style-type:export-only;
+    	font-size:10.0pt;
+    	mso-ligatures:none;}
+    @page WordSection1
+    	{size:612.0pt 792.0pt;
+    	margin:3.0cm 2.0cm 3.0cm 2.0cm;}
+    div.WordSection1
+    {page:WordSection1;}
+    --></style><!--[if gte mso 9]><xml>
+    <o:shapedefaults v:ext="edit" spidmax="1026" />
+    </xml><![endif]--><!--[if gte mso 9]><xml>
+    <o:shapelayout v:ext="edit">
+    <o:idmap v:ext="edit" data="1" />
+    </o:shapelayout></xml><![endif]--></head><body lang=DA link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal>%broedtekst%<o:p></o:p></p><p class=MsoNormal><span style='mso-ligatures:none'><br><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%snap_navn%"><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%hou_navn%"></span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
+
+        )
+   
+    faerge_template.htmlbody := html_tekst
+    faerge_template.subject := "Hou og Snaptun"
+    ImageDestroy(hou)
+    ImageDestroy(snap)
+    faerge_template.display()
+    
+
+}
 ;; System
 
 ; asd
@@ -6054,7 +6157,7 @@ w\:* {behavior:url(#default#VML);}
         MsgBox, 48 , Vælg kun én, Vælg enten lukket eller slettet VL
         sleep 100
         Gui Show, w448 h297, Svigt
-        return
+        return "fejl"
     }
     if (lukket = 1 and StrLen(tid) != 4)
     {
@@ -6063,7 +6166,7 @@ w\:* {behavior:url(#default#VML);}
         sleep 100
         Gui Show, w448 h297, Svigt
         SendInput, !l{tab}^a
-        return
+        return "fejl"
     }
     if (StrLen(tid) = 4)
     {
@@ -6087,7 +6190,7 @@ w\:* {behavior:url(#default#VML);}
         MsgBox, 48 , Mangler VL-type, Husk at krydse af i typen af VL.
         sleep 100
         Gui Show, w448 h297, Svigt
-        return
+        return "fejl"
     }
     if (type = 1)
         vl_type := "GV"
@@ -6102,7 +6205,7 @@ w\:* {behavior:url(#default#VML);}
         sleep 100
         Gui Show, w448 h297, Svigt
         SendInput, !b
-        return
+        return "fejl"
     }
     if (type = 1 and lukket = 1 and årsag != "")
     {
@@ -6369,8 +6472,9 @@ w\:* {behavior:url(#default#VML);}
     <o:shapelayout v:ext="edit">
     <o:idmap v:ext="edit" data="1" />
     </o:shapelayout></xml><![endif]--></head><body lang=DA link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal>%broedtekst%<o:p></o:p></p><p class=MsoNormal><span style='mso-ligatures:none'><br><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%udklip_navn%"></span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
-
-        )
+    
+    )
+    ;</o:shapelayout></xml><![endif]-f</span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
         signatur := RegExReplace(signatur, "\bimage001.png\b.{18}", "image001.png")
         svigt_template.htmlbody := html_tekst . signatur
         svigt_template.send
