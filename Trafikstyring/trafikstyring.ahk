@@ -412,7 +412,7 @@ Return
     clipboard :=
     sleep 200
     SendInput, !{PrintScreen}
-    sleep 200
+    sleep 300
     ClipWait, 3, 1
     print.1 := ImagePutBuffer(clipboardall)
     p6_alt_menu("{esc}{alt}", "tv")
@@ -426,7 +426,7 @@ Return
     clipboard :=
     sleep 200
     SendInput, !{PrintScreen}
-    sleep 200
+    sleep 300
     ClipWait, 3, 1
     print.2 := ImagePutBuffer(clipboardall)
     ImageShow(print.2)
