@@ -485,6 +485,7 @@ p6_vgsvigt_skprint()
     GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
     Input, tast , B L1 T10, {Esc},{Enter}
     SendInput, !{PrintScreen}
+    sleep 300
     ClipWait, 3, 1
     VGprint[1][2] := ImagePutBuffer(clipboardall)
     GuiControl, trio_genvej:text, Button1, Tager skærmprint af vl
@@ -493,9 +494,10 @@ p6_vgsvigt_skprint()
     Input, tast , B L1 T10, {Esc},{Enter}
     VGprint[2][3] := valgtvgvl
     SendInput, !{PrintScreen}
+    sleep 300
     ClipWait, 3, 1
     VGprint[1][3] := ImagePutBuffer(clipboardall)
-    sleep 100
+    sleep 200
     GuiControl, trio_genvej:text, Button1, Yderligere vognløb?
     MsgBox, 36, Yderligere vognløb?, % "Vognløb " VGprint[2][3] " er registreret.`nSkal der registeres svigt på flere vognløb i vogngruppen?"
     sleep 100
