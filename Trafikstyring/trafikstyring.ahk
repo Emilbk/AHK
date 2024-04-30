@@ -441,7 +441,9 @@ p6_vgsvigt_skprint()
     global ValgtVG
     global VGPrint
     global ValgtVGVl
+    gui vgsvigt: Submit
     GuiControl, svigt: enable, Button7
+    GuiControl, svigt:,  Button7 , 1
     GuiControl, svigt: disable, Button8
     GuiControl, svigt: disable, Button6
     GuiControl, svigt: disable, Button5
@@ -451,8 +453,8 @@ p6_vgsvigt_skprint()
     GuiControl, svigt: disable, Button1
     GuiControl, svigt:text, Static1, Vogngruppe 
     GuiControl, svigt:text, Static3,
-    GuiControl, svigt:, Edit1, test
-    gui vgsvigt: Submit
+    GuiControl, svigt:, Edit1, %ValgtVG%
+    MsgBox, , , %valgtvg%
     VGprint := [[], [], valgtvg]
     EnvAdd, tid, -1 , hours
     FormatTime, tid, %tid%, HH:mm
@@ -470,6 +472,7 @@ p6_vgsvigt_skprint()
     GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
     Input, tast , B L1 T10, {Esc},{Enter}
     SendInput, !{PrintScreen}
+    sleep 400
     ClipWait, 3, 1
     VGprint[1][1] := ImagePutBuffer(clipboardall)
     GuiControl, trio_genvej:text, Button1, Slår VG-liste op
@@ -485,7 +488,7 @@ p6_vgsvigt_skprint()
     GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
     Input, tast , B L1 T10, {Esc},{Enter}
     SendInput, !{PrintScreen}
-    sleep 300
+    sleep 400
     ClipWait, 3, 1
     VGprint[1][2] := ImagePutBuffer(clipboardall)
     GuiControl, trio_genvej:text, Button1, Tager skærmprint af vl
@@ -494,7 +497,7 @@ p6_vgsvigt_skprint()
     Input, tast , B L1 T10, {Esc},{Enter}
     VGprint[2][3] := valgtvgvl
     SendInput, !{PrintScreen}
-    sleep 300
+    sleep 400
     ClipWait, 3, 1
     VGprint[1][3] := ImagePutBuffer(clipboardall)
     sleep 200
@@ -502,10 +505,7 @@ p6_vgsvigt_skprint()
     MsgBox, 36, Yderligere vognløb?, % "Vognløb " VGprint[2][3] " er registreret.`nSkal der registeres svigt på flere vognløb i vogngruppen?"
     sleep 100
     IfMsgBox, no
-        {
-        GuiControl, svigt:text, Edit1, %vg_vl%
         return 
-        }
     IfMsgBox, Yes
         {
             sleep 100
@@ -527,7 +527,7 @@ p6_vgsvigt_skprint()
             clipboard :=
             GuiControl, trio_genvej:text, Button1, Tager skærmprint
             SendInput, !{PrintScreen}
-            sleep 300
+            sleep 400
             ClipWait, 3, 1
             VGPrint[1].push(ImagePutBuffer(clipboardall))
             clipboard :=
@@ -558,7 +558,7 @@ p6_vgsvigt_skprint()
                     clipboard :=
                     GuiControl, trio_genvej:text, Button1, Tager skærmprint
                     SendInput, !{PrintScreen}
-                    sleep 300
+                    sleep 400
                     ClipWait, 3, 1
                     VGPrint[1].push(ImagePutBuffer(clipboardall))
                     VGPrint[2].Push(nu_vl)
