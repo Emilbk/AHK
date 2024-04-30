@@ -396,49 +396,27 @@ Gui vgSvigt: add, Button, x+25 gVGSvigtAfbryd vVGAfbryd , &Afbryd
 Return
 +^z::
 {
-    print := []
-    EnvAdd, tid, -1 , hours
-    FormatTime, tid, %tid%, HH:mm
-    EnvAdd, tid_2, 4 , hours
-    FormatTime, tid_2, %tid_2%, HH:mm
-    KeyWait, alt
-    KeyWait, ctrl
-    valgtvg := "århusstat"
-    p6_aktiver()
-    p6_alt_menu("{esc}{alt}", "td")
-    sleep 500
-    sendinput, %valgtvg% {enter}
-    sleep 500
-    clipboard :=
-    sleep 200
-    SendInput, !{PrintScreen}
-    sleep 300
-    ClipWait, 3, 1
-    print.1 := ImagePutBuffer(clipboardall)
-    p6_alt_menu("{esc}{alt}", "tv")
-    sleep 500
-    SendInput, !g%valgtvg%{Enter}
-    sleep 100
-    SendInput, !s%tid%
-    sleep 100
-    SendInput, {tab 2}%tid_2%{enter}
-    sleep 500
-    clipboard :=
-    sleep 200
-    SendInput, !{PrintScreen}
-    sleep 300
-    ClipWait, 3, 1
-    print.2 := ImagePutBuffer(clipboardall)
-    ImageShow(print.2)
+
+   GuiControl, svigt:,  Button7 , 0
     return
 
 
 }
-vgSvigtAfbryd:
+vgsvigtguiescape:
+vgsvigtguiclose:
+{
+    vgsvigtafbryd()
+    return
+}
+vgSvigtAfbryd()
 {
    gui vgsvigt: hide
    sleep 100 
+   GuiControl, svigt: disable, Button7
+   GuiControl, svigt:,  Button7 , 0
    Gui svigt: Show, w448 h297, Svigt
+;    GuiControl, svigt:,  Button4 , 1
+   return
 }
 p6_vgsvigt()
 {
