@@ -384,7 +384,9 @@ Gui svigt: Add, Button, x210 y256 w60 h23 vsend ggui_svigt_send_mail, &Send
 Gui svigt: Add, Button , vvogngruppesvigt gp6_vgsvigt x320 y251 w80, Op&ret vogngruppesvigt
 
 Gui vgSvigt: new 
-gui vgSvigt: add, Text, X+M y+M , Hvilken vogngruppe skal der registreres svigt for?
+gui vgSvigt: add, Text, X+M y+M , Hvilket vognløb skal der registreres svigt på?
+gui vgSvigt: add, edit, Y+M  vvalgtVgVL number, vognløb
+gui vgSvigt: add, Text, Y+M  , Hvilken vogngruppe skal der registreres svigt på?
 Gui vgSvigt: add, DropDownList, vValgtVG, Århusstat|Horstat|blalal
 Gui vgSvigt: add, Button, Default vVGOK gp6_vgsvigt_skprint , &OK
 Gui vgSvigt: add, Button, x+25 gVGSvigtAfbryd vVGAfbryd , &Afbryd
@@ -459,6 +461,7 @@ p6_vgsvigt_skprint()
 {
     global ValgtVG
     global VGPrint
+    global ValgtVGVl
     GuiControl, svigt: enable, Button7
     GuiControl, svigt: disable, Button8
     GuiControl, svigt: disable, Button6
@@ -466,13 +469,17 @@ p6_vgsvigt_skprint()
     GuiControl, svigt: disable, Button4
     GuiControl, svigt: disable, Button3
     GuiControl, svigt: disable, Button2
+    GuiControl, svigt: disable, Button1
+    GuiControl, svigt:text, Static1, Vogngruppe 
+    GuiControl, svigt:text, Static3,
+    GuiControl, svigt:, Edit1, test
     gui vgsvigt: Submit
     VGprint := [[], [], valgtvg]
     EnvAdd, tid, -1 , hours
     FormatTime, tid, %tid%, HH:mm
     EnvAdd, tid_2, 2 , hours
     FormatTime, tid_2, %tid_2%, HH:mm
-    
+    MsgBox, , , % valgtvgvl, 
     p6_aktiver()
     sleep 500
     GuiControl, trio_genvej:text, Button1, Slår VG-skema op
@@ -482,7 +489,7 @@ p6_vgsvigt_skprint()
     sleep 500
     clipboard :=
     GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
-    Input, tast , B L1 T5, {Esc},{Enter}
+    Input, tast , B L1 T10, {Esc},{Enter}
     SendInput, !{PrintScreen}
     ClipWait, 3, 1
     VGprint[1][1] := ImagePutBuffer(clipboardall)
@@ -497,22 +504,15 @@ p6_vgsvigt_skprint()
     clipboard :=
     sleep 500
     GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
-    Input, tast , B L1 T5, {Esc},{Enter}
+    Input, tast , B L1 T10, {Esc},{Enter}
     SendInput, !{PrintScreen}
     ClipWait, 3, 1
     VGprint[1][2] := ImagePutBuffer(clipboardall)
-    P6_planvindue()
     GuiControl, trio_genvej:text, Button1, Tager skærmprint af vl
-    sleep 100
-    SendInput, !l
-    sleep 100
-    clipboard :=
-    SendInput, +{AppsKey}c
-    ClipWait, 2
-    VGprint[2][3] := clipboard
-    clipboard :=
     GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
-    Input, tast , B L1 T5, {Esc},{Enter}
+    p6_vaelg_vl(valgtvgvl)
+    Input, tast , B L1 T10, {Esc},{Enter}
+    VGprint[2][3] := valgtvgvl
     SendInput, !{PrintScreen}
     ClipWait, 3, 1
     VGprint[1][3] := ImagePutBuffer(clipboardall)
@@ -521,7 +521,10 @@ p6_vgsvigt_skprint()
     MsgBox, 36, Yderligere vognløb?, % "Vognløb " VGprint[2][3] " er registreret.`nSkal der registeres svigt på flere vognløb i vogngruppen?"
     sleep 100
     IfMsgBox, no
+        {
+        GuiControl, svigt:text, Edit1, %vg_vl%
         return 
+        }
     IfMsgBox, Yes
         {
             sleep 100
@@ -597,8 +600,11 @@ p6_vgsvigt_skprint()
                         }
                     }
             MsgBox, 64, Skærmprint taget!, Der er nu taget skærmprint af de valgte vognløb, 3
+            if (vl_dobbelt != 0)
+                {
             VGprint[1].RemoveAt(vl_dobbelt)
             VGprint[2].RemoveAt(vl_dobbelt)
+                }
             return
 
 
@@ -6016,11 +6022,12 @@ w\:* {behavior:url(#default#VML);}
             GuiControl, svigt: disable, Button8
             }
         GuiControl, svigt: enable, Button6
-            GuiControl, svigt: enable, Button5
-            GuiControl, svigt: enable, Button4
-            GuiControl, svigt: enable, Button3
-            GuiControl, svigt: enable, Button2
-            GuiControl, svigt: enable, Button1
+        GuiControl, svigt: enable, Button5
+        GuiControl, svigt: enable, Button4
+        GuiControl, svigt: enable, Button3
+        GuiControl, svigt: enable, Button2
+        GuiControl, svigt: enable, Button1
+        GuiControl, svigt:text, Static1, Vognløb 
         P6_aktiver()
         vl_array := P6_hent_vl_d_k_s()
         ; vl_array := []
@@ -6090,6 +6097,7 @@ w\:* {behavior:url(#default#VML);}
     Return
     gui_svigt_vis_mail:
     gui, submit
+    MsgBox, , , %type%
     gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip, vmKontakt, vmKontaktTid)
     if (gui_svigt_tekst = 0)
         return
