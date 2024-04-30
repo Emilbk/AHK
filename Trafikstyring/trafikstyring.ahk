@@ -6175,15 +6175,16 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         }
         tid := timer ":" min
     }
-    if (lukket = 0 or helt = 0)
-        if vmKontakt = 0
-        {
-            sleep 100
-            MsgBox, 48 , Husk VM , Er vognmand informeret/Ring op/Reminder om 5 min 
-            sleep 100
-            Gui Show, w448 h297, Svigt
-            return 0
-        }    
+    if (type = 1 or type = 2)
+        if (lukket = 0 or helt = 0)
+            if vmKontakt = 0
+            {
+                sleep 100
+                MsgBox, 48 , Husk VM , Er vognmand informeret/Ring op/Reminder om 5 min 
+                sleep 100
+                Gui Show, w448 h297, Svigt
+                return 0
+            }    
     if (type = 0)
     {
         sleep 100
