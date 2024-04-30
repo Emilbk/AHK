@@ -14,6 +14,7 @@ GroupAdd, trafikstyringsgruppe, ahk_class AccessBar
 GroupAdd, trafikstyringsgruppe, ahk_class Agent Main GUI
 GroupAdd, trafikstyringsgruppe, ahk_class Addressbook
 GroupAdd, trafikstyringsgruppe, ahk_class Transparent Windows Client
+GroupAdd, trafikstyringsgruppe, ahk_class Planet Version 
 ;; lib
 #Include, %A_linefile%\..\lib\AHKDb\ahkdb.ahk
 #Include, %A_linefile%\..\lib\JSON.ahk
