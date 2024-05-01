@@ -6166,7 +6166,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         tid := timer ":" min
     }
     if (type = 1 or type = 2)
-        if (lukket = 0 or helt = 0)
+        if (lukket = 1 or helt = 1)
             if vmKontakt = 0
             {
                 sleep 100
