@@ -14,6 +14,7 @@ bodtemplate := outlook.createitem(0)
 
 ; Excel.Visible := true
 ExcelSvigtWorkbok := Excel.Workbooks.Open(ExcelDBSvigt, , readonly := True)
+sleep 500
 ExcelSvigtWorksheet := ExcelSvigtWorkbok.worksheets.item("Vognløbsdata")
 ExcelSvigtWorksheet.Select
 ; MsgBox Excel.ActiveSheet.Name
