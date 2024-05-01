@@ -360,8 +360,8 @@ Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
 Gui svigt: Font, w600
 Gui svigt: Add, Text, x16 y48 w120 h23 +0x200, &Årsag
+Gui svigt: Font
 Gui svigt: Add, Edit, vårsag x16 y72 w120 h21
-Gui svigt: Font, w600
 Gui svigt: Font, s9, Segoe UI
 Gui svigt: Font, w600
 Gui svigt: Add, Text, x304 y0 w120 h23 +0x200, Garanti eller Var.
