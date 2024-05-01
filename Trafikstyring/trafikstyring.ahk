@@ -390,6 +390,10 @@ gui vgSvigt: add, Text, Y+M  , Hvilken vogngruppe skal der registreres svigt på
 Gui vgSvigt: add, DropDownList, vValgtVG, Århusstat|Horstat|blalal
 Gui vgSvigt: add, Button, Default vVGOK gp6_vgsvigt_skprint , &OK
 Gui vgSvigt: add, Button, x+25 gVGSvigtAfbryd vVGAfbryd , &Afbryd
+
+
+Gui vmsvigt: new
+gui vgSvigt: add, Text, X+M y+M , Er vognmand ikke informeret?
 ;; GUI vl-note
 
 ;; END AUTOEXEC
@@ -6170,7 +6174,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
             if vmKontakt = 0
             {
                 sleep 100
-                MsgBox, 48 , Husk VM , Er vognmand informeret/Ring op/Reminder om 5 min 
+                gui, vmsvigt: Show, AutoSize ,Opkald til VM? 
                 sleep 100
                 Gui Show, w448 h297, Svigt
                 return 0
