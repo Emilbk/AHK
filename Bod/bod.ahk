@@ -21,26 +21,28 @@ outlook := ComObjCreate("Outlook.application")
 
 ; genåbnet indenfor 2 tim
 #IfWinActive, Svigt FG8-FV8.xlsx - Excel
-!g::
 {
-    KeyWait, alt
+    !g::
     KeyWait, g
     SendInput, {tab 2}
-    sleep 100
+    sleep 300
     SendInput, {AltDown}{Down}{AltUp}
-    sleep 200
-    SendInput, {down 3}
-    sleep 500
+    KeyWait, alt
+    sleep 300
+    SendInput, {down}
+    sleep 400
+    SendInput, {down}
     SendInput, {enter}
-    sleep 100
+    sleep 300
     SendInput, {ShiftDown}{tab 4}{ShiftUp}
     sleep 100
     SendInput, fg - vognløb lukket/
-    sleep 40
+    sleep 100
     SendInput, {return}
+    sleep 40
     return
 }
-#IfWinActive, Svigt FG8-FV8.xlsx - Excel
+#ifWinActive, Svigt FG8-FV8.xlsx - Excel
     !q::
         {
             winactivate Planet - Svigt til behandling - Planet - Outlook
