@@ -5134,6 +5134,125 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             return
         }
     }
+
+
+    if (valgt == "x")
+    {
+
+        sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for pausen? Mvh. Midttrafik", kørselsaftale ,styresystem)
+        sleep 500
+        if (sysstjek = 1)
+        {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Pausen ikke kvitteret" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 1000
+            SendInput, {enter}
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Pausen ikke kvitteret, tekst og pause sendt til chf" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+        }
+        sys_afslut_genvej()
+        return
+    }
+    if (valgt == "s")
+    {
+
+        sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for skoleturen? Mvh. Midttrafik", kørselsaftale ,styresystem)
+        sleep 500
+        if (sysstjek = 1)
+        {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Skoletur ikke kvitteret" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 1000
+            SendInput, {enter}
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Skoletur ikke kvitteret, tekst og tur sendt til chf" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+        }
+        sys_afslut_genvej()
+        return
+    }
+    if (valgt == "s")
+    {
+
+        sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for skoleturen? Mvh. Midttrafik", kørselsaftale ,styresystem)
+        sleep 500
+        if (sysstjek = 1)
+        {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Skoletur ikke kvitteret" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 1000
+            SendInput, {enter}
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Skoletur ikke kvitteret, tekst og tur sendt til chf" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+        }
+        sys_afslut_genvej()
+        return
+    }
     if (valgt == "p")
     {
 
