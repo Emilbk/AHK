@@ -387,7 +387,7 @@ Gui vgSvigt: new
 gui vgSvigt: add, Text, X+M y+M , Hvilket vognløb skal der registreres svigt på?
 gui vgSvigt: add, edit, Y+M  vvalgtVgVL number, vognløb
 gui vgSvigt: add, Text, Y+M  , Hvilken vogngruppe skal der registreres svigt på?
-Gui vgSvigt: add, DropDownList, vValgtVG, Århusstat|Horstat|blalal
+Gui vgSvigt: add, DropDownList, vValgtVG, Århusstat|Horstat|Silherstat|Holsstat
 Gui vgSvigt: add, Button, Default vVGOK gp6_vgsvigt_skprint , &OK
 Gui vgSvigt: add, Button, x+25 gVGSvigtAfbryd vVGAfbryd , &Afbryd
 
@@ -428,8 +428,8 @@ p6_vgsvigt()
        gui svigt: hide
        sleep 100
        GuiControl, vgsvigt:, Edit1, Vognløb
+       GuiControl, svigt: , Button7, 1
        gui vgsvigt: show, AutoSize Center, Vogngruppesvigt
-       GuiControl, svigt: , Type, 1
        WinWaitActive, Vogngruppesvigt
        WinWaitClose, Vogngruppesvigt
     ; ImageShow(VGprint.1)
@@ -3890,8 +3890,9 @@ Flexfinder_opslag()
             SendInput, +{tab}{up}{tab}
             sleep 300
             SendInput, %opslag%
-            sleep 700
+            sleep 900
             SendInput, {enter}
+            sleep 100
             WinActivate, PLANET
         }
         Else
@@ -3905,8 +3906,9 @@ Flexfinder_opslag()
             SendInput, +{tab}{up}{tab}
             sleep 300
             SendInput, %opslag%
-            sleep 700
+            sleep 900
             SendInput, {enter}
+            sleep 100
             WinActivate, PLANET
         }
         ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
