@@ -7012,3 +7012,41 @@ gui_svigt_send(mail_indhold, skærmprint, gemt_ja, gemtklip, VGPrint)
 ; {
 ;     p6_soeg_hylde_dagsdato()
 ; }
+
+svigtHjælp:
+flexfinderskærmprint:
+nuværendeSkærmprint:
+SvigtSkærmprintOversigt:
+SvigtÅbningstidUdskudt:
+{
+    GuiControl, svigt: enable, SvigtÅbningstidEdit 
+    GuiControl, svigt: , SvigtÅbningstidEdit ,
+    GuiControl, svigt: focus, SvigtÅbningstidEdit 
+    GuiControl, svigt: , lukket, 0 
+    GuiControl, svigt: , tid, Hjemzone kl. 
+    GuiControl, svigt: , SvigtVlSlettetRadio , 0
+    GuiControl, svigt: disable, tid 
+    return
+}
+SvigtVlLukket:
+{
+    GuiControl, svigt: enable, tid 
+    GuiControl, svigt: , tid ,
+    GuiControl, svigt: focus, tid 
+    GuiControl, svigt: , SvigtÅbningstidRadio , 0 
+    GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
+    GuiControl, svigt: , SvigtVlSlettetRadio , 0
+    GuiControl, svigt: disable, SvigtÅbningstidEdit 
+    return
+}
+SvigtVlSlettet:
+{
+    GuiControl, svigt: disable, SvigtÅbningstidEdit 
+    GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
+    GuiControl, svigt: disable, tid 
+    GuiControl, svigt: , tid , Hjemzone kl. 
+    GuiControl, svigt: , SvigtÅbningstidRadio , 0 
+    GuiControl, svigt: , lukket , 0 
+    return
+}
+
