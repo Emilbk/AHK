@@ -3913,7 +3913,6 @@ Flexfinder_opslag(k_aftale, sty_sys)
             sleep 900
             SendInput, {enter}
             sleep 100
-            WinActivate, PLANET
         }
         Else
         {
@@ -3929,12 +3928,14 @@ Flexfinder_opslag(k_aftale, sty_sys)
             sleep 900
             SendInput, {enter}
             sleep 100
-            WinActivate, PLANET
         }
         ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
     }
     Else
+        {
         MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den forreste fane)
+        return "fejl"
+        }
     Return
 }
 
@@ -5660,6 +5661,7 @@ l_flexf_fra_p6:
     k_aftale := vl.2
     sty_sys := vl.3
     Flexfinder_opslag(k_aftale, sty_sys)
+    WinActivate, PLANET
     sys_afslut_genvej()
 Return
 ; slå VL op i FF. Kolonne 36
