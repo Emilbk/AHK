@@ -3974,6 +3974,10 @@ Flexfinder_til_p6()
     }
 
 }
+SvigtFlexFinderSkærmprint()
+{
+
+}
 ; Outlook
 ; ***
 ; Åbn ny mail i outlook. Kræver nymail.lnk i samme mappe som script. Kolonne 37
