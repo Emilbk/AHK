@@ -423,7 +423,11 @@ Return
 +^z::
 {
 
-   GuiControl, svigt:,  Button7 , 0
+    vl := P6_hent_vl_d_k_s()
+    k := vl.2
+    s := vl.3
+    sk := SvigtFlexfinderSk(k, s)
+    ImageShow(sk)
     return
 
 
