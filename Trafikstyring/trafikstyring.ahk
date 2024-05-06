@@ -3996,9 +3996,18 @@ Flexfinder_til_p6()
     }
 
 }
-SvigtFlexFinderSkærmprint()
+SvigtFlexFinderSk(k_aftale, sty_sys)
 {
-
+    flexFTest := Flexfinder_opslag(k_aftale, sty_sys)
+    if (flexFTest = "fejl")
+        Return
+    sleep 3000
+    clipboard :=
+    SendInput, !{PrintScreen}
+    sleep 1000
+    sk := ImagePutBuffer({image: clipboardall, crop: ["-1%", "-20%", "-1%", "-1%"]})
+    sleep 200
+    return sk
 }
 ; Outlook
 ; ***
