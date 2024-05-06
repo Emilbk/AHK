@@ -3859,14 +3859,12 @@ trio_tlf_knap(ByRef tlf := "")
 ; *
 ; Kørselsaftale til flexfinder
 ; 244,215
-Flexfinder_opslag()
+; Opdel Opslag i flexfinder og hent af K_aftale
+Flexfinder_opslag(k_aftale, sty_sys)
 {
-    sys_genvej_start(36)
     If (WinExist("FlexDanmark FlexFinder"))
     {
-        k_aftale := P6_hent_k()
         k_aftale := SubStr("000" . k_aftale, -3) ; indsætter nuller og tager sidste fire cifre i strengen (kun i spil når mindre end fire cifre ind).
-        sty_sys := P6_hent_s()
         sty_sys := SubStr("000" . sty_sys, -3) ; indsætter nuller og tager sidste fire cifre i strengen (kun i spil når mindre end fire cifre ind).
         opslag := k_aftale "_" sty_sys
         ; MsgBox, , er 4 , % k_aFtale
@@ -5622,8 +5620,11 @@ Return
 
 ;; Flexfinder
 l_flexf_fra_p6:
-    sys_genvej_keywait(36)
-    Flexfinder_opslag()
+    sys_genvej_start(36)
+    vl := P6_hent_vl_d_k_s()
+    k_aftale := vl.2
+    sty_sys := vl.3
+    Flexfinder_opslag(k_aftale, sty_sys)
     sys_afslut_genvej()
 Return
 ; slå VL op i FF. Kolonne 36
