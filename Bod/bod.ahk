@@ -34,7 +34,7 @@ outlook := ComObjCreate("Outlook.application")
     SendInput, {down}
     SendInput, {enter}
     sleep 300
-    SendInput, {ShiftDown}{tab 4}{ShiftUp}
+    SendInput, {ShiftDown}{tab 3}{ShiftUp}
     sleep 100
     SendInput, fg - vognløb lukket/
     sleep 100
@@ -85,12 +85,17 @@ outlook := ComObjCreate("Outlook.application")
                                 Clipboard := substr(mailbody[i], 28)
                                 break
                             }
+                        if InStr(mailbody[i], "Beskrivelse af anden orientering")
+                            {
+                                Clipboard := substr(mailbody[i], 28)
+                                break
+                            }
                     }
                 
                 sleep 150
-                SendInput, {tab}
+                ; SendInput, {tab}
                 sendinput, {f2} ^v
-                sleep 100
+                sleep 200
                 SendInput, {tab}
                 sleep 40
                 SendInput, mtebk{tab}
@@ -104,11 +109,11 @@ outlook := ComObjCreate("Outlook.application")
                     mailbody.RemoveAt(1)
                 Clipboard := mailbody[1]
                 sleep 150
-                SendInput, {tab}
+                ; SendInput, {tab}
                 sendinput, {f2}
                 sleep 40
                 sendinput ^v
-                sleep 80
+                sleep 200
                 SendInput, {tab}
                 sleep 40
                 SendInput, mtebk{tab}
@@ -154,13 +159,11 @@ Fdsvigt(outlook)
 {
     outlookMail := outlook.ActiveExplorer.Selection.Item(1)
     mailbody := outlookMail.body
-    if InStr(outlookMail.subject, "Driftsvigt")
-    {
+    sender := outlookMail.senderEmailAddress
+    if (InStr(sender, "flexdanmark.dk"))
+        {
         mailbody := StrSplit(outlookMail.body,"`r`n")
-        ; mailbody[9] := SubStr(mailbody[9], 28)
         mailbody.Push("FD")
-
-        ; MsgBox, , Er FDSvigt, % mailbody
     }
     Else
     {
