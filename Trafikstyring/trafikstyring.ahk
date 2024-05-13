@@ -3262,6 +3262,39 @@ p6_vl_vindue_laas(vl)
     SendInput, {f5}!o
 }
 ; konverter vl_liste_array til JSON, dump i tekst
+p6_svigt_tjek_ugedag(vl)
+{
+FormatTime, ugedag, YYYYMMDDHH24MISS, dddd
+ugedag_idag := ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
+for i,e in ugedag_idag
+    {
+        if (ugedag = ugedag_idag[i])
+            ugedag_tal := i + 1
+    }
+gv_dag := []
+FileRead, gv_dag_ind, db\gv_garanti_dag.txt
+gv_dag_ind := StrReplace(gv_dag_ind, "`r", "")
+gv_dag_ind := StrSplit(gv_dag_ind, "`n")
+for i,e in gv_dag_ind
+{
+    gv_dag[i] := StrSplit(gv_dag_ind[i], "`t")
+}
+for i,e in gv_dag
+    {
+        if e[1] = vl
+            if (gv_dag[i][ugedag_tal] = "Ja")
+                {
+                    gv_ja_nej := "Ja"
+                    break
+                }
+            Else
+                {
+                    gv_ja_nej := "Nej"
+                    break
+                }
+    }
+return gv_ja_nej
+}
 vl_liste_array_til_json_tekst()
 {
     global vl_liste_array
