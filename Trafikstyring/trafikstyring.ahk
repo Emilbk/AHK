@@ -3261,11 +3261,13 @@ p6_vl_vindue_laas(vl)
     P6_planvindue()
     SendInput, {f5}!o
 }
-; konverter vl_liste_array til JSON, dump i tekst
-p6_svigt_tjek_ugedag(vl)
+; TODO #85 lav ugedagstjek i svigtGUI, send ugedag til funktion
+p6_svigt_tjek_ugedag(vl, dato)
 {
-FormatTime, ugedag, YYYYMMDDHH24MISS, dddd
-ugedag_idag := ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
+ugedato_dag_måned := SubStr(dato, 7, 4) . SubStr(dato, 4, 2) . SubStr(dato, 1, 2)
+FormatTime, ugedag, %dato_dag_måned%, dddd
+
+dag_idag := ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
 for i,e in ugedag_idag
     {
         if (ugedag = ugedag_idag[i])
@@ -3295,6 +3297,7 @@ for i,e in gv_dag
     }
 return gv_ja_nej
 }
+; konverter vl_liste_array til JSON, dump i tekst
 vl_liste_array_til_json_tekst()
 {
     global vl_liste_array
