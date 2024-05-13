@@ -119,6 +119,7 @@ Hotkey, % bruger_genvej.14, l_p6_alarmer ; F7
 Hotkey, % bruger_genvej.15, l_p6_udraabsalarmer ; +F7
 Hotkey, % bruger_genvej.69, l_p6_billede_gui ; +F7
 Hotkey, % bruger_genvej.72, l_p6_soeg_hylde_dagsdato ; +F7
+Hotkey, % bruger_genvej.73, l_p6_specialadresser ; +^a
 ; Hotkey, % bruger_genvej.16, l_p6_ring_til_kunde ; +F8
 Hotkey, % bruger_genvej.17, l_p6_udregn_minut ; #t
 Hotkey, % bruger_genvej.18, l_p6_sygehus_ring_op ; ^+s
@@ -177,6 +178,7 @@ Hotkey, ifWinActive, MD0121
 Hotkey, % bruger_genvej.52, l_excel_mange_ture ; !Lbutton
 Hotkey, % bruger_genvej.53, l_excel_p6_id ; !Lbutton
 Hotkey, % bruger_genvej.54, l_excel_p6_cpr ; !Lbutton
+; Hotkey, % bruger_genvej.74, l_excel_p6_faerge ; !Lbutton
 Hotkey, IfWinActive, ,
 ;; Trio-setup
 if (bruger_genvej.71 = 1)
@@ -194,6 +196,10 @@ if (bruger_genvej.71 = 1)
         ControlClick, x368 y68, ahk_class Agent Main GUI , , ,, ,,
     }
 }
+;if not WinExist("ahk_exe OUTLOOK.EXE")
+ ;  {
+   ; run "C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
+    ;}
 ;; GUI
 ; Ring til sygehus
 gui sygehus:+Labelsygehus
@@ -326,14 +332,15 @@ gui vl_liste: add, button, x1020 y536 w131 h23 gvl_liste_liste, l&iste
 
 ;; GUI P6-billeder
 Gui p6_billede: Font, s9, Segoe UI
-Gui p6_billede: Add, Radio, x16 y32 w181 h23 vp6_billede_adresse, &Adresse
-Gui p6_billede: Add, Radio, x16 y56 w180 h23 vp6_billede_vg, Vogngruppeskema, &dag
-Gui p6_billede: Add, Radio, x16 y80 w181 h23 vp6_billede_styringsystem, &Styringssystem
-Gui p6_billede: Add, Radio, x16 y104 w178 h23 vp6_billede_vogngruppe, &Vogngruppe
-Gui p6_billede: Add, Radio, x16 y128 w179 h23 vp6_billede_vogngrupppe_fast, Vogngruppeskema, &fast
-Gui p6_billede: Add, Radio, x16 y152 w175 h23 vp6_billede_liste_vl, &Liste Vognløb
-Gui p6_billede: Add, Radio, x16 y176 w178 h23 vp6_billede_betaler, &Betaler
-Gui p6_billede: Add, Radio, x16 y200 w178 h23 vp6_billede_lange_rejser, Liste lange &rejser
+Gui p6_billede: Add, Radio, x16 y32 w181 h23 vp6_billedeGUI_radio, &Adresse
+Gui p6_billede: Add, Radio, x16 y56 w180 h23 , Vogngruppeskema, &dag
+Gui p6_billede: Add, Radio, x16 y80 w181 h23 , &Styringssystem
+Gui p6_billede: Add, Radio, x16 y104 w178 h23 , &Vogngruppe
+Gui p6_billede: Add, Radio, x16 y128 w179 h23 , Vogngruppeskema, &fast
+Gui p6_billede: Add, Radio, x16 y152 w175 h23 , &Liste Vognløb
+Gui p6_billede: Add, Radio, x16 y176 w178 h23 , &Betaler
+Gui p6_billede: Add, Radio, x16 y200 w178 h23 , Liste lange &rejser
+Gui p6_billede: Add, Radio, x16 y224 w178 h23 , &Historik
 Gui p6_billede: Add, Button, x40 y272 w42 h23 +default gp6_billede_ok, &OK
 Gui p6_billede: Add, Button, x104 y272 w55 h23 gp6_billedeescape, Afbryd
 Gui p6_billede: Add, Text, x16 y8 w120 h23 +0x200, Hvilket billede vil du se?
@@ -399,19 +406,21 @@ Gui vgSvigt: add, Button, x+25 vVGAfbryd , &Afbryd
 Gui specialadresser: new
 Gui specialadresser: add, DropDownList, Choose 1 W300 vValgtSpecialadresse 1, % SpecialAdresseString
 
+SpecialadresserGUIEscape:
+SpecialadresserGUI:
+Gui hide
+return
+
 ;; GUI vl-note
 
 ;; END AUTOEXEC
 Return
 +^z::
 {
-
-    MouseGetPos, musposx, musposy
-    gui, specialadresser: Show, x%musposx% y%musposy%, Specialadresser
-    WinWaitActive, Specialadresser
-    SendInput, !{down}
-    return
-
+    excel_p6_faerge()
+    ; ControlGetText, test, ComboBox1, ahk_class Agent Main GUI
+    ; MsgBox, , , %test%
+    ; return
 }
 
 p6_vgsvigt()
@@ -542,60 +551,67 @@ p6_vgsvigt_skprint()
 
 p6_billede_ok:
     gui p6_billede: Submit
-    if (p6_billede_adresse = 1)
+    if (p6_billedeGUI_radio = 1)
     {
         KeyWait, alt
         P6_aktiver()
         P6_alt_menu("{esc}{alt}", "gga")
         return
     }
-    if (p6_billede_vg = 1)
+    if (p6_billedeGUI_radio = 2)
     {
         KeyWait, alt
         P6_aktiver()
         P6_alt_menu("{alt}", "td")
         return
     }
-    if (p6_billede_styringsystem = 1)
+    if (p6_billedeGUI_radio = 3)
     {
         KeyWait, alt
         P6_aktiver()
         P6_alt_menu("{alt}", "ts")
         return
     }
-    if (p6_billede_vogngruppe = 1)
+    if (p6_billedeGUI_radio = 4)
     {
         KeyWait, alt
         P6_aktiver()
         P6_alt_menu("{alt}", "geg")
         return
     }
-    if (p6_billede_vogngruppe_fast = 1)
+    if (p6_billedeGUI_radio = 5)
     {
         KeyWait, alt
         P6_aktiver()
         P6_alt_menu("{alt}", "gef")
         return
     }
-    if (p6_billede_liste_vl = 1)
+    if (p6_billedeGUI_radio = 6)
     {
         KeyWait, alt
         P6_aktiver()
         P6_alt_menu("{alt}", "tv")
         return
     }
-    if (p6_billede_betaler = 1)
+    if (p6_billedeGUI_radio = 7)
     {
         KeyWait, alt
         P6_aktiver()
         P6_alt_menu("{alt}", "gøb")
         return
     }
-    if (p6_billede_lange_rejser = 1)
+    if (p6_billedeGUI_radio = 8)
     {
         KeyWait, alt
         P6_aktiver()
         P6_alt_menu("{alt}", "ti")
+        return
+    }
+    if (p6_billedeGUI_radio = 9)
+    {
+        KeyWait, alt
+        P6_aktiver()
+        P6_alt_menu("{alt}", "v{down}h")
         return
     }
 return
@@ -3556,6 +3572,8 @@ Trio_opkald(ByRef telefon)
         ControlClick, x365 y18, Trio Agent, , ,, ,, ; Skrivebordsværkstøjsline
         sleep 100
     }
+    ; ControlGetText, OutputVar [, Control, WinTitle, WinText, ExcludeTitle, ExcludeText]
+    ; if (Con)
     trio_pause()
     sleep 100
     SendInput, {CtrlUp}{AltUp}
@@ -3689,7 +3707,7 @@ trio_udenov()
 ; Trio hop til alarm
 trio_alarm()
 {
-    WinMenuSelectItem, Trio Attendant, , Fil, Rolle, 8&
+    WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Rolle, 8&
     ; WinActivate, ahk_class Agent Main GUI
     ; winwaitactive, ahk_class Agent Main GUI
     ; sleep 40
@@ -4042,6 +4060,103 @@ excel_p6_cpr()
 
     return
 }
+excel_p6_faerge()
+{
+    outlook := ComObjCreate("Outlook.application")
+    outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
+    faerge_template := outlook.createitemfromtemplate(outlook_template)
+    faerge_template.to := "planet@midttrafik.dk"
+
+    KeyWait, ctrl
+    KeyWait, shift
+    FormatTime, dato, YYYYMMDDHH24MISS, dd
+    P6_aktiver()
+    P6_rejsesogvindue()
+    sleep 100
+    SendInput, ^t!a
+    sleep 100
+    SendInput, {!}hou
+    SendInput, !f%dato%{tab 2}
+    sleep 20
+    SendInput, %dato%^r
+    sleep 5000
+    clipboard :=
+    SendInput, !{PrintScreen}
+    ClipWait, 3, 1
+    hou := ImagePutBuffer(clipboardall)
+    sleep 100
+    SendInput, ^t!a
+    sleep 100
+    SendInput, {!}snap
+    SendInput, !f%dato%{tab 2}
+    sleep 20
+    SendInput, %dato%^r
+    sleep 5000
+    clipboard :=
+    SendInput, !{PrintScreen}
+    ClipWait, 3, 1
+    snap := ImagePutBuffer(clipboardall)
+    hou := ImagePutFile(hou, "hou.png")
+    snap := ImagePutFile(snap, "snap.png")
+    hou_navn := SubStr(hou, 3)
+    snap_navn := SubStr(snap, 3)
+    hou_lok := A_ScriptDir "\" hou_navn
+    snap_lok := A_ScriptDir "\" snap_navn
+    faerge_template.attachments.add(hou_lok)
+    faerge_template.attachments.add(snap_lok)
+    html_tekst =
+(
+            <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40"><head><meta name=Generator content="Microsoft Word 15 (filtered medium)"><!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
+    o\:* {behavior:url(#default#VML);}
+    w\:* {behavior:url(#default#VML);}
+    .shape {behavior:url(#default#VML);}
+    </style><![endif]--><style><!--
+    /* Font Definitions */
+    @font-face
+    	{font-family:"Cambria Math";
+    	panose-1:2 4 5 3 5 4 6 3 2 4;}
+    @font-face
+    	{font-family:Calibri;
+    	panose-1:2 15 5 2 2 2 4 3 2 4;}
+    @font-face
+    	{font-family:Verdana;
+    	panose-1:2 11 6 4 3 5 4 4 2 4;}
+    @font-face
+    {font-family:Aptos;}
+    /* Style Definitions */
+    p.MsoNormal, li.MsoNormal, div.MsoNormal
+    	{margin:0cm;
+    	font-size:11.0pt;
+    	font-family:"Aptos",sans-serif;
+    	mso-ligatures:standardcontextual;
+    	mso-fareast-language:EN-US;}
+    .MsoChpDefault
+    	{mso-style-type:export-only;
+    	font-size:10.0pt;
+    	mso-ligatures:none;}
+    @page WordSection1
+    	{size:612.0pt 792.0pt;
+    	margin:3.0cm 2.0cm 3.0cm 2.0cm;}
+    div.WordSection1
+    {page:WordSection1;}
+    --></style><!--[if gte mso 9]><xml>
+    <o:shapedefaults v:ext="edit" spidmax="1026" />
+    </xml><![endif]--><!--[if gte mso 9]><xml>
+    <o:shapelayout v:ext="edit">
+    <o:idmap v:ext="edit" data="1" />
+    </o:shapelayout></xml><![endif]--></head><body lang=DA link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal>%broedtekst%<o:p></o:p></p><p class=MsoNormal><span style='mso-ligatures:none'><br><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%snap_navn%"><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%hou_navn%"></span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
+
+        )
+   
+    faerge_template.htmlbody := html_tekst
+    faerge_template.subject := "Hou og Snaptun"
+    ImageDestroy(hou)
+    ImageDestroy(snap)
+    faerge_template.display()
+    
+
+}
 ;; System
 
 ; asd
@@ -4321,6 +4436,20 @@ vis_sygehus_2(navn)
         Gui, sygehus%navn%:Show, w144 h240, AUH
     Return
 }
+
+l_p6_specialadresser:
+{
+
+    sys_genvej_start(73)
+    MouseGetPos, musposx, musposy
+    gui, specialadresser: Show, x%musposx% y%musposy%, Specialadresser
+    WinWaitActive, Specialadresser
+    SendInput, !{down}
+    sys_afslut_genvej()
+    return
+
+}
+
 
 ;; Testknap
 
@@ -5196,6 +5325,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             P6_notat("Ingen kontakt til chf, VL låst" initialer " ")
             gui, cancel
             sys_afslut_genvej()
+            return
         }
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør? Husk at låse VL,
@@ -5233,7 +5363,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
             return
         }
         tlf := P6_hent_vl_tlf()
-        P6_tekstTilChf("Jeg kan ikke ringe dig op på telefonnummer " tlf ". Ring til driften, 70112210. Mvh Midttrafik.", kørselsaftale, styresystem)
+        P6_tekstTilChf("Jeg kan ikke ringe dig op på telefonnummer " tlf ". Hvad er det korrekte telefonnummer? Ring til driften, 70112210. Mvh Midttrafik.", kørselsaftale, styresystem)
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?
         IfMsgBox, Yes
@@ -6345,8 +6475,9 @@ w\:* {behavior:url(#default#VML);}
     <o:shapelayout v:ext="edit">
     <o:idmap v:ext="edit" data="1" />
     </o:shapelayout></xml><![endif]--></head><body lang=DA link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal>%broedtekst%<o:p></o:p></p><p class=MsoNormal><span style='mso-ligatures:none'><br><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%udklip_navn%"></span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
-
-        )
+    
+    )
+    ;</o:shapelayout></xml><![endif]-f</span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
         signatur := RegExReplace(signatur, "\bimage001.png\b.{18}", "image001.png")
         svigt_template.htmlbody := html_tekst . signatur
         svigt_template.send
@@ -6368,7 +6499,7 @@ Enter::
 {
     Gui, Specialadresser: Submit
     P6_aktiver()
-    sleep 100
+    sleep 20
     ValgtSpecialAdresse := SubStr(valgtSpecialAdresse, 1, 1)
     SendInput, % ValgtSpecialAdresse
 
