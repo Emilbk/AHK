@@ -5997,6 +5997,7 @@ w\:* {behavior:url(#default#VML);}
     ControlFocus, Button1, Svigt
     mod_up()
     Return
+
     gui_svigt_vis_mail:
     gui, submit
     gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
@@ -6004,6 +6005,7 @@ w\:* {behavior:url(#default#VML);}
         return
     gui_svigt_vis(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip)
     return
+
     gui_svigt_send_mail:
     gui, submit
     gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip)
@@ -6027,7 +6029,7 @@ w\:* {behavior:url(#default#VML);}
         MsgBox, 48 , Vælg kun én, Vælg enten lukket eller slettet VL
         sleep 100
         Gui Show, w448 h297, Svigt
-        return
+        return "fejl"
     }
     if (lukket = 1 and StrLen(tid) != 4)
     {
@@ -6036,7 +6038,7 @@ w\:* {behavior:url(#default#VML);}
         sleep 100
         Gui Show, w448 h297, Svigt
         SendInput, !l{tab}^a
-        return
+        return "fejl"
     }
     if (StrLen(tid) = 4)
     {
@@ -6050,7 +6052,8 @@ w\:* {behavior:url(#default#VML);}
             sleep 100
             Gui Show, w448 h297, Svigt
             SendInput, ^a
-            return
+        return "fejl"
+            
         }
         tid := timer ":" min
     }
@@ -6060,7 +6063,7 @@ w\:* {behavior:url(#default#VML);}
         MsgBox, 48 , Mangler VL-type, Husk at krydse af i typen af VL.
         sleep 100
         Gui Show, w448 h297, Svigt
-        return
+        return "fejl"
     }
     if (type = 1)
         vl_type := "GV"
@@ -6075,7 +6078,7 @@ w\:* {behavior:url(#default#VML);}
         sleep 100
         Gui Show, w448 h297, Svigt
         SendInput, !b
-        return
+        return "fejl"
     }
     if (type = 1 and lukket = 1 and årsag != "")
     {
