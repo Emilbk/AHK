@@ -7124,6 +7124,9 @@ SvigtÅbningstidUdskudt:
     GuiControl, svigt: , tid, Hjemzone kl. 
     GuiControl, svigt: , SvigtVlSlettetRadio , 0
     GuiControl, svigt: disable, tid 
+        GuiControl, svigt: disable, Button11
+        GuiControl, svigt: disable, Button12
+        GuiControl, svigt: disable, SvigtVMKontaktEdit 
     SvigtLukketKnapTjekVar := 0
     SvigtSlettetKnapTjekVar := 0
     SvigtÅbningstidUdskudtKnapTjekVar := 1
