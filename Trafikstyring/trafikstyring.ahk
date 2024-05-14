@@ -3264,13 +3264,14 @@ p6_vl_vindue_laas(vl)
 ; TODO #85 lav ugedagstjek i svigtGUI, send ugedag til funktion
 p6_svigt_tjek_ugedag(vl, dato)
 {
-ugedato_dag_måned := SubStr(dato, 7, 4) . SubStr(dato, 4, 2) . SubStr(dato, 1, 2)
+dato_dag_måned := SubStr(dato, 7, 4) . SubStr(dato, 4, 2) . SubStr(dato, 1, 2)
 FormatTime, ugedag, %dato_dag_måned%, dddd
-
-dag_idag := ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
-for i,e in ugedag_idag
+FormatTime, ugenr, %dato_dag_måned%, YWeek
+; Tjek indlæs åbningstid på ugedag
+ugedag_navn := ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
+for i,e in ugedag_navn
     {
-        if (ugedag = ugedag_idag[i])
+        if (ugedag = ugedag_navn[i])
             ugedag_tal := i + 1
     }
 gv_dag := []
@@ -3281,12 +3282,55 @@ for i,e in gv_dag_ind
 {
     gv_dag[i] := StrSplit(gv_dag_ind[i], "`t")
 }
+; Indlæs åbningstid på ferieuge og helligdag
+gv_ferie := []
+FileRead, gv_ferie_ind, db\GV ferie helligdage.tsv
+gv_ferie_ind := StrReplace(gv_ferie_ind, "`r", "")
+gv_ferie_ind := StrSplit(gv_ferie_ind, "`n")
+        for i,e in gv_ferie_ind
+            {
+                gv_ferie[i] := StrSplit(gv_ferie_ind[i], "`t")
+            }
+for i,e in gv_ferie
+    {
+        if (InStr(e[3], ugenr))
+            MsgBox, , , % gv_ferie[i][1] " har ferie uge " ugenr
+    }
+
 for i,e in gv_dag
     {
-        if e[1] = vl
+        if (gv_dag[i][1] = gv_ferie[i][1])
+            {
+                gv_dag[i].Push(gv_ferie[i][3])
+                gv_dag[i].Push(gv_ferie[i][4])
+                gv_dag[i].Push(gv_ferie[i][5])
+            }
+    }
+; Tjek åbningstid på ugedage, feriuge og helligdag
+for i,e in gv_dag
+    {
+        if (e[1] = vl)
+            {
+            if (InStr(gv_dag[i][9], ugenr))
+                {
+                    gv_ja_nej := ugenr
+                    break
+                }
+            if (InStr(dato, "25-12") or instr(dato, "26-12"))
+                if (gv_dag[i][10] = "Ja")
+                {
+                    gv_ja_nej := "25-12/26-12"
+                    break
+                }
+            if (InStr(dato, "31-12") or instr(dato, "01-01"))
+                if (gv_dag[i][11] = "Ja")
+                {
+                    gv_ja_nej := "31-12/01-01"
+                    break
+                }
             if (gv_dag[i][ugedag_tal] = "Ja")
                 {
-                    gv_ja_nej := "Ja"
+                    gv_ja_nej := ugedag
                     break
                 }
             Else
