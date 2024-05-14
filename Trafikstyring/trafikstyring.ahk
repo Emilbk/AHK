@@ -6317,15 +6317,14 @@ w\:* {behavior:url(#default#VML);}
     sleep 200
         }
     ; clipwait 3, 1 ; bedre løsning?
-    Gui svigt: Show, w448 h297, Svigt vl. %vl% kl. %tidForSvigt%
+    Gui svigt: Show, w448 h397, Svigt vl. %vl% kl. %tidForSvigt%
     sleep 100
-    ControlFocus, Button1, Svigt
+    ; ControlFocus, Button1, Svigt
     mod_up()
     Return
     gui_svigt_vis_mail:
     gui, submit
-    MsgBox, , , %type%
-    gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip, vmKontakt, vmKontaktTid)
+    gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, SvigtVlSlettetRadio, dato, vl, gemt_ja, gemtklip, vmKontakt, vmKontaktTid)
     if (gui_svigt_tekst = 0)
         return
     gui_svigt_vis(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip, VGPrint)
@@ -6340,7 +6339,7 @@ w\:* {behavior:url(#default#VML);}
 
 
 
-gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip, vmKontakt, vmKontaktTid)
+gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, SvigtVlSlettetRadio, dato, vl, gemt_ja, gemtklip, vmKontakt, vmKontaktTid)
 {
     global vgprint
     
@@ -6351,7 +6350,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
             dato := SubStr(ny_dato, 1 , 2) . "-" SubStr(ny_dato, -1 , 2) "-" SubStr(dato, -1 , 2)
         }
     beskrivelse := StrReplace(beskrivelse, "`n", " ")
-    if (lukket = 1 and helt = 1)
+    if (lukket = 1 and SvigtVlSlettetRadio = 1)
     {
         sleep 100
         MsgBox, 48 , Vælg kun én, Vælg enten lukket eller slettet VL
@@ -6412,7 +6411,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         tid := timer ":" min
     }
     if (type = 1 or type = 2)
-        if (lukket = 1 or helt = 1)
+        if (lukket = 1 or SvigtVlSlettetRadio = 1)
             if vmKontakt = 0
             {
                 sleep 100
@@ -6461,7 +6460,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         gui, hide
         return mail_indhold
     }
-    if (type = 1 and lukket = 0 and helt = 0 and årsag != "")
+    if (type = 1 and lukket = 0 and SvigtVlSlettetRadio = 0 and årsag != "")
     {
         mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - d. " dato
         ; MsgBox, , 3, % mail_indhold.emnefelt,
@@ -6469,14 +6468,14 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
         gui, hide
         return mail_indhold
     }
-    if (type = 1 and lukket = 0 and helt = 0 and årsag = "")
+    if (type = 1 and lukket = 0 and SvigtVlSlettetRadio = 0 and årsag = "")
     {
         mail_indhold.emnefelt := "Svigt VL " vl " d. " dato
         mail_indhold.broedtekst := beskrivelse
         gui, hide
         return mail_indhold
     }
-    if (type = 1 and helt = 1 and årsag = "")
+    if (type = 1 and SvigtVlSlettetRadio = 1 and årsag = "")
     {
         mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
         ; MsgBox, , 5, % mail_indhold.emnefelt,
@@ -6484,7 +6483,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
             gui, hide
             return mail_indhold
         }
-        if (type = 1 and helt = 1 and årsag != "")
+        if (type = 1 and SvigtVlSlettetRadio = 1 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - ikke startet op d. " dato
             ; MsgBox, , 5.1, % mail_indhold.emnefelt,
@@ -6492,7 +6491,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
             gui, hide
             return mail_indhold
         }
-        if (type = 2 and lukket = 0 and helt = 0 and årsag != "")
+        if (type = 2 and lukket = 0 and SvigtVlSlettetRadio = 0 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - " dato
         ; MsgBox, , 6, % mail_indhold.emnefelt,
@@ -6500,7 +6499,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
             gui, hide
             return mail_indhold
         }
-        if (type = 2 and lukket = 0 and helt = 0 and årsag = "")
+        if (type = 2 and lukket = 0 and SvigtVlSlettetRadio = 0 and årsag = "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type " d. " dato
         ; MsgBox, , 7, % mail_indhold.emnefelt,
@@ -6508,7 +6507,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
             gui, hide
             return mail_indhold
         }
-        if (type = 2 and helt = 1 and årsag = "")
+        if (type = 2 and SvigtVlSlettetRadio = 1 and årsag = "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": ikke startet op d. " dato
             ; MsgBox, , 7.1, % mail_indhold.emnefelt,
@@ -6516,7 +6515,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, hel
             gui, hide
             return mail_indhold
         }
-        if (type = 2 and helt = 1 and årsag != "")
+        if (type = 2 and SvigtVlSlettetRadio = 1 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " vl " " vl_type ": " årsag " - VL slettet d. " dato
             ; MsgBox, , 7.1, % mail_indhold.emnefelt,
