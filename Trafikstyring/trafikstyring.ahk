@@ -7092,6 +7092,7 @@ gui_svigt_send(mail_indhold, skærmprint, gemt_ja, gemtklip, VGPrint)
 ; {
 ;     p6_soeg_hylde_dagsdato()
 ; }
+    GuiControl, svigt: , tid, Hjemzone kl. 
 
 svigtHjælp:
 flexfinderskærmprint:
@@ -7099,6 +7100,16 @@ nuværendeSkærmprint:
 SvigtSkærmprintOversigt:
 SvigtÅbningstidUdskudt:
 {
+    if (SvigtÅbningstidUdskudtKnapTjekVar = 1)
+        {
+        GuiControl, svigt: , SvigtÅbningstidRadio , 0 
+        GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
+        GuiControl, svigt: disable, SvigtÅbningstidEdit 
+        GuiControl, svigt: disable, Button11
+        GuiControl, svigt: disable, Button12
+        SvigtÅbningstidUdskudtKnapTjekVar := 0
+        return
+        }
     GuiControl, svigt: enable, SvigtÅbningstidEdit 
     GuiControl, svigt: , SvigtÅbningstidEdit ,
     GuiControl, svigt: focus, SvigtÅbningstidEdit 
@@ -7106,10 +7117,21 @@ SvigtÅbningstidUdskudt:
     GuiControl, svigt: , tid, Hjemzone kl. 
     GuiControl, svigt: , SvigtVlSlettetRadio , 0
     GuiControl, svigt: disable, tid 
+    SvigtÅbningstidUdskudtKnapTjekVar := 1
     return
 }
 SvigtVlLukket:
 {
+    if (SvigtLukketKnapTjekVar = 1)
+        {
+        GuiControl, svigt: , lukket , 0 
+        GuiControl, svigt: , tid, Hjemzone kl. 
+        GuiControl, svigt: disable, tid 
+        GuiControl, svigt: disable, Button11
+        GuiControl, svigt: disable, Button12
+        SvigtLukketKnapTjekVar := 0
+        return
+        }
     GuiControl, svigt: enable, tid 
     GuiControl, svigt: , tid ,
     GuiControl, svigt: focus, tid 
@@ -7117,16 +7139,30 @@ SvigtVlLukket:
     GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
     GuiControl, svigt: , SvigtVlSlettetRadio , 0
     GuiControl, svigt: disable, SvigtÅbningstidEdit 
+    GuiControl, svigt: enable, Button11
+    GuiControl, svigt: enable, Button12
+    SvigtLukketKnapTjekVar := 1 
     return
 }
 SvigtVlSlettet:
 {
+    if (SvigtLukketKnapTjekVar = 1)
+        {
+        GuiControl, svigt: , SvigtVlSlettetRadio , 0
+        GuiControl, svigt: disable, Button11
+        GuiControl, svigt: disable, Button12
+        SvigtLukketKnapTjekVar := 0
+        return
+        }
     GuiControl, svigt: disable, SvigtÅbningstidEdit 
     GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
     GuiControl, svigt: disable, tid 
     GuiControl, svigt: , tid , Hjemzone kl. 
     GuiControl, svigt: , SvigtÅbningstidRadio , 0 
     GuiControl, svigt: , lukket , 0 
+    GuiControl, svigt: enable, Button11
+    GuiControl, svigt: enable, Button12
+    SvigtLukketKnapTjekVar := 1
     return
 }
 
