@@ -6832,7 +6832,9 @@ gui_svigt_send(mail_indhold, skærmprint, gemt_ja, gemtklip, VGPrint)
         }
     svigtEscape:
     svigtClose:
-    Gui, hide
+    MsgBox, 36, Luk Svigtmakro?, Vil du lukke svigtmakroen?
+    IfMsgBox, Yes
+        Gui, hide
     sys_afslut_genvej()
     Return
 
