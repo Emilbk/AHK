@@ -7104,6 +7104,9 @@ SvigtÅbningstidUdskudt:
         {
         GuiControl, svigt: , SvigtÅbningstidRadio , 0 
         GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
+        GuiControl, svigt: , SvigtVlSlettetRadio , 0
+        GuiControl, svigt: , SvigtVMKontaktRadio , 0
+        GuiControl, svigt: , SvigtIngenVMKontaktRadio , 0
         GuiControl, svigt: disable, SvigtÅbningstidEdit 
         GuiControl, svigt: disable, Button11
         GuiControl, svigt: disable, Button12
@@ -7117,6 +7120,8 @@ SvigtÅbningstidUdskudt:
     GuiControl, svigt: , tid, Hjemzone kl. 
     GuiControl, svigt: , SvigtVlSlettetRadio , 0
     GuiControl, svigt: disable, tid 
+    SvigtLukketKnapTjekVar := 0
+    SvigtSlettetKnapTjekVar := 0
     SvigtÅbningstidUdskudtKnapTjekVar := 1
     return
 }
@@ -7126,6 +7131,9 @@ SvigtVlLukket:
         {
         GuiControl, svigt: , lukket , 0 
         GuiControl, svigt: , tid, Hjemzone kl. 
+        GuiControl, svigt: , SvigtVlSlettetRadio , 0
+        GuiControl, svigt: , SvigtVMKontaktRadio , 0
+        GuiControl, svigt: , SvigtIngenVMKontaktRadio , 0
         GuiControl, svigt: disable, tid 
         GuiControl, svigt: disable, Button11
         GuiControl, svigt: disable, Button12
@@ -7141,17 +7149,22 @@ SvigtVlLukket:
     GuiControl, svigt: disable, SvigtÅbningstidEdit 
     GuiControl, svigt: enable, Button11
     GuiControl, svigt: enable, Button12
+    SvigtÅbningstidUdskudtKnapTjekVar := 0
+    SvigtSlettetKnapTjekVar := 0
     SvigtLukketKnapTjekVar := 1 
     return
 }
 SvigtVlSlettet:
 {
-    if (SvigtLukketKnapTjekVar = 1)
+    if (SvigtSlettetKnapTjekVar = 1)
         {
         GuiControl, svigt: , SvigtVlSlettetRadio , 0
+        GuiControl, svigt: , SvigtVMKontaktRadio , 0
+        GuiControl, svigt: , SvigtIngenVMKontaktRadio , 0
         GuiControl, svigt: disable, Button11
         GuiControl, svigt: disable, Button12
-        SvigtLukketKnapTjekVar := 0
+        GuiControl, svigt: disable, SvigtVMKontaktEdit 
+        SvigtSlettetKnapTjekVar := 0
         return
         }
     GuiControl, svigt: disable, SvigtÅbningstidEdit 
@@ -7162,7 +7175,14 @@ SvigtVlSlettet:
     GuiControl, svigt: , lukket , 0 
     GuiControl, svigt: enable, Button11
     GuiControl, svigt: enable, Button12
-    SvigtLukketKnapTjekVar := 1
+    SvigtÅbningstidUdskudtKnapTjekVar := 0
+    SvigtLukketKnapTjekVar := 0
+    SvigtSlettetKnapTjekVar := 1
     return
 }
 
+SvigtVMKontaktRadioFunk()
+{
+    GuiControl, svigt: enable, SvigtVMKontaktEdit 
+    return
+}
