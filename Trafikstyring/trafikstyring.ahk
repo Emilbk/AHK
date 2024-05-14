@@ -7112,6 +7112,8 @@ SvigtÅbningstidUdskudt:
         GuiControl, svigt: disable, SvigtÅbningstidEdit 
         GuiControl, svigt: disable, Button11
         GuiControl, svigt: disable, Button12
+        GuiControl, svigt: disable, SvigtVMKontaktEdit 
+        ; GuiControl, svigt:,  SvigtVmKontaktEdit , %tidForSvigt%
         SvigtÅbningstidUdskudtKnapTjekVar := 0
         return
         }
@@ -7139,6 +7141,8 @@ SvigtVlLukket:
         GuiControl, svigt: disable, tid 
         GuiControl, svigt: disable, Button11
         GuiControl, svigt: disable, Button12
+        GuiControl, svigt: disable, SvigtVMKontaktEdit 
+        ; GuiControl, svigt:,  SvigtVmKontaktEdit , %tidForSvigt%
         SvigtLukketKnapTjekVar := 0
         return
         }
@@ -7165,6 +7169,7 @@ SvigtVlSlettet:
         GuiControl, svigt: , SvigtIngenVMKontaktRadio , 0
         GuiControl, svigt: disable, Button11
         GuiControl, svigt: disable, Button12
+        ; GuiControl, svigt:,  SvigtVmKontaktEdit , %tidForSvigt%
         GuiControl, svigt: disable, SvigtVMKontaktEdit 
         SvigtSlettetKnapTjekVar := 0
         return
