@@ -7168,6 +7168,8 @@ SvigtÅbningstidUdskudt:
         GuiControl, svigt: disable, Button11
         GuiControl, svigt: disable, Button12
         GuiControl, svigt: disable, SvigtVMKontaktEdit 
+        GuiControl, svigt: , SvigtIngenVMKontaktRadio , 0
+        GuiControl, svigt: , SvigtVMKontaktRadio , 0
     SvigtLukketKnapTjekVar := 0
     SvigtSlettetKnapTjekVar := 0
     SvigtÅbningstidUdskudtKnapTjekVar := 1
