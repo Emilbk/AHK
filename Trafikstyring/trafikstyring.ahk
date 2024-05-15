@@ -6444,7 +6444,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, Svi
         return 0
     }
     GuiControlGet, variabel_tjek, , garantitid,
-    if (type = 1 and variabel_tjek = "Variabelt vognløb")
+    if (type = 1 and instr(variabel_tjek, "Variabelt vognløb"))
     {
         sleep 100
         MsgBox, 52 , Garantitid?, Sikker på at vognløbet kører garanti i dag?
