@@ -6299,6 +6299,8 @@ w\:* {behavior:url(#default#VML);}
             if (vl_array[5][1] != "Nej")
                 {
                     garantitid := vl_array.5.2 . "`n" . gv_svigt[i][3]
+                    garanti_start := SubStr(gv_svigt[i][3], 1, 2)
+                    garanti_slut := SubStr(gv_svigt[i][3], 9, 2)
                     GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
                     break
                 }
@@ -6322,6 +6324,11 @@ w\:* {behavior:url(#default#VML);}
                     GuiControl, svigt: Focus, edit6
 
             }
+        if (SubStr(tidForSvigt, 1, 2) < garanti_start or substr(tidForSvigt, 1, 2) > garanti_slut)
+                    {
+                    GuiControl, svigt: , Button7 , 1 
+                    GuiControl, svigt: Focus, edit6
+                    }
     if (vl_array.2 = "ingen k" and vl_array.3 != "")
        {
         p6_vgsvigt()
