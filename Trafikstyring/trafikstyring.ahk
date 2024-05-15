@@ -3309,35 +3309,37 @@ for i,e in gv_dag
 ; Tjek åbningstid på ugedage, feriuge og helligdag
 for i,e in gv_dag
     {
+        gv_ja_nej := []
         if (e[1] = vl)
             {
             if (InStr(gv_dag[i][9], ugenr))
                 {
-                    gv_ja_nej := ugenr
+                    gv_ja_nej.Push("Nej", ugenr)
                     break
                 }
             if (InStr(dato, "25-12") or instr(dato, "26-12"))
                 if (gv_dag[i][10] = "Ja")
                 {
-                    gv_ja_nej := "25-12/26-12"
+                    gv_ja_nej.Push("Nej", "25-12/26-12")
                     break
                 }
             if (InStr(dato, "31-12") or instr(dato, "01-01"))
                 if (gv_dag[i][11] = "Ja")
                 {
-                    gv_ja_nej := "31-12/01-01"
+                    gv_ja_nej.Push("Nej", "31-12/01-01")
                     break
                 }
             if (gv_dag[i][ugedag_tal] = "Ja")
                 {
-                    gv_ja_nej := ugedag
+                    gv_ja_nej.Push("Ja", ugedag)
                     break
                 }
             Else
                 {
-                    gv_ja_nej := "Nej"
+                    gv_ja_nej.Push("Nej")
                     break
                 }
+            }
     }
 return gv_ja_nej
 }
@@ -6276,32 +6278,35 @@ w\:* {behavior:url(#default#VML);}
         s_sys := vl_array.2
         k_aftale := vl_array.2 "_" vl_array.3
         dato := vl_array.4
+        vl_array.5 := p6_svigt_tjek_ugedag(vl, dato)
     for i, e in gv_svigt
         {
-            if (k_aftale = gv_svigt[i][1])
+            if (k_aftale = gv_svigt[i][1] and vl_array[5][1] != "Nej")
                 {
-                    garantitid := gv_svigt[i][3]
+                    garantitid := vl_array.5.2 . "`n" . gv_svigt[i][3]
+                    GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
                     break
                 }
             else
-                garantitid := "Variabelt vognløb"
+                {
+                    garantitid := "Variabelt vognløb"
+                }
         }
+        if (garantitid = "Variabelt vognløb")
+            {
+                    GuiControl, svigt: , Button8 , 1 
+                    GuiControl, svigt:,  garantitid , %garantitid%
+                    GuiControl, svigt: Focus, edit6
+
+            }
     if (vl_array.2 = "ingen k" and vl_array.3 != "")
        {
         p6_vgsvigt()
        }       
     GuiControl, svigt:,  VL , %vl%
-    GuiControl, svigt:,  vmKontakttid , %tidForSvigt%
-    GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
+    GuiControl, svigt:,  SvigtVmKontaktEdit , %tidForSvigt%
     GuiControl, svigt:,  beskrivelse ,
-    GuiControl, svigt:,  lukket , 0
-    GuiControl, svigt:,  helt , 0
-    GuiControl, svigt:,  Button3 , 0 
-    GuiControl, svigt:,  Button4 , 0 
-    GuiControl, svigt:,  Button5 , 0 
-    GuiControl, svigt:,  Button6 , 0 
-    GuiControl, svigt:,  Button7 , 0 
-    GuiControl, svigt:,  gemt_ja , 0
+
     GuiControl, svigt:,  ny_dato ,
     GuiControl, svigt:,  årsag ,
     GuiControl, svigt:,  tid , Hjemzone kl.
