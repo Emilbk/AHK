@@ -3267,6 +3267,7 @@ p6_svigt_tjek_ugedag(vl, dato)
 dato_dag_måned := SubStr(dato, 7, 4) . SubStr(dato, 4, 2) . SubStr(dato, 1, 2)
 FormatTime, ugedag, %dato_dag_måned%, dddd
 FormatTime, ugenr, %dato_dag_måned%, YWeek
+ugenr := SubStr(ugenr, 5, 2)
 ; Tjek indlæs åbningstid på ugedag
 ugedag_navn := ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
 for i,e in ugedag_navn
