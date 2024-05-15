@@ -6352,7 +6352,7 @@ w\:* {behavior:url(#default#VML);}
     gui_svigt_send(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip, VGPrint)
     return
 
-
+; TODO #86 omskriv opret-funktion
 
 gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, SvigtVlSlettetRadio, dato, vl, gemt_ja, gemtklip, vmKontakt, vmKontaktTid)
 {
@@ -6370,7 +6370,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, Svi
         sleep 100
         MsgBox, 48 , Vælg kun én, Vælg enten lukket eller slettet VL
         sleep 100
-        Gui Show, w448 h297, Svigt
+        Gui Show, w448 h397, Svigt
         return 0
     }
     if (lukket = 1 and StrLen(tid) != 4)
@@ -6378,7 +6378,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, Svi
         sleep 100
         MsgBox, 48 , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
         sleep 100
-        Gui Show, w448 h297, Svigt
+        Gui Show, w448 h397, Svigt
         SendInput, !l{tab}^a
         return 0
     }
@@ -6392,7 +6392,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, Svi
             sleep 100
             MsgBox, 48 , Klokkeslæt ikke gyldigt , Skal være et gyldigt tidspunkt
             sleep 100
-            Gui Show, w448 h297, Svigt
+            Gui Show, w448 h397, Svigt
             SendInput, ^a
             return 0
         }
@@ -6405,7 +6405,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, Svi
         sleep 100
         MsgBox, 48 , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
         sleep 100
-        Gui Show, w448 h297, Svigt
+        Gui Show, w448 h397, Svigt
         SendInput, !l{tab}^a
         return 0
     }
@@ -6419,7 +6419,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, Svi
             sleep 100
             MsgBox, 48 , Klokkeslæt ikke gyldigt , Skal være et gyldigt tidspunkt
             sleep 100
-            Gui Show, w448 h297, Svigt
+            Gui Show, w448 h397, Svigt
             SendInput, ^a
             return 0
         }
@@ -6432,7 +6432,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, Svi
                 sleep 100
                 gui, vmsvigt: Show, AutoSize ,Opkald til VM? 
                 sleep 100
-                Gui Show, w448 h297, Svigt
+                Gui Show, w448 h397, Svigt
                 return 0
             }    
     if (type = 0)
@@ -6440,8 +6440,20 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, Svi
         sleep 100
         MsgBox, 48 , Mangler VL-type, Husk at krydse af i typen af VL.
         sleep 100
-        Gui Show, w448 h297, Svigt
+        Gui Show, w448 h397, Svigt
         return 0
+    }
+    GuiControlGet, variabel_tjek, , garantitid,
+    if (type = 1 and variabel_tjek = "Variabelt vognløb")
+    {
+        sleep 100
+        MsgBox, 52 , Garantitid?, Sikker på at vognløbet kører garanti i dag?
+        sleep 100
+        IfMsgBox, no
+            {
+                Gui Show, w448 h397, Svigt
+                return 0
+            }
     }
     if (type = 1)
         vl_type := "GV"
@@ -6454,7 +6466,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, Svi
         sleep 100
         MsgBox, 48 , Udfyld beskrivelse, Mangler beskrivelse af svigtet,
         sleep 100
-        Gui Show, w448 h297, Svigt
+        Gui Show, w448 h397, Svigt
         SendInput, !b
         return 0
     }
@@ -6612,7 +6624,7 @@ gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, Svi
         }
 MsgBox, 16, Alarm!, Mail bliver afsendt tom!
         sleep 100
-        Gui Show, w448 h297, Svigt
+        Gui Show, w448 h397, Svigt
 return 
     }
 gui_svigt_vis(mail_indhold, skærmprint, gemt_ja, gemtklip, VGPrint)
@@ -6707,7 +6719,9 @@ gui_svigt_vis(mail_indhold, skærmprint, gemt_ja, gemtklip, VGPrint)
         </o:shapelayout></xml><![endif]--></head><body lang=DA link="#0563C1" vlink="#954F72" style='tab-interval:65.2pt;word-wrap:break-word'><div class=WordSection1><img id="Billede_x0020_2" src="cid:%udklip_navn%"></span></p><div><p class=MsoNormal style='mso-margin-top-alt:auto'><span style='font-size:10.0pt;font-family:"Verdana",sans-serif;mso-fareast-language:DA'</o:p></span></p></div><p class=MsoNormal><span style='font-size:10.0pt;font-family:"Verdana",sans-serif'><o:p>&nbsp;</o:p></span></p></div></body></html>
         )
         svigt_template.htmlbody := html_tekst
+        sleep 100
         svigt_template.display
+        sleep 100
         if (VGPrint[3] != "ikke vg")
             for i,e in VGPrint
                 {
