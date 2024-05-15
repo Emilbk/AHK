@@ -353,7 +353,7 @@ gui, svigt: new
 gui, svigt: +labelsvigt
 Gui svigt: Add, Text, x16 y0 w120 h23 +0x200, Vognløbs&nummer
 Gui svigt: Font, w600
-Gui svigt: Add, Text, x16 y53 h35 w100 vgarantitid, Garantiperiode: %garanti_tid%
+Gui svigt: Add, Text, x16 y53 h50 w100 vgarantitid, Garantiperiode: %garanti_tid%
 ; Gui svigt: Add, Text, x16 y73 w120 , Garanti eller Var.
 Gui svigt: Font
 Gui svigt: Add, Edit, vVL x16 y24 w120 h21, %vl%
@@ -375,30 +375,30 @@ Gui svigt: Add, Radio, gSvigtVlSlettet vSvigtVlSlettetRadio x160 y105 , VL S&let
 Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
 ; Gui svigt: Font, w600
-Gui svigt: Add, Text, x16 y95 w120 h23 +0x200, &Årsag
+Gui svigt: Add, Text, x16 y110 w120 h23 +0x200, &Årsag
 Gui svigt: Font
-Gui svigt: Add, Edit, vårsag x16 y120 w120 h21
+Gui svigt: Add, Edit, vårsag x16 y135 w120 h21
 Gui svigt: Font, s9, Segoe UI
 Gui svigt: Font, w600
 Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
-Gui, svigt:Add, GroupBox,  x294 y0 w140 h130 ,Type VL:
-Gui svigt: Add, Radio, x304 y24 w120 h16, &Garanti
+Gui, svigt:Add, GroupBox, vvlType x294 y0 w140 h130 ,Type VL:
+Gui svigt: Add, Radio, x304 y24 w120 h16 , &Garanti
 Gui svigt: Add, Radio, x304 y40 w120 h32, G&arantivognløb i variabel tid
-Gui svigt: Add, Radio, x304 y72 w120 h23, Va&riabel
+Gui svigt: Add, Radio, x304 y72 w120 h23 , Va&riabel
 Gui svigt: Add, Radio, disabled vtype x304 y92 w120 h32, V&ogngruppe
-Gui svigt: Add, GroupBox,  x150 y130 w283 h48 ,Kontakt til Vognmand:
-Gui svigt: Add, Radio, vSvigtVmKontaktradio x160 y147 h23, Kontaktet
-Gui svigt: Add, Radio, vSvigtIngenVmKontaktRadio x240 y147 h23, Ingen kontakt
-Gui svigt: Add, Edit, disabled vsvigtVmKontaktEdit x340 y147 w50, ca. kl.
+Gui svigt: Add, GroupBox,  x150 y130 w283 h48 ,Kontakt til Vognmand (cirka tidspunkt):
+Gui svigt: Add, Radio, gSvigtVMKontaktRadioFunk vSvigtVmKontaktradio x160 y147 h23, Kontaktet
+Gui svigt: Add, Radio, vSvigtIngenVmKontaktRadio x240 y147 h23, Forgæves kontakt
+Gui svigt: Add, Edit, disabled vsvigtVmKontaktEdit x360 y147 w50, ca. kl.
 Gui svigt: Add, Text, x16 y157 h23 +0x200, &Beskrivelse
 Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
 Gui svigt: Add, Edit, vbeskrivelse x16 y180 w410 h106
 Gui svigt: Add, CheckBox, vgemt_ja x16 y294, Brug &forrige skærmklip
 ; Gui svigt: Add, CheckBox, vgemt_j x5 y374, Tilføj & skærmklip
-Gui svigt: Add, Button, x160 y309 w60 h23 vvis +default, &Vis
-Gui svigt: Add, Button, x240 y309 w60 h23 vsend , &Send
+Gui svigt: Add, Button, x160 y309 w60 h23 gGui_svigt_vis_mail vvis +default, &Vis
+Gui svigt: Add, Button, x240 y309 w60 h23 gGui_svigt_send_mail vsend , &Send
 ; Gui svigt: Add, Button , vvogngruppesvigt x320 y354 w80, Op&ret vogngruppesvigt
 Gui svigt: menu, svigtMenu
 ; Gui svigt: Add, text , x280 y261, Anden &Dato
@@ -443,7 +443,7 @@ vgSvigtAfbryd()
    sleep 100 
    GuiControl, svigt: disable, Button7
    GuiControl, svigt:,  Button7 , 0
-   Gui svigt: Show, w448 h297, Svigt
+   Gui svigt: Show, w448 h397, Svigt
 ;    GuiControl, svigt:,  Button4 , 1
    return
 }
@@ -460,7 +460,7 @@ p6_vgsvigt()
     ; ImageShow(VGprint.1)
     ; ImageShow(VGprint.2)
         sleep 100
-        Gui svigt: Show, w448 h297, Svigt 
+        Gui svigt: Show, w448 h397, Svigt 
 
         
     return
@@ -6233,7 +6233,7 @@ w\:* {behavior:url(#default#VML);}
         sys_genvej_start(38)
         ; FormatTime, dato, , dd-MM-y
          FormatTime, tidForSvigt, , HH:mm
-        GuiControl, svigt: disable, Button7
+        GuiControl, svigt: disable, Button9
         vg_svigt := 0
         VGPrint := [[], [], "ikke vg"]
         ;tjek om billede i udklipsholder
@@ -6241,14 +6241,26 @@ w\:* {behavior:url(#default#VML);}
             {
             gemtklip := ImagePutBuffer(clipboardall)
             gemt_ja := 1
-            GuiControl, svigt: enable, Button8
+            GuiControl, svigt: enable, Button13
             }
         Else
             {
             gemtklip :=
             gemt_ja :=
-            GuiControl, svigt: disable, Button8
+            GuiControl, svigt: disable, Button13
             }
+    GuiControl, svigt:,  lukket , 0
+    GuiControl, svigt:,  helt , 0
+    GuiControl, svigt:,  Button2 , 0 
+    GuiControl, svigt:,  Button3 , 0 
+    GuiControl, svigt:,  Button4 , 0 
+    GuiControl, svigt:,  Button6 , 0 
+    GuiControl, svigt:,  Button7 , 0 
+    GuiControl, svigt:,  Button8 , 0 
+    GuiControl, svigt:,  Button9 , 0 
+    GuiControl, svigt: disable, Button11
+    GuiControl, svigt: disable, Button12
+    GuiControl, svigt:,  gemt_ja , 0
         GuiControl, svigt: enable, Button6
         GuiControl, svigt: enable, Button5
         GuiControl, svigt: enable, Button4
