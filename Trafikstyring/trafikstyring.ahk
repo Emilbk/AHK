@@ -3291,11 +3291,11 @@ gv_ferie_ind := StrSplit(gv_ferie_ind, "`n")
             {
                 gv_ferie[i] := StrSplit(gv_ferie_ind[i], "`t")
             }
-for i,e in gv_ferie
-    {
-        if (InStr(e[3], ugenr))
-            MsgBox, , , % gv_ferie[i][1] " har ferie uge " ugenr
-    }
+; for i,e in gv_ferie
+;     {
+;         if (InStr(e[3], ugenr))
+;             MsgBox, , , % gv_ferie[i][1] " har ferie uge " ugenr
+;     }
 
 for i,e in gv_dag
     {
@@ -3318,13 +3318,13 @@ for i,e in gv_dag
                     break
                 }
             if (InStr(dato, "25-12") or instr(dato, "26-12"))
-                if (gv_dag[i][10] = "Ja")
+                if (gv_dag[i][10] = "Nej")
                 {
                     gv_ja_nej.Push("Nej", "25-12/26-12")
                     break
                 }
             if (InStr(dato, "31-12") or instr(dato, "01-01"))
-                if (gv_dag[i][11] = "Ja")
+                if (gv_dag[i][11] = "Nej")
                 {
                     gv_ja_nej.Push("Nej", "31-12/01-01")
                     break
@@ -6281,7 +6281,9 @@ w\:* {behavior:url(#default#VML);}
         vl_array.5 := p6_svigt_tjek_ugedag(vl, dato)
     for i, e in gv_svigt
         {
-            if (k_aftale = gv_svigt[i][1] and vl_array[5][1] != "Nej")
+            if (k_aftale = gv_svigt[i][1])
+            {
+            if (vl_array[5][1] != "Nej")
                 {
                     garantitid := vl_array.5.2 . "`n" . gv_svigt[i][3]
                     GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
@@ -6290,9 +6292,17 @@ w\:* {behavior:url(#default#VML);}
             else
                 {
                     garantitid := "Variabelt vognløb"
+                    if (vl_array.5.2 = "25-12/26-12")
+                        garantitid .= "`nTvunget lukket d. 25-12/26-12"
+                    if (vl_array.5.2 = "31-12/01-01")
+                        garantitid .= "`nTvunget lukket d. 31-12/01-01"
+                    if (StrLen(vl_array.5.2) = 2)
+                        garantitid .= "`nTvunget lukket uge " vl_array.5.2
+                    break
                 }
+            }
         }
-        if (garantitid = "Variabelt vognløb")
+        if (instr(garantitid, "Variabelt vognløb"))
             {
                     GuiControl, svigt: , Button8 , 1 
                     GuiControl, svigt:,  garantitid , %garantitid%
