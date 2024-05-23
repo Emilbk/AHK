@@ -2102,6 +2102,7 @@ P6_udfyld_k_og_s(vl:="")
 
 ; ***
 ; åben alarmvinduet, ny liste alle alarmer, blad til første, col 14
+; TODO #90 tjek for tal i alarm-funktion
 P6_alarmer()
 {
     global s
@@ -2113,13 +2114,75 @@ P6_alarmer()
     sleep s * 200
     SendInput, ^{delete}
     SendInput, ^l
+    SendInput, !t
+    sleep 100
+    SendInput, +^{Down}
+    sleep s * 200
+    clipboard :=
+    SendInput, ^c
+    ClipWait, 0.3
+    tal := clipboard
+    ; tal := "Vogne`t`t`r`n3375`t47`t`r`n3211`t32`t`r`n3211`t32`t`r`n3211`t32`t`r`n3211`t32`t"
+    tal := StrReplace(tal, "`r" "`n")
+    tal := StrSplit(tal, "`t")
+    tal_tjek := 0
+    for i, e in tal
+        if (SubStr(e, 1, 1) = "3" and StrLen(e) = 4)
+            {
+                tal_tjek := 1
+                break
+            }
+    SendInput, !k
     SendInput, ^{up}
     sleep 100 + s * 10
     SendInput, ^{F10}
+    if (tal_tjek = 1)
+        p6_tal_tjek(tal)
+    ; MsgBox, , ,i %tal%
+
 
     return
 }
 
+P6_tal_tjek(tal)
+{
+global 
+gui, talgui: destroy
+Gui, talGUI:+LabeltalGUI
+counter := 0
+x_pos := 10
+y_pos := 0
+
+gui talGUI: Add, Text, Y10 X5 vtekst , Du har en tal!
+for i, e in tal
+    {
+        if (SubStr(e, 1, 1) = "3" and StrLen(e) = 4)
+            {
+                x_pos += 0
+                y_pos += 30
+                counter++
+                k_aftale := e
+                s_system := tal[i+1]
+                ventetid := tal[i+2]
+                gui talGUI: Add, Button, x%x_pos% y%y_pos% gbutton vVL%counter% ,% e "_" tal[i+1]
+                gui talGUI: Add, Text, YP+5 XP+80 vVLtekst%counter% ,% ventetid " min. gammel"
+
+                ; MsgBox, , , % counter 
+                ; MsgBox, , , %  e "_" tal[i+1]
+            }
+    }
+sk := GetMonitor()
+; MsgBox, , , %sk%,
+Gui talgui: Show, AutoSize, TAL
+return
+}
+button:
+gui talGUI: submit 
+vl := []
+vl.1 := k_aftale
+vl.2 := s_system
+P6_udfyld_k_og_s(vl)
+; MsgBox, , , % "knap " A_GuiControl " vognløb " k_aftale "_" s_system ", ventetid " ventetid " min."
 ; ***
 ; åben alarmvinduet, ny liste alle udråbsalarmer, blad til første, col 15
 P6_udraabsalarmer()
