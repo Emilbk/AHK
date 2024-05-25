@@ -6381,93 +6381,162 @@ w\:* {behavior:url(#default#VML);}
         vl := vl_array.1
         s_sys := vl_array.2
         k_aftale := vl_array.2 "_" vl_array.3
+        ; hent vognløbsnummer fra k_aftale
+        for i, e in gv_svigt
+            {
+                if (e[1] = k_aftale)
+                    {
+                    if (vl_array.1 != e[2])
+                        vl := vl_array.1 " (" e[2] ")"
+                    break
+                    }
+            }
         dato := vl_array.4
-        vl_array.5 := p6_svigt_tjek_ugedag(vl, dato)
+        vl_array.5 := p6_svigt_tjek_ugedag(k_aftale, dato)
+        if (vl_array.5.1 = "variabel")
+            {
+                vlType := "Variabel"
+                SvigtGarantitid := "Variabelt vognløb"
+                    GuiControl, svigt:,  SvigtGarantitid , %SvigtGarantitid%
+                    GuiControl, svigt: , vlTypeVariabel , 1 
+                    GuiControl, svigt: Focus, SvigtBeskrivelse
+            }
+        if (vl_array.5.1 != "variabel")
+    {
     for i, e in gv_svigt
         {
             if (k_aftale = gv_svigt[i][1])
             {
-            if (vl_array[5][1] != "Nej")
+            if (vl_array[5][1] = "Ja")
                 {
-                    garantitid := vl_array.5.2 . "`n" . gv_svigt[i][3]
+                vlType := "GV"
+                ; SvigtGarantitid := "GV i variabel tid"
+                    if (vl_array[5][3] = "Weekend")
+                        {
+                    garanti_start := SubStr(gv_svigt[i][4], 1, 2)
+                    garanti_slut := SubStr(gv_svigt[i][4], 9, 2)
+                        }
+                    else
+                        {
                     garanti_start := SubStr(gv_svigt[i][3], 1, 2)
                     garanti_slut := SubStr(gv_svigt[i][3], 9, 2)
-                    GuiControl, svigt:,  garantitid , Garantiperiode: %garantitid%
-                    break
+                        }
+                    SvigtGarantitidTekst := "Garantiperiode:`n" garanti_start ":00 - " garanti_slut ":00" 
+                    GuiControl, svigt:,  SvigtGarantitid , % SvigtGarantitidTekst
+                    GuiControl, svigt: , vlTypeGaranti, 1 
+                    GuiControl, svigt: Focus, SvigtBeskrivelse
+                    ; GuiControl, svigt:,  SvigtGarantitid , Garantiperiode: %SvigtGarantitid% `n%garanti_start%:00-%garanti_slut%:00 
+                ; Tjek om udenfor garantiperiode
+        if (SubStr(tidForSvigt, 1, 2) < garanti_start or substr(tidForSvigt, 1, 2) > garanti_slut)
+                    {
+                    vlType := "GV udenfor garanti"
+                    SvigtGarantitidTekst := "Vognløb udenfor garantitid`nGarantiperiode:`n" garanti_start ":00 - " garanti_slut ":00" 
+                    GuiControl, svigt:,  SvigtGarantitid , %  SvigtGarantitidTekst 
+                    GuiControl, svigt: , vlTypeGarantiVariabel , 1 
+                    GuiControl, svigt: Focus, SvigtBeskrivelse
+                    }
+                break
                 }
-            else
+            if (vl_array[5][1] = "Nej")
                 {
-                    garantitid := "Variabelt vognløb"
-                    if (vl_array.5.2 = "25-12/26-12")
-                        garantitid .= "`nTvunget lukket d. 25-12/26-12"
-                    if (vl_array.5.2 = "31-12/01-01")
-                        garantitid .= "`nTvunget lukket d. 31-12/01-01"
-                    if (StrLen(vl_array.5.2) = 2)
-                        garantitid .= "`nTvunget lukket uge " vl_array.5.2
-                    break
+                vlType := "GV variabel"
+                SvigtGarantitidTekst := "GV på variabel dag"
+                if (vl_array.5.2 = "25-12/26-12")
+                    SvigtGarantitid .= "`nTvunget lukket d. 25-12/26-12"
+                if (vl_array.5.2 = "31-12/01-01")
+                    SvigtGarantitid .= "`nTvunget lukket d. 31-12/01-01"
+                if (StrLen(vl_array.5.2) = 2)
+                    SvigtGarantitid .= "`nTvunget lukket uge " vl_array.5.2
+                GuiControl, svigt:,  SvigtGarantitid , %  SvigtGarantitidTekst 
+                GuiControl, svigt: , vlTypeGarantiVariabel , 1 
+                GuiControl, svigt: Focus, SvigtBeskrivelse
+
+                break
                 }
             }
         }
-        if (instr(garantitid, "Variabelt vognløb"))
-            {
-                    GuiControl, svigt: , Button8 , 1 
-                    GuiControl, svigt:,  garantitid , %garantitid%
-                    GuiControl, svigt: Focus, edit6
+        ; if (vlType = "variabel")
+        ;     {
+        ;             GuiControl, svigt: , vlTypeVariabelt , 1 
+        ;             GuiControl, svigt:,  SvigtGarantitid , %SvigtGarantitid%
+        ;             GuiControl, svigt: Focus, SvigtBeskrivelse
 
-            }
-        if (SubStr(tidForSvigt, 1, 2) < garanti_start or substr(tidForSvigt, 1, 2) > garanti_slut)
-                    {
-                    GuiControl, svigt: , Button7 , 1 
-                    GuiControl, svigt: Focus, edit6
-                    }
+        ;     }
+        ; if (vlType = "GV")
+        ; ; Tjek om udenfor garantiperiode
+        ; if (SubStr(tidForSvigt, 1, 2) < garanti_start or substr(tidForSvigt, 1, 2) > garanti_slut)
+        ;             {
+        ;             vlType := "GV udenfor garanti"
+        ;             GuiControl, svigt: , vlTypeGarantiVariabel , 1 
+        ;             GuiControl, svigt: Focus, SvigtBeskrivelse
+        ;             }
+        ; if (vlType = "GV")
+        ; if (SubStr(tidForSvigt, 1, 2) > garanti_start and substr(tidForSvigt, 1, 2) < garanti_slut)
+        ;             {
+        ;             GuiControl, svigt: , vlTypeGaranti , 1 
+        ;             GuiControl, svigt: Focus, SvigtBeskrivelse
+        ;             }
+    }
     if (vl_array.2 = "ingen k" and vl_array.3 != "")
        {
         p6_vgsvigt()
        }       
-    GuiControl, svigt:,  VL , %vl%
+    GuiControl, svigt:,  SvigtVlEdit , %vl%
     GuiControl, svigt:,  SvigtVmKontaktEdit , %tidForSvigt%
-    GuiControl, svigt:,  beskrivelse ,
+    GuiControl, svigt:,  SvigtBeskrivelse ,
 
     GuiControl, svigt:,  ny_dato ,
     GuiControl, svigt:,  årsag ,
     GuiControl, svigt:,  tid , Hjemzone kl.
     if (vg_svigt = 0)
         {
+    ; TODO #88 Fiks skærmprint
+    P6_aktiver()
     clipboard :=
-    sleep 500
+    ; sleep 1000
     SendInput, !{PrintScreen}
-    ; sleep 500
-    ClipWait, 10, 1
-    sleep 200
+    ; sleep 800
+    ClipWait, 3, 1
+    ; sleep 200
     skærmprint := ImagePutBuffer(clipboardall)
+    ; ImageShow(skærmprint)
     sleep 200
         }
     ; clipwait 3, 1 ; bedre løsning?
+    GuiControl, svigt: focus, SvigtBeskrivelse
     Gui svigt: Show, w448 h397, Svigt vl. %vl% kl. %tidForSvigt%
     sleep 100
     ; ControlFocus, Button1, Svigt
     mod_up()
     Return
+
+
     gui_svigt_vis_mail:
     gui, submit
-    gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, SvigtVlSlettetRadio, dato, vl, gemt_ja, gemtklip, vmKontakt, vmKontaktTid)
+    ; gui_svigt_tekst := gui_svigt_opret(ny_dato, SvigtBeskrivelse, lukket, type, tid, årsag, SvigtGarantitid, SvigtVlSlettetRadio, dato, vl, GemtSkærmprint, gemtklip, vmKontakt, vmKontaktTid)
+    gui_svigt_tekst := gui_svigt_opret()
     if (gui_svigt_tekst = 0)
         return
-    gui_svigt_vis(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip, VGPrint)
+    gui_svigt_vis(gui_svigt_tekst, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
     return
+
+
     gui_svigt_send_mail:
     gui, submit
-    gui_svigt_tekst := gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, helt, dato, vl, gemt_ja, gemtklip, vmkontakt, vmkontakttid)
+    ; gui_svigt_tekst := gui_svigt_opret(ny_dato, SvigtBeskrivelse, lukket, type, tid, årsag, SvigtGarantitid, helt, dato, vl, GemtSkærmprint, gemtklip, vmkontakt, vmkontakttid)
+    gui_svigt_tekst := gui_svigt_opret()
     if (gui_svigt_tekst = 0)
         return
-    gui_svigt_send(gui_svigt_tekst, skærmprint, gemt_ja, gemtklip, VGPrint)
+    gui_svigt_send(gui_svigt_tekst, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
     return
 
 ; TODO #86 omskriv opret-funktion
 
-gui_svigt_opret(ny_dato, beskrivelse, lukket, type, tid, årsag, garantitid, SvigtVlSlettetRadio, dato, vl, gemt_ja, gemtklip, vmKontakt, vmKontaktTid)
+gui_svigt_opret()
 {
-    global vgprint
+    global 
+    ; global vgprint
+    
     
     mail_indhold := {emnefelt: "", broedtekst: ""}
     if (ny_dato != "")
