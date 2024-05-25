@@ -3418,7 +3418,7 @@ for i,e in gv_dag
                 if (gv_dag[i][ugedag_tal] = "Ja")
                     {
                         gv_ja_nej.Push("Ja", ugedag)
-                        if (gv_dag[i][ugedag_tal] = "Ja" or gv_dag[i][ugedag_tal = "Ja"])
+                        if (ugedag_tal = 7 or ugedag_tal = 8)
                             gv_ja_nej.Push("weekend")
                         else
                             gv_ja_nej.Push("hverdag")
