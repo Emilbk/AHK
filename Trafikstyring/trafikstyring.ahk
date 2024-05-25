@@ -3326,8 +3326,26 @@ p6_vl_vindue_laas(vl)
 }
 ; TODO #85 lav ugedagstjek i svigtGUI, send ugedag til funktion
 ;; return GV-dag som array, string "variabel" hvis variabel
-p6_svigt_tjek_ugedag(vl, dato)
+p6_svigt_tjek_ugedag(k_aftale, dato)
 {
+        gv_svigt := []
+        FileRead, gv_svigt_ind, db\gv_svigt.txt
+        gv_svigt_ind := StrReplace(gv_svigt_ind, "`r", "")
+        gv_svigt_ind := StrSplit(gv_svigt_ind, "`n")
+        for i,e in gv_svigt_ind
+            {
+                gv_svigt[i] := StrSplit(gv_svigt_ind[i], "`t")
+            }
+for i, e in gv_svigt
+    {
+        ; MsgBox, , , %gv_svigt%, Timeout]
+        if (gv_svigt[i][1] = k_aftale)
+            {
+            vl := gv_svigt[i][2]
+            break
+            }
+    } 
+; MsgBox, , , %vl%
 dato_dag_måned := SubStr(dato, 7, 4) . SubStr(dato, 4, 2) . SubStr(dato, 1, 2)
 FormatTime, ugedag, %dato_dag_måned%, dddd
 FormatTime, ugenr, %dato_dag_måned%, YWeek
