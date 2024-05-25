@@ -3325,6 +3325,7 @@ p6_vl_vindue_laas(vl)
     SendInput, {f5}!o
 }
 ; TODO #85 lav ugedagstjek i svigtGUI, send ugedag til funktion
+;; return GV-dag som array, string "variabel" hvis variabel
 p6_svigt_tjek_ugedag(vl, dato)
 {
 dato_dag_måned := SubStr(dato, 7, 4) . SubStr(dato, 4, 2) . SubStr(dato, 1, 2)
@@ -3373,9 +3374,11 @@ for i,e in gv_dag
 ; Tjek åbningstid på ugedage, feriuge og helligdag
 for i,e in gv_dag
     {
-        gv_ja_nej := []
+        gv_ja_nej := ["variabel"]
         if (e[1] = vl)
             {
+                gv_ja_nej := []
+
             if (InStr(gv_dag[i][9], ugenr))
                 {
                     gv_ja_nej.Push("Nej", ugenr)
@@ -3393,17 +3396,23 @@ for i,e in gv_dag
                     gv_ja_nej.Push("Nej", "31-12/01-01")
                     break
                 }
-            if (gv_dag[i][ugedag_tal] = "Ja")
-                {
-                    gv_ja_nej.Push("Ja", ugedag)
-                    break
-                }
-            Else
-                {
-                    gv_ja_nej.Push("Nej")
-                    break
-                }
-            }
+
+                if (gv_dag[i][ugedag_tal] = "Ja")
+                    {
+                        gv_ja_nej.Push("Ja", ugedag)
+                        if (gv_dag[i][ugedag_tal] = "Ja" or gv_dag[i][ugedag_tal = "Ja"])
+                            gv_ja_nej.Push("weekend")
+                        else
+                            gv_ja_nej.Push("hverdag")
+
+                        break
+                    }
+                if (gv_dag[i][ugedag_tal] = "Nej")
+                    {
+                        gv_ja_nej.Push("Nej", ugedag)
+                        break
+                    }   
+                 }
     }
 return gv_ja_nej
 }
