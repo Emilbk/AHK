@@ -408,7 +408,7 @@ Gui vgSvigt: new
 gui vgSvigt: add, Text, X+M y+M , Hvilket vognløb skal der registreres svigt på?
 gui vgSvigt: add, edit, Y+M  vvalgtVgVL number, vognløb
 gui vgSvigt: add, Text, Y+M  , Hvilken vogngruppe skal der registreres svigt på?
-Gui vgSvigt: add, DropDownList, vValgtVG, Århusstat|Horstat|Silherstat|Holsstat
+Gui vgSvigt: add, DropDownList, vValgtVG, Århusstat|Horstat|Holsstat|Silherstat|Hernistcar|Danaarstat|Silkestat1|Skiøkostat|Randanstat|Danaarstat|Herdanmpv|Hordanmpv|Odddanmpv|Randanstat|Randanmpv|Silkestat1|Skandstat|Skbdanmpv|Skivestat|Skidanmpv|Viborgstat|Vibdanmpv|Rskdanmpv|Sildanmpv|Århdanmpv|Århusmpv
 Gui vgSvigt: add, Button, Default vVGOK gp6_vgsvigt_skprint , &OK
 Gui vgSvigt: add, Button, x+25 gVGSvigtAfbryd vVGAfbryd , &Afbryd
 
@@ -453,7 +453,7 @@ p6_vgsvigt()
        gui svigt: hide
        sleep 100
        GuiControl, vgsvigt:, Edit1, Vognløb
-       GuiControl, svigt: , Button7, 1
+       GuiControl, svigt: , vlTypeVogngruppe, 1
        gui vgsvigt: show, AutoSize Center, Vogngruppesvigt
        WinWaitActive, Vogngruppesvigt
        WinWaitClose, Vogngruppesvigt
@@ -471,32 +471,30 @@ p6_vgsvigt_skprint()
     global VGPrint
     global ValgtVGVl
     gui vgsvigt: Submit
-    GuiControl, svigt: enable, Button7
-    GuiControl, svigt:,  Button7 , 1
-    GuiControl, svigt: disable, Button8
-    GuiControl, svigt: disable, Button6
-    GuiControl, svigt: disable, Button5
-    GuiControl, svigt: disable, Button4
-    GuiControl, svigt: disable, Button3
-    GuiControl, svigt: disable, Button2
-    GuiControl, svigt: disable, Button1
-    GuiControl, svigt:text, Static1, Vogngruppe 
-    GuiControl, svigt:text, Static3,
-    GuiControl, svigt:, Edit1, %ValgtVG%
-    MsgBox, , , %valgtvg%
+    GuiControl, svigt: enable, vlTypeVogngruppe
+    GuiControl, svigt:,  vlTypeVogngruppe, 1
+    GuiControl, svigt: disable, vlTypeGaranti
+    GuiControl, svigt: disable, vlTypeGarantiVariabel
+    GuiControl, svigt: disable, vlTypeVariabel
+    GuiControl, svigt: disable, SvigtÅbningstidRadio
+    GuiControl, svigt: disable, GVLukketMidt
+    GuiControl, svigt: disable, SvigtVlSlettetRadio
+    GuiControl, svigt:text, SvigtVlTekst, Vogngruppe 
+    GuiControl, svigt:text, SvigtGarantiTid, Vogngruppe`n%valgtvg%
     VGprint := [[], [], valgtvg]
     EnvAdd, tid, -1 , hours
     FormatTime, tid, %tid%, HH:mm
     EnvAdd, tid_2, 2 , hours
     FormatTime, tid_2, %tid_2%, HH:mm
-    MsgBox, , , % valgtvgvl, 
+    FormatTime, datoVG, A_Now , dd
     p6_aktiver()
     sleep 500
     GuiControl, trio_genvej:text, Button1, Slår VG-skema op
     p6_alt_menu("{esc}{alt}", "td")
     sleep 1000
-    sendinput, %valgtvg%{enter}
+    sendinput, %valgtvg%
     sleep 500
+    SendInput, {tab}%datoVG%{enter}
     clipboard :=
     GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
     Input, tast , B L1 T10, {Esc},{Enter}
@@ -509,9 +507,9 @@ p6_vgsvigt_skprint()
     sleep 1000
     SendInput, !g%valgtvg%
     sleep 100
-    SendInput, !s{tab}%tid%
+    SendInput, !s%datoVG%{tab}%tid%
     sleep 100
-    SendInput, {tab 2}%tid_2%{enter}
+    SendInput, {tab}%datoVG%{tab}%tid_2%{enter}
     clipboard :=
     sleep 500
     GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
@@ -6804,7 +6802,7 @@ gui_svigt_opret()
                     }
             }
         }
-        mail_indhold.emnefelt := "Svigt " VGPrint[3] " - vognløb  " vg_vl " - d. " dato
+        mail_indhold.emnefelt := "Svigt " VGPrint[3] "- vognløb  " vg_vl " - d. " dato
         mail_indhold.broedtekst := "svigt " VGPrint[3] ", vognløb " vg_vl " — " svigtBeskrivelse
             gui, hide
             return mail_indhold
