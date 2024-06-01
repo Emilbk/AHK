@@ -6325,6 +6325,12 @@ w\:* {behavior:url(#default#VML);}
 ; #TODO #89 standard beskeder i svigtGUI
     l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         sys_genvej_start(38)
+        ; tjek for åbent
+        if WinExist("Svigt vl. ")
+            {
+            MsgBox, , , er,
+            return
+            }
         ; FormatTime, dato, , dd-MM-y
          FormatTime, tidForSvigt, , HH:mm
         ; GuiControl, svigt: disable, Button9
