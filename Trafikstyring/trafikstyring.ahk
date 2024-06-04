@@ -2718,7 +2718,523 @@ P6_tekstTilChf(ByRef tekst:=" ", kørselsaftale := "", styresystem := "")
     clipboard := gemtklip
     return
 }
+P6TekstTilChfValg()
+{
+    Input valgtTekstTilChf, L1 T5 C, {esc},
+    if (ErrorLevel = "EndKey:Escape")
+    {
+        sys_afslut_genvej()
+        return
+    }
 
+    return valgtTekstTilChf
+}
+P6TekstTilChfSendTekst(kørselsaftale, styresystem, valgtTekstTilChf)
+{
+    if (valgtTekstTilChf = "t")
+    {
+        GuiControl, trio_genvej:text, Button1, Skriv tekst til chauffør
+        P6_tekstTilChf( , kørselsaftale, styresystem) ; tager tekst ("eksempel") som parameter (accepterer variabel)
+        sys_afslut_genvej()
+        return
+    }
+    if (valgtTekstTilChf = "f")
+    {
+        GuiControl, trio_genvej:text, Button1, Sender tekst om forgæves
+        sys_tjek := p6_tekst_tjek_for_system(styresystem)
+        if (sys_tjek = 1)
+        {
+            sys_afslut_genvej()
+            return
+        }
+        {
+            gui, f_chf:New
+            gui, f_chf:Default
+            Gui Font, s9, Segoe UI
+            Gui Add, Edit, vf_stop x15 y29 w120 h21,
+            Gui Add, Text, x16 y7 w120 h23 +0x200, Forgæves stop
+            Gui Add, Edit, vs_stop x214 y32 w120 h21
+            Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
+            Gui Add, Edit, vk_navn x14 y106 w120 h21
+            Gui Add, Text, x16 y86 w120 h23 +0x200, Navn på kunde forg.
+            Gui Add, Text, x215 y84 w120 h23 +0x200, Navn på kunde sendt
+            Gui Add, Edit, vk_navn2 x216 y103 w120 h21
+            Gui Add, Button, gf_chfok x81 y172 w80 h23 +Default, &OK
+            Gui Add, Button, gf_annuller x216 y171 w80 h23, &Annuller
+
+            Gui Show,x812 y22 w381 h220, Send tekst om forgæves til chauffør
+            Return
+
+            f_annuller:
+            f_chfGuiEscape:
+            f_chfGuiClose:
+                {
+                    gui, Cancel
+                    sys_afslut_genvej()
+                    return
+                }
+            f_chfok:
+                GuiControlGet, f_stop, , ,
+                GuiControlGet, s_stop, , ,
+                GuiControlGet, k_navn, , ,
+                GuiControlGet, k_navn2, , ,
+                ; MsgBox, , , % tekst,
+                gui, cancel
+                P6_tekstTilChf("Jeg kan ikke ringe dig op. Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 ", i stedet - Mvh. Midttrafik", kørselsaftale, styresystem)
+                sleep 500
+                MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+                IfMsgBox, Yes
+                {
+                    SendInput, ^s
+                    ; KeyWait, Ctrl
+                    sleep 1000
+                    SendInput, {enter}
+                    P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf." initialer)
+                    sys_afslut_genvej()
+                    return
+                }
+                IfMsgBox, No
+                {
+                    sleep 200
+                    MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+                    gui, cancel
+                }
+                sys_afslut_genvej()
+            return
+        }
+    }
+    if ( valgtTekstTilChf == "k")
+    {
+        GuiControl, trio_genvej:text, Button1, Sender reminder om kvittering
+        systjek := p6_tekst_tjek_for_system(styresystem)
+        if (systjek = 1)
+        {
+            sys_afslut_genvej()
+            return
+        }
+        sleep 100
+        InputBox, stop, St. nummer, Hvilket stop?
+        if ErrorLevel
+        {
+            sys_afslut_genvej()
+            Return
+        }
+        sleep 100
+        InputBox, tid, FlexFinder ankomst, Hvornår faktisk ankommet? 4 cifre
+        if ErrorLevel
+        {
+            sys_afslut_genvej()
+            Return
+        }
+        P6_tekstTilChf("Er der glemt at bede om ny tur v. ankomst? Der skal altid trykkes for næste køreordre ved ankomst på en adresse, uanset om det er en afhentning eller en aflevering. Mvh. Midttrafik", kørselsaftale, styresystem)
+        sleep 500
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+        IfMsgBox, Yes
+        {
+            SendInput, ^s
+            ; KeyWait, Ctrl
+            sleep 1000
+            SendInput, {enter}
+            P6_notat("St. " stop " ikke kvitteret, ankommet " tid " jf. FF. Tekst sendt til chf, bed om næste køreordre" initialer)
+            sys_afslut_genvej()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        sys_afslut_genvej()
+
+        return
+
+    }
+    if (valgtTekstTilChf == "K")
+    {
+        GuiControl, trio_genvej:text, Button1, Send tekst om kvitteret stop til chauffør
+        systjek := p6_tekst_tjek_for_system(styresystem)
+        if (systjek = 1)
+        {
+            sys_afslut_genvej()
+            return
+        }
+        {
+            gui, k_chf:New
+            gui, k_chf:Default
+            Gui Font, s9, Segoe UI
+            Gui Add, Edit, vf_stop x15 y29 w120 h21,
+            Gui Add, Text, x16 y7 w120 h23 +0x200, Kvitteret stop
+            Gui Add, Edit, vs_stop x214 y32 w120 h21
+            Gui Add, Text, x215 y7 w120 h23 +0x200, Sendt stop
+            Gui Add, Edit, vk_navn x14 y106 w120 h21
+            Gui Add, Text, x16 y86 w120 h23 +0x200, Navn på kunde kvit.
+            Gui Add, Text, x215 y86 w120 h23 +0x200, Navn på kunde sendt
+            Gui Add, Text, x120 y137 w120 h23 +0x200, Evt. kvitteret tid.
+            Gui Add, Edit, vk_navn2 x216 y103 w120 h21
+            Gui Add, Edit, vk_tid x120 y157 w120 h21, Oprindelig kvittering
+            Gui Add, Button, gk_chfok x81 y200 w80 h23 +Default, &OK
+            Gui Add, Button, gk_annuller x216 y200 w80 h23, &Annuller
+
+            Gui Show, x812 y22 w381 h280, Send tekst om kvittering til chauffør
+            Return
+
+            k_annuller:
+            k_chfGuiEscape:
+            k_chfGuiClose:
+                {
+                    gui, Cancel
+                    sys_afslut_genvej()
+                    return
+                }
+            k_chfok:
+                GuiControlGet, f_stop, , ,
+                GuiControlGet, s_stop, , ,
+                GuiControlGet, k_navn, , ,
+                GuiControlGet, k_navn2, , ,
+                GuiControlGet, k_tid, , ,
+                gui, cancel
+                P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st. " f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 " - Mvh. Midttrafik", kørselsaftale, styresystem)
+                sleep 500
+                MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+                IfMsgBox, Yes
+                {
+                    SendInput, ^s
+                    sleep 1000
+                    SendInput, {enter}
+                    FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+                    vl_array := vlliste_kvittering_lav_array(vl)
+                    vlliste_vl_array_til_liste(vl_array)
+                    if (k_tid != "Oprindelig kvittering")
+                    {
+                        P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. tid " k_tid initialer " ")
+                        return
+                    }
+                    else
+                        P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. " initialer " ")
+                    sys_afslut_genvej()
+                    return
+                }
+                IfMsgBox, No
+                {
+                    sleep 200
+                    MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+                    gui, cancel
+                }
+                sys_afslut_genvej()
+            return
+        }
+    }
+
+
+    if (valgtTekstTilChf == "x")
+    {
+
+        GuiControl, trio_genvej:text, Button1, Send reminder om pause
+        sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for pausen? Mvh. Midttrafik", kørselsaftale ,styresystem)
+        sleep 500
+        if (sysstjek = 1)
+        {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Pausen ikke kvitteret" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 1000
+            SendInput, {enter}
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Pausen ikke kvitteret, tekst og pause sendt til chf" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+        }
+        sys_afslut_genvej()
+        return
+    }
+    if (valgtTekstTilChf == "s")
+    {
+
+        GuiControl, trio_genvej:text, Button1, Send reminder om skoletur
+        sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for skoleturen? Mvh. Midttrafik", kørselsaftale ,styresystem)
+        sleep 500
+        if (sysstjek = 1)
+        {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Skoletur ikke kvitteret" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 1000
+            SendInput, {enter}
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Skoletur ikke kvitteret, tekst og tur sendt til chf" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+        }
+        sys_afslut_genvej()
+        return
+    }
+    if (valgtTekstTilChf == "p")
+    {
+
+        GuiControl, trio_genvej:text, Button1, Send reminder om privatrejse
+        sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for privatrejsen? Mvh. Midttrafik", kørselsaftale ,styresystem)
+        sleep 500
+        if (sys_tjek = 1)
+        {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Priv. ikke kvitteret" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 1000
+            SendInput, {enter}
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Priv. ikke kvitteret, tekst sendt til chf" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+        }
+        sys_afslut_genvej()
+        return
+    }
+    if (valgtTekstTilChf == "P")
+    {
+        GuiControl, trio_genvej:text, Button1, Send advisering om lås grundet privatrejse
+        systjek := p6_tekst_tjek_for_system(styresystem)
+        if (systjek = 1)
+        {
+            P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. Låst" initialer " ")
+            sys_afslut_genvej()
+            return
+        }
+        {
+
+            P6_tekstTilChf("Jeg kan ikke ringe dig op, din privatrejse er ikke kvitteret. Vognløbet er låst, ring til driften, hvis du er ude at køre.", kørselsaftale , styresystem)
+            sleep 500
+            MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+            IfMsgBox, Yes
+            {
+                sleep 200
+                SendInput, ^s
+                sleep 1000
+                SendInput, {enter}
+                P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. Låst, tekst sendt om VL-lås" initialer " ")
+                gui, cancel
+                sys_afslut_genvej()
+                return
+            }
+            IfMsgBox, No
+            {
+                sleep 200
+                MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+                gui, cancel
+            }
+            sys_afslut_genvej()
+            return
+        }
+    }
+    if (valgtTekstTilChf == "w")
+    {
+        GuiControl, trio_genvej:text, Button1, Send Wakeup
+        sys_tjek := P6_tekstTilChf("Der er ikke bedt om vognløb start. Huske at bede om første køreordre ved opstart, uanset om der ligger ture eller ej. Mvh. Midttrafik", kørselsaftale, styresystem)
+        sleep 500
+        if (sys_tjek = 1)
+        {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_wakeup_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat(initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 1000
+            SendInput, {enter}
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_wakeup_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("WakeUp sendt" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+    }
+    if (valgtTekstTilChf == "W")
+    {
+        GuiControl, trio_genvej:text, Button1, Send advisering om lås grundet Wakeup
+        sys_tjek := P6_tekstTilChf("Jeg kan ikke ringe dig op, der er ikke trykket for første køreordre. Vognløbet er nu låst, ring til driften, hvis du er ude at køre.", kørselsaftale , styresystem)
+        if (sys_tjek = 1)
+        {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_laast_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Ingen kontakt til chf, VL låst" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+        }
+        sleep 500
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør? Husk at låse VL,
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 1000
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_laast_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            SendInput, {enter}
+            P6_notat("Ingen kontakt til chf, tekst sendt, VL låst" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+    }
+    if (valgtTekstTilChf == "r")
+    {
+        GuiControl, trio_genvej:text, Button1, Send advisering om forkert telefonnummer 
+        systjek := p6_tekst_tjek_for_system(styresystem)
+        if (systjek = 1)
+        {
+            P6_notat("Ingen kontakt til chf" initialer " ")
+            sys_afslut_genvej()
+            return
+        }
+        tlf := P6_hent_vl_tlf()
+        P6_tekstTilChf("Jeg kan ikke ringe dig op på telefonnummer " tlf ". Ring til driften, 70112210. Mvh Midttrafik.", kørselsaftale, styresystem)
+        sleep 500
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 1000
+            SendInput, {enter}
+            P6_notat("Ingen kontakt til chf, tekst sendt (ring til driften - har vi rigtigt tlf-nr?)" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+    }
+    if (valgtTekstTilChf = "a")
+    {
+        GuiControl, trio_genvej:text, Button1, Send advisering om forgæves tal
+        sys_tjek := P6_tekstTilChf("Jeg kan ikke ringe dig op. Tryk for opkald igen, hvis du stadig gerne vil ringes op. Mvh. Midttrafik", kørselsaftale, styresystem)
+        if (sys_tjek = 1)
+        {
+            P6_notat("Tal forgæves" initialer " ")
+            sys_afslut_genvej()
+            return
+        }
+        sleep 500
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 1000
+            SendInput, {enter}
+            P6_notat("Tal forgæves, tekst sendt" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+        }
+        sys_afslut_genvej()
+        return
+    }
+    if (valgtTekstTilChf = "n")
+    {
+        ; Jeg kan ikke ringe dig op, jeg har sendt dig en ny tur
+    }
+    sys_afslut_genvej()
+    return
+}
 ; ***
 ; Finder lukketid ud fra sidste stop og tid til hjemzone.
 ; Input tid for sidste stop, tryk enter. Input tid til hjemzone, tryk enter.
@@ -3795,8 +4311,8 @@ vlliste_vis_note_fra_planbillede()
         }
     }
     GuiControl, note:, note_note, %note_note%
-    GuiControl, note:, Edit2,
-    GuiControl, note:, note_reminder, 0
+    ; GuiControl, note:, Edit2,
+    ; GuiControl, note:, note_reminder, 0
     gui note: show, , Note VL %valg% til huskeliste
     ControlFocus, Edit1
 }
@@ -4540,7 +5056,7 @@ central_menu:
         return
     }
     Opkaldtaxa(p*){
-        Gui, taxa: Destroy
+        Gui, Vogngrupper: Destroy
         telefon := % p.1
         sleep 100
         tjek := Trio_opkald(telefon)
@@ -4590,11 +5106,12 @@ vis_sygehus_2(navn)
 
 ;; Testknap
 
-; ^+e::
-;     {
-;         ControlClick, x360 y17, ahk_class AccessBar
-;         return
-;     }
+^+e::
+    {
+        GuiControl, trio_genvej:text, Button1, test
+    
+        return
+    }
 ;; HOTKEYS
 
 ;; Global
@@ -5119,13 +5636,8 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
 
     ; KeyWait Alt
     ; keywait Ctrl
-    Input valgt, L1 T5 C, {esc},
-    if (ErrorLevel = "EndKey:Escape")
-    {
-        sys_afslut_genvej()
-        return
-    }
-
+    GuiControl, trio_genvej:text, Button1, Afventer valg af tekstbesked
+    valgtTekstTilChf := P6TekstTilChfValg()
     vl := P6_hent_vl()
     if (vl = 0)
     {
@@ -5135,548 +5647,7 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     kørselsaftale := P6_hent_k()
     styresystem := P6_hent_s()
     clipboard := gemtklip
-    ; loop_test := 0
-    ; while (vl = "")
-    ;    {
-    ;     sleep 400
-    ;     vl := P6_hent_vl()
-    ;     loop_test += 1
-    ;     if (loop_test > 10)
-    ;         {
-    ;             MsgBox, 16 , Fejl, Der er sket en fejl - prøv igen,
-    ;             return
-    ;         }
-    ;    }
-    if (valgt = "t")
-    {
-        P6_tekstTilChf( , kørselsaftale, styresystem) ; tager tekst ("eksempel") som parameter (accepterer variabel)
-        sys_afslut_genvej()
-        return
-    }
-    if (valgt = "f")
-    {
-        sys_tjek := p6_tekst_tjek_for_system(styresystem)
-        if (sys_tjek = 1)
-        {
-            sys_afslut_genvej()
-            return
-        }
-        {
-            gui, f_chf:New
-            gui, f_chf:Default
-            Gui Font, s9, Segoe UI
-            Gui Add, Edit, vf_stop x15 y29 w120 h21,
-            Gui Add, Text, x16 y7 w120 h23 +0x200, Forgæves stop
-            Gui Add, Edit, vs_stop x214 y32 w120 h21
-            Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
-            Gui Add, Edit, vk_navn x14 y106 w120 h21
-            Gui Add, Text, x16 y86 w120 h23 +0x200, Navn på kunde forg.
-            Gui Add, Text, x215 y84 w120 h23 +0x200, Navn på kunde sendt
-            Gui Add, Edit, vk_navn2 x216 y103 w120 h21
-            Gui Add, Button, gf_chfok x81 y172 w80 h23 +Default, &OK
-            Gui Add, Button, gf_annuller x216 y171 w80 h23, &Annuller
-
-            Gui Show,x812 y22 w381 h220, Send tekst om forgæves til chauffør
-            Return
-
-            f_annuller:
-            f_chfGuiEscape:
-            f_chfGuiClose:
-                {
-                    gui, Cancel
-                    sys_afslut_genvej()
-                    return
-                }
-            f_chfok:
-                GuiControlGet, f_stop, , ,
-                GuiControlGet, s_stop, , ,
-                GuiControlGet, k_navn, , ,
-                GuiControlGet, k_navn2, , ,
-                ; MsgBox, , , % tekst,
-                gui, cancel
-                P6_tekstTilChf("Jeg kan ikke ringe dig op. Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 ", i stedet - Mvh. Midttrafik", kørselsaftale, styresystem)
-                sleep 500
-                MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
-                IfMsgBox, Yes
-                {
-                    SendInput, ^s
-                    ; KeyWait, Ctrl
-                    sleep 1000
-                    SendInput, {enter}
-                    P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf." initialer)
-                    sys_afslut_genvej()
-                    return
-                }
-                IfMsgBox, No
-                {
-                    sleep 200
-                    MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-                    gui, cancel
-                }
-                sys_afslut_genvej()
-            return
-        }
-    }
-    if ( valgt == "k")
-    {
-        systjek := p6_tekst_tjek_for_system(styresystem)
-        if (systjek = 1)
-        {
-            sys_afslut_genvej()
-            return
-        }
-        sleep 100
-        InputBox, stop, St. nummer, Hvilket stop?
-        if ErrorLevel
-        {
-            sys_afslut_genvej()
-            Return
-        }
-        sleep 100
-        InputBox, tid, FlexFinder ankomst, Hvornår faktisk ankommet? 4 cifre
-        if ErrorLevel
-        {
-            sys_afslut_genvej()
-            Return
-        }
-        P6_tekstTilChf("Er der glemt at bede om ny tur v. ankomst? Der skal altid trykkes for næste køreordre ved ankomst på en adresse, uanset om det er en afhentning eller en aflevering. Mvh. Midttrafik", kørselsaftale, styresystem)
-        sleep 500
-        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
-        IfMsgBox, Yes
-        {
-            SendInput, ^s
-            ; KeyWait, Ctrl
-            sleep 1000
-            SendInput, {enter}
-            P6_notat("St. " stop " ikke kvitteret, ankommet " tid " jf. FF. Tekst sendt til chf, bed om næste køreordre" initialer)
-            sys_afslut_genvej()
-            return
-        }
-        IfMsgBox, No
-        {
-            sleep 200
-            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-        sys_afslut_genvej()
-
-        return
-
-    }
-    if (valgt == "K")
-    {
-        systjek := p6_tekst_tjek_for_system(styresystem)
-        if (systjek = 1)
-        {
-            sys_afslut_genvej()
-            return
-        }
-        {
-            gui, k_chf:New
-            gui, k_chf:Default
-            Gui Font, s9, Segoe UI
-            Gui Add, Edit, vf_stop x15 y29 w120 h21,
-            Gui Add, Text, x16 y7 w120 h23 +0x200, Kvitteret stop
-            Gui Add, Edit, vs_stop x214 y32 w120 h21
-            Gui Add, Text, x215 y7 w120 h23 +0x200, Sendt stop
-            Gui Add, Edit, vk_navn x14 y106 w120 h21
-            Gui Add, Text, x16 y86 w120 h23 +0x200, Navn på kunde kvit.
-            Gui Add, Text, x215 y86 w120 h23 +0x200, Navn på kunde sendt
-            Gui Add, Text, x120 y137 w120 h23 +0x200, Evt. kvitteret tid.
-            Gui Add, Edit, vk_navn2 x216 y103 w120 h21
-            Gui Add, Edit, vk_tid x120 y157 w120 h21, Oprindelig kvittering
-            Gui Add, Button, gk_chfok x81 y200 w80 h23 +Default, &OK
-            Gui Add, Button, gk_annuller x216 y200 w80 h23, &Annuller
-
-            Gui Show, x812 y22 w381 h280, Send tekst om kvittering til chauffør
-            Return
-
-            k_annuller:
-            k_chfGuiEscape:
-            k_chfGuiClose:
-                {
-                    gui, Cancel
-                    sys_afslut_genvej()
-                    return
-                }
-            k_chfok:
-                GuiControlGet, f_stop, , ,
-                GuiControlGet, s_stop, , ,
-                GuiControlGet, k_navn, , ,
-                GuiControlGet, k_navn2, , ,
-                GuiControlGet, k_tid, , ,
-                gui, cancel
-                P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st. " f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 " - Mvh. Midttrafik", kørselsaftale, styresystem)
-                sleep 500
-                MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
-                IfMsgBox, Yes
-                {
-                    SendInput, ^s
-                    sleep 1000
-                    SendInput, {enter}
-                    FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-                    vl_array := vlliste_kvittering_lav_array(vl)
-                    vlliste_vl_array_til_liste(vl_array)
-                    if (k_tid != "Oprindelig kvittering")
-                    {
-                        P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. tid " k_tid initialer " ")
-                        return
-                    }
-                    else
-                        P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. " initialer " ")
-                    sys_afslut_genvej()
-                    return
-                }
-                IfMsgBox, No
-                {
-                    sleep 200
-                    MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-                    gui, cancel
-                }
-                sys_afslut_genvej()
-            return
-        }
-    }
-
-
-    if (valgt == "x")
-    {
-
-        sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for pausen? Mvh. Midttrafik", kørselsaftale ,styresystem)
-        sleep 500
-        if (sysstjek = 1)
-        {
-            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl_array := vlliste_priv_lav_array(vl)
-            vlliste_vl_array_til_liste(vl_array)
-            P6_notat("Pausen ikke kvitteret" initialer " ")
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
-        IfMsgBox, Yes
-        {
-            sleep 200
-            SendInput, ^s
-            sleep 1000
-            SendInput, {enter}
-            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl_array := vlliste_priv_lav_array(vl)
-            vlliste_vl_array_til_liste(vl_array)
-            P6_notat("Pausen ikke kvitteret, tekst og pause sendt til chf" initialer " ")
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-        IfMsgBox, No
-        {
-            sleep 200
-            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-            gui, cancel
-        }
-        sys_afslut_genvej()
-        return
-    }
-    if (valgt == "s")
-    {
-
-        sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for skoleturen? Mvh. Midttrafik", kørselsaftale ,styresystem)
-        sleep 500
-        if (sysstjek = 1)
-        {
-            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl_array := vlliste_priv_lav_array(vl)
-            vlliste_vl_array_til_liste(vl_array)
-            P6_notat("Skoletur ikke kvitteret" initialer " ")
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
-        IfMsgBox, Yes
-        {
-            sleep 200
-            SendInput, ^s
-            sleep 1000
-            SendInput, {enter}
-            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl_array := vlliste_priv_lav_array(vl)
-            vlliste_vl_array_til_liste(vl_array)
-            P6_notat("Skoletur ikke kvitteret, tekst og tur sendt til chf" initialer " ")
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-        IfMsgBox, No
-        {
-            sleep 200
-            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-            gui, cancel
-        }
-        sys_afslut_genvej()
-        return
-    }
-    if (valgt == "s")
-    {
-
-        sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for skoleturen? Mvh. Midttrafik", kørselsaftale ,styresystem)
-        sleep 500
-        if (sysstjek = 1)
-        {
-            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl_array := vlliste_priv_lav_array(vl)
-            vlliste_vl_array_til_liste(vl_array)
-            P6_notat("Skoletur ikke kvitteret" initialer " ")
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
-        IfMsgBox, Yes
-        {
-            sleep 200
-            SendInput, ^s
-            sleep 1000
-            SendInput, {enter}
-            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl_array := vlliste_priv_lav_array(vl)
-            vlliste_vl_array_til_liste(vl_array)
-            P6_notat("Skoletur ikke kvitteret, tekst og tur sendt til chf" initialer " ")
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-        IfMsgBox, No
-        {
-            sleep 200
-            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-            gui, cancel
-        }
-        sys_afslut_genvej()
-        return
-    }
-    if (valgt == "p")
-    {
-
-        sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for privatrejsen? Mvh. Midttrafik", kørselsaftale ,styresystem)
-        sleep 500
-        if (sys_tjek = 1)
-        {
-            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl_array := vlliste_priv_lav_array(vl)
-            vlliste_vl_array_til_liste(vl_array)
-            P6_notat("Priv. ikke kvitteret" initialer " ")
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
-        IfMsgBox, Yes
-        {
-            sleep 200
-            SendInput, ^s
-            sleep 1000
-            SendInput, {enter}
-            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl_array := vlliste_priv_lav_array(vl)
-            vlliste_vl_array_til_liste(vl_array)
-            P6_notat("Priv. ikke kvitteret, tekst sendt til chf" initialer " ")
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-        IfMsgBox, No
-        {
-            sleep 200
-            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-            gui, cancel
-        }
-        sys_afslut_genvej()
-        return
-    }
-    if (valgt == "P")
-    {
-        systjek := p6_tekst_tjek_for_system(styresystem)
-        if (systjek = 1)
-        {
-            P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. Låst" initialer " ")
-            sys_afslut_genvej()
-            return
-        }
-        {
-
-            P6_tekstTilChf("Jeg kan ikke ringe dig op, din privatrejse er ikke kvitteret. Vognløbet er låst, ring til driften, hvis du er ude at køre.", kørselsaftale , styresystem)
-            sleep 500
-            MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
-            IfMsgBox, Yes
-            {
-                sleep 200
-                SendInput, ^s
-                sleep 1000
-                SendInput, {enter}
-                P6_notat("Priv. ikke kvitteret, ingen kontakt til chf. Låst, tekst sendt om VL-lås" initialer " ")
-                gui, cancel
-                sys_afslut_genvej()
-                return
-            }
-            IfMsgBox, No
-            {
-                sleep 200
-                MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-                gui, cancel
-            }
-            sys_afslut_genvej()
-            return
-        }
-    }
-    if (valgt == "w")
-    {
-        sys_tjek := P6_tekstTilChf("Der er ikke bedt om vognløb start. Huske at bede om første køreordre ved opstart, uanset om der ligger ture eller ej. Mvh. Midttrafik", kørselsaftale, styresystem)
-        sleep 500
-        if (sys_tjek = 1)
-        {
-            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl_array := vlliste_wakeup_lav_array(vl)
-            vlliste_vl_array_til_liste(vl_array)
-            P6_notat(initialer " ")
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
-        IfMsgBox, Yes
-        {
-            sleep 200
-            SendInput, ^s
-            sleep 1000
-            SendInput, {enter}
-            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl_array := vlliste_wakeup_lav_array(vl)
-            vlliste_vl_array_til_liste(vl_array)
-            P6_notat("WakeUp sendt" initialer " ")
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-        IfMsgBox, No
-        {
-            sleep 200
-            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-    }
-    if (valgt == "W")
-    {
-        sys_tjek := P6_tekstTilChf("Jeg kan ikke ringe dig op, der er ikke trykket for første køreordre. Vognløbet er nu låst, ring til driften, hvis du er ude at køre.", kørselsaftale , styresystem)
-        if (sys_tjek = 1)
-        {
-            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl_array := vlliste_laast_lav_array(vl)
-            vlliste_vl_array_til_liste(vl_array)
-            P6_notat("Ingen kontakt til chf, VL låst" initialer " ")
-            gui, cancel
-            sys_afslut_genvej()
-        }
-        sleep 500
-        MsgBox, 4, Send til chauffør?, Send tekst til chauffør? Husk at låse VL,
-        IfMsgBox, Yes
-        {
-            sleep 200
-            SendInput, ^s
-            sleep 1000
-            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-            vl_array := vlliste_laast_lav_array(vl)
-            vlliste_vl_array_til_liste(vl_array)
-            SendInput, {enter}
-            P6_notat("Ingen kontakt til chf, tekst sendt, VL låst" initialer " ")
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-        IfMsgBox, No
-        {
-            sleep 200
-            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-    }
-    if (valgt == "r")
-    {
-        systjek := p6_tekst_tjek_for_system(styresystem)
-        if (systjek = 1)
-        {
-            MsgBox, 16 , Styresystem %styresystem% , Dette styresystem kan ikke modtage tekstbeskeder,
-            P6_notat("Ingen kontakt til chf" initialer " ")
-            sys_afslut_genvej()
-            return
-        }
-        tlf := P6_hent_vl_tlf()
-        P6_tekstTilChf("Jeg kan ikke ringe dig op på telefonnummer " tlf ". Ring til driften, 70112210. Mvh Midttrafik.", kørselsaftale, styresystem)
-        sleep 500
-        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?
-        IfMsgBox, Yes
-        {
-            sleep 200
-            SendInput, ^s
-            sleep 1000
-            SendInput, {enter}
-            P6_notat("Ingen kontakt til chf, tekst sendt (ring til driften - har vi rigtigt tlf-nr?)" initialer " ")
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-        IfMsgBox, No
-        {
-            sleep 200
-            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-    }
-    if (valgt = "a")
-    {
-        sys_tjek := P6_tekstTilChf("Jeg kan ikke ringe dig op. Tryk for opkald igen, hvis du stadig gerne vil ringes op. Mvh. Midttrafik", kørselsaftale, styresystem)
-        if (sys_tjek = 1)
-        {
-            P6_notat("Tal forgæves" initialer " ")
-            sys_afslut_genvej()
-            return
-        }
-        sleep 500
-        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?
-        IfMsgBox, Yes
-        {
-            sleep 200
-            SendInput, ^s
-            sleep 1000
-            SendInput, {enter}
-            P6_notat("Tal forgæves, tekst sendt" initialer " ")
-            gui, cancel
-            sys_afslut_genvej()
-            return
-        }
-        IfMsgBox, No
-        {
-            sleep 200
-            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-            gui, cancel
-        }
-        sys_afslut_genvej()
-        return
-    }
-    if (valgt = "n")
-    {
-        ; Jeg kan ikke ringe dig op, jeg har sendt dig en ny tur
-    }
-    sys_afslut_genvej()
+    P6TekstTilChfSendTekst(kørselsaftale, styresystem, valgtTekstTilChf)
     return
 #IfWinActive ; udelukkende for at resette indentering i auto-formatering
 
