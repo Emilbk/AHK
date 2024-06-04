@@ -3844,7 +3844,7 @@ Trio_opkald(ByRef telefon)
     }
     sleep 80
     controlsend, Edit2, %telefon%, ahk_class Addressbook
-    sleep 100
+    sleep 200
     ControlGetText, kobl_test, Button1, Trio Attendant
     GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
     ; virker ikke hos Brøgger???
@@ -3855,7 +3855,9 @@ Trio_opkald(ByRef telefon)
     ; }
     ; Else
     ; {
-    controlsend, , {ShiftDown}{enter}{ShiftUp}, ahk_class Addressbook
+    controlsend, , {ShiftDown}, ahk_class Addressbook
+    sleep 100
+    controlsend, , {enter}{ShiftUp}, ahk_class Addressbook
     Return
     ; }
 }
