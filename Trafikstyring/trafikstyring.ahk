@@ -3947,7 +3947,7 @@ trio_udenov()
 ; Trio hop til alarm
 trio_alarm()
 {
-    WinMenuSelectItem, Trio Attendant, , Fil, Rolle, 8&
+    WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Rolle, 8&
     ; WinActivate, ahk_class Agent Main GUI
     ; winwaitactive, ahk_class Agent Main GUI
     ; sleep 40
