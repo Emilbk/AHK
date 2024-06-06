@@ -3055,7 +3055,47 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
             FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
             vl_array := vlliste_priv_lav_array(vl)
             vlliste_vl_array_til_liste(vl_array)
-            P6_notat("Skoletur ikke kvitteret, tekst og tur sendt til chf" initialer " ")
+            P6_notat("Skoletur ikke kvitteret, OBS sendt til chf" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+        }
+        sys_afslut_genvej()
+        return
+    }
+    if (valgtTekstTilChf == "S")
+    {
+
+        GuiControl, trio_genvej:text, Button1, Send reminder om skoletur
+        sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for skoleturen? Mvh. Midttrafik", kørselsaftale ,styresystem)
+        sleep 500
+        if (sysstjek = 1)
+        {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Skoletur ikke kvitteret" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 1000
+            SendInput, {enter}
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("Skoletur ikke kvitteret, OBS sendt til chf" initialer " ")
             gui, cancel
             sys_afslut_genvej()
             return
