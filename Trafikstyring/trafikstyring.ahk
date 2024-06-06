@@ -365,6 +365,7 @@ Menu, SvigtVGMenu, add, Opret Vogngruppesvigt`tCtrl+t, p6_vgsvigt
 Menu, SvigtMenu, add, &Vogngruppe, :SvigtVGMenu,
 Menu, SvigtMenu, add, S&kærmprint, :SvigtSkærmprintMenu,
 Menu, SvigtMenu, add, Hjælp, :SvigtOmMenu, +right
+
 ; SvigtGUI
 gui, svigt: new
 gui, svigt: +labelsvigt
@@ -2804,11 +2805,6 @@ P6_TekstTilChfSendTekstFraGui()
 P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
 { 
     
-    static f_stop
-        static s_stop
-        static k_navn
-        static k_navn2
-        static k_tid
     FormatTime, tid, ,HHmm
     initialer = /mt%A_userName%%tid%
     initialer_udentid =/mt%A_userName%
@@ -2816,7 +2812,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
         {
             GuiControl, trio_genvej:text, Button1, Vælg fra menu
             gui p6_tekst_valg: show, AutoSize, Tekst til chauffør
-            return "menu"
+            return 
         }
     if (valgtTekstTilChf = "t")
     {
@@ -6434,6 +6430,8 @@ w\:* {behavior:url(#default#VML);}
     GuiControl, svigt:,  vlTypeGarantiVariabel , 0 
     GuiControl, svigt:,  vlTypeVariabel , 0 
     GuiControl, svigt:,  vlTypeGogngruppe , 0 
+    GuiControl, svigt:,  SvigtVMKontaktRadio , 0 
+    GuiControl, svigt:,  SvigtIngenVmKontaktRadio , 0 
     GuiControl, svigt: disable, svigtVmKontaktradio
     GuiControl, svigt: disable, svigtIngenVMKontaktRadio
     GuiControl, svigt:,  GemtSkærmprint , 0
@@ -6444,8 +6442,11 @@ w\:* {behavior:url(#default#VML);}
     GuiControl, svigt: enable, vlTypeGaranti
     GuiControl, svigt: enable, vlTypeGarantiVariabel
     GuiControl, svigt: enable, vlTypeVariabel
-    GuiControl, svigt: disable, vlTypeGogngruppe
-
+    GuiControl, svigt: disable, vlTypeVogngruppe
+    GuiControl, svigt: disable, SvigtVmKontaktEdit
+    SvigtSlettetKnapTjekVar := 0
+    SvigtLukketKnapTjekVar := 0
+    SvigtÅbningstidUdskudtKnapTjekVar := 0
     
         ; GuiControl, svigt: enable, Button6
         ; GuiControl, svigt: enable, Button4
@@ -6576,7 +6577,8 @@ w\:* {behavior:url(#default#VML);}
         p6_vgsvigt()
        }       
     GuiControl, svigt:,  SvigtVlEdit , %vl%
-    GuiControl, svigt:,  SvigtVmKontaktEdit , %tidForSvigt%
+    tidForKontakt := SubStr(tidForSvigt, 1, 2) . SubStr(tidForSvigt, 4, 2)
+    GuiControl, svigt:,  SvigtVmKontaktEdit , %tidForKontakt%
     GuiControl, svigt:,  SvigtBeskrivelse ,
 
     GuiControl, svigt:,  ny_dato ,
@@ -6671,26 +6673,27 @@ gui_svigt_opret()
         }
         gvHjemzoneTid := timer ":" min
     }
-    if (InStr(vmKontaktTid, ":"))
-        vmKontaktTid := SubStr(vmKontaktTid, 1, 2) . SubStr(vmKontaktTid, 4, 2)
-    if (vmKontakt = 1 and StrLen(vmKontaktTid) != 4)
+    if (InStr(svigtVmKontaktEdit, ":"))
+        svigtVmKontaktEdit := SubStr(svigtVmKontaktEdit, 1, 2) . SubStr(svigtVmKontaktEdit, 4, 2)
+    if (SvigtVmKontaktradio = 1 and StrLen(svigtVmKontaktEdit) != 4)
     {
         sleep 100
-        MsgBox, 48 , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
+        MsgBox, 48 , Klokkeslæt skal være firecifret, Klokkeslæt i kontakt til VM skal være firecifret (intet kolon).
         sleep 100
         Gui Show, w448 h397, Svigt
         SendInput, !l{tab}^a
         return 0
     }
-    if (StrLen(vmKontaktTid) = 4)
+
+    if (StrLen(svigtVmKontaktEdit) = 4)
     {
-        timer := SubStr(vmKontaktTid, 1, 2)
-        min := SubStr(vmKontaktTid, 3, 2)
+        timer := SubStr(svigtVmKontaktEdit, 1, 2)
+        min := SubStr(svigtVmKontaktEdit, 3, 2)
         tid_tjek := A_YYYY A_MM A_DD timer min
         if tid_tjek is not Time
         {
             sleep 100
-            MsgBox, 48 , Klokkeslæt ikke gyldigt , Skal være et gyldigt tidspunkt
+            MsgBox, 48 , Klokkeslæt ikke gyldigt , Skal være et gyldigt tidspunkt i kontakt til VM
             sleep 100
             Gui Show, w448 h397, Svigt
             SendInput, ^a
@@ -7136,7 +7139,9 @@ gui_svigt_send(mail_indhold, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
     svigtClose:
     MsgBox, 36, Luk svigtmakro?, Vil du lukke svigtmakroen?
     IfMsgBox, Yes
-        Gui, hide
+        {
+            Gui, hide
+        }
     sys_afslut_genvej()
     Return
 
