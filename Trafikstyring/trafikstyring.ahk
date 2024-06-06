@@ -2725,13 +2725,44 @@ P6TekstTilChfValg()
     if (ErrorLevel = "EndKey:Escape")
     {
         sys_afslut_genvej()
-        return
+        return valgtTekstTilChf
     }
 
     return valgtTekstTilChf
 }
-P6TekstTilChfSendTekst(kørselsaftale, styresystem, valgtTekstTilChf)
+P6_TekstTilChfSendTekstFraGui()
 {
+    sys_genvej_start(20)
+    FormatTime, tid, ,HHmm
+    initialer = /mt%A_userName%%tid%
+    initialer_udentid =/mt%A_userName%
+    brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
+    bruger := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 2)
+    ; ctrl_s := chr(19)
+    gemtklip := ClipboardAll
+    gui p6_tekst_valg: hide
+    valgtTekstTilChf := SubStr(A_GuiControl, 1, 1)
+    ; KeyWait Alt
+    ; keywait Ctrl
+    GuiControl, trio_genvej:text, Button1, Valg af tekstbesked-menu
+    vl := P6_hent_vl()
+    if (vl = 0)
+    {
+        sys_afslut_genvej()
+        return
+    }
+    kørselsaftale := P6_hent_k()
+    styresystem := P6_hent_s()
+    clipboard := gemtklip
+    P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
+    return
+}
+P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
+{ 
+    
+    FormatTime, tid, ,HHmm
+    initialer = /mt%A_userName%%tid%
+    initialer_udentid =/mt%A_userName%
     if (valgtTekstTilChf = "t")
     {
         GuiControl, trio_genvej:text, Button1, Skriv tekst til chauffør
@@ -5648,7 +5679,8 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     kørselsaftale := P6_hent_k()
     styresystem := P6_hent_s()
     clipboard := gemtklip
-    P6TekstTilChfSendTekst(kørselsaftale, styresystem, valgtTekstTilChf)
+    P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
+    sys_afslut_genvej()
     return
 #IfWinActive ; udelukkende for at resette indentering i auto-formatering
 
