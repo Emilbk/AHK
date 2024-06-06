@@ -359,7 +359,7 @@ Gui note: Add, Edit, x394 y240 w50 h21 number vnote_tid,
 ; Menu, SvigtFilmenu, add, Vogngruppe`tCtrl+t, SvigtVGMenu  
 Menu, SvigtSkærmprintMenu, add, FlexFinder-skærmprint`tCtrl+f, flexfinderskærmprint  
 Menu, SvigtSkærmprintMenu, add, Tilføj nuværende skærmprint`tCtrl+n, nuværendeSkærmprint  
-Menu, SvigtSkærmprintMenu, add, Vis tilføjede skærmprint`tCtrl+v, SvigtSkærmprintOversigt  
+; Menu, SvigtSkærmprintMenu, add, Vis tilføjede skærmprint`tCtrl+v, SvigtSkærmprintOversigt  
 Menu, SvigtOmmenu, add, Hjælp`tF1, svigtHjælp  
 Menu, SvigtVGMenu, add, Opret Vogngruppesvigt`tCtrl+t, p6_vgsvigt 
 Menu, SvigtMenu, add, &Vogngruppe, :SvigtVGMenu,
