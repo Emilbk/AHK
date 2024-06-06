@@ -2777,9 +2777,20 @@ P6_TekstTilChfSendTekstFraGui()
 P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
 { 
     
+    static f_stop
+        static s_stop
+        static k_navn
+        static k_navn2
+        static k_tid
     FormatTime, tid, ,HHmm
     initialer = /mt%A_userName%%tid%
     initialer_udentid =/mt%A_userName%
+    if (valgtTekstTilChf = "m")
+        {
+            GuiControl, trio_genvej:text, Button1, Vælg fra menu
+            gui p6_tekst_valg: show, AutoSize, Tekst til chauffør
+            return "menu"
+        }
     if (valgtTekstTilChf = "t")
     {
         GuiControl, trio_genvej:text, Button1, Skriv tekst til chauffør
