@@ -429,6 +429,34 @@ Gui vgSvigt: add, DropDownList, vValgtVG, Århusstat|Horstat|Holsstat|Silherstat
 Gui vgSvigt: add, Button, Default vVGOK gp6_vgsvigt_skprint , &OK
 Gui vgSvigt: add, Button, x+25 gVGSvigtAfbryd vVGAfbryd , &Afbryd
 
+gui, forgævesGUI:New
+Gui, forgævesGUI: Font, s9, Segoe UI
+Gui, forgævesGUI: Add, Edit, vf_stop x15 y29 w120 h21,
+Gui, forgævesGUI: Add, Text, x16 y7 w120 h23 +0x200, Forgæves stop
+Gui, forgævesGUI: Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
+Gui, forgævesGUI: Add, Edit, vs_stop x214 y32 w120 h21
+Gui, forgævesGUI: Add, Edit, vk_navn x14 y106 w120 h21
+Gui, forgævesGUI: Add, Text, x16 y86 w120 h23 +0x200, Navn på kunde forg.
+Gui, forgævesGUI: Add, Text, x215 y84 w120 h23 +0x200, Navn på kunde sendt
+Gui, forgævesGUI: Add, Edit, vk_navn2 x216 y103 w120 h21
+Gui, forgævesGUI: Add, Button, gf_chfok x81 y172 w80 h23 +Default, &OK
+Gui, forgævesGUI: Add, Button, gf_annuller x216 y171 w80 h23, &Annuller
+
+gui, kvitteringGUI:New
+Gui, kvitteringGUI: Font, s9, Segoe UI
+Gui, kvitteringGUI: Add, Edit, vf_stop x15 y29 w120 h21,
+Gui, kvitteringGUI: Add, Text, x16 y7 w120 h23 +0x200, Kvitteret stop
+Gui, kvitteringGUI: Add, Edit, vs_stop x214 y32 w120 h21
+Gui, kvitteringGUI: Add, Text, x215 y7 w120 h23 +0x200, Sendt stop
+Gui, kvitteringGUI: Add, Edit, vk_navn x14 y106 w120 h21
+Gui, kvitteringGUI: Add, Text, x16 y86 w120 h23 +0x200, Navn på kunde kvit.
+Gui, kvitteringGUI: Add, Text, x215 y86 w120 h23 +0x200, Navn på kunde sendt
+Gui, kvitteringGUI: Add, Text, x120 y137 w120 h23 +0x200, Evt. kvitteret tid.
+Gui, kvitteringGUI: Add, Edit, vk_navn2 x216 y103 w120 h21
+Gui, kvitteringGUI: Add, Edit, vk_tid x120 y157 w120 h21, Oprindelig kvittering
+Gui, kvitteringGUI: Add, Button, gk_chfok x81 y200 w80 h23 +Default, &OK
+Gui, kvitteringGUI: Add, Button, gk_annuller x216 y200 w80 h23, &Annuller
+
 
 Gui vmsvigt: new
 gui vgSvigt: add, Text, X+M y+M , Er vognmand ikke informeret?
@@ -2808,21 +2836,9 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
             return
         }
         {
-            gui, f_chf:New
-            gui, f_chf:Default
-            Gui Font, s9, Segoe UI
-            Gui Add, Edit, vf_stop x15 y29 w120 h21,
-            Gui Add, Text, x16 y7 w120 h23 +0x200, Forgæves stop
-            Gui Add, Edit, vs_stop x214 y32 w120 h21
-            Gui Add, Text, x216 y7 w120 h23 +0x200, Sendt stop
-            Gui Add, Edit, vk_navn x14 y106 w120 h21
-            Gui Add, Text, x16 y86 w120 h23 +0x200, Navn på kunde forg.
-            Gui Add, Text, x215 y84 w120 h23 +0x200, Navn på kunde sendt
-            Gui Add, Edit, vk_navn2 x216 y103 w120 h21
-            Gui Add, Button, gf_chfok x81 y172 w80 h23 +Default, &OK
-            Gui Add, Button, gf_annuller x216 y171 w80 h23, &Annuller
 
-            Gui Show,x812 y22 w381 h220, Send tekst om forgæves til chauffør
+
+            Gui forgævesGUI: Show,x812 y22 w381 h220, Send tekst om forgæves til chauffør
             Return
 
             f_annuller:
@@ -2834,7 +2850,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
                     return
                 }
             f_chfok:
-                GuiControlGet, f_stop, , ,
+                GuiControlGet, f_stop, forgævesGUI:
                 GuiControlGet, s_stop, , ,
                 GuiControlGet, k_navn, , ,
                 GuiControlGet, k_navn2, , ,
@@ -2922,23 +2938,8 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
             return
         }
         {
-            gui, k_chf:New
-            gui, k_chf:Default
-            Gui Font, s9, Segoe UI
-            Gui Add, Edit, vf_stop x15 y29 w120 h21,
-            Gui Add, Text, x16 y7 w120 h23 +0x200, Kvitteret stop
-            Gui Add, Edit, vs_stop x214 y32 w120 h21
-            Gui Add, Text, x215 y7 w120 h23 +0x200, Sendt stop
-            Gui Add, Edit, vk_navn x14 y106 w120 h21
-            Gui Add, Text, x16 y86 w120 h23 +0x200, Navn på kunde kvit.
-            Gui Add, Text, x215 y86 w120 h23 +0x200, Navn på kunde sendt
-            Gui Add, Text, x120 y137 w120 h23 +0x200, Evt. kvitteret tid.
-            Gui Add, Edit, vk_navn2 x216 y103 w120 h21
-            Gui Add, Edit, vk_tid x120 y157 w120 h21, Oprindelig kvittering
-            Gui Add, Button, gk_chfok x81 y200 w80 h23 +Default, &OK
-            Gui Add, Button, gk_annuller x216 y200 w80 h23, &Annuller
 
-            Gui Show, x812 y22 w381 h280, Send tekst om kvittering til chauffør
+            Gui kvitteringGUI: Show, x812 y22 w381 h280, Send tekst om kvittering til chauffør
             Return
 
             k_annuller:
@@ -6697,11 +6698,11 @@ gui_svigt_opret()
         }
     }
     if (vlTypeGaranti = 1 or vlTypeGarantiVariabel = 2)
-        if (SvigtVlLukket = 1 or SvigtVlSlettetRadio = 1)
-            if vmKontakt = 0
+        if (GvLukketMidt = 1 or SvigtVlSlettetRadio = 1)
+            if (SvigtVMKontaktRadio = 0 and SvigtIngenVmKontaktRadio = 0)
             {
                 sleep 100
-                gui, vmsvigt: Show, AutoSize ,Opkald til VM? 
+                MsgBox, , Kontakt til VM?, Der skal afkrydses i kontakt til VM
                 sleep 100
                 Gui Show, w448 h397, Svigt
                 return 0
