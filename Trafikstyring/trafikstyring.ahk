@@ -535,7 +535,6 @@ p6_vgsvigt_skprint()
     sleep 400
     ClipWait, 3, 1
     VGprint[1][2] := ImagePutBuffer(clipboardall)
-    GuiControl, trio_genvej:text, Button1, Tager skærmprint af vl
     GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
     p6_vaelg_vl(valgtvgvl)
     Input, tast , B L1 T10, {Esc},{Enter}
@@ -1145,7 +1144,7 @@ note_slet:
                 vl_liste_array[i][6] := ""
                 vl_liste_array[i][5] := ""
                 vl_liste_array_til_json_tekst()
-                Gui, Hide 
+                ; Gui, Hide 
                 P6_aktiver()
                 return
             }
@@ -2800,6 +2799,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     }
     if (valgtTekstTilChf = "f")
     {
+    
         GuiControl, trio_genvej:text, Button1, Sender tekst om forgæves
         sys_tjek := p6_tekst_tjek_for_system(styresystem)
         if (sys_tjek = 1)
@@ -2895,7 +2895,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
             ; KeyWait, Ctrl
             sleep 1000
             SendInput, {enter}
-            P6_notat("St. " stop " ikke kvitteret, ankommet " tid " jf. FF. Tekst sendt til chf, bed om næste køreordre" initialer)
+            P6_notat("St. " stop " ikke kvitteret, ankommet " tid " jf. FF. Tekst sendt til chf, bed om næste køreordre" initialer " ")
             sys_afslut_genvej()
             return
         }
@@ -5208,8 +5208,7 @@ vis_sygehus_2(navn)
 
 ^+e::
     {
-        GuiControl, trio_genvej:text, Button1, test
-    
+        gui p6_tekst_valg: show, AutoSize, Tekst til chauffør
         return
     }
 ;; HOTKEYS
@@ -5736,8 +5735,13 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
 
     ; KeyWait Alt
     ; keywait Ctrl
-    GuiControl, trio_genvej:text, Button1, Afventer valg af tekstbesked
+    GuiControl, trio_genvej:text, Button1, Afventer valg af tekstbesked`n`m for menu
     valgtTekstTilChf := P6TekstTilChfValg()
+    if (valgtTekstTilChf = "")
+        {
+        sys_afslut_genvej()
+        return
+        }
     vl := P6_hent_vl()
     if (vl = 0)
     {
@@ -6400,7 +6404,6 @@ w\:* {behavior:url(#default#VML);}
         ; tjek for åbent
         if WinExist("Svigt vl. ")
             {
-            MsgBox, , , er,
             return
             }
         ; FormatTime, dato, , dd-MM-y
@@ -6488,6 +6491,7 @@ w\:* {behavior:url(#default#VML);}
                     GuiControl, svigt:,  SvigtGarantitid , %SvigtGarantitid%
                     GuiControl, svigt: , vlTypeVariabel , 1 
                     GuiControl, svigt: Focus, SvigtBeskrivelse
+                    Gosub, vlTypeVariabel
             }
         if (vl_array.5.1 != "variabel")
     {
@@ -6535,6 +6539,7 @@ w\:* {behavior:url(#default#VML);}
                     SvigtGarantitid .= "`nTvunget lukket d. 31-12/01-01"
                 if (StrLen(vl_array.5.2) = 2)
                     SvigtGarantitid .= "`nTvunget lukket uge " vl_array.5.2
+                vlTYpeGV()
                 GuiControl, svigt:,  SvigtGarantitid , %  SvigtGarantitidTekst 
                 GuiControl, svigt: , vlTypeGarantiVariabel , 1 
                 GuiControl, svigt: Focus, SvigtBeskrivelse
