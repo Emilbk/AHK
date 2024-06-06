@@ -329,6 +329,23 @@ Gui p6_billede: Add, Button, x40 y272 w42 h23 +default gp6_billede_ok, &OK
 Gui p6_billede: Add, Button, x104 y272 w55 h23 gp6_billedeescape, Afbryd
 Gui p6_billede: Add, Text, x16 y8 w120 h23 +0x200, Hvilket billede vil du se?
 
+Gui p6_tekst_valg: Font, s9, Segoe UI
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vw, (&w)akeUp
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vWa, (&W)akeUp-lås
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vk, (&k)vittering-OBS
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vKa, (&K)vittering sendt
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vp, (&p)rivatrejse-OBS
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vPa, (&P)rivatrejse-lås
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vt, (&t)ekst til chf
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vx, (p)&ause-OBS
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vf, (&f)orgæves
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vs, (&s)koletur-OBS
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vSa, (&S)koletur sendt
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vr, Fo&rke(r)t tlf, kontakt driften
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui va, T(a)&l forgæves
+
+
+
 gui note: +Labelnote
 Gui note: Font, s9, Segoe UI
 Gui note: Add, Edit, x16 y8 w438 h206 vnote_note
@@ -7489,3 +7506,45 @@ GetMonitor(hwnd := 0) {
     }
 ;; TODO
 ; svigt - tjek for åbent svigtGUI ved ekstra tryk på F1
+
+#IfWinActive Tekst til chauffør 
+w::
+ControlClick, (&w)akeUp, Tekst til chauffør
+return
++w::
+ControlClick, (&W)akeUp-lås, Tekst til chauffør
+return
+k::
+ControlClick, (&k)vittering-OBS, Tekst til chauffør
+return
++k::
+ControlClick, (&K)vittering sendt, Tekst til chauffør
+return
+p::
+ControlClick, (&p)rivatrejse-OBS, Tekst til chauffør
+return
++p::
+ControlClick, (&P)rivatrejse-lås, Tekst til chauffør
+return
+t::
+ControlClick, (&t)ekst til chf, Tekst til chauffør
+return
+x::
+ControlClick, (p)&ause-OBS, Tekst til chauffør
+return
+f::
+ControlClick, (&f)orgæves, Tekst til chauffør
+return
+s::
+ControlClick, (&s)koletur-OBS, Tekst til chauffør
+return
++s::
+ControlClick, (&S)koletur sendt, Tekst til chauffør
+return
+r::
+ControlClick, Fo&rke(r)t tlf, kontakt driften, Tekst til chauffør
+return
+a::
+ControlClick, T(a)&l forgæves, Tekst til chauffør
+return
+#IfWinActive
