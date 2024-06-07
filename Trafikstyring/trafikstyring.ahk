@@ -2846,6 +2846,9 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
                     return
                 }
             f_chfok:
+    FormatTime, tid, ,HHmm
+    initialer = /mt%A_userName%%tid%
+    initialer_udentid =/mt%A_userName%
                 GuiControlGet, f_stop, forgævesGUI:
                 GuiControlGet, s_stop, , ,
                 GuiControlGet, k_navn, , ,
@@ -2947,6 +2950,9 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
                     return
                 }
             k_chfok:
+    FormatTime, tid, ,HHmm
+    initialer = /mt%A_userName%%tid%
+    initialer_udentid =/mt%A_userName%
                 GuiControlGet, f_stop, , ,
                 GuiControlGet, s_stop, , ,
                 GuiControlGet, k_navn, , ,
