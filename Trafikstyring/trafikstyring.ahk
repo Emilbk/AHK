@@ -6891,7 +6891,8 @@ gui_svigt_opret()
         Gui Show, w448 h397, Svigt
         return 0
     }
-    if (vlTypeGaranti = 1 and instr(SvigtGarantitid, "Variabelt vognløb"))
+        GuiControlGet, variabel_tjek, , SvigtGarantitid,
+    if (vlTypeGaranti = 1 and instr(variabel_tjek, "Variabelt vognløb"))
     {
         sleep 100
         MsgBox, 52 , Garantitid?, Sikker på at vognløbet kører garanti i dag?
