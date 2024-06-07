@@ -6569,6 +6569,7 @@ w\:* {behavior:url(#default#VML);}
         ; tjek for åbent
         if WinExist("Svigt vl. ")
             {
+            WinActivate, Svigt vl.  
             return
             }
         ; FormatTime, dato, , dd-MM-y
