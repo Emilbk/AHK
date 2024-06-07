@@ -7372,7 +7372,7 @@ Enter::
     P6_aktiver()
     sleep 100
     ValgtSpecialAdresse := SubStr(valgtSpecialAdresse, 1, 1)
-    SendInput, % ValgtSpecialAdresse
+    SendRaw, % ValgtSpecialAdresse
 
 }
 #IfWinActive
