@@ -434,7 +434,7 @@ Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
 Gui, svigt:Add, GroupBox, vvlType x294 y0 w140 h130 ,Type VL:
 Gui svigt: Add, Radio, x304 y24 w120 h16 gvlTypeGv vvlTypeGaranti, &Garanti
-Gui svigt: Add, Radio, x304 y40 w120 h32 gVlTypeGv vvlTypeGarantiVariabel, G&arantivognløb i variabel tid
+Gui svigt: Add, Radio, x304 y40 w120 h32 gVlTypeGvVariabel vvlTypeGarantiVariabel, G&arantivognløb i variabel tid
 Gui svigt: Add, Radio, x304 y72 w120 h23 gVlTypeVariabel vvlTypeVariabel , Va&riabel
 Gui svigt: Add, Radio, disabled vvlTypeVogngruppe x304 y92 w120 h32, V&ogngruppe
 Gui svigt: Add, GroupBox,  x150 y130 w283 h48 ,Kontakt til Vognmand (cirka tidspunkt):
@@ -6691,6 +6691,9 @@ w\:* {behavior:url(#default#VML);}
                     SvigtGarantiTidTekstMail := garanti_start ":00 - " garanti_slut ":00"
                     GuiControl, svigt:,  SvigtGarantitid , % SvigtGarantitidTekst
                     GuiControl, svigt: , vlTypeGaranti, 1 
+                    GuiControl, svigt: enable , SvigtÅbningstidRadio
+                    GuiControl, svigt: enable , SvigtVlLukket
+                    GuiControl, svigt: enable , SvigtVlSlettet
                     GuiControl, svigt: Focus, SvigtBeskrivelse
                     ; GuiControl, svigt:,  SvigtGarantitid , Garantiperiode: %SvigtGarantitid% `n%garanti_start%:00-%garanti_slut%:00 
                 ; Tjek om udenfor garantiperiode
@@ -6920,6 +6923,7 @@ gui_svigt_opret()
         return 0
     }
     if (vlTypeGaranti = 1 and GVlukketMidt = 1 and årsag != "")
+    {
     if (SvigtVmKontaktradio = 1)
     {
         mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit  " " vl_type ": " årsag " - lukket kl. " gvHjemzoneTid " d. " dato
@@ -6938,7 +6942,9 @@ gui_svigt_opret()
         gui, hide
         return mail_indhold
     }
+    }
     if (vlTypeGaranti = 1 and GvLukketMidt = 1 and årsag = "")
+        {
         if (SvigtVmKontaktradio = 1)
             {
                 mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - lukket kl. " gvHjemzoneTid " d. " dato
@@ -6957,8 +6963,24 @@ gui_svigt_opret()
                 gui, hide
                 return mail_indhold
             }
-
-    if (vlTypeGaranti = 1 and GvLukketMidt = 0 and SvigtVlSlettetRadio = 0 and årsag != "")
+        }
+    if (vlTypeGaranti = 1 and SvigtÅbningstidRadio = 1 and årsag != "")
+    {
+        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - d. " dato " kl. " tidForSvigt 
+        ; MsgBox, , 3, % mail_indhold.emnefelt,
+    mail_indhold.broedtekst := "GV: " SvigtGarantitidTekstMail ", åbningstid udskudt til " SvigtÅbningstidEdit " — " svigtBeskrivelse
+        gui, hide
+        return mail_indhold
+    }
+    if (vlTypeGaranti = 1 and SvigtÅbningstidRadio = 1 and årsag = "")
+    {
+        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - d. " dato " kl. " tidForSvigt 
+        ; MsgBox, , 3, % mail_indhold.emnefelt,
+    mail_indhold.broedtekst := "GV: " SvigtGarantitidTekstMail ", åbningstid udskudt til " SvigtÅbningstidEdit " — " svigtBeskrivelse
+        gui, hide
+        return mail_indhold
+    }
+    if (vlTypeGaranti = 1 and GvLukketMidt = 0 and årsag != "")
     {
         mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - d. " dato " kl. " tidForSvigt 
         ; MsgBox, , 3, % mail_indhold.emnefelt,
@@ -6974,6 +6996,7 @@ gui_svigt_opret()
         return mail_indhold
     }
     if (vlTypeGaranti = 1 and SvigtVlSlettetRadio = 1 and årsag = "")
+        {
         if (SvigtVmKontaktradio = 1)
             {
                 mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": ikke startet op d. " dato
@@ -6990,14 +7013,26 @@ gui_svigt_opret()
                     gui, hide
                     return mail_indhold
                 }
+            }
         if (vlTypeGaranti = 1 and SvigtVlSlettetRadio = 1 and årsag != "")
+        {
+        if (SvigtVmKontaktradio = 1)
         {
             mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - ikke startet op d. " dato
             ; MsgBox, , 5.1, % mail_indhold.emnefelt,
-            mail_indhold.broedtekst := "Vl slettet. Garantitid " SvigtGarantiTidTekstMail " — " . svigtBeskrivelse
+            mail_indhold.broedtekst := "Vl slettet. Garantitid " SvigtGarantiTidTekstMail  ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse 
             gui, hide
             return mail_indhold
         }
+        if (SvigtIngenVmKontaktradio = 1)
+        {
+            mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - ikke startet op d. " dato
+            ; MsgBox, , 5.1, % mail_indhold.emnefelt,
+            mail_indhold.broedtekst := "Vl slettet. Garantitid " SvigtGarantiTidTekstMail  ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse 
+            gui, hide
+            return mail_indhold
+        }
+    }
         if (type = 2 and GvLukketMidt = 0 and SvigtVlSlettetRadio = 0 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - " dato
@@ -7667,9 +7702,9 @@ SvigtÅbningstidUdskudt:
     GuiControl, svigt: , gvHjemzone, Hjemzone kl. 
     GuiControl, svigt: , SvigtVlSlettetRadio , 0
     GuiControl, svigt: disable, gvHjemzone 
-        GuiControl, svigt: enable, SvigtVMKontaktRadio
-        GuiControl, svigt: enable, SvigtIngenVMKontaktRadio
-        ; GuiControl, svigt: enable, SvigtVMKontaktEdit 
+        GuiControl, svigt: disable, SvigtVMKontaktRadio
+        GuiControl, svigt: disable, SvigtIngenVMKontaktRadio
+        GuiControl, svigt: disable, SvigtVMKontaktEdit 
         GuiControl, svigt: , SvigtIngenVMKontaktRadio , 0
         GuiControl, svigt: , SvigtVMKontaktRadio , 0
     SvigtLukketKnapTjekVar := 0
@@ -7760,6 +7795,14 @@ VlTypeVariabel:
     return
 }
 vlTypeGv()
+{
+    GuiControl, svigt: enable, gvLukketMidt 
+    GuiControl, svigt: enable, SvigtVlSlettetRadio 
+    GuiControl, svigt: enable, svigtÅbningstidRadio 
+    return
+}
+
+vlTypeGvVariabel()
 {
     GuiControl, svigt: enable, gvLukketMidt 
     GuiControl, svigt: enable, SvigtVlSlettetRadio 
