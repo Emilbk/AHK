@@ -90,6 +90,18 @@ for i,e in SpecialAdresseArray
             }
         SpecialAdresseString := SpecialAdresseString . e "|"
     }
+
+SpecialAdresseArray := ["! Offentlige kontorer, posthuse, færger, lufthavne", "% Apoteker", "$ Banker", "_ Banegårde og rutebilstationer", ". Forsamlingshuse og beboerhuse", ") Terapi; fod-, fysio- og zoneterapi, kiropraktor", "; Haveforeninger/Kolonihaver", ": Sportshaller", "/ Indkøbscenter, supermarkeder, kiosker", "+ Kirker og kirkegårde", "= Læger", "& Pladser og torve", "> Plejehjem, boenheder, institutioner, aktivitetscentre", "( Restauranter - Hoteller", "* Skoler", "< Sygehuse", "- Flextur - Flexbus", "# Bo- og aktivitetscentre"]
+SpecialAdresseString := 
+for i,e in SpecialAdresseArray
+    {
+        if (i = SpecialAdresseArray.MaxIndex())
+            {
+            SpecialAdresseString := SpecialAdresseString . e
+            break
+            }
+        SpecialAdresseString := SpecialAdresseString . e "|"
+    }
 ;   bruger_genvej  telenor_opr     telenor_ahk
 ; FileRead, vl_repl_liste, %vl_repl_tekst%
 
@@ -482,17 +494,19 @@ Gui, kvitteringGUI: Add, Button, gk_annuller x216 y200 w80 h23, &Annuller
 Gui vmsvigt: new
 gui vgSvigt: add, Text, X+M y+M , Er vognmand ikke informeret?
 ;; GUI vl-note
+Gui specialadresser: new
+Gui specialadresser: add, DropDownList, Choose 1 W300 vValgtSpecialadresse 1, % SpecialAdresseString
+
 
 ;; END AUTOEXEC
 Return
 +^z::
 {
 
-    vl := P6_hent_vl_d_k_s()
-    k := vl.2
-    s := vl.3
-    sk := SvigtFlexfinderSk(k, s)
-    ImageShow(sk)
+    MouseGetPos, musposx, musposy
+    gui, specialadresser: Show, x%musposx% y%musposy%, Specialadresser
+    WinWaitActive, Specialadresser
+    SendInput, !{down}
     return
 
 
@@ -7350,7 +7364,7 @@ Enter::
 {
     Gui, Specialadresser: Submit
     P6_aktiver()
-    sleep 20
+    sleep 100
     ValgtSpecialAdresse := SubStr(valgtSpecialAdresse, 1, 1)
     SendInput, % ValgtSpecialAdresse
 
