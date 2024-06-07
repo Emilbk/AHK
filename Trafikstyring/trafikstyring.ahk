@@ -511,6 +511,12 @@ Return
 
 
 }
+
+specialadresserguiescape:
+specialadresserguiclose:
+gui, specialadresser: hide
+return
+
 vgsvigtguiescape:
 vgsvigtguiclose:
 {
