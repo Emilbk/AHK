@@ -1216,11 +1216,13 @@ note_slet:
         for i,e in vl_liste_array
             if (vl_liste_array[i][8] = listbox and vl_liste_array[i][1] = valg and SubStr(vl_liste_array[i][3], 1, 5) = tid)
             {
+                vl_liste_array[i][10] := ""
                 vl_liste_array[i][7] := ""
                 vl_liste_array[i][6] := ""
                 vl_liste_array[i][5] := ""
                 vl_liste_array_til_json_tekst()
-                ; Gui, Hide 
+                ; GuiControl, , note_reminder, 0
+                Gui, Hide 
                 P6_aktiver()
                 return
             }
