@@ -6469,6 +6469,8 @@ w\:* {behavior:url(#default#VML);}
             sys_afslut_genvej()
             return
         }
+        ; Opbyg garantivognssdata
+        ; TODO omdøb variabler
         gv_svigt := []
         FileRead, gv_svigt_ind, db\gv_svigt.txt
         gv_svigt_ind := StrReplace(gv_svigt_ind, "`r", "")
@@ -6490,6 +6492,7 @@ w\:* {behavior:url(#default#VML);}
                     break
                     }
             }
+        ; tjek ugedag op mod garantitidsdage
         dato := vl_array.4
         vl_array.5 := p6_svigt_tjek_ugedag(k_aftale, dato)
         if (vl_array.5.1 = "variabel")
@@ -6522,6 +6525,7 @@ w\:* {behavior:url(#default#VML);}
                     garanti_slut := SubStr(gv_svigt[i][3], 9, 2)
                         }
                     SvigtGarantitidTekst := "Garantiperiode:`n" garanti_start ":00 - " garanti_slut ":00" 
+                    SvigtGarantiTidTekstMail := garanti_start ":00 - " garanti_slut ":00"
                     GuiControl, svigt:,  SvigtGarantitid , % SvigtGarantitidTekst
                     GuiControl, svigt: , vlTypeGaranti, 1 
                     GuiControl, svigt: Focus, SvigtBeskrivelse
@@ -6531,6 +6535,7 @@ w\:* {behavior:url(#default#VML);}
                     {
                     vlType := "GV udenfor garanti"
                     SvigtGarantitidTekst := "Vognløb udenfor garantitid`nGarantiperiode:`n" garanti_start ":00 - " garanti_slut ":00" 
+                    SvigtGarantiTidTekstMail := garanti_start ":00 - " garanti_slut ":00"
                     GuiControl, svigt:,  SvigtGarantitid , %  SvigtGarantitidTekst 
                     GuiControl, svigt: , vlTypeGarantiVariabel , 1 
                     GuiControl, svigt: Focus, SvigtBeskrivelse
@@ -6716,8 +6721,6 @@ gui_svigt_opret()
                 Gui Show, w448 h397, Svigt
                 return 0
             }    
-    ; MsgBox, , , %vlTypeGaranti%
-    ; MsgBox, , , %vltypevogngruppe%
     if (vlTypeGaranti = 0 and vlTypeGarantiVariabel = 0 and vlTypeVariabel = 0 and vlTypeVogngruppe = 0)
     {
         sleep 100
@@ -6726,8 +6729,7 @@ gui_svigt_opret()
         Gui Show, w448 h397, Svigt
         return 0
     }
-    GuiControlGet, variabel_tjek, , SvigtGarantitid,
-    if (vlTypeGaranti = 1 and instr(variabel_tjek, "Variabelt vognløb"))
+    if (vlTypeGaranti = 1 and instr(SvigtGarantitid, "Variabelt vognløb"))
     {
         sleep 100
         MsgBox, 52 , Garantitid?, Sikker på at vognløbet kører garanti i dag?
@@ -6754,22 +6756,44 @@ gui_svigt_opret()
         return 0
     }
     if (vlTypeGaranti = 1 and GVlukketMidt = 1 and årsag != "")
+    if (SvigtVmKontaktradio = 1)
     {
         mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit  " " vl_type ": " årsag " - lukket kl. " gvHjemzoneTid " d. " dato
         ; MsgBox, , 1 , % mail_indhold.emnefelt,
         ; mail_indhold.broedtekst := "GV lukket kl. " gvHjemzoneTid ": " . mail_indhold.broedtekst
-        mail_indhold.broedtekst := "GV (" SvigtGarantitid "): lukket kl. " gvHjemzoneTid " — " . svigtBeskrivelse
+        mail_indhold.broedtekst := "GV (" SvigtGarantiTidTekstMail "): lukket kl. " gvHjemzoneTid ". VM kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
+        gui, hide
+        return mail_indhold
+    }
+    if (SvigtIngenVmKontaktradio = 1)
+    {
+        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit  " " vl_type ": " årsag " - lukket kl. " gvHjemzoneTid " d. " dato
+        ; MsgBox, , 1 , % mail_indhold.emnefelt,
+        ; mail_indhold.broedtekst := "GV lukket kl. " gvHjemzoneTid ": " . mail_indhold.broedtekst
+        mail_indhold.broedtekst := "GV (" SvigtGarantiTidTekstMail "): lukket kl. " gvHjemzoneTid ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
         gui, hide
         return mail_indhold
     }
     if (vlTypeGaranti = 1 and GvLukketMidt = 1 and årsag = "")
-    {
-        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - lukket kl. " gvHjemzoneTid " d. " dato
-        ; MsgBox, , 2, % mail_indhold.emnefelt,
-        mail_indhold.broedtekst := "GV (" SvigtGarantitid "): lukket kl. " gvHjemzoneTid " — " . svigtBeskrivelse
-        gui, hide
-        return mail_indhold
-    }
+        if (SvigtVmKontaktradio = 1)
+            {
+                mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - lukket kl. " gvHjemzoneTid " d. " dato
+                ; MsgBox, , 2, % mail_indhold.emnefelt,
+                mail_indhold.broedtekst := "GV (" SvigtGarantiTidTekstMail "): lukket kl. " gvHjemzoneTid ". VM kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
+        
+                gui, hide
+                return mail_indhold
+            }
+        if (SvigtIngenVmKontaktradio = 1)
+            {
+                mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - lukket kl. " gvHjemzoneTid " d. " dato
+                ; MsgBox, , 2, % mail_indhold.emnefelt,
+                mail_indhold.broedtekst := "GV (" SvigtGarantiTidTekstMail "): lukket kl. " gvHjemzoneTid ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
+        
+                gui, hide
+                return mail_indhold
+            }
+
     if (vlTypeGaranti = 1 and GvLukketMidt = 0 and SvigtVlSlettetRadio = 0 and årsag != "")
     {
         mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - d. " dato " kl. " tidForSvigt 
@@ -6786,18 +6810,27 @@ gui_svigt_opret()
         return mail_indhold
     }
     if (vlTypeGaranti = 1 and SvigtVlSlettetRadio = 1 and årsag = "")
-    {
-        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": ikke startet op d. " dato
-        ; MsgBox, , 5, % mail_indhold.emnefelt,
-        mail_indhold.broedtekst := "Vl slettet. Garantitid " SvigtGarantitid " — " . svigtBeskrivelse
-            gui, hide
-            return mail_indhold
-        }
+        if (SvigtVmKontaktradio = 1)
+            {
+                mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": ikke startet op d. " dato
+                ; MsgBox, , 5, % mail_indhold.emnefelt,
+                mail_indhold.broedtekst := "Vl slettet. Garantitid " SvigtGarantiTidTekstMail ". VM kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
+                    gui, hide
+                    return mail_indhold
+                }
+        if (SvigtIngenVmKontaktradio = 1)
+            {
+                mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": ikke startet op d. " dato
+                ; MsgBox, , 5, % mail_indhold.emnefelt,
+                mail_indhold.broedtekst := "Vl slettet. Garantitid " SvigtGarantiTidTekstMail ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
+                    gui, hide
+                    return mail_indhold
+                }
         if (vlTypeGaranti = 1 and SvigtVlSlettetRadio = 1 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - ikke startet op d. " dato
             ; MsgBox, , 5.1, % mail_indhold.emnefelt,
-            mail_indhold.broedtekst := "Vl slettet. Garantitid " SvigtGarantitid " — " . svigtBeskrivelse
+            mail_indhold.broedtekst := "Vl slettet. Garantitid " SvigtGarantiTidTekstMail " — " . svigtBeskrivelse
             gui, hide
             return mail_indhold
         }
@@ -6818,28 +6851,47 @@ gui_svigt_opret()
             return mail_indhold
         }
         if (vlTypeGarantiVariabel = 1 and SvigtVlSlettetRadio = 1 and årsag = "")
-        {
-            mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": ikke startet op d. " dato
-            ; MsgBox, , 7.1, % mail_indhold.emnefelt,
-            mail_indhold.broedtekst := "GV slettet i variabel kørsel. Garantitid: " SvigtGarantitid " — " . svigtBeskrivelse
-            gui, hide
-            return mail_indhold
-        }
-        if (vlTypeGarantiVariabel = 1 and SvigtVlSlettetRadio = 1 and årsag != "")
-        {
-            mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - VL slettet d. " dato
-            ; MsgBox, , 7.1, % mail_indhold.emnefelt,
-            mail_indhold.broedtekst := "GV slettet i variabel kørsel. Garantitid: " SvigtGarantitid " — " . svigtBeskrivelse
-            gui, hide
-            return mail_indhold
-        }
-        ; skrives om, tid_slet bruges ikke
+            if (SvigtVmKontaktradio = 1)
+                {
+                    mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": ikke startet op d. " dato
+                    ; MsgBox, , 7.1, % mail_indhold.emnefelt,
+                    mail_indhold.broedtekst := "GV slettet i variabel kørsel. Garantitid: " SvigtGarantiTidTekstMail ". VM kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
+                    gui, hide
+                    return mail_indhold
+                }
+            if (SvigtIngenVmKontaktradio = 1)
+                {
+                    mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": ikke startet op d. " dato
+                    ; MsgBox, , 7.1, % mail_indhold.emnefelt,
+                    mail_indhold.broedtekst := "GV slettet i variabel kørsel. Garantitid: " SvigtGarantiTidTekstMail ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
+                    gui, hide
+                    return mail_indhold
+                }
+                
+            if (vlTypeGarantiVariabel = 1 and SvigtVlSlettetRadio = 1 and årsag != "")
+                if (SvigtVmKontaktradio = 1)
+                            {
+                                mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - VL slettet d. " dato
+                                ; MsgBox, , 7.1, % mail_indhold.emnefelt,
+                                mail_indhold.broedtekst := "GV slettet i variabel kørsel. Garantitid: " SvigtGarantiTidTekstMail ". VM kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
+                                gui, hide
+                                return mail_indhold
+                            }
+                if (SvigtIngenVmKontaktradio = 1)
+                            {
+                                mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - VL slettet d. " dato
+                                ; MsgBox, , 7.1, % mail_indhold.emnefelt,
+                                mail_indhold.broedtekst := "GV slettet i variabel kørsel. Garantitid: " SvigtGarantiTidTekstMail ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
+                                gui, hide
+                                return mail_indhold
+                            }
+                            ; skrives om, tid_slet bruges ikke
         if (vlTypeGarantiVariabel = 1 and GvLukketMidt = 1 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - lukket kl. " gvHjemzoneTid " d. " dato
             ; MsgBox, , 8, % mail_indhold.emnefelt,
             if (tid_slet != "Åbningstid garanti")
-                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " gvHjemzoneTid ". Garantitid: " SvigtGarantitid " — " . svigtBeskrivelse
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " gvHjemzoneTid ". Garantitid: " SvigtGarantiTidTekstMail " — " . svigtBeskrivelse
             Else
                 mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " gvHjemzoneTid " — " . svigtBeskrivelse
             gui, hide
@@ -6850,7 +6902,7 @@ gui_svigt_opret()
             mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - lukket kl. " gvHjemzoneTid " d. " dato
             ; MsgBox, , 9, % mail_indhold.emnefelt,
             if (tid_slet != "Åbningstid garanti")
-                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " gvHjemzoneTid ". Garantitid: " SvigtGarantitid " — " . svigtBeskrivelse
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " gvHjemzoneTid ". Garantitid: " SvigtGarantiTidTekstMail " — " . svigtBeskrivelse
             Else
                 mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " gvHjemzoneTid " — " . svigtBeskrivelse
             gui, hide
