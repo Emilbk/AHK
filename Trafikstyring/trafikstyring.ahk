@@ -7236,6 +7236,7 @@ gui_svigt_vis(mail_indhold, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
             ImageDestroy(udklip)
         gemtklip :=
         sys_afslut_genvej()
+    WinActivate, Svigt VL
     Return
         }
 gui_svigt_send(mail_indhold, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
