@@ -1463,14 +1463,23 @@ trio_genvej:
         SendInput, {ShiftUp}
         goto l_restartAHK
     }
-    MsgBox, , Knap, Knap,
 return
 tlfKopi:
     {
-        GetKeyState, tjek_key, Shift,
+        GetKeyState, TjekKeyControl, Control,
+        GetKeyState, TjekKeyShift, Shift,
         clipboard :=
         GuiControlGet, tlfkopi, , ,
-        if (tjek_key = "D")
+        if (TjekKeyControl = "D")
+            {
+                tlfkopi := RegExReplace(tlfkopi, "\D")
+                Clipboard := tlfkopi
+                ClipWait, 3,
+                Trio_opkald(tlfkopi)
+                sleep 500
+                trio_klar()
+            }
+        if (TjekKeyShift = "D")
         {
             tlfkopi := Trio_hent_tlf()
             Clipboard := tlfkopi
