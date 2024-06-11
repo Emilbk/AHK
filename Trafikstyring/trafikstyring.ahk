@@ -416,7 +416,7 @@ Gui svigt: Font, s9, Segoe UI
 Gui svigt: Add, Radio, gSvigtÅbningstidUdskudt vSvigtÅbningstidRadio x160 y25 , &Åbningstid udskudt
 Gui svigt: Add, Radio, gSvigtVlLukket vGVlukketMidt x160 y65 , Lukket &midt på VL
 Gui svigt: Add, Radio, gSvigtVlSlettet vSvigtVlSlettetRadio x160 y105 , VL S&lettet
-Gui svigt: Add, Edit, disabled vGvHjemzone x180 y80 w79 h21, Hjemzone kl.
+Gui svigt: Add, Edit, disabled vGvHjemzoneTid x180 y80 w79 h21, Hjemzone kl.
 Gui svigt: Add, Edit, disabled vSvigtÅbningstidEdit x180 y40 w79 h21, Vl start kl.
 ; Gui svigt: Add, CheckBox, vlukket x160 y19 w39 h23, &Ja
 ; Gui svigt: Add, CheckBox, vhelt x160 y38 w115 h23, &Ja, og VL slettet
@@ -6607,9 +6607,9 @@ w\:* {behavior:url(#default#VML);}
     GuiControl, svigt: disable, svigtIngenVMKontaktRadio
     GuiControl, svigt:,  GemtSkærmprint , 0
     GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
-    GuiControl, svigt: , gvHjemzone, Hjemzone kl. 
+    GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl. 
     GuiControl, svigt: disable , SvigtÅbningstidEdit
-    GuiControl, svigt: disable , gvHjemzone
+    GuiControl, svigt: disable , GvHjemzoneTid
     GuiControl, svigt: enable, vlTypeGaranti
     GuiControl, svigt: enable, vlTypeGarantiVariabel
     GuiControl, svigt: enable, vlTypeVariabel
@@ -6819,7 +6819,7 @@ gui_svigt_opret()
             dato := SubStr(ny_dato, 1 , 2) . "-" SubStr(ny_dato, -1 , 2) "-" SubStr(dato, -1 , 2)
         }
     SvigtBeskrivelse := StrReplace(SvigtBeskrivelse, "`n", " ")
-    if (lukket = 1 and SvigtVlSlettetRadio = 1)
+    if (GvLukketMidt = 1 and SvigtVlSlettetRadio = 1)
     {
         sleep 100
         MsgBox, 48 , Vælg kun én, Vælg enten lukket eller slettet VL
@@ -6827,7 +6827,7 @@ gui_svigt_opret()
         Gui Show, w448 h397, Svigt
         return 0
     }
-    if (lukket = 1 and StrLen(gvHjemzoneTid) != 4)
+    if (GvLukketMidt = 1 and StrLen(GVHjemzoneTid) != 4)
     {
         sleep 100
         MsgBox, 48 , Klokkeslæt skal være firecifret, Klokkeslæt skal være firecifret (intet kolon).
@@ -6836,10 +6836,10 @@ gui_svigt_opret()
         SendInput, !l{tab}^a
         return 0
     }
-    if (StrLen(gvHjemzoneTid) = 4)
+    if (StrLen(GVHjemzoneTid) = 4)
     {
-        timer := SubStr(gvHjemzoneTid, 1, 2)
-        min := SubStr(gvHjemzoneTid, 3, 2)
+        timer := SubStr(GVHjemzoneTid, 1, 2)
+        min := SubStr(GVHjemzoneTid, 3, 2)
         tid_tjek := A_YYYY A_MM A_DD timer min
         if tid_tjek is not Time
         {
@@ -6850,7 +6850,7 @@ gui_svigt_opret()
             SendInput, ^a
             return 0
         }
-        gvHjemzoneTid := timer ":" min
+        GVHjemzoneTid := timer ":" min
     }
     if (InStr(svigtVmKontaktEdit, ":"))
         svigtVmKontaktEdit := SubStr(svigtVmKontaktEdit, 1, 2) . SubStr(svigtVmKontaktEdit, 4, 2)
@@ -6928,19 +6928,19 @@ gui_svigt_opret()
     {
     if (SvigtVmKontaktradio = 1)
     {
-        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit  " " vl_type ": " årsag " - lukket kl. " gvHjemzoneTid " d. " dato
+        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit  " " vl_type ": " årsag " - lukket kl. " GVHjemzoneTid " d. " dato
         ; MsgBox, , 1 , % mail_indhold.emnefelt,
-        ; mail_indhold.broedtekst := "GV lukket kl. " gvHjemzoneTid ": " . mail_indhold.broedtekst
-        mail_indhold.broedtekst := "GV (" SvigtGarantiTidTekstMail "): lukket kl. " gvHjemzoneTid ". VM kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
+        ; mail_indhold.broedtekst := "GV lukket kl. " GVHjemzoneTid ": " . mail_indhold.broedtekst
+        mail_indhold.broedtekst := "GV (" SvigtGarantiTidTekstMail "): lukket kl. " GVHjemzoneTid ". VM kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
         gui, hide
         return mail_indhold
     }
     if (SvigtIngenVmKontaktradio = 1)
     {
-        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit  " " vl_type ": " årsag " - lukket kl. " gvHjemzoneTid " d. " dato
+        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit  " " vl_type ": " årsag " - lukket kl. " GVHjemzoneTid " d. " dato
         ; MsgBox, , 1 , % mail_indhold.emnefelt,
-        ; mail_indhold.broedtekst := "GV lukket kl. " gvHjemzoneTid ": " . mail_indhold.broedtekst
-        mail_indhold.broedtekst := "GV (" SvigtGarantiTidTekstMail "): lukket kl. " gvHjemzoneTid ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
+        ; mail_indhold.broedtekst := "GV lukket kl. " GVHjemzoneTid ": " . mail_indhold.broedtekst
+        mail_indhold.broedtekst := "GV (" SvigtGarantiTidTekstMail "): lukket kl. " GVHjemzoneTid ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
         gui, hide
         return mail_indhold
     }
@@ -6949,18 +6949,18 @@ gui_svigt_opret()
         {
         if (SvigtVmKontaktradio = 1)
             {
-                mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - lukket kl. " gvHjemzoneTid " d. " dato
+                mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - lukket kl. " GVHjemzoneTid " d. " dato
                 ; MsgBox, , 2, % mail_indhold.emnefelt,
-                mail_indhold.broedtekst := "GV (" SvigtGarantiTidTekstMail "): lukket kl. " gvHjemzoneTid ". VM kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
+                mail_indhold.broedtekst := "GV (" SvigtGarantiTidTekstMail "): lukket kl. " GVHjemzoneTid ". VM kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
         
                 gui, hide
                 return mail_indhold
             }
         if (SvigtIngenVmKontaktradio = 1)
             {
-                mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - lukket kl. " gvHjemzoneTid " d. " dato
+                mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - lukket kl. " GVHjemzoneTid " d. " dato
                 ; MsgBox, , 2, % mail_indhold.emnefelt,
-                mail_indhold.broedtekst := "GV (" SvigtGarantiTidTekstMail "): lukket kl. " gvHjemzoneTid ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
+                mail_indhold.broedtekst := "GV (" SvigtGarantiTidTekstMail "): lukket kl. " GVHjemzoneTid ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
         
                 gui, hide
                 return mail_indhold
@@ -7089,23 +7089,23 @@ gui_svigt_opret()
                             ; skrives om, tid_slet bruges ikke
         if (vlTypeGarantiVariabel = 1 and GvLukketMidt = 1 and årsag != "")
         {
-            mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - lukket kl. " gvHjemzoneTid " d. " dato
+            mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - lukket kl. " GVHjemzoneTid " d. " dato
             ; MsgBox, , 8, % mail_indhold.emnefelt,
             if (tid_slet != "Åbningstid garanti")
-                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " gvHjemzoneTid ". Garantitid: " SvigtGarantiTidTekstMail " — " . svigtBeskrivelse
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " GVHjemzoneTid ". Garantitid: " SvigtGarantiTidTekstMail " — " . svigtBeskrivelse
             Else
-                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " gvHjemzoneTid " — " . svigtBeskrivelse
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " GVHjemzoneTid " — " . svigtBeskrivelse
             gui, hide
             return mail_indhold
         }
         if (vlTypeGarantiVariabel = 1 and GvLukketMidt = 1 and årsag = "")
         {
-            mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - lukket kl. " gvHjemzoneTid " d. " dato
+            mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - lukket kl. " GVHjemzoneTid " d. " dato
             ; MsgBox, , 9, % mail_indhold.emnefelt,
             if (tid_slet != "Åbningstid garanti")
-                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " gvHjemzoneTid ". Garantitid: " SvigtGarantiTidTekstMail " — " . svigtBeskrivelse
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " GVHjemzoneTid ". Garantitid: " SvigtGarantiTidTekstMail " — " . svigtBeskrivelse
             Else
-                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " gvHjemzoneTid " — " . svigtBeskrivelse
+                mail_indhold.broedtekst := "Variabel kørsel, lukket kl. " GVHjemzoneTid " — " . svigtBeskrivelse
             gui, hide
             return mail_indhold
         }
@@ -7673,7 +7673,7 @@ Enter::
 ; {
 ;     p6_soeg_hylde_dagsdato()
 ; }
-    GuiControl, svigt: , gvHjemzone, Hjemzone kl. 
+    GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl. 
 
 svigtHjælp:
 flexfinderskærmprint:
@@ -7701,9 +7701,9 @@ SvigtÅbningstidUdskudt:
     GuiControl, svigt: , SvigtÅbningstidEdit ,
     GuiControl, svigt: focus, SvigtÅbningstidEdit 
     GuiControl, svigt: , gvlukketMidt, 0 
-    GuiControl, svigt: , gvHjemzone, Hjemzone kl. 
+    GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl. 
     GuiControl, svigt: , SvigtVlSlettetRadio , 0
-    GuiControl, svigt: disable, gvHjemzone 
+    GuiControl, svigt: disable, GvHjemzoneTid 
         GuiControl, svigt: disable, SvigtVMKontaktRadio
         GuiControl, svigt: disable, SvigtIngenVMKontaktRadio
         GuiControl, svigt: disable, SvigtVMKontaktEdit 
@@ -7720,11 +7720,11 @@ SvigtVlLukket:
     if (SvigtLukketKnapTjekVar = 1)
         {
         GuiControl, svigt: , gvLukketMidt , 0 
-        GuiControl, svigt: , gvHjemzone, Hjemzone kl. 
+        GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl. 
         GuiControl, svigt: , SvigtVlSlettetRadio , 0
         GuiControl, svigt: , SvigtVMKontaktRadio , 0
         GuiControl, svigt: , SvigtIngenVMKontaktRadio , 0
-        GuiControl, svigt: disable, gvHjemzone 
+        GuiControl, svigt: disable, GvHjemzoneTid 
         GuiControl, svigt: disable, SvigtVMKontaktRadio
         GuiControl, svigt: disable, SvigtIngenVMKontaktRadio
         GuiControl, svigt: disable, SvigtVMKontaktEdit 
@@ -7732,9 +7732,9 @@ SvigtVlLukket:
         SvigtLukketKnapTjekVar := 0
         return
         }
-    GuiControl, svigt: enable, gvHjemzone 
-    GuiControl, svigt: , gvHjemzone ,
-    GuiControl, svigt: focus, gvHjemzone 
+    GuiControl, svigt: enable, GvHjemzoneTid 
+    GuiControl, svigt: , GvHjemzoneTid ,
+    GuiControl, svigt: focus, GvHjemzoneTid 
     GuiControl, svigt: , SvigtÅbningstidRadio , 0 
     GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
     GuiControl, svigt: , SvigtVlSlettetRadio , 0
@@ -7762,8 +7762,8 @@ SvigtVlSlettet:
         }
     GuiControl, svigt: disable, SvigtÅbningstidEdit 
     GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
-    GuiControl, svigt: disable, gvHjemzone 
-    GuiControl, svigt: , gvHjemzone , Hjemzone kl. 
+    GuiControl, svigt: disable, GvHjemzoneTid 
+    GuiControl, svigt: , GvHjemzoneTid , Hjemzone kl. 
     GuiControl, svigt: , SvigtÅbningstidRadio , 0 
     GuiControl, svigt: , gvLukketMidt , 0 
     GuiControl, svigt: enable, SvigtVMKontaktRadio
@@ -7781,13 +7781,13 @@ VlTypeVariabel:
     GuiControl, svigt: disable, svigtÅbningstidRadio 
     GuiControl, svigt: disable, SvigtÅbningstidEdit 
     GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
-    GuiControl, svigt: disable, gvHjemzone 
+    GuiControl, svigt: disable, GvHjemzoneTid 
     GuiControl, svigt: disable, SvigtVmKontaktEdit 
     GuiControl, svigt: disable, SvigtVMKontaktRadio 
     GuiControl, svigt: , SvigtVMKontaktRadio , 0 
     GuiControl, svigt: , SvigtIngenVMKontaktRadio , 0 
     GuiControl, svigt: disable, SvigtIngenVMKontaktRadio 
-    GuiControl, svigt: , gvHjemzone , Hjemzone kl. 
+    GuiControl, svigt: , GvHjemzoneTid , Hjemzone kl. 
     GuiControl, svigt: , SvigtÅbningstidRadio , 0 
     GuiControl, svigt: , gvLukketMidt , 0 
     GuiControl, svigt: , SvigtVlSlettetRadio , 0
