@@ -4485,7 +4485,7 @@ vlliste_vis_note_fra_planbillede()
 ;; Trio
 ; ***
 ; Sæt kopieret tlf i Trio
-Trio_opkald(ByRef telefon)
+Trio_opkald(telefon)
 {
     ifWinNotExist, ahk_class Addressbook
     {
@@ -4520,6 +4520,7 @@ Trio_opkald(ByRef telefon)
         if (loop_test > 5)
         {
             MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
+            trio_klar()
             return 0
         }
     }
