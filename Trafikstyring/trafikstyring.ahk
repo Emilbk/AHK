@@ -2239,8 +2239,13 @@ P6_alarmer()
     sleep 100 + s * 10
     SendInput, ^{F10}
     if (tal_tjek = 1)
+        {
         p6_tal_tjek(tal)
+        sleep 100
+        WinActivate, T.
+        }
     ; MsgBox, , ,i %tal%
+
 
 
     return
@@ -2275,7 +2280,9 @@ for i, e in tal
     }
 sk := GetMonitor()
 ; MsgBox, , , %sk%,
+sleep 100
 Gui talgui: Show, AutoSize, TAL
+sleep 100
 return
 }
 button:
