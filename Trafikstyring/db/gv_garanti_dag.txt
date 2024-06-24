@@ -44,7 +44,7 @@ Mandag	Tirsdag	Onsdag	Torsdag	Fredag	Lørdag	Søndag
 31242	Nej	Nej	Ja	Ja	Ja	Ja	Ja
 31243	Nej	Nej	Nej	Nej	Ja	Ja	Ja
 31244	Ja	Ja	Ja	Ja	Ja	Nej	Nej
-31246	31246Ja	Ja	Ja	Ja	Ja	Nej	Nej
+31246	Ja	Ja	Ja	Ja	Ja	Nej	Nej
 31247	Ja	Ja	Ja	Ja	Ja	Nej	Nej
 31248	Ja	Ja	Ja	Ja	Ja	Nej	Nej
 31249	31249Ja	Ja	Ja	Ja	Ja	Nej	Nej
