@@ -2592,14 +2592,22 @@ P6_ret_tlf_vl(ByRef telefon:=" ")
     sendinput {AppsKey}c
     clipwait 1
     gammel_tlf := clipboard
-    gammel_tlf_længde := StrLen(gammel_tlf)
-    if (gammel_tlf_længde != 8)
+    while (StrLen(gammel_tlf) != 8 and A_Index <= 5)
     {
+        if (A_Index = 5)
+            {
+                return "fejl"
+            }
         sleep 100
-        MsgBox, 16, Fejl, Fejl, har ikke ramt rigtigt felt `nFeltet er %gammel_tlf_længde% tegn langt- prøv igen
-        SendInput, ^a
-        sys_afslut_genvej()
-        return
+        SendInput, !ø{tab 2}
+        sleep 200
+        clipboard :=
+        sendinput {AppsKey}c
+        clipwait 1
+        gammel_tlf := clipboard
+        ; SendInput, ^a
+        ; sys_afslut_genvej()
+        
     }
     SendInput, %telefon%
     SendInput, {enter}
@@ -5485,7 +5493,13 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
         return
     }
     IfMsgBox, Yes
-        P6_ret_tlf_vl(telefon)
+        tlf_test := P6_ret_tlf_vl(telefon)
+    if (tlf_test = "fejl")
+        {
+            MsgBox, , , Fejl - prøv igen
+            sys_afslut_genvej()
+            return
+        }
     sleep s * 100
     Input, næste, L1 V T4
     if (næste = "n")
