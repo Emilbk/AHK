@@ -492,7 +492,7 @@ Gui, kvitteringGUI: Add, Button, gk_annuller x216 y200 w80 h23, &Annuller
 
 
 Gui vmsvigt: new
-gui vgSvigt: add, Text, X+M y+M , Er vognmand ikke informeret?
+gui vmSvigt: add, Text, X+M y+M , Er vognmand ikke informeret?
 ;; GUI vl-note
 Gui specialadresser: new
 Gui specialadresser: add, DropDownList, Choose 1 W300 vValgtSpecialadresse 1, % SpecialAdresseString
