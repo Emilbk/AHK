@@ -6800,6 +6800,13 @@ w\:* {behavior:url(#default#VML);}
     P6_aktiver()
     clipboard :=
     ; sleep 1000
+    WinWaitActive, PLANET,, 1
+    while (ErrorLevel and A_Index <= 5)
+        {
+            P6_aktiver()
+            WinWaitActive, PLANET, , 1
+        }
+    sleep 200
     SendInput, !{PrintScreen}
     ; sleep 800
     ClipWait, 3, 1
