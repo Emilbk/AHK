@@ -7954,3 +7954,8 @@ a::
 ControlClick, T(a)&l forgæves, Tekst til chauffør
 return
 #IfWinActive
+
+#IfWinActive Svigt vl.
+^Backspace::
+Send ^+{Left}{Backspace}
+#IfWinActive
