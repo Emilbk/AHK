@@ -414,7 +414,7 @@ Gui, svigt:Add, GroupBox,  x150 y0 w140 h130 ,Hvis GV &lukket:
 Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
 Gui svigt: Add, Radio, gSvigtÅbningstidUdskudt vSvigtÅbningstidRadio x160 y25 , &Åbningstid udskudt
-Gui svigt: Add, Radio, gSvigtVlLukket vGVlukketMidt x160 y65 , Lukket &midt på VL
+Gui svigt: Add, Radio, gSvigtVlLukket vSvigtVlLukketRadio x160 y65 , Lukket &midt på VL
 Gui svigt: Add, Radio, gSvigtVlSlettet vSvigtVlSlettetRadio x160 y105 , VL S&lettet
 Gui svigt: Add, Edit, disabled vGvHjemzoneTid x180 y80 w79 h21, Hjemzone kl.
 Gui svigt: Add, Edit, disabled vSvigtÅbningstidEdit x180 y40 w79 h21, Vl start kl.
