@@ -527,8 +527,34 @@ vgSvigtAfbryd()
 {
    gui vgsvigt: hide
    sleep 100 
-   GuiControl, svigt: disable, Button7
-   GuiControl, svigt:,  Button7 , 0
+   GuiControl, svigt:,  SvigtVlLukketRadio , 0
+   GuiControl, svigt:,  SvigtVLSlettetRadio , 0
+   GuiControl, svigt:,  SvigtÅbningstidRadio , 0 
+   GuiControl, svigt:,  SvigtVlLukketRadio , 0 
+   GuiControl, svigt:,  SvligtVLSlettetRadio , 0 
+   GuiControl, svigt:,  vlTypeGaranti , 0 
+   GuiControl, svigt:,  vlTypeGarantiVariabel , 0 
+   GuiControl, svigt:,  vlTypeVariabel , 0 
+   GuiControl, svigt:,  vlTypeGogngruppe , 0 
+   GuiControl, svigt:,  SvigtVMKontaktRadio , 0 
+   GuiControl, svigt:,  SvigtIngenVmKontaktRadio , 0 
+   GuiControl, svigt: disable, svigtVmKontaktradio
+   GuiControl, svigt: disable, svigtIngenVMKontaktRadio
+   GuiControl, svigt:,  GemtSkærmprint , 0
+   GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
+   GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl. 
+   GuiControl, svigt: disable , SvigtÅbningstidEdit
+   GuiControl, svigt: disable , GvHjemzoneTid
+   GuiControl, svigt: enable, vlTypeGaranti
+   GuiControl, svigt: enable, vlTypeGarantiVariabel
+   GuiControl, svigt: enable, vlTypeVariabel
+   GuiControl, svigt: disable, vlTypeVogngruppe
+   GuiControl, svigt: disable, SvigtVmKontaktEdit
+   SvigtSlettetKnapTjekVar := 0
+   SvigtLukketKnapTjekVar := 0
+   SvigtÅbningstidUdskudtKnapTjekVar := 0
+   GuiControl, svigt:,  vlTypeVogngruppe , 0
+
    Gui svigt: Show, w448 h397, Svigt
 ;    GuiControl, svigt:,  Button4 , 1
    return
