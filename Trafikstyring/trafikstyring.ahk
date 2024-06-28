@@ -4556,7 +4556,8 @@ Trio_opkald(telefon)
     ControlGetText, tlf_test, Edit2, Trio Attendant
     sleep 100
     loop_test := 0
-    controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
+    controlsend, ,  +{Escape}, ahk_class Addressbook
+    ; controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
     sleep 100
     ControlGetText, tlf_test, Edit2, Trio Attendant
     while (tlf_test != "")
