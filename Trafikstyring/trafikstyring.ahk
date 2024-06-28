@@ -4578,7 +4578,7 @@ Trio_opkald(telefon)
     ; }
     ; Else
     ; {
-    controlsend, ,  {shiftdown}{enter}{ShiftUp}, ahk_class Addressbook
+    controlsend, ,  {NumpadDot}, ahk_class Addressbook
     Return
     ; }
 }
