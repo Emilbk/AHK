@@ -2308,9 +2308,17 @@ sk := GetMonitor()
 ; MsgBox, , , %sk%,
 sleep 100
 Gui talgui: Show, AutoSize, TAL
-sleep 100
+Loop, 8
+    {
+Gui talgui: Color, Red 
+sleep 300
+Gui talgui: Color, Yellow  
+sleep 300
+    }
 return
 }
+talguiblink:
+return
 button:
 gui talGUI: submit 
 vl := []
