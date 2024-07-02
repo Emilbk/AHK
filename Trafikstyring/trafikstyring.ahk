@@ -4803,6 +4803,8 @@ Flexfinder_opslag(k_aftale, sty_sys)
         sleep 400
         SendInput, {PgUp}
         sleep 200
+        SendInput, {Home}
+        sleep 400
         WinGetPos, W_X, W_Y, , , FlexDanmark FlexFinder, , ,
         if(W_X = "1920" or W_X = "-1920")
         {
