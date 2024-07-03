@@ -3148,7 +3148,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     {
 
         GuiControl, trio_genvej:text, Button1, Send reminder om skoletur
-        sys_tjek := P6_tekstTilChf("Vognløbet er ikke startet op til variabel kørsel, og jeg kan ikke kontakte dig. Vognløbet er ændret til opstart til garanti-tid. Mvh Midttrafik", kørselsaftale ,styresystem)
+        sys_tjek := P6_tekstTilChf("Vognløbet er ikke startet op til variabel kørsel, og jeg kan ikke ringe dig op. Vognløbet er ændret til opstart til garanti-tid. Mvh Midttrafik", kørselsaftale ,styresystem)
         sleep 500
         if (sysstjek = 1)
         {
