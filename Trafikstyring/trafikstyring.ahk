@@ -369,12 +369,14 @@ Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vKa, (&K
 Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vp, (&p)rivatrejse-OBS
 Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vPa, (&P)rivatrejse-lås
 Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vt, (&t)ekst til chf
-Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vx, (p)&ause-OBS
+; X alene er uppercase?
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vxa, (x)p&ause-OBS
 Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vf, (&f)orgæves
 Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vs, (&s)koletur-OBS
 Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vSa, (&S)koletur sendt
 Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vr, Fo&rke(r)t tlf, kontakt driften
 Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui va, T(a)&l forgæves
+Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vv, (&v)ariabel opstart OBS
 
 
 
@@ -3107,7 +3109,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
         GuiControl, trio_genvej:text, Button1, Send reminder om pause
         sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for pausen? Mvh. Midttrafik", kørselsaftale ,styresystem)
         sleep 500
-        if (sysstjek = 1)
+        if (sys_tjek = 1)
         {
             FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
             vl_array := vlliste_priv_lav_array(vl)
@@ -3128,6 +3130,47 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
             vl_array := vlliste_priv_lav_array(vl)
             vlliste_vl_array_til_liste(vl_array)
             P6_notat("Pausen ikke kvitteret, tekst og pause sendt til chf" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        IfMsgBox, No
+        {
+            sleep 200
+            MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+            gui, cancel
+        }
+        sys_afslut_genvej()
+        return
+    }
+     
+    if (valgtTekstTilChf == "v")
+    {
+
+        GuiControl, trio_genvej:text, Button1, Send reminder om skoletur
+        sys_tjek := P6_tekstTilChf("Vognløbet er ikke startet op til variabel kørsel, og jeg kan ikke kontakte dig. Vognløbet er ændret til opstart til garanti-tid. Mvh Midttrafik", kørselsaftale ,styresystem)
+        sleep 500
+        if (sysstjek = 1)
+        {
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("VL ikke startet variabelt, ingen kontakt til chf. Ændret til garantitid" initialer " ")
+            gui, cancel
+            sys_afslut_genvej()
+            return
+        }
+        MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+        IfMsgBox, Yes
+        {
+            sleep 200
+            SendInput, ^s
+            sleep 1000
+            SendInput, {enter}
+            FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+            vl_array := vlliste_priv_lav_array(vl)
+            vlliste_vl_array_til_liste(vl_array)
+            P6_notat("VL ikke startet variabelt, ingen kontakt til chf. Ændret til garantitid, tekst sendt til chf" initialer " ")
             gui, cancel
             sys_afslut_genvej()
             return
@@ -7945,7 +7988,7 @@ t::
 ControlClick, (&t)ekst til chf, Tekst til chauffør
 return
 x::
-ControlClick, (p)&ause-OBS, Tekst til chauffør
+ControlClick, (x)p&ause-OBS, Tekst til chauffør
 return
 f::
 ControlClick, (&f)orgæves, Tekst til chauffør
@@ -7961,6 +8004,9 @@ ControlClick, Fo&rke(r)t tlf, kontakt driften, Tekst til chauffør
 return
 a::
 ControlClick, T(a)&l forgæves, Tekst til chauffør
+return
+v::
+ControlClick, (&v)ariabel opstart OBS
 return
 #IfWinActive
 
