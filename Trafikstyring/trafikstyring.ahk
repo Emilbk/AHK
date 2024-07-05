@@ -2255,8 +2255,8 @@ P6_alarmer()
     clipboard :=
     SendInput, ^c
     ClipWait, 0.3
-    ; tal := clipboard
-    tal := "Vogne`t`t`r`n3375`t47`t`r`n3211`t32`t`r`n3211`t32`t`r`n3211`t32`t`r`n3211`t32`t"
+    tal := clipboard
+    ; tal := "Vogne`t`t`r`n3375`t47`t`r`n3211`t32`t`r`n3211`t32`t`r`n3211`t32`t`r`n3211`t32`t"
     tal := StrReplace(tal, "`r" "`n")
     tal := StrSplit(tal, "`t")
     tal_tjek := 0
