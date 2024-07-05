@@ -2251,8 +2251,8 @@ P6_alarmer()
     clipboard :=
     SendInput, ^c
     ClipWait, 0.3
-    tal := clipboard
-    ; tal := "Vogne`t`t`r`n3375`t47`t`r`n3211`t32`t`r`n3211`t32`t`r`n3211`t32`t`r`n3211`t32`t"
+    ; tal := clipboard
+    tal := "Vogne`t`t`r`n3375`t47`t`r`n3211`t32`t`r`n3211`t32`t`r`n3211`t32`t`r`n3211`t32`t"
     tal := StrReplace(tal, "`r" "`n")
     tal := StrSplit(tal, "`t")
     tal_tjek := 0
@@ -2268,9 +2268,8 @@ P6_alarmer()
     SendInput, ^{F10}
     if (tal_tjek = 1)
         {
+        sleep 1100
         p6_tal_tjek(tal)
-        sleep 100
-        WinActivate, T.
         }
     ; MsgBox, , ,i %tal%
 
@@ -2306,10 +2305,13 @@ for i, e in tal
                 ; MsgBox, , , %  e "_" tal[i+1]
             }
     }
-sk := GetMonitor()
+; sk := GetMonitor()
 ; MsgBox, , , %sk%,
-sleep 100
-Gui talgui: Show, AutoSize, TAL
+CoordMode, Mouse, Screen
+MouseGetPos, musposx, musposy
+Gui talgui: Show, AutoSize x%musposx% y%musposy% , TAL
+sleep 200
+WinActivate, TAL
 Loop, 8
     {
 Gui talgui: Color, Red 
@@ -2327,6 +2329,7 @@ vl := []
 vl.1 := k_aftale
 vl.2 := s_system
 P6_udfyld_k_og_s(vl)
+return
 ; MsgBox, , , % "knap " A_GuiControl " vognløb " k_aftale "_" s_system ", ventetid " ventetid " min."
 ; ***
 ; åben alarmvinduet, ny liste alle udråbsalarmer, blad til første, col 15
