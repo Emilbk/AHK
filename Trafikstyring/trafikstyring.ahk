@@ -136,6 +136,7 @@ Hotkey, % bruger_genvej.15, l_p6_udraabsalarmer ; +F7
 Hotkey, % bruger_genvej.69, l_p6_billede_gui ; +F7
 Hotkey, % bruger_genvej.72, l_p6_soeg_hylde_dagsdato ; +F7
 Hotkey, % bruger_genvej.73, l_p6_specialadresser ; +^a
+Hotkey, % bruger_genvej.74, l_gui_opkald ; +^a
 ; Hotkey, % bruger_genvej.16, l_p6_ring_til_kunde ; +F8
 Hotkey, % bruger_genvej.17, l_p6_udregn_minut ; #t
 Hotkey, % bruger_genvej.18, l_p6_sygehus_ring_op ; ^+s
@@ -499,6 +500,9 @@ gui vmSvigt: add, Text, X+M y+M , Er vognmand ikke informeret?
 Gui specialadresser: new
 Gui specialadresser: add, DropDownList, Choose 1 W300 vValgtSpecialadresse 1, % SpecialAdresseString
 
+Gui opkald: New
+Gui opkald: add, Text, , Opkald på telefonnummer:
+Gui opkald: add, edit, vGuitlf
 
 ;; END AUTOEXEC
 Return
@@ -5467,6 +5471,7 @@ l_p6_specialadresser:
 {
 
     sys_genvej_start(73)
+    CoordMode, Mouse, Screen
     MouseGetPos, musposx, musposy
     gui, specialadresser: Show, x%musposx% y%musposy%, Specialadresser
     WinWaitActive, Specialadresser
@@ -5479,9 +5484,13 @@ l_p6_specialadresser:
 
 ;; Testknap
 
-^+e::
+GuiOpkald()
     {
-        gui p6_tekst_valg: show, AutoSize, Tekst til chauffør
+        CoordMode, Mouse, Screen
+        MouseGetPos, musposx, musposy
+        gui, opkald: Show, x%musposx% y%musposy% AutoSize , Opkald
+        GuiControl, opkald: , Guitlf, 
+        GuiControl, opkald: focus, Guitlf
         return
     }
 ;; HOTKEYS
@@ -7523,8 +7532,15 @@ gui_svigt_send(mail_indhold, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
         }
     sys_afslut_genvej()
     Return
-
+l_gui_opkald:
+{
+    sys_genvej_start(74)
+    GuiOpkald()
+    sys_afslut_genvej()
+    return
+}
 #IfWinActive, Specialadresser
+NumpadEnter::
 Enter::
 {
     Gui, Specialadresser: Submit
@@ -7532,7 +7548,22 @@ Enter::
     sleep 100
     ValgtSpecialAdresse := SubStr(valgtSpecialAdresse, 1, 1)
     SendRaw, % ValgtSpecialAdresse
+    return
 
+}
+#IfWinActive, Opkald
+NumpadEnter::
+Enter::
+{
+    Gui, opkald: Submit
+    Trio_opkald(guitlf)
+    return
+
+}
+Esc::
+{
+    gui, opkald: Submit
+    return
 }
 #IfWinActive
 
@@ -7793,6 +7824,8 @@ Enter::
 ;     p6_soeg_hylde_dagsdato()
 ; }
     GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl. 
+
+
 
 svigtHjælp:
 flexfinderskærmprint:
