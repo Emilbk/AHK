@@ -65,19 +65,16 @@ SvigtGUI.tid_for_svigt := ""
 SvigtGUI_vis_mail_funk(*)
 {
     values := SvigtGUI.Submit()
-    values.FailSafe := 1
     garanti_status := vognløb_tjek_garanti("31200")
     if (values.vl_type_garanti)
         ; svigt_opret_tekst_brødtekst_gv(values, "gv test", garanti_status)
-    if (values.vl_type_gv_variabel)
-        ; svigt_opret_tekst_brødtekst_gv_variabel(values, "gv test", garanti_status)
-    if (values.vl_type_variabel)
-        ; svigt_opret_tekst_brødtekst_variabel(values, "gv test", garanti_status)
-    if (values.vl_type_vogngruppe)
-        ; svigt_opret_tekst_brødtekst_vogngruppe(values, "gv test", garanti_status)
-
-
-    return
+        if (values.vl_type_gv_variabel)
+            ; svigt_opret_tekst_brødtekst_gv_variabel(values, "gv test", garanti_status)
+            if (values.vl_type_variabel)
+                ; svigt_opret_tekst_brødtekst_variabel(values, "gv test", garanti_status)
+                if (values.vl_type_vogngruppe)
+                    ; svigt_opret_tekst_brødtekst_vogngruppe(values, "gv test", garanti_status)
+                    return
 }
 SvigtGUI_gvluk_radio_slettet_funk(*)
 {
@@ -217,7 +214,7 @@ SvigtGUIresetfunk(vl_type)
 svigt_opret_tekst_emnefelt_gv(input)
 {
     emnefelt := ""
-    emnefelt_vognløbsnummer :=  input.vognløbsnummer_edit
+    emnefelt_vognløbsnummer := input.vognløbsnummer_edit
     emnefelt_tid_for_svigt := input.tid_for_svigt
     emnefelt_vognløbsdato := input.vognløbsdato
     emnefelt_tid_for_svigt := input.tid_for_svigt
@@ -232,10 +229,18 @@ svigt_opret_tekst_emnefelt_gv(input)
     if (input.gvluk_radio_slettet and input.årsag)
         emnefelt := "Svigt VL " emnefelt_vognløbsnummer ": " input.årsag " -  vognløb slettet kl. " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
 
+    if (input.gvluk_radio_åbningstid and !input.årsag)
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer ": Åbningstid udskudt. Kl. " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+    if (input.gvluk_radio_åbningstid and input.årsag)
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer ": " input.årsag " - Åbningstid udskudt. Kl. " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
 
+    if (!input.gvluk_radio_lukket and !input.gvluk_radio_slettet and !input.gvluk_radio_åbningstid and !input.årsag)
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer ": " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+    if (!input.gvluk_radio_lukket and !input.gvluk_radio_slettet and !input.gvluk_radio_åbningstid and input.årsag)
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer ": " input.årsag " - " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
 
     return emnefelt
-    
+
 }
 svigt_opret_tekst_brødtekst_gv(input_svigt)
 {
@@ -272,10 +277,43 @@ svigt_opret_tekst_brødtekst_gv(input_svigt)
         brødtekst_vl_status := ""
         brødtekst_vm_kontakt := ""
     }
+
     brødtekst := brødtekst_garanti_tid brødtekst_vl_status brødtekst_vm_kontakt input_svigt.beskrivelse_edit
 
     return brødtekst
 }
+svigt_opret_tekst_emnefelt_gv_variabel(input)
+{
+    emnefelt := ""
+    emnefelt_vognløbsnummer := input.vognløbsnummer_edit
+    emnefelt_tid_for_svigt := input.tid_for_svigt
+    emnefelt_vognløbsdato := input.vognløbsdato
+    emnefelt_tid_for_svigt := input.tid_for_svigt
+
+    if (input.gvluk_radio_lukket and !input.årsag)
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer " (variabel tid): lukket i hjemzone kl. " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+    if (input.gvluk_radio_lukket and input.årsag)
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer " (variabel tid): " input.årsag " - lukket i hjemzone kl. " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+
+    if (input.gvluk_radio_slettet and !input.årsag)
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer " (variabel tid): vognløb slettet kl. " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+    if (input.gvluk_radio_slettet and input.årsag)
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer " (variabel tid): " input.årsag " -  vognløb slettet kl. " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+
+    if (input.gvluk_radio_åbningstid and !input.årsag)
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer " (variabel tid): Åbningstid udskudt. Kl. " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+    if (input.gvluk_radio_åbningstid and input.årsag)
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer " (variabel tid): " input.årsag " - Åbningstid udskudt. Kl. " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+
+    if (!input.gvluk_radio_lukket and !input.gvluk_radio_slettet and !input.gvluk_radio_åbningstid and !input.årsag)
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer " (variabel tid): " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+    if (!input.gvluk_radio_lukket and !input.gvluk_radio_slettet and !input.gvluk_radio_åbningstid and input.årsag)
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer " (variabel tid): " input.årsag " - " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+
+    return emnefelt
+
+}
+
 svigt_opret_tekst_brødtekst_gv_variabel(input_svigt)
 {
     vl_status := "09-17" ; ændres til indhentet data
@@ -320,6 +358,23 @@ svigt_opret_tekst_brødtekst_gv_variabel(input_svigt)
     return brødtekst
 }
 
+
+svigt_opret_tekst_emnefelt_variabel(input)
+{
+    emnefelt := ""
+    emnefelt_vognløbsnummer := input.vognløbsnummer_edit
+    emnefelt_tid_for_svigt := input.tid_for_svigt
+    emnefelt_vognløbsdato := input.vognløbsdato
+    emnefelt_tid_for_svigt := input.tid_for_svigt
+
+    if input.årsag
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer ": " input.årsag " - " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+    if !input.årsag
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer ": " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+
+    return emnefelt
+}
+
 svigt_opret_tekst_brødtekst_variabel(input_svigt)
 {
     brødtekst := ""
@@ -330,6 +385,22 @@ svigt_opret_tekst_brødtekst_variabel(input_svigt)
     return brødtekst
 }
 
+svigt_opret_tekst_emnefelt_vogngruppe(input)
+{
+    emnefelt := ""
+    emnefelt_vognløbsnummer := input.vognløbsnummer_edit
+    emnefelt_tid_for_svigt := input.tid_for_svigt
+    emnefelt_vognløbsdato := input.vognløbsdato
+    emnefelt_tid_for_svigt := input.tid_for_svigt
+    emnefelt_vogngruppe := input.vogngruppe
+
+    if input.årsag
+        emnefelt := "Svigt " emnefelt_vogngruppe ", VL" emnefelt_vognløbsnummer ": " input.årsag " - " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+    if !input.årsag
+        emnefelt := "Svigt " emnefelt_vogngruppe ", VL" emnefelt_vognløbsnummer ": " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+
+    return emnefelt
+}
 svigt_opret_tekst_brødtekst_vogngruppe(input_svigt)
 {
     brødtekst := ""
@@ -341,10 +412,6 @@ svigt_opret_tekst_brødtekst_vogngruppe(input_svigt)
 
     return brødtekst
 }
-
-
-
-
 
 
 ;; Svigt
@@ -397,8 +464,8 @@ svigt_opret_tekst_brødtekst_vogngruppe(input_svigt)
 
 ;; Outputs brødtekst
 ; 1. Alm. svigt, GV
-; 2. Alm svigt, GV variabel og variable
 ; 3. GV vl slettet
+; 2. Alm svigt, GV variabel og variable
 ; 4. GV vl lukket efter start
 ; 5. GV åbningstid udskudt
 
@@ -421,7 +488,6 @@ svigt_opret_tekst_brødtekst_vogngruppe(input_svigt)
 ; t::
 
 
-
 ; svigt_opret_tekst_brødtekst_gv_variabel()
 ; {
 
@@ -432,15 +498,12 @@ svigt_opret_tekst_brødtekst_vogngruppe(input_svigt)
 ; }
 
 
-
-
-
 ;; testing
 
 test_reset()
 {
     input_test := Object()
-    input_test.beskrivelse_edit := "asdasd"
+    input_test.beskrivelse_edit := "Svigtet beskrives her"
     input_test.forrige_skærmprint_checkbox := 0
     input_test.gv_hjemzonetid := "1231"
     input_test.gv_åbningstid_ændret_edit := "1231"
@@ -491,6 +554,14 @@ test(input)
     emnefelt := svigt_opret_tekst_emnefelt_gv(input)
     MsgBox "Emnefelt: " emnefelt "`nBrødtekst: " brødtekst, "gv slettet"
 
+    input := test_reset()
+    ; garnativogn slettet, vm ingen kontakt, årsag
+    input.gvluk_radio_slettet := 1
+    input.vm_kontakt_nej := 1
+    input.årsag := "bil punkteret"
+    brødtekst := svigt_opret_tekst_brødtekst_gv(input)
+    emnefelt := svigt_opret_tekst_emnefelt_gv(input)
+    MsgBox "Emnefelt: " emnefelt "`nBrødtekst: " brødtekst, "gv slettet"
 
 
     ; garantivogn ændret åbningstid
@@ -509,14 +580,13 @@ test(input)
     MsgBox "Emnefelt: " emnefelt "`nBrødtekst: " brødtekst, "gv alm svigt"
 
 
-
     ; variabel svigt
     input := test_reset()
     input.vl_type_variabel := 1
+    input.årsag := "ikke i hjemzone"
     brødtekst := svigt_opret_tekst_brødtekst_variabel(input)
-    emnefelt := svigt_opret_tekst_emnefelt_gv(input)
+    emnefelt := svigt_opret_tekst_emnefelt_variabel(input)
     MsgBox "Emnefelt: " emnefelt "`nBrødtekst: " brødtekst, "variabel svigt"
-
 
 
     input := test_reset()
@@ -524,7 +594,7 @@ test(input)
     input.vl_type_radio_variabel := 1
     input.gvluk_radio_slettet := 1
     brødtekst := svigt_opret_tekst_brødtekst_gv_variabel(input)
-    emnefelt := svigt_opret_tekst_emnefelt_gv(input)
+    emnefelt := svigt_opret_tekst_emnefelt_gv_variabel(input)
     MsgBox "Emnefelt: " emnefelt "`nBrødtekst: " brødtekst, "gv variabel slettet"
 
 
@@ -535,7 +605,7 @@ test(input)
     input.gv_åbningstid_ændret_edit := "14:00"
 
     brødtekst := svigt_opret_tekst_brødtekst_gv_variabel(input)
-    emnefelt := svigt_opret_tekst_emnefelt_gv(input)
+    emnefelt := svigt_opret_tekst_emnefelt_gv_variabel(input)
     MsgBox "Emnefelt: " emnefelt "`nBrødtekst: " brødtekst, "gv variabel åbningstid ændret"
 
 
@@ -547,7 +617,7 @@ test(input)
     input.vm_kontakt_ja := 1
 
     brødtekst := svigt_opret_tekst_brødtekst_gv_variabel(input)
-    emnefelt := svigt_opret_tekst_emnefelt_gv(input)
+    emnefelt := svigt_opret_tekst_emnefelt_gv_variabel(input)
     MsgBox "Emnefelt: " emnefelt "`nBrødtekst: " brødtekst, "gv variabel vl lukket"
 
 
@@ -555,11 +625,12 @@ test(input)
     input := test_reset()
     input.vvl_type_vogngruppe := 1
     input.vognløbsnummer_edit := "5023, 5054, 5034 og 5031"
+    input.vogngruppe := "Aarhusstat" ; data skal indhentes
+    input.årsag := "en årsag"
 
     brødtekst := svigt_opret_tekst_brødtekst_vogngruppe(input)
-    emnefelt := svigt_opret_tekst_emnefelt_gv(input)
+    emnefelt := svigt_opret_tekst_emnefelt_vogngruppe(input)
     MsgBox "Emnefelt: " emnefelt "`nBrødtekst: " brødtekst, "vogngruppe"
-
 
 
 }
