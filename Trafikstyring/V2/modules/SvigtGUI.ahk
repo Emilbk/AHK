@@ -66,7 +66,7 @@ SvigtGUI.tid_for_svigt := ""
 SvigtGUI_vis_mail_funk(*)
 {
     values := SvigtGUI.Submit()
-    garanti_status := vognløb_indhent_data("31200")
+    garanti_status := vognløb_indhent_data("31200", "07-07-2024")
     values.tid_for_svigt := FormatTime(,"HH:mm")
     values.vognløbsdato := FormatTime(,"dd-MM-yy")
 
