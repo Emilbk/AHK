@@ -28,8 +28,11 @@ F3::
 !e::
 {
     keywait "alt"
-    tlf := P6_hent_data_vm_telefon()
-    MsgBox tlf
+
+    P6_data_vognløbsbillede_ændre_sluttid("31200", "3100", "19", "07")
+    P6_nav_vognløbsbillede_ændr_2()
+    P6_nav_vognløbsbillede_ændr_afslut()
+
     return
 }
 
@@ -91,6 +94,22 @@ P6_nav_rejsesøg()
     P6_nav_alt_menu("rr")
     sleep 200
     SendInput "^t"
+
+    return
+}
+
+; tager dato (hvis kun en søgedato), alternativt start og slutdato
+P6_nav_rejsesøg_hylde(dato, datoslut?)
+{
+    P6_nav_rejsesøg
+
+    SendInput "!f"
+    sleep 10
+    if IsSet(datoslut)
+        SendInput dato "{tab 2}" datoslut
+    else
+        SendInput dato "{tab 2}" dato
+    SendInput "!h{space}{enter}"
 
     return
 }
@@ -232,6 +251,12 @@ P6_nav_vognløbsbillede_ændr_2()
     SendInput "{enter}"
 
 }
+P6_nav_vognløbsbillede_ændr_afslut()
+{
+
+    SendInput "{enter}"
+
+}
 ;; P6 indhent data
 
 ; Henter tlf fra vl hvis intet parameter, indsætter tlf på vognløb hvis der er
@@ -294,6 +319,13 @@ P6_hent_data_vm_telefon()
     return A_Clipboard
 }
 
+p6_hent_data_rejsesøg_telefon(telefon)
+{
+    P6_nav_rejsesøg()
+    SendInput "+{tab 2}" telefon
+    sleep 100
+    SendInput "{enter}"
+}
 ; Fejlbesked ved fejl i indhentning af data, tager navn på forsøgt data som parameter
 P6_hent_data_vis_fejlbesked(indhentet_data)
 {
@@ -302,6 +334,38 @@ P6_hent_data_vis_fejlbesked(indhentet_data)
     return
 }
 
+;
+P6_data_vognløbsbillede_ændre_sluttid(vognløb, kørselsaftale, sluttid, dato?)
+{
+    P6_nav_aktiver()
+    P6_nav_vognløbsbillede(vognløb)
+    P6_nav_vognløbsbillede_ændr_1(kørselsaftale)
+
+    SendInput "{tab 2}"
+    if IsSet(dato)
+    {
+        SendInput dato
+        SendInput "{tab}"
+        SendInput sluttid
+        SendInput "{tab}"
+        SendInput dato
+        SendInput "{tab}"
+        SendInput sluttid
+    }
+    else
+    {
+        SendInput FormatTime(, "dd")
+        SendInput "{tab}"
+        SendInput sluttid
+        SendInput "{tab}"
+        SendInput FormatTime(, "dd")
+        SendInput "{tab}"
+        SendInput sluttid
+    }
+
+    return
+
+}
 
 ; Return array[4], vognløbsnummer som [1]
 P6_hent_data_vognløb_vognløbsnummer()
@@ -459,7 +523,14 @@ P6_hent_data_vognløb_alt()
 P6_hent_data_vognløb_funk(valgt_data)
 {
     ; [1] planetgenvej, [2] kopieringsgenvej
-    hent_data_input := Map("vognløbsnummer", ["!l", "+{F10}c"], "vognløbsdato", ["!l{tab}", "^c"], "kørselsaftale", ["!k", "+{F10}c"], "styresystem", ["!k{tab}", "+{F10}c"])
+    hent_data_input :=
+        Map(
+            "vognløbsnummer", ["!l", "+{F10}c"],
+            "vognløbsdato", ["!l{tab}", "^c"],
+            "kørselsaftale", ["!k", "+{F10}c"],
+            "styresystem", ["!k{tab}", "+{F10}c"]
+        )
+
     hent_data_output := ""
 
 
