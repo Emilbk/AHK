@@ -2,7 +2,7 @@
 
 ;; Vognløbsdata
 
-vognløb_tjek_garanti(vognløbsnummer)
+vognløb_indhent_data(vognløbsnummer)
 {
     garanti := "garanti 12-17, "
 

@@ -62,19 +62,37 @@ SvigtGUI.tid_for_svigt := ""
 
 ;; navigerings funktioner
 
+; omskrives til at behanlde indhentet data
 SvigtGUI_vis_mail_funk(*)
 {
     values := SvigtGUI.Submit()
-    garanti_status := vognløb_tjek_garanti("31200")
+    garanti_status := vognløb_indhent_data("31200")
+    values.tid_for_svigt := FormatTime(,"HH:mm")
+    values.vognløbsdato := FormatTime(,"dd-MM-yy")
+
     if (values.vl_type_garanti)
-        ; svigt_opret_tekst_brødtekst_gv(values, "gv test", garanti_status)
-        if (values.vl_type_gv_variabel)
-            ; svigt_opret_tekst_brødtekst_gv_variabel(values, "gv test", garanti_status)
-            if (values.vl_type_variabel)
-                ; svigt_opret_tekst_brødtekst_variabel(values, "gv test", garanti_status)
-                if (values.vl_type_vogngruppe)
-                    ; svigt_opret_tekst_brødtekst_vogngruppe(values, "gv test", garanti_status)
-                    return
+    {
+        brødtekst := svigt_opret_tekst_brødtekst_gv(values)
+        emnefelt := svigt_opret_tekst_emnefelt_gv(values)
+    }
+    if (values.vl_type_gv_variabel)
+    {
+        brødtekst := svigt_opret_tekst_brødtekst_gv_variabel(values)
+        emnefelt := svigt_opret_tekst_emnefelt_gv_variabel(values)
+    }
+    if (values.vl_type_variabel)
+    {
+        brødtekst := svigt_opret_tekst_brødtekst_variabel(values)
+        emnefelt := svigt_opret_tekst_emnefelt_variabel(values)
+    }
+    if (values.vl_type_vogngruppe)
+    {
+        brødtekst := svigt_opret_tekst_brødtekst_vogngruppe(values)
+        emnefelt := svigt_opret_tekst_emnefelt_vogngruppe(values)
+    }
+
+    MsgBox "Emnefelt: " emnefelt "`n`n Brødtekst: " brødtekst
+    return
 }
 SvigtGUI_gvluk_radio_slettet_funk(*)
 {
@@ -235,9 +253,9 @@ svigt_opret_tekst_emnefelt_gv(input)
         emnefelt := "Svigt VL " emnefelt_vognløbsnummer ": " input.årsag " - Åbningstid udskudt. Kl. " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
 
     if (!input.gvluk_radio_lukket and !input.gvluk_radio_slettet and !input.gvluk_radio_åbningstid and !input.årsag)
-        emnefelt := "Svigt VL " emnefelt_vognløbsnummer ": " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer ": kl. " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
     if (!input.gvluk_radio_lukket and !input.gvluk_radio_slettet and !input.gvluk_radio_åbningstid and input.årsag)
-        emnefelt := "Svigt VL " emnefelt_vognløbsnummer ": " input.årsag " - " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
+        emnefelt := "Svigt VL " emnefelt_vognløbsnummer ": kl. " input.årsag " - " emnefelt_tid_for_svigt " d. " emnefelt_vognløbsdato
 
     return emnefelt
 
