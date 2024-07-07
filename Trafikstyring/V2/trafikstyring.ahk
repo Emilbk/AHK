@@ -2,8 +2,154 @@
 
 sleep_konstant := 1
 
+;; GUI
+;; SvigtGUi menu
+
+SvigtGUI_menu := MenuBar()
+SvigtGUI_menu_fil := Menu()
+SvigtGUI_menu_vogngruppe := Menu()
+SvigtGUI_menu_hjælp := Menu()
+SvigtGUI_menu_hjælp.Add("&Hjælp", (*) => MsgBox("ikke implementeret"))
+SvigtGUI_menu_vogngruppe.Add("&vogngruppesvigt", (*) => MsgBox("ikke implementeret"))
+
+SvigtGUI_menu.Add("&Fil", SvigtGUI_menu_fil)
+SvigtGUI_menu.Add("&Vogngruppe", SvigtGUI_menu_vogngruppe)
+SvigtGUI_menu.Add("&Om", SvigtGUI_menu_hjælp, "Right")
+;; SvigtGUI
+
+SvigtGUI := Gui(, "Svigt")
+SvigtGUI.MenuBar := SvigtGUI_menu
+
+SvigtGUI_vognløbsnummer_tekst := SvigtGUI.Add("Text", "x16 y5 w120 h23", "Vognløbsnummer")
+SvigtGUI_vognløbsnummer_edit := SvigtGUI.Add("Edit", "vvognløbsnummer_edit x16 y29 w120 h21", "Vognløb")
+SvigtGUI_vognløb_beskrivelse := SvigtGUI.Add("Text", "x16 y58 h50 w100", "Garantiperiode: blalbalba")
+SvigtGUI_gvlukket_groupbox := SvigtGUI.Add("Groupbox", "x150 y5 w140 h130", "Hvis &GV lukket:")
+SvigtGUI_gvluk_radio_åbningstid := SvigtGUI.Add("Radio", "vgvluk_radio_åbningstid x160 y30", "&Åbningstid udskudt")
+SvigtGUI_gvluk_radio_lukket := SvigtGUI.Add("Radio", "vgvluk_radio_lukket x160 y70", "Lukket &midt på VL")
+SvigtGUI_gvluk_radio_slettet := SvigtGUI.Add("Radio", "vgvluk_radio_slettet x160 y110", "VL s&lettet")
+
+SvigtGUI_GV_åbningstid_edit := SvigtGUI.Add("Edit", "vgv_åbningstid x180 y45 w79 h21", "Vl start kl.")
+SvigtGUI_GV_hjemzonetid_edit := SvigtGUI.Add("Edit", "vgv_hjemzonetid x180 y85 w79 h21", "Hjemzone kl.")
+
+SvigtGUI_vltype_groupbox := SvigtGUI.Add("Groupbox", "x294 y5 w140 h130", "Type VL:")
+SvigtGUI_vltype_radio_gv := SvigtGUI.Add("Radio", "vvltype_garanti x304 y29 h16", "&Garanti")
+SvigtGUI_vltype_radio_gv_variabel := SvigtGUI.Add("Radio", "vvltype_gv_variabel x304 y45 w120 h32", "Garantivognløb i variabel tid")
+SvigtGUI_vltype_radio_variabel := SvigtGUI.Add("Radio", "vvl_type_variabel x304 y77 h23", "&Variabel")
+SvigtGUI_vltype_radio_vogngruppe := SvigtGUI.Add("Radio", "vvl_type_vogngruppe x304 y97 h32", "&Vogngruppe")
+SvigtGUI_årsag_tekst := SvigtGUI.Add("Text", "x16 y125 w120 h23", "Årsag (valgfri):")
+SvigtGUI_årsag_edit := SvigtGUI.Add("Edit", "vårsag x16 y140 w120 h21")
+SvigtGUI_årsag_tekst.SetFont("bold")
+
+SvigtGUI_vm_kontakt_groupbox := SvigtGUI.Add("Groupbox", "x150 y135 w283 h48", "Kontakt til vognmand")
+SvigtGUI_vm_kontakt_radio_ja := SvigtGUI.Add("Radio", "vvm_kontakt_ja x160 y152 h23", "Kontaktet")
+SvigtGUI_vm_kontakt_radio_nej := SvigtGUI.Add("Radio", "vvm_kontakt_nej x240 y152 h23", "Forgæves kontakt")
+SvigtGUI_vm_kontakt_tid_edit := SvigtGUI.Add("Edit", "vvm_kontakt_tid x360 y152 w50", "Ca. kl.")
+SvigtGUI_beskrivelse_tekst := SvigtGUI.Add("Text", "x16 y165 h23 w100", "&Beskrivelse:")
+SvigtGUI_beskrivelse_edit := SvigtGUI.Add("Edit", "vbeskrivelse x16 y185 w410 h106")
+SvigtGUI_beskrivelse_tekst.SetFont("bold")
+SvigtGUI_forrige_skærmprint_checkbox := SvigtGUI.Add("CheckBox", "vforrige_skærmprint_checkbox x16 y299", "Brug &forrige skærmprint")
+SvigtGUI_vis_mail_button := SvigtGUI.Add("Button", "vsendmail_button x160 y314 w60 h23 +default", "&Vis")
+SvigtGUI_send_mail_button := SvigtGUI.Add("Button", "vvismail_button x240 y314 w60 h23 +default", "&Send")
+
+SvigtGUI_vis_mail_button.Onevent("Click", SvigtGUI_vis_mail_funk)
+SvigtGUI_vltype_radio_gv.Onevent("Click", SvigtGUI_vltype_radio_gv_funk)
+SvigtGUI_vltype_radio_gv_variabel.Onevent("Click", SvigtGUI_vltype_radio_gv_funk)
+SvigtGUI_gvluk_radio_åbningstid.Onevent("Click", SvigtGUI_GV_åbningstid_funk)
+SvigtGUI_gvluk_radio_lukket.Onevent("Click", SvigtGUI_GV_hjemzonetid_edit_funk)
+SvigtGUI_vltype_radio_variabel.Onevent("Click", SvigtGUI_vltype_radio_variabel_funk)
+SvigtGUI_gvluk_radio_slettet.Onevent("Click", SvigtGUI_gvluk_radio_slettet_funk)
+; SvigtGUI_vltype_radio_gv_variabel.Onevent("Click", SvigtGUI_vltype_gv_funk)
+;; Slut autoexec
 ; Test
 
+SvigtGUI_vis_mail_funk(*)
+{
+    values := SvigtGUI.Submit()
+
+    return
+}
+SvigtGUI_gvluk_radio_slettet_funk(*)
+{
+    
+    SvigtGUI_GV_åbningstid_edit.Enabled := 0
+    SvigtGUI_GV_hjemzonetid_edit.Enabled := 0
+    SvigtGUI_vm_kontakt_radio_ja.Enabled := 1
+    SvigtGUI_vm_kontakt_radio_nej.Enabled := 1
+    SvigtGUI_vm_kontakt_tid_edit.Enabled := 1
+
+    return
+}
+SvigtGUI_GV_åbningstid_funk(*)
+{
+    SvigtGUI_GV_åbningstid_edit.Enabled := 1
+    SvigtGUI_GV_hjemzonetid_edit.Value := "Hjemzone kl."
+    SvigtGUI_GV_åbningstid_edit.Focus()
+
+    return
+}
+
+SvigtGUI_GV_hjemzonetid_edit_funk(*)
+{
+    SvigtGUI_GV_hjemzonetid_edit.Enabled := 1
+    SvigtGUI_GV_hjemzonetid_edit.Focus()
+    SvigtGUI_vm_kontakt_radio_ja.Enabled := 1
+    SvigtGUI_vm_kontakt_radio_nej.Enabled := 1
+    SvigtGUI_vm_kontakt_tid_edit.Enabled := 1
+
+
+    return
+}
+
+SvigtGUI_vltype_radio_gv_variabel_funk(*)
+{
+    SvigtGUI_gvluk_radio_åbningstid.Enabled := 1
+    SvigtGUI_gvluk_radio_lukket.Enabled := 1
+    SvigtGUI_gvluk_radio_slettet.Enabled := 1
+    SvigtGUI_vm_kontakt_radio_ja.Enabled := 0
+    SvigtGUI_vm_kontakt_radio_ja.Value := 0
+    SvigtGUI_vm_kontakt_radio_nej.Enabled := 0
+    SvigtGUI_vm_kontakt_radio_nej.Value := 0
+    SvigtGUI_vm_kontakt_tid_edit.Enabled := 0
+    SvigtGUI_vm_kontakt_tid_edit.Value := "Ca. kl."
+
+
+    return
+}
+
+
+SvigtGUI_vltype_radio_gv_funk(*)
+{
+    SvigtGUI_gvluk_radio_åbningstid.Enabled := 1
+    SvigtGUI_gvluk_radio_lukket.Enabled := 1
+    SvigtGUI_gvluk_radio_slettet.Enabled := 1
+
+    return
+}
+
+
+SvigtGUI_vltype_radio_variabel_funk(*)
+{
+    SvigtGUI_gvluk_radio_slettet.Enabled := 0
+    SvigtGUI_gvluk_radio_slettet.Value := 0
+    SvigtGUI_gvluk_radio_lukket.Enabled := 0
+    SvigtGUI_gvluk_radio_lukket.Value := 0
+    SvigtGUI_gvluk_radio_åbningstid.Enabled := 0
+    SvigtGUI_gvluk_radio_åbningstid.Value := 0
+    SvigtGUI_GV_hjemzonetid_edit.Enabled := 0
+    SvigtGUI_GV_hjemzonetid_edit.Value := "Hjemzone kl."
+    SvigtGUI_GV_åbningstid_edit.Enabled := 0
+    SvigtGUI_GV_åbningstid_edit.Value := "Vl start kl."
+    SvigtGUI_vm_kontakt_radio_ja.Enabled := 0
+    SvigtGUI_vm_kontakt_radio_ja.Value := 0
+    SvigtGUI_vm_kontakt_radio_nej.Enabled := 0
+    SvigtGUI_vm_kontakt_radio_nej.Value := 0
+    SvigtGUI_vm_kontakt_tid_edit.Enabled := 0
+    SvigtGUI_vm_kontakt_tid_edit.Value := "Ca. kl."
+
+
+
+    return
+}
 +Esc::
 {
     ExitApp
@@ -29,11 +175,63 @@ F3::
 {
     keywait "alt"
 
-    P6_data_vognløbsbillede_ændre_sluttid("31200", "3100", "19", "07")
-    P6_nav_vognløbsbillede_ændr_2()
-    P6_nav_vognløbsbillede_ændr_afslut()
+    SvigtGUIresetfunk("gv_variabel")
+    SvigtGUI.Title := "ssdflkjsfd"
+    SvigtGUI.Show("w448 h357",)
 
     return
+}
+
+SvigtGUIresetfunk(vltype)
+{
+    SvigtGUI_gvluk_radio_slettet.Enabled := 0
+    SvigtGUI_gvluk_radio_slettet.Value := 0
+    SvigtGUI_gvluk_radio_lukket.Enabled := 0
+    SvigtGUI_gvluk_radio_lukket.Value := 0
+    SvigtGUI_gvluk_radio_åbningstid.Enabled := 0
+    SvigtGUI_gvluk_radio_åbningstid.Value := 0
+    SvigtGUI_GV_hjemzonetid_edit.Enabled := 0
+    SvigtGUI_GV_hjemzonetid_edit.Value := "Hjemzone kl."
+    SvigtGUI_GV_åbningstid_edit.Enabled := 0
+    SvigtGUI_GV_åbningstid_edit.Value := "Vl start kl."
+    SvigtGUI_vm_kontakt_radio_ja.Enabled := 0
+    SvigtGUI_vm_kontakt_radio_ja.Value := 0
+    SvigtGUI_vm_kontakt_radio_nej.Enabled := 0
+    SvigtGUI_vm_kontakt_radio_nej.Value := 0
+    SvigtGUI_vm_kontakt_tid_edit.Enabled := 0
+    SvigtGUI_vm_kontakt_tid_edit.Value := "Ca. kl."
+
+
+    SvigtGUI_vltype_radio_vogngruppe.Enabled := 0
+
+    SvigtGUI_forrige_skærmprint_checkbox.Enabled := 0
+    if (DllCall("IsClipboardFormatAvailable", "uint", 2))
+    {
+        SvigtGUI_forrige_skærmprint_checkbox.Enabled := 1
+    }
+
+    if (vltype := "variabel")
+        {
+        SvigtGUI_vltype_radio_variabel.Value := 1
+        SvigtGUI_vltype_radio_variabel_funk()
+        SvigtGUI_beskrivelse_edit.Focus()
+        }
+    if (vltype := "gv")
+        {
+        SvigtGUI_vltype_radio_gv.Value := 1
+        SvigtGUI_vltype_radio_gv_funk()
+        SvigtGUI_beskrivelse_edit.Focus()
+        }
+    if (vltype := "gv_variabel")
+        {
+        SvigtGUI_vltype_radio_gv_variabel.Value := 1
+        SvigtGUI_vltype_radio_gv_variabel_funk()
+        SvigtGUI_beskrivelse_edit.Focus()
+        }
+
+
+
+        return
 }
 
 P6_var_sleep(sleep_var)
@@ -335,7 +533,7 @@ P6_hent_data_vis_fejlbesked(indhentet_data)
 }
 
 ;
-P6_data_vognløbsbillede_ændre_sluttid(vognløb, kørselsaftale, sluttid, dato?)
+P6_ret_data_vognløbsbillede_ændre_sluttid(vognløb, kørselsaftale, sluttid, dato?)
 {
     P6_nav_aktiver()
     P6_nav_vognløbsbillede(vognløb)
@@ -567,3 +765,104 @@ P6_hent_data_vognløb_funk(valgt_data)
     }
     return hent_data_output
 }
+
+
+;; Svigt
+
+; SvigtGIU
+; Sluse for forkert input, hvor skal den placeres?
+
+; Vognløbsdata
+; tjek et vognløb for garantitid/variabel - ferie osv.
+; Indhent VM-data (inklusiv VM-telefon?)
+
+; Svigtdata
+; opbyg svigttekst
+; Hvordan laves en fornuftig logik?
+
+; Mailfunktion
+; Lav/send outlookmail
+
+
+;; Svigtdata
+
+; To niveauer af mail, emnefelt og brødtekst (to funktioner?)
+; Logik for behandling af input
+
+;; Oprettelse af tekst
+
+; Mulige inputs
+
+; VL:
+; 1. Variabel
+; 2. Garantivogn
+; 3. Garantivogn (variabel)
+
+; Vognløbsbehandling, ved GV:
+; 1.Åbningstid udskudt, tidspunkt
+; 2. VL lukket efter start, tidspnkt
+; 3. VL slettet
+; 4. Variabel tid fjernet på GV(?) - magen til 1?
+
+; VM-kontakt, ved GV:
+; 1. Ja
+; 2. Nej
+
+; Øvrige, for alle:
+; 1. tid for svigt
+; 2. beskrivelse
+; 3. Emnefelt ja
+; 4. Emnefelt nej
+
+
+;; Outputs brødtekst
+; 1. Alm. svigt, GV
+; 2. Alm svigt, GV variabel og variable
+; 3. GV vl slettet
+; 4. GV vl lukket efter start
+; 5. GV åbningstid udskudt
+
+; sluse tjek for type vl
+; input
+; input_test := Map(
+;     "Vl_type", "[1, 2, 3]",
+;     ; GV-behandling
+;     "GV_behandling", "[0, 1, 2, 3, 4]",
+;     "VM_kontakt", "[1, 2]",
+;     "VM_tid_for_kontakt", "str_tid_vm",
+;     ; øvrigt
+;     "Tid_for_svigt", "str_tid_svigt",
+;     "Beskrivelse", "str_beskrivelse",
+;     "Emnefelt_beskrivelse", "[0, 1]",
+;     "Emnefelt_tekst", "str_emnefelt_tekst"
+; )
+
+input_test := Map(
+    "Vl_type", "[1, 2, 3]",
+    ; GV-behandling
+    "GV_behandling", "[0, 1, 2, 3, 4]",
+    "VM_kontakt", "[1, 2]",
+    "VM_tid_for_kontakt", "str_tid_vm",
+    ; øvrigt
+    "Tid_for_svigt", "str_tid_svigt",
+    "Beskrivelse", "str_beskrivelse",
+    "Emnefelt_beskrivelse", "0",
+    "Emnefelt_tekst", "str_emnefelt_tekst"
+)
+; t::
+; svigt_opret_tekst_brødtekst_gv(input_test)
+; {
+
+;     brødtekst := ""
+
+
+;     if (input_test["GV_behandling"] == )
+; }
+; svigt_opret_tekst_brødtekst_gv_variabel()
+; {
+
+; }
+; svigt_opret_tekst_brødtekst_variabel()
+; {
+
+; }
