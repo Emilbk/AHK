@@ -3,7 +3,7 @@
 #include "modules/svigtGUI.ahk"
 #include "modules/P6.ahk"
 #include "modules/vognløbsdata.ahk"
-
+FileEncoding "UTF-8"
 ;; Slut autoexec
 ; Test
 
