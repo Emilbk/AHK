@@ -7,6 +7,12 @@ FileEncoding "UTF-8"
 ; #include "modules/vognløbsdata.ahk"
 #include "modules/class_vl.ahk"
 #include "modules/trafikstyring.ahk"
+; metadata
+
+admin_mail := "ebk@midttrafik.dk"
+
+
+
 
 vl := vognløbObj()
 vl.kørselsaftale := "3100_47"
