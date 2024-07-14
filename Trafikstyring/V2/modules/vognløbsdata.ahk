@@ -134,23 +134,22 @@ vognløb_bearbejd_data(vognløbs_data)
 
 }
 ; test_data := [["k", [d]]]
-indhent_garanti_data()
-{
-    gv_garantidage_fil := "../lib/gv_garantidage.tsv"
+; indhent_garanti_data()
+; {
+;     gv_garantidage_fil := "lib/gv_garantidage.tsv"
+;     gv_garantidage_ind := FileRead(gv_garantidage_fil)
+;     gv_garantidage_ind := StrReplace(gv_garantidage_ind, "`r", "")
+;     gv_garantidage_ind := StrSplit(gv_garantidage_ind, "`n")
+;     gv_garantidage := []
 
-    gv_garantidage_ind := FileRead(gv_garantidage_fil)
-    gv_garantidage_ind := StrReplace(gv_garantidage_ind, "`r", "")
-    gv_garantidage_ind := StrSplit(gv_garantidage_ind, "`n")
-    gv_garantidage := []
+;     for i, e in gv_garantidage_ind
+;     {
+;         gv_garantidage.Push(StrSplit(gv_garantidage_ind[i], "`t"))
+;     }
+;     gv_garantidage_ind := unset
 
-    for i, e in gv_garantidage_ind
-    {
-        gv_garantidage.Push(StrSplit(gv_garantidage_ind[i], "`t"))
-    }
-    gv_garantidage_ind := unset
-
-    return gv_garantidage
-}
+;     return gv_garantidage
+; }
 
 
 ; test
@@ -210,7 +209,7 @@ test_data :=
 ;
 test_funk(test_data)
 {
-    garantidata := indhent_garanti_data()
+    ; garantidata := indhent_garanti_data()
     for index, element in test_data
     {
         datotid := test_data[index][2] test_data[index][3]
@@ -231,4 +230,5 @@ test_funk(test_data)
     return
 }
 
-test_funk(test_data)
+; test_funk(test_data)
+

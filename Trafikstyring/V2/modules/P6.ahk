@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 
+; Funktioner der interagerer med P6
+
 sleep_konstant := 1
 
 P6_var_sleep(sleep_var)

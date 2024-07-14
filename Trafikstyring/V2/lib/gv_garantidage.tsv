@@ -1,64 +1,64 @@
 ﻿Vognløb	Kørselsaftale	Garantitid	Garantitid weekend	mandag	tirsdag	onsdag	torsdag	fredag	lørdag	søndag	Ferie	25., 26. dec.	31. dec., 1. jan.
-31200	3100_47	06:00 - 18:00		Ja	Nej	Ja	Ja	Ja	Nej	Nej	27-30	Ja	Ja
-31201	3201_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Ja
-31202	3202_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Nej	Nej
+31200	3100_47	06:00 - 18:00		Ja	Nej	Ja	Ja	Ja	Nej	Nej	27,28,29,30	Ja	Ja
+31201	3201_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Ja
+31202	3202_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Nej	Nej
 31203	3203_47	09:00 - 18:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
 31204	3204_47	10:00 - 19:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
 31205	3205_47	10:00 - 19:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Ja	Ja
-31206	3206_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
+31206	3206_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
 31207	3207_47	07:00 - 16:00	07:00 - 16:00	Ja	Ja	Nej	Nej	Nej	Ja	Ja		Ja	Ja
 31208	3208_26	10:00 - 19:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
 31209	3209_47	10:00 - 19:00	10:00 - 19:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
-31210	3110_50	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Nej	Nej
+31210	3110_50	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Nej	Nej
 31211	3211_32	10:00 - 19:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
-31212	3212_26	14:00 - 23:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
-31213	3213_26	14:00 - 23:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Ja
+31212	3212_26	14:00 - 23:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
+31213	3213_26	14:00 - 23:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Ja
 31214	3214_26	09:00 - 18:00	09:00 - 18:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja		Ja	Nej
 31215	3215_22	11:00 - 20:00	11:00 - 20:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja		Nej	Ja
 31216	3216_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Ja	Nej
 31217	3417_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Ja
 31218	3218_47	17:00 - 01:00	17:00 - 01:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
-31219	3219_26	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Ja	Nej
+31219	3219_26	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Ja	Nej
 31220	3220_32	05:00 - 14:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
-31221	3221_32	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
+31221	3221_32	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
 31222	3222_47	06:00 - 15:00	06:00 - 15:00	Ja	Ja	Nej	Nej	Nej	Ja	Ja		Ja	Ja
-31223	3223_47	12:00 - 21:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Nej
+31223	3223_47	12:00 - 21:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Nej
 31224	3224_22	12:00 - 21:00	12:00 - 21:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
-31225	3225_26	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Ja
+31225	3225_26	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Ja
 31226	3126_47	10:00 - 19:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
 31227	3227_22	10:00 - 19:00	10:00 - 19:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
 31228	3228_32	15:00 - 23:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
 31229	3229_32	15:00 - 23:00	15:00 - 23:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
-31230	3230_47	09:00 - 18:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Nej	Nej
+31230	3230_47	09:00 - 18:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Nej	Nej
 31231	3231_47	10:00 - 19:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
-31232	3232_47	10:00 - 19:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
+31232	3232_47	10:00 - 19:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
 31233	3233_22	12:00 - 21:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Ja	Nej
-31234	3134_32	14.00 - 23.00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Ja
-31235	3235_22	14.00 - 23.00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Nej
+31234	3134_32	14.00 - 23.00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Ja
+31235	3235_22	14.00 - 23.00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Nej
 31236	3236_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Ja
 31237	3237_47	10:00 - 19:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
 31238	3238_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
-31239	3239_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
-31240	3240_47	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Nej
+31239	3239_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
+31240	3240_47	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Nej
 31241	3241_22	12:00 - 20:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Ja
 31242	3142_32	12:00 - 20:00	12:00 - 20:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
 31243	3543_32	17:00 - 01:00	17:00 - 01:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja		Ja	Ja
-31244	3244_26	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Ja	Nej
+31244	3244_26	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Ja	Nej
 31246	3246_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
-31247	3247_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
-31248	3248_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Nej	Nej
+31247	3247_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
+31248	3248_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Nej	Nej
 31249	3249_22	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
 31250	3250_22	11:00 - 20:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
-31251	3251_22	13:00 - 22:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
-31252	3252_22	06:00 - 15:00	06:00 - 15:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja	30-31, 42	Ja	Ja
+31251	3251_22	13:00 - 22:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
+31252	3252_22	06:00 - 15:00	06:00 - 15:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja	30,31,42	Ja	Ja
 31253	3253_22	06:00 - 15:00	08:00 - 17:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja		Ja	Ja
-31254	3154_32	06:00 - 15:00	11:00 - 20:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja	7, 28-29	Ja	Ja
-31255	3255_22	06:00 - 15:00	13:00 - 22:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja	30-31, 42	Ja	Ja
+31254	3154_32	06:00 - 15:00	11:00 - 20:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja	7, 28,29	Ja	Ja
+31255	3255_22	06:00 - 15:00	13:00 - 22:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja	30,31,42	Ja	Ja
 31256	3256_26	21:00 - 06:00	21:00 - 06:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja		Ja	Ja
 31257	3257_22	14:00 - 23:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
 31258	3158_26	14:00 - 23:00	14:00 - 23:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
-31259	3259_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
-31260	3160_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Nej	Nej
+31259	3259_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
+31260	3160_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Nej	Nej
 31261	3261_47	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
 31262	3162_47	17:00 - 01:00	17:00 - 01:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
 31263	3263_32	11:00 - 20:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
@@ -69,26 +69,26 @@
 31268	3268_22	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Ja
 31269	3269_22	10:00 - 19:00	10:00 - 19:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja		Ja	Nej
 31270	3170_26	07:00 - 16:00	07:00 - 16:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja		Ja	Ja
-31271	3271_47	09:00 - 18:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
+31271	3271_47	09:00 - 18:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
 31272	3272_22	14:00 - 23:00	14:00 - 23:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja		Ja	Ja
 31273	3273_22	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
-31274	3274_32	09:00 - 18:00	09:00 - 18:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja	30-31, 42	Ja	Ja
+31274	3274_32	09:00 - 18:00	09:00 - 18:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja	30,31,42	Ja	Ja
 31275	3275_22	14:00 - 23:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Ja	Ja
-31276	3276_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
-31277	3277_26	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Ja
-31278	3178_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Ja	Nej
-31279	3279_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Nej	Ja
-31280	3380_22	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Ja	Nej
-31281	3281_26	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Nej	Ja
+31276	3276_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
+31277	3277_26	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Ja
+31278	3178_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Ja	Nej
+31279	3279_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Nej	Ja
+31280	3380_22	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Ja	Nej
+31281	3281_26	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Nej	Ja
 31282	3182_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Ja	Nej
 31283	3283_32	11:00 - 20:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Ja
 31284	3284_32	14:00 - 23:00	14:00 - 23:00	Ja	Ja	Nej	Nej	Nej	Ja	Ja		Ja	Ja
 31285	3285_32	14:00 - 23:00	14:00 - 23:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
-31286	3286_26	09:00 - 18:00	09:00 - 18:00	Ja	Ja	Nej	Nej	Nej	Ja	Ja	7, 28-29	Nej	Ja
-31287	3287_32	11:00 - 20:00	11:00 - 20:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja	30-31, 42	Ja	Nej
+31286	3286_26	09:00 - 18:00	09:00 - 18:00	Ja	Ja	Nej	Nej	Nej	Ja	Ja	7, 28,29	Nej	Ja
+31287	3287_32	11:00 - 20:00	11:00 - 20:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja	30,31,42	Ja	Nej
 31288	3288_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Ja	Nej
-31289	3289_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Ja
-31290	3290_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Nej
+31289	3289_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Ja
+31290	3290_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Nej
 31291	3291_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Ja
 31292	3292_26	07:00 - 16:00	07:00 - 16:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
 31293	3293_26	11:00 - 20:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Ja	Nej
@@ -96,89 +96,89 @@
 31295	3295_47	09:00 - 18:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
 31296	3296_26	14:00 - 23:00	14:00 - 23:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
 31297	3397_32	15:00 - 23:59	15:00 - 23:59	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
-31298	3298_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
-31299	3299_26	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Nej	Nej
+31298	3298_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
+31299	3299_26	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Nej	Nej
 31300	3300_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
 31301	3301_47	12:00 - 21:00	12:00 - 21:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja		Ja	Ja
 31302	3302_26	07:00 - 16:00	07:00 - 16:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja		Ja	Ja
 31303	3303_22	14:00 - 23:00	14:00 - 23:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja		Ja	Ja
 31304	3404_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
 31305	3305_26	14:00 - 23:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
-31306	3306_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Ja	Nej
+31306	3306_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Ja	Nej
 31307	3307_32	09:00 - 18:00	09:00 - 18:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja		Ja	Ja
 31308	3308_47	05:00 - 14:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Ja
 31309	3109_47	11:00 - 20:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Ja	Nej
-31310	3310_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Ja
+31310	3310_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Ja
 31311	3211_47	13:00 - 22:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
-31312	3312_47	06:00 - 15:00	06:00 - 15:00	Ja	Ja	Nej	Nej	Nej	Ja	Ja	30-31, 42	Ja	Ja
+31312	3312_47	06:00 - 15:00	06:00 - 15:00	Ja	Ja	Nej	Nej	Nej	Ja	Ja	30,31,42	Ja	Ja
 31313	3313_47	13:00 - 22:00	13:00 - 22:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
-31314	3314_22	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
-31315	3315_32	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Ja
+31314	3314_22	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
+31315	3315_32	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Ja
 31316	3316_26	11:00 - 20:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
-31317	3317_47	14:00 - 23:00	14:00 - 23:00	Ja	Ja	Nej	Nej	Nej	Ja	Ja	7, 28-29	Ja	Ja
-31318	3318_32	14:00 - 23:00	14:00 - 23:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja	30-31, 42	Ja	Ja
-31319	3319_47	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Ja
-31320	3320_22	11:00 - 21:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
-31321	3321_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Ja
+31317	3317_47	14:00 - 23:00	14:00 - 23:00	Ja	Ja	Nej	Nej	Nej	Ja	Ja	7, 28,29	Ja	Ja
+31318	3318_32	14:00 - 23:00	14:00 - 23:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja	30,31,42	Ja	Ja
+31319	3319_47	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Ja
+31320	3320_22	11:00 - 21:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
+31321	3321_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Ja
 31322	3322_47	13:00 - 21:00	13:00 - 21:00	Ja	Ja	Nej	Nej	Nej	Ja	Ja		Ja	Ja
-31323	3323_32	10:00 - 19:00	10:00 - 19:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja	7, 28-29	Ja	Ja
+31323	3323_32	10:00 - 19:00	10:00 - 19:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja	7, 28,29	Ja	Ja
 31324	3324_47	07:00 - 16:00	07:00 - 16:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja		Ja	Ja
 31325	3325_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 30-31	Ja	Ja
 31326	3326_47	05:00 - 14:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 30-31	Ja	Nej
-31327	3327_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	28-29, 42	Ja	Ja
-31328	3128_32	17:00 - 01:00	17:00 - 01:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja	7, 28-29	Ja	Ja
-31329	3329_32	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Nej
-31330	3330_22	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Ja	Nej
-31331	3331_47	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Nej	Ja
+31327	3327_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	28,29, 42	Ja	Ja
+31328	3128_32	17:00 - 01:00	17:00 - 01:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja	7, 28,29	Ja	Ja
+31329	3329_32	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Nej
+31330	3330_22	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Ja	Nej
+31331	3331_47	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Nej	Ja
 31334	3334_47	10:00 - 19:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Ja	Nej
 31335	3335_26	13:00 - 22:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Ja
 31336	3336_35	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
 31337	3337_35	14:00 - 23:00	14:00 - 23:00	Ja	Ja	Nej	Nej	Nej	Ja	Ja		Ja	Ja
 31338	3338_47	14:00 - 23:00	14:00 - 23:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
-31339	3339_35	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Ja
+31339	3339_35	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Ja
 31340	3340_47	07:00 - 16:00	07:00 - 16:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja		Ja	Ja
-31341	3341_32	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
+31341	3341_32	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
 31342	3342_32	09:00 - 18:00	09:00 - 18:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja		Ja	Ja
-31343	3143_32	05:00 - 14:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Ja	Nej
-31344	3144_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Ja	Nej
+31343	3143_32	05:00 - 14:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Ja	Nej
+31344	3144_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Ja	Nej
 31345	3345_47	14:00 - 23:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Ja
-31346	3346_26	13:00 - 22:00	13:00 - 22:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja	30-31, 42	Ja	Ja
-31347	3147_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Nej
-31348	3348_22	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Ja
+31346	3346_26	13:00 - 22:00	13:00 - 22:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja	30,31,42	Ja	Ja
+31347	3147_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Nej
+31348	3348_22	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Ja
 31349	3349_47	12:00 - 21:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Ja	Nej
-31350	3350_47	05:00 - 14:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Ja	Ja
-31351	3351_32	10:00 - 19:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Nej	Nej
+31350	3350_47	05:00 - 14:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Ja	Ja
+31351	3351_32	10:00 - 19:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Nej	Nej
 31352	3352_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Ja	Ja
 31353	3353_32	11:00 - 20:00	11:00 - 20:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja		Nej	Nej
 31354	3354_26	07:00 - 16:00	07:00 - 16:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja		Ja	Ja
-31355	3355_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Ja	Ja
-31356	3356_47	05:00 - 14:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Ja
-31357	3357_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
-31358	3358_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Ja
+31355	3355_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Ja	Ja
+31356	3356_47	05:00 - 14:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Ja
+31357	3357_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
+31358	3358_47	07:00 - 16:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Ja
 31359	3359_47	14:00 - 23:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Ja
-31360	3360_26	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Ja	Nej
+31360	3360_26	08:00 - 17:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Ja	Nej
 31361	3361_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Ja	Nej
-31362	3362_22	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
+31362	3362_22	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
 31363	3363_22	17:00 - 01:00	17:00 - 01:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja		Ja	Ja
-31364	3264_47	05:00 - 14:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Ja
-31365	3365_22	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Nej	Nej
+31364	3264_47	05:00 - 14:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Ja
+31365	3365_22	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Nej	Nej
 31366	3366_32	12:00 - 21:00	12:00 - 21:00	Ja	Ja	Nej	Nej	Nej	Ja	Ja		Ja	Ja
 31367	3367_22	14:00 - 23:00	14:00 - 23:00	Nej	Nej	Ja	Ja	Ja	Ja	Ja		Ja	Ja
-31368	3368_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Ja	Ja
-31369	3369_47	09:00 - 18:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Ja
-31370	3370_22	09:00 - 18:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Nej
-31371	3371_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Ja
-31372	3372_47	10:00 - 19:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Nej	Ja
+31368	3368_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Ja	Ja
+31369	3369_47	09:00 - 18:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Ja
+31370	3370_22	09:00 - 18:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Nej
+31371	3371_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Ja
+31372	3372_47	10:00 - 19:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Nej	Ja
 31373	3373_26	12:00 - 21:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Ja	Nej
-31374	3174_32	10:00 - 19:00	10:00 - 19:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja	30-31, 42	Ja	Nej
+31374	3174_32	10:00 - 19:00	10:00 - 19:00	Nej	Nej	Nej	Nej	Ja	Ja	Ja	30,31,42	Ja	Nej
 31375	3375_47	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Ja
-31376	3376_26	11:00 - 20:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28-29	Ja	Nej
+31376	3376_26	11:00 - 20:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	7, 28,29	Ja	Nej
 31377	3377_26	06:00 - 15:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
 31378	3378_26	13:00 - 22:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
-31379	3379_47	07:00 - 16:00	07:00 - 16:00	Ja	Ja	Nej	Nej	Nej	Ja	Ja	7, 28-29	Ja	Ja
-31380	3380_47	09.00 - 18:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30-31, 42	Ja	Ja
+31379	3379_47	07:00 - 16:00	07:00 - 16:00	Ja	Ja	Nej	Nej	Nej	Ja	Ja	7, 28,29	Ja	Ja
+31380	3380_47	09.00 - 18:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej	30,31,42	Ja	Ja
 31381	3381_47	21:00 - 06:00	21:00 - 06:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja		Ja	Ja
-31382	3382_47	06:00 - 15:00	06:00 - 15:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja	30-31, 42	Ja	Ja
+31382	3382_47	06:00 - 15:00	06:00 - 15:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja	30,31,42	Ja	Ja
 31383	3383_50	07:00 - 17:00	07:00 - 17:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja		Ja	Ja
 31384	3384_50	14:00 - 23:00	14:00 - 23:00	Ja	Ja	Ja	Ja	Ja	Ja	Ja		Ja	Ja
 31385	3385_47	09:00 - 18:00		Ja	Ja	Ja	Ja	Ja	Nej	Nej		Nej	Nej
