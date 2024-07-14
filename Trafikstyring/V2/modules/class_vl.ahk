@@ -52,6 +52,7 @@ class vognløbObj extends Object
             }
         }
 
+    return
     }
 
 
@@ -77,7 +78,8 @@ class vognløbObj extends Object
                 return
 
             }
-
+        
+    throw Error("Kørselsaftale er ikke defineret i garantivognsdata")
 
     }
     ; TODO mulighed for at tage kun dato, ikke tid, som parameter
