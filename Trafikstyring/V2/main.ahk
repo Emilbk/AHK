@@ -20,6 +20,12 @@ vl.kørselsaftale := "3100_47"
 ; vl.vognløb_status("202406050559")
 ; MsgBox vl.status
 
+send_fejl_meddelelse(Exception, *)
+{
+    ; skriv send fejlmeddelse til admin-mail
+    msgbox Exception.Message "`n" Exception.what
+    return
+}
 
 opret_svigt()
 {
