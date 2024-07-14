@@ -10,8 +10,8 @@ FileEncoding "UTF-8"
 
 vl := vognløbObj()
 
-; vl.kørselsaftale := "3256_26" ; gv over midnat
-vl.kørselsaftale := "3253_22" ; gv med forskellige periode hverdag og weekend
+vl.kørselsaftale := "3256_26" ; gv over midnat
+; vl.kørselsaftale := "3253_22" ; gv med forskellige periode hverdag og weekend
 ; vl.kørselsaftale := "3100_47"
 
 ; vlobj.hent_data_vognløb_alt_obj()
