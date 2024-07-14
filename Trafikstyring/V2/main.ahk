@@ -16,7 +16,7 @@ admin_mail := "ebk@midttrafik.dk"
 
 vl := vognløbObj()
 vl.kørselsaftale := "3100_47"
-
+vl.unpack_garantidata("34352")
 ; vl.kørselsaftale := "3256_26" ; gv over midnat
 ; ; vl.kørselsaftale := "3253_22" ; gv med forskellige periode hverdag og weekend
 ; vl.kørselsaftale := "3100_47"
@@ -44,7 +44,7 @@ opret_svigt()
     ; svigt_vl.vognløbsdato := data[2]
 
     svigt_vl.vognløbsnummer := "31200"
-    svigt_vl.kørselsaftale := "3256_26" ; gv over midnat
+    svigt_vl.kørselsaftale := "3256_262" ; gv over midnat
     ; svigt_vl.kørselsaftale := "3100_47"
     svigt_vl.vognløbsdato := A_Now
     svigt_vl.vognløb_status()
