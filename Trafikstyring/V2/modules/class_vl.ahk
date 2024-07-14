@@ -11,6 +11,7 @@ class vognløbObj extends Object
         this.gv := 0
         this.gv_aktiv := 0
         this.status := 0
+        this.garanti_periode := 0
 
         this.array_plads := 0
         this.ferieuger := 0
@@ -98,7 +99,7 @@ class vognløbObj extends Object
         if (InStr(this.ferieuger, ugenr))
         {
             this.status := "Garantivognløb m. tvungen ferie uge " ugenr
-            ; return
+            return
         }
 
         ; tjek om helligdag
@@ -126,44 +127,54 @@ class vognløbObj extends Object
             tidspunkt := A_Now
 
         tidspunkt_time := FormatTime(tidspunkt, "HH")
+        tidspunkt_min := FormatTime(tidspunkt, "mm")
 
         ugedag_tal := FormatTime(dato, "WDay")
         ; minus 1, 1 tælles som som søndag
         if ugedag_tal != 1 ; undtaget søndag, der skal forblive 1
             ugedag_tal -= 1
-        ; tjek garanti over midnat
-        garanti_start_hv := SubStr(global_garanti_data[this.array_plads][3], 1, 2)
-        garanti_slut_hv := SubStr(global_garanti_data[this.array_plads][3], 9, 2)
 
-        garanti_start_we := SubStr(global_garanti_data[this.array_plads][4], 1, 2)
-        garanti_slut_we := SubStr(global_garanti_data[this.array_plads][4], 9, 2)
-        if (garanti_start_hv > garanti_slut_hv)
-            MsgBox "Midnat"
+
+        garanti_start_hv := SubStr(dato, 1, 8) SubStr(global_garanti_data[this.array_plads][3], 1, 2) . "00"
+        garanti_slut_hv := SubStr(dato, 1, 8) SubStr(global_garanti_data[this.array_plads][3], 9, 2) . "00"
+
+        garanti_start_we := SubStr(dato, 1, 8) SubStr(global_garanti_data[this.array_plads][4], 1, 2) . "00"
+        garanti_slut_we := SubStr(dato, 1, 8) SubStr(global_garanti_data[this.array_plads][4], 9, 2) . "00"
+
+
+        ; skriv tjek over midnat
+        ; if (garanti_start_hv > garanti_slut_hv)
+        ; MsgBox "Midnat"
+
         ; tjek hverdagstider
         if (ugedag_tal < 6)
         {
-            if (tidspunkt_time < garanti_slut_hv or tidspunkt_time > garanti_start_hv)
-                this.status := "Aktivt garantivognløb - Garanti: " garanti_start_hv ":00 - " garanti_slut_hv ":00 i dag " ugedag
+            if (tidspunkt <= garanti_slut_hv and tidspunkt >= garanti_start_hv)
+            {
+                this.status := "Aktivt garantivognløb - Garanti: " FormatTime(garanti_start_hv, "HH:mm") "-" FormatTime(garanti_slut_hv, "HH:mm") " i dag " ugedag
+                this.gv_aktiv := 1
+                this.garanti_periode := garanti_start_hv "-" garanti_slut_hv
 
-            if (tidspunkt_time > garanti_slut_hv or tidspunkt_time < garanti_start_hv)
-                this.status := "Aktivt garantivognløb - Garanti: " garanti_start_hv ":00 - " garanti_slut_hv ":00 i dag " ugedag
+                return ; slutresultat
+            }
+            else
+            {
+                this.status := "garantivognløb uden for garanti - Garanti: " FormatTime(garanti_start_hv, "HH:mm") "-" FormatTime(garanti_slut_hv, "HH:mm") " i dag " ugedag
+                
+                return ; slutresultat
+            }
         }
 
         ; tjek weekendtider
         if (ugedag_tal > 5)
         {
-            garanti_start_we := SubStr(global_garanti_data[this.array_plads][4], 1, 2)
-            garanti_slut_we := SubStr(global_garanti_data[this.array_plads][4], 9, 2)
 
+            if (tidspunkt <= garanti_slut_we or tidspunkt >= garanti_start_we)
+                this.status := "Aktivt garantivognløb - Garanti: " FormatTime(garanti_start_hv, "HH:mm") "-" FormatTime(garanti_slut_hv, "HH:mm") " i dag " ugedag
 
-            if (tidspunkt_time < garanti_slut_we or tidspunkt_time > garanti_start_we)
-                this.status := "Aktivt garantivognløb - Garanti: " garanti_start_we ":00 - " garanti_slut_we ":00 i dag " ugedag
-
-            if (tidspunkt_time > garanti_slut_we or tidspunkt_time < garanti_start_we)
-                this.status := "Aktivt garantivognløb - Garanti: " garanti_start_we ":00 - " garanti_slut_we ":00 i dag " ugedag
+            if (tidspunkt >= garanti_slut_we or tidspunkt <= garanti_start_we)
+                this.status := "garantivognløb uden for garanti - Garanti: " FormatTime(garanti_start_hv, "HH:mm") "-" FormatTime(garanti_slut_hv, "HH:mm") " i dag " ugedag
         }
-        ; if (global_garanti_data[this.array_plads][3])
-        ; this.status := "Aktivt garantivognløb"
-        return
+        throw Error("Intet resultat opnået")
     }
 }
