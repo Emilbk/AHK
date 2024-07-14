@@ -65,11 +65,11 @@ class vognløbObj extends Object
     unpack_garantidata(p_kørselsaftale)
     {
         if p_kørselsaftale
+            kørselsaftale := p_kørselsaftale
+        if !p_kørselsaftale
             kørselsaftale := this.kørselsaftale
         if !kørselsaftale
             throw Error("Der er ikke defineret en kørselsaftale")
-        for i, e in global_garanti_data
-            if (global_garanti_data[i][2] = kørselsaftale)
             {
                 this.garanti_periode_hv := e[3]
                 this.garanti_periode_we := e[4]
