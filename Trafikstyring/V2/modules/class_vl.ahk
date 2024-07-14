@@ -4,17 +4,7 @@ class vognløbObj extends Object
 
     __New(vognløbsnummer := 0) {
         this.vognløbsnummer := vognløbsnummer
-        this.vognløbsdato := 0
-        this.kørselsaftale_uden_styresystem := 0
-        this.styresystem := 0
-        this.kørselsaftale := this.kørselsaftale_uden_styresystem "_" this.styresystem
-        this.gv := 0
-        this.gv_aktiv := 0
-        this.status := 0
-        this.garanti_periode := 0
-
-        this.array_plads := 0
-        this.ferieuger := 0
+        this.kørselsaftale := 0
     }
 
     ; sdfsdf
@@ -36,8 +26,9 @@ class vognløbObj extends Object
 
         this.vognløbsnummer := indhentet_data[1]
         this.vognløbsdato := indhentet_data[2]
-        this.kørselsaftale := indhentet_data[3]
+        this.kørselsaftale_uden_styresystem := indhentet_data[3]
         this.styresystem := indhentet_data[4]
+        this.kørselsaftale := this.kørselsaftale_uden_styresystem "_" this.styresystem
 
         return
     }
@@ -107,9 +98,10 @@ class vognløbObj extends Object
         else
             dato := A_Now
 
+        this.unpack_garantidata(this.kørselsaftale)
 
         ; tjek om variabelt vognløb
-        this.gv_tjek(this.vognløbsnummer)
+        this.gv_tjek(this.kørselsaftale)
         if not this.gv
             ; skriv tjek om vogngruppevogn
         {
@@ -122,7 +114,6 @@ class vognløbObj extends Object
 
         ; tjek om tvungen ferie
         ugenr := SubStr(FormatTime(dato, "yweek"), 5, 2)
-        this.ferieuger := global_garanti_data[this.array_plads][12]
         if (InStr(this.ferieuger, ugenr))
         {
             this.status := "Garantivognløb m. tvungen ferie uge " ugenr
@@ -135,17 +126,12 @@ class vognløbObj extends Object
         ; tjek om aktiv garantidag
         ugedag := FormatTime(dato, "dddd")
 
-        for i, e in global_garanti_data[this.array_plads]
-            if (i > 4 and i < 12)
-                if (global_garanti_data[1][i] = ugedag)
-                {
-                    if (e = "Nej")
-                    {
-                        this.status := "Garantivognløb på tvunget lukket ugedag - " ugedag
-                        return
-                    }
-
-                }
+        if (this.garanti_%ugedag% = "Nej")
+        {
+            this.status := "Garantivognløb på tvunget lukket ugedag - " ugedag
+        
+            return
+        }
 
         ; tjek om indenfor garantiperiode
         if p_dato
@@ -162,11 +148,11 @@ class vognløbObj extends Object
             ugedag_tal -= 1
 
 
-        garanti_start_hv := SubStr(dato, 1, 8) SubStr(global_garanti_data[this.array_plads][3], 1, 2) . "00"
-        garanti_slut_hv := SubStr(dato, 1, 8) SubStr(global_garanti_data[this.array_plads][3], 9, 2) . "00"
+        garanti_start_hv := SubStr(dato, 1, 8) SubStr(this.garanti_periode_hv, 1, 2) . "00"
+        garanti_slut_hv := SubStr(dato, 1, 8) SubStr(this.garanti_periode_hv, 9, 2) . "00"
 
-        garanti_start_we := SubStr(dato, 1, 8) SubStr(global_garanti_data[this.array_plads][4], 1, 2) . "00"
-        garanti_slut_we := SubStr(dato, 1, 8) SubStr(global_garanti_data[this.array_plads][4], 9, 2) . "00"
+        garanti_start_we := SubStr(dato, 1, 8) SubStr(this.garanti_periode_we, 1, 2) . "00"
+        garanti_slut_we := SubStr(dato, 1, 8) SubStr(this.garanti_periode_we, 9, 2) . "00"
 
 
         ; skriv tjek over midnat
@@ -187,7 +173,7 @@ class vognløbObj extends Object
             else
             {
                 this.status := "garantivognløb uden for garanti - Garanti: " FormatTime(garanti_start_hv, "HH:mm") "-" FormatTime(garanti_slut_hv, "HH:mm") " i dag " ugedag
-                
+
                 return ; slutresultat
             }
         }
