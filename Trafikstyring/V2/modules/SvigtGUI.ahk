@@ -20,7 +20,8 @@ SvigtGUI.MenuBar := SvigtGUI_menu
 
 SvigtGUI_vognløbsnummer_tekst := SvigtGUI.Add("Text", "x16 y5 w120 h23", "Vognløbsnummer")
 SvigtGUI_vognløbsnummer_edit := SvigtGUI.Add("Edit", "vvognløbsnummer_edit x16 y29 w120 h21", "Vognløb")
-SvigtGUI_vognløb_status := SvigtGUI.Add("Text", "x16 y58 h50 w100", "Garantiperiode: blalbalba")
+SvigtGUI_vognløb_status := SvigtGUI.Add("Text", "x16 y58 h200 w100", "Garantiperiode: blalbalba")
+SvigtGUI_vognløb_status.SetFont("bold")
 SvigtGUI_gvlukket_groupbox := SvigtGUI.Add("Groupbox", "x150 y5 w140 h130", "Hvis &GV lukket:")
 SvigtGUI_gvluk_radio_åbningstid := SvigtGUI.Add("Radio", "vgvluk_radio_åbningstid x160 y30", "&Åbningstid udskudt")
 SvigtGUI_gvluk_radio_lukket := SvigtGUI.Add("Radio", "vgvluk_radio_lukket x160 y70", "Lukket &midt på VL")
@@ -34,20 +35,22 @@ SvigtGUI_vl_type_radio_gv := SvigtGUI.Add("Radio", "vvl_type_garanti x304 y29 h1
 SvigtGUI_vl_type_radio_gv_variabel := SvigtGUI.Add("Radio", "vvl_type_gv_variabel x304 y45 w120 h32", "Garantivognløb i variabel tid")
 SvigtGUI_vl_type_radio_variabel := SvigtGUI.Add("Radio", "vvl_type_variabel x304 y77 h23", "&Variabel")
 SvigtGUI_vl_type_radio_vogngruppe := SvigtGUI.Add("Radio", "vvl_type_vogngruppe x304 y97 h32", "&Vogngruppe")
-SvigtGUI_årsag_tekst := SvigtGUI.Add("Text", "x16 y125 w120 h23", "Årsag (valgfri):")
-SvigtGUI_årsag_edit := SvigtGUI.Add("Edit", "vårsag x16 y140 w120 h21")
+
+; flyttet +100 ned herfra
+SvigtGUI_årsag_tekst := SvigtGUI.Add("Text", "x16 y225 w120 h23", "Årsag (valgfri):")
+SvigtGUI_årsag_edit := SvigtGUI.Add("Edit", "vårsag x16 y240 w120 h21")
 SvigtGUI_årsag_tekst.SetFont("bold")
 
-SvigtGUI_vm_kontakt_groupbox := SvigtGUI.Add("Groupbox", "x150 y135 w283 h48", "Kontakt til vognmand")
-SvigtGUI_vm_kontakt_radio_ja := SvigtGUI.Add("Radio", "vvm_kontakt_ja x160 y152 h23", "Kontaktet")
-SvigtGUI_vm_kontakt_radio_nej := SvigtGUI.Add("Radio", "vvm_kontakt_nej x240 y152 h23", "Forgæves kontakt")
-SvigtGUI_vm_kontakt_tid_edit := SvigtGUI.Add("Edit", "vvm_kontakt_tid x360 y152 w50", "Ca. kl.")
-SvigtGUI_beskrivelse_tekst := SvigtGUI.Add("Text", "x16 y165 h23 w100", "&Beskrivelse:")
-SvigtGUI_beskrivelse_edit := SvigtGUI.Add("Edit", "vbeskrivelse_edit x16 y185 w410 h106")
+SvigtGUI_vm_kontakt_groupbox := SvigtGUI.Add("Groupbox", "x150 y235 w283 h48", "Kontakt til vognmand")
+SvigtGUI_vm_kontakt_radio_ja := SvigtGUI.Add("Radio", "vvm_kontakt_ja x160 y252 h23", "Kontaktet")
+SvigtGUI_vm_kontakt_radio_nej := SvigtGUI.Add("Radio", "vvm_kontakt_nej x240 y252 h23", "Forgæves kontakt")
+SvigtGUI_vm_kontakt_tid_edit := SvigtGUI.Add("Edit", "vvm_kontakt_tid x360 y252 w50", "Ca. kl.")
+SvigtGUI_beskrivelse_tekst := SvigtGUI.Add("Text", "x16 y265 h23 w100", "&Beskrivelse:")
+SvigtGUI_beskrivelse_edit := SvigtGUI.Add("Edit", "vbeskrivelse_edit x16 y285 w410 h106")
 SvigtGUI_beskrivelse_tekst.SetFont("bold")
-SvigtGUI_forrige_skærmprint_checkbox := SvigtGUI.Add("CheckBox", "vforrige_skærmprint_checkbox x16 y299", "Brug &forrige skærmprint")
-SvigtGUI_vis_mail_button := SvigtGUI.Add("Button", "vsendmail_button x160 y314 w60 h23 +default", "&Vis")
-SvigtGUI_send_mail_button := SvigtGUI.Add("Button", "vvismail_button x240 y314 w60 h23 +default", "&Send")
+SvigtGUI_forrige_skærmprint_checkbox := SvigtGUI.Add("CheckBox", "vforrige_skærmprint_checkbox x16 y399", "Brug &forrige skærmprint")
+SvigtGUI_vis_mail_button := SvigtGUI.Add("Button", "vsendmail_button x160 y414 w60 h23 +default", "&Vis")
+SvigtGUI_send_mail_button := SvigtGUI.Add("Button", "vvismail_button x240 y414 w60 h23 +default", "&Send")
 
 SvigtGUI_vis_mail_button.Onevent("Click", SvigtGUI_vis_mail_funk)
 SvigtGUI_vl_type_radio_gv.Onevent("Click", SvigtGUI_vl_type_radio_gv_funk)
@@ -176,7 +179,8 @@ SvigtGUI_vl_type_radio_variabel_funk(*)
     return
 }
 
-SvigtGUIresetfunk(vl_type)
+; Reset GUI-state
+SvigtGUIresetfunk()
 {
     SvigtGUI_gvluk_radio_slettet.Enabled := 0
     SvigtGUI_gvluk_radio_slettet.Value := 0
@@ -202,26 +206,9 @@ SvigtGUIresetfunk(vl_type)
     if (DllCall("IsClipboardFormatAvailable", "uint", 2))
     {
         SvigtGUI_forrige_skærmprint_checkbox.Enabled := 1
+    ; Reset GUI-state
     }
 
-    if (vl_type := "variabel")
-    {
-        SvigtGUI_vl_type_radio_variabel.Value := 1
-        SvigtGUI_vl_type_radio_variabel_funk()
-        SvigtGUI_beskrivelse_edit.Focus()
-    }
-    if (vl_type := "gv")
-    {
-        SvigtGUI_vl_type_radio_gv.Value := 1
-        SvigtGUI_vl_type_radio_gv_funk()
-        SvigtGUI_beskrivelse_edit.Focus()
-    }
-    if (vl_type := "gv_variabel")
-    {
-        SvigtGUI_vl_type_radio_gv_variabel.Value := 1
-        SvigtGUI_vl_type_radio_gv_variabel_funk()
-        SvigtGUI_beskrivelse_edit.Focus()
-    }
 
 
     return
