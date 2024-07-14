@@ -62,14 +62,41 @@ class vognløbObj extends Object
         }
 
     }
+
+
+    ; udfolder garantidataarray for en given kørselsaftale
+    unpack_garantidata(p_kørselsaftale)
+    {
+        for i, e in global_garanti_data
+            if (global_garanti_data[i][2] = p_kørselsaftale)
+            {
+                this.garanti_periode_hv := e[3]
+                this.garanti_periode_we := e[4]
+                this.garanti_mandag := e[5]
+                this.garanti_tirdag := e[6]
+                this.garanti_onsdag := e[7]
+                this.garanti_tordag := e[8]
+                this.garanti_fredag := e[9]
+                this.garanti_lørdag := e[10]
+                this.garanti_søndag := e[11]
+                this.ferieuger := e[12]
+                this.garanti_25_26 := e[13]
+                this.garanti_31_01 := e[14]
+
+                return
+
+            }
+
+
+    }
     ; TODO mulighed for at tage kun dato, ikke tid, som parameter
     ; Vognløbets aktuelle status hvad angår garantiperiode/variabel
     ; Optional param. dato i YYYYMMDDHH24MI, string. Ellers dags dato
     ; => this.status
-    vognløb_status(p_dato := 0)
+    vognløb_status(p_dato := 0, p_kørselsaftale := 0)
     {
-        ; tjek vognløbsnummer
-        if !this.kørselsaftale
+        ; tjek kørselsaftale
+        if !this.kørselsaftale or !IsSet(p_kørselsaftale)
             throw Error("Kørselsaftale er ikke defineret")
         ; tjek om dato er givet
         if p_dato
