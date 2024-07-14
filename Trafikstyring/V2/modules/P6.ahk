@@ -460,7 +460,7 @@ P6_hent_data_vognløb_kørselsaftale_og_styresystem()
 }
 
 
-; Return array[4], vognløbsnummer som [1], vognløbsdato som [2], kørselsaftale som [3], styresystem som [4]
+; Return array[4], [1] vognløbsnummer, [2] vognløbsdato, [3] kørselsaftale (uden styresystem), [4] styresystem
 P6_hent_data_vognløb_alt()
 {
     hent_data_vognløb_output := ["", "", "", ""]
