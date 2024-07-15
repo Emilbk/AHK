@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0
 FileEncoding "UTF-8"
+Persistent
 
 #include "modules/opstart.ahk"
 #include "modules/svigtGUI.ahk"
@@ -7,6 +8,7 @@ FileEncoding "UTF-8"
 ; #include "modules/vognløbsdata.ahk"
 #include "modules/class_vl.ahk"
 #include "modules/trafikstyring.ahk"
+#include "test.ahk"
 ; metadata
 
 admin_mail := "ebk@midttrafik.dk"
@@ -14,8 +16,8 @@ admin_mail := "ebk@midttrafik.dk"
 
 
 
-vl := vognløbObj()
-vl.kørselsaftale := "3100_47"
+; vl := vognløbObj()
+; vl.kørselsaftale := "3100_47"
 ; vl.unpack_garantidata("34352")
 ; vl.kørselsaftale := "3256_26" ; gv over midnat
 ; ; vl.kørselsaftale := "3253_22" ; gv med forskellige periode hverdag og weekend
@@ -33,20 +35,11 @@ send_fejl_meddelelse(Exception, *)
     return
 }
 
-opret_svigt()
+opret_svigt(p_vl_obj)
 {
-    svigt_vl := vognløbObj()
+    svigt_vl := p_vl_obj
 
-    ; hent vognløbsdata
-    ; data := P6_hent_data_vognløb_alt()
-    ; svigt_vl.vognløbsnummer := data[1]
-    ; svigt_vl.kørselsaftale := data[3] "_" data[4]
-    ; svigt_vl.vognløbsdato := data[2]
 
-    svigt_vl.vognløbsnummer := "31200"
-    svigt_vl.kørselsaftale := "3100_47" ; gv over midnat
-    ; svigt_vl.kørselsaftale := "3100_47"
-    svigt_vl.vognløbsdato := A_Now
     svigt_vl.vognløb_status()
 
 
