@@ -69,7 +69,10 @@ return
 
 !e::
 {
-    opret_svigt()
+    vl := vognløbObj()
+    vl_data := P6_hent_data_vognløb_alt()
+    vl.hent_data_vognløb_alt_obj(vl_data)
+    opret_svigt(vl)
 
     return
 }
