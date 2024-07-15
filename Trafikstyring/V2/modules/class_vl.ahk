@@ -8,11 +8,31 @@ class vognløbObj extends Object
         this.garantivogn_tjek := 0
         this.gv := 0
         this.gv_variabel := 0
-        this.variabel :=
-            this.vogngruppe := 0
+        this.variabel := 0
+        this.vogngruppe := 0
+        this.garanti_data := 0
+        
+        this.garanti_data := vognløbObj.indhent_garanti_data()
     }
 
-    ; sdfsdf
+    static indhent_garanti_data()
+    {
+        gv_garantidage_fil := "lib/gv_garantidage.tsv"
+        garanti_data_input := FileRead(gv_garantidage_fil)
+        garanti_data_input := StrReplace(garanti_data_input, "`r", "")
+        garanti_data_input := StrSplit(garanti_data_input, "`n")
+        garanti_data_output := []
+
+        for i, e in garanti_data_input
+        {
+            garanti_data_output.Push(StrSplit(garanti_data_input[i], "`t"))
+        }
+        garanti_data_input := unset
+
+
+        return garanti_data_output
+    }
+
 
 
     ; input map(vognløbsnummer, vognløbsdato, kørselsaftale, styresystem)
@@ -39,9 +59,9 @@ class vognløbObj extends Object
         if this.kørselsaftale = 0
             throw Error("Kørselsaftale er ikke defineret.")
 
-        for i, e in global_garanti_data
+        for i, e in this.garanti_data
         {
-            if (global_garanti_data[i][2] = this.kørselsaftale)
+            if (this.garanti_data[i][2] = this.kørselsaftale)
             {
                 this.garantivogn_tjek := 1
                 this.array_plads := i
@@ -64,8 +84,8 @@ class vognløbObj extends Object
             throw Error("Der er ikke defineret en kørselsaftale")
         try
         {
-            for i, e in global_garanti_data
-                if (global_garanti_data[i][2] = kørselsaftale)
+            for i, e in this.garanti_data
+                if (this.garanti_data[i][2] = kørselsaftale)
                 {
                     this.garanti_periode_hv := e[3]
                     this.garanti_periode_we := e[4]
