@@ -463,23 +463,23 @@ P6_hent_data_vognløb_kørselsaftale_og_styresystem()
 ; Return array[4], [1] vognløbsnummer, [2] vognløbsdato, [3] kørselsaftale (uden styresystem), [4] styresystem
 P6_hent_data_vognløb_alt()
 {
-    hent_data_vognløb_output := ["", "", "", ""]
+    hent_data_vognløb_output := map()
     indhentet_data := ""
 
     P6_nav_aktiver()
     P6_nav_planbillede()
 
-    for index, data in ["vognløbsnummer", "vognløbsdato", "kørselsaftale", "styresystem"]
+    for index, ønsket_data in ["vognløbsnummer", "vognløbsdato", "kørselsaftale", "styresystem"]
     {
-        indhentet_data := P6_hent_data_vognløb_funk(data)
+        indhentet_data := P6_hent_data_vognløb_funk(ønsket_data)
         if (indhentet_data == "fejl")
         {
-            hent_data_vognløb_output[index] := indhentet_data
+            hent_data_vognløb_output[ønsket_data] := indhentet_data
             break
 
         }
 
-        hent_data_vognløb_output[index] := indhentet_data
+        hent_data_vognløb_output[ønsket_data] := indhentet_data
     }
 
     return hent_data_vognløb_output
