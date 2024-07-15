@@ -15,24 +15,16 @@ class vognløbObj extends Object
     ; sdfsdf
 
 
-    ;
-    hent_data_vognløb_alt_obj()
+    ; input map(vognløbsnummer, vognløbsdato, kørselsaftale, styresystem)
+    ; omskriv som del af anden funktion?
+    hent_data_vognløb_alt_obj(data)
     {
 
-        ; P6_nav_aktiver()
-        ; P6_nav_planbillede()
 
-        for index, data in ["vognløbsnummer", "vognløbsdato", "kørselsaftale", "styresystem"]
-        {
-            indhentet_data := ["31320", A_Now, "3100", "47"]
-            ; indhentet_data := P6_hent_data_vognløb_funk(data)
-
-        }
-
-        this.vognløbsnummer := indhentet_data[1]
-        this.vognløbsdato := indhentet_data[2]
-        this.kørselsaftale_uden_styresystem := indhentet_data[3]
-        this.styresystem := indhentet_data[4]
+        this.vognløbsnummer := data("vognløbsnummer")
+        this.vognløbsdato := data("vognløbsdato") 
+        this.kørselsaftale_uden_styresystem := data("kørselsaftale") 
+        this.styresystem := data("styresystem")
         this.kørselsaftale := this.kørselsaftale_uden_styresystem "_" this.styresystem
 
         return
