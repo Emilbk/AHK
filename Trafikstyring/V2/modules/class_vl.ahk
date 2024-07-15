@@ -75,7 +75,7 @@ class vognløbObj extends Object
     ; udfolder garantidataarray for en given kørselsaftale
     unpack_garantidata(p_kørselsaftale)
     {
-        OnError send_fejl_meddelelse
+        ; OnError send_fejl_meddelelse ; unassigned variable?
         if p_kørselsaftale
             kørselsaftale := p_kørselsaftale
         if !p_kørselsaftale
@@ -107,7 +107,7 @@ class vognløbObj extends Object
         }
         catch as e
         {
-            send_fejl_meddelelse(e)
+            ; send_fejl_meddelelse(e) ; unassigned variable?
             return
         }
     }
