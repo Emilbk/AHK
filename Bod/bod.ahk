@@ -30,12 +30,13 @@ outlook := ComObjCreate("Outlook.application")
     KeyWait, alt
     sleep 300
     SendInput, {down}
-    sleep 400
+    sleep 200
     SendInput, {down}
+    sleep 200
     SendInput, {enter}
+    sleep 500
+    SendInput, {ShiftDown}{tab 4}{ShiftUp}
     sleep 300
-    SendInput, {ShiftDown}{tab 3}{ShiftUp}
-    sleep 100
     SendInput, fg - vognløb lukket/
     sleep 100
     SendInput, {return}
@@ -51,16 +52,17 @@ outlook := ComObjCreate("Outlook.application")
                     MsgBox, , , Svigtmappe ikke åben
                     return
                 }
-            sleep 150
+            
+            WinWaitActive Planet - Svigt til behandling - Planet - Outlook
             controlfocus, outlookgrid1, Planet - Svigt til behandling - Planet - Outlook
-            sleep 150
+            sleep 200
             sendinput, {appskey}
             ; ControlClick, Outlookgrid1, Planet - Svigt til behandling - Planet - Outlook, , Right, 1
             ; ControlSend, Outlookgrid1, {AppsKey}, Planet - Svigt til behandling - Planet - Outlook
             ; return
             sleep 240
             sendinput, h
-            sleep 90
+            sleep 250
             sendinput, {enter}
             ; ; sleep 500
             ; ; sendinput, {up}
@@ -85,6 +87,11 @@ outlook := ComObjCreate("Outlook.application")
                                 Clipboard := substr(mailbody[i], 28)
                                 break
                             }
+               if InStr(mailbody[i], "Beskrivelse af hændelsen")
+                            {
+                                Clipboard := substr(mailbody[i], 28)
+                                break
+                            }
                         if InStr(mailbody[i], "Beskrivelse af anden orientering")
                             {
                                 Clipboard := substr(mailbody[i], 28)
@@ -93,7 +100,7 @@ outlook := ComObjCreate("Outlook.application")
                     }
                 
                 sleep 150
-                ; SendInput, {tab}
+                SendInput, {tab}
                 sendinput, {f2} ^v
                 sleep 200
                 SendInput, {tab}
@@ -109,7 +116,7 @@ outlook := ComObjCreate("Outlook.application")
                     mailbody.RemoveAt(1)
                 Clipboard := mailbody[1]
                 sleep 150
-                ; SendInput, {tab}
+                SendInput, {tab}
                 sendinput, {f2}
                 sleep 40
                 sendinput ^v
@@ -123,6 +130,8 @@ outlook := ComObjCreate("Outlook.application")
             }
 
             winactivate Planet - Svigt til behandling - Planet - Outlook
+            WinWaitActive Planet - Svigt til behandling - Planet - Outlook
+
             sleep 100
             controlfocus, _WwG1 , Planet - Svigt til behandling - Planet - Outlook
             sleep 300
@@ -135,6 +144,7 @@ outlook := ComObjCreate("Outlook.application")
                 if (omgang < 5)
                 {
                     winactivate Planet - Svigt til behandling - Planet - Outlook
+            WinWaitActive Planet - Svigt til behandling - Planet - Outlook
                     sleep 100
                     controlfocus, _WwG1 , Planet - Svigt til behandling - Planet - Outlook
                     sleep 300
