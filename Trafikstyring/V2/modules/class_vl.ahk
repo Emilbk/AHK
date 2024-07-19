@@ -41,10 +41,10 @@ class vognløbObj extends Object
     {
 
 
-        this.vognløbsnummer := data("vognløbsnummer")
-        this.vognløbsdato := data("vognløbsdato")
-        this.kørselsaftale_uden_styresystem := data("kørselsaftale")
-        this.styresystem := data("styresystem")
+        this.vognløbsnummer := data["vognløbsnummer"]
+        this.vognløbsdato := data["vognløbsdato"]
+        this.kørselsaftale_uden_styresystem := data["kørselsaftale"]
+        this.styresystem := data["styresystem"]
         this.kørselsaftale := this.kørselsaftale_uden_styresystem "_" this.styresystem
 
         return
