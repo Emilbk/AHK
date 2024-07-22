@@ -5,15 +5,24 @@ class vognløbObj extends Object
     __New(vognløbsnummer := 0) {
         this.vognløbsnummer := vognløbsnummer
         this.kørselsaftale := 0
-        this.garantivogn_tjek := 0
-        this.gv := 0
         this.vognløbsdato_timestamp := 0
 
+        ; vognløbsstatus, gv eller variabel
+        this.gv_bool := 0
+
+        ; gv
+        this.gv_tvungen_ferie := 0
+        this.gv_tvungen_lukkedag := 0
+
+
+        this.vl_type := 0
+        this.aktiv_gv := 0
         this.gv_variabel := 0
         this.variabel := 0
         this.vogngruppe := 0
+
+        ; Garantidata
         this.garanti_data := 0
-        
         this.garanti_data := vognløbObj.indhent_garanti_data()
     }
 
@@ -34,7 +43,6 @@ class vognløbObj extends Object
 
         return garanti_data_output
     }
-
 
 
     ; input map(vognløbsnummer, vognløbsdato, kørselsaftale, styresystem)
@@ -66,7 +74,7 @@ class vognløbObj extends Object
         {
             if (this.garanti_data[i][2] = this.kørselsaftale)
             {
-                this.garantivogn_tjek := 1
+                this.gv_bool := 1
                 this.array_plads := i
                 break
             }
@@ -135,17 +143,17 @@ class vognløbObj extends Object
         this.gv_tjek(this.kørselsaftale)
 
         ; tjek om variabelt vognløb
-        if !this.garantivogn_tjek
+        if !this.gv_bool
             ; skriv tjek om vogngruppevogn
         {
-            this.variabel := 1
+            this.vl_type := "variabel"
             this.status := "Variabelt driftsvognløb"
             return
         }
 
         ; hvis gv:
 
-        if this.garantivogn_tjek
+        if this.gv_bool
         {
             this.unpack_garantidata(this.kørselsaftale)
             ; skriv jul/nytårtjek
@@ -155,7 +163,8 @@ class vognløbObj extends Object
             if (InStr(this.ferieuger, ugenr))
             {
                 this.status := "Garantivognløb m. tvungen ferie uge " ugenr
-                this.gv_variabel := 1
+                this.vl_type := "variabel garanti"
+                this.gv_tvungen_ferie := ugenr
                 return
             }
 
@@ -168,7 +177,8 @@ class vognløbObj extends Object
             if (this.garanti_%ugedag% = "Nej")
             {
                 this.status := "Garantivognløb på tvunget lukket ugedag - " ugedag
-                this.gv_variabel := 1
+                this.vl_type := "variabel garanti"
+                this.gv_tvungen_lukkedag := ugedag
                 return
             }
 
@@ -205,7 +215,7 @@ class vognløbObj extends Object
                 if (tidspunkt <= garanti_slut_hv and tidspunkt >= garanti_start_hv)
                 {
                     this.status := "Aktivt garantivognløb`n`nGaranti " ugedag ":`n" FormatTime(garanti_start_hv, "HH:mm") "-" FormatTime(garanti_slut_hv, "HH:mm")
-                    this.gv := 1
+                    this.vl_type := "aktiv garanti"
                     this.garanti_periode := garanti_start_hv "-" garanti_slut_hv
 
                     return ; slutresultat
@@ -213,7 +223,7 @@ class vognløbObj extends Object
                 else
                 {
                     this.status := "Garantivognløb udenfor garanti`n`nGaranti " ugedag ":`n" FormatTime(garanti_start_hv, "HH:mm") "-" FormatTime(garanti_slut_hv, "HH:mm")
-                    this.gv_variabel := 1
+                    this.vl_type := "variabel garanti"
                     return ; slutresultat
                 }
             }
@@ -223,10 +233,17 @@ class vognløbObj extends Object
             {
 
                 if (tidspunkt <= garanti_slut_we or tidspunkt >= garanti_start_we)
+                {
                     this.status := "Aktivt garantivognløb`n`nGaranti " ugedag ":`n" FormatTime(garanti_start_hv, "HH:mm") "-" FormatTime(garanti_slut_hv, "HH:mm")
+                    this.vl_type := "aktiv garanti"
+
+                }
 
                 if (tidspunkt >= garanti_slut_we or tidspunkt <= garanti_start_we)
+                {
                     this.status := "Garantivognløb udenfor garanti`n`nGaranti " ugedag ":`n" FormatTime(garanti_start_hv, "HH:mm") "-" FormatTime(garanti_slut_hv, "HH:mm")
+                    this.vl_type := "variabel garanti"
+                }
             }
         }
         throw Error("Intet resultat opnået")
