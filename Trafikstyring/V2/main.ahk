@@ -70,9 +70,9 @@ return
 
 !e::
 {
-    vl_data := P6_hent_data_vognløb_alt()
-    test_vl.hent_data_vognløb_alt_obj(vl_data)
-    opret_svigt(test_vl)
+    ; vl_data := P6_hent_data_vognløb_alt()
+    ; test_vl.hent_data_vognløb_alt_obj(vl_data)
+    ; opret_svigt(test_vl)
 
     return
 }
