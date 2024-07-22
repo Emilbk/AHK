@@ -37,26 +37,26 @@ send_fejl_meddelelse(Exception, *)
 
 opret_svigt(p_vl_obj)
 {
-    svigt_vl := p_vl_obj
+    tid_for_svigt := p_vl_obj.vognløbsdato_timestamp . SubStr(a_now, -6, 6)
 
-
-    svigt_vl.vognløb_status()
+    MsgBox(FormatTime(tid_for_svigt, "HH:mm"))
+    p_vl_obj.vognløb_status()
 
 
     SvigtGUIresetfunk()
 
-    SvigtGUI.Title := "Svigt vl. " svigt_vl.vognløbsnummer " d. " FormatTime(svigt_vl.vognløbsdato, "dd/MM/yy") " kl. " FormatTime(svigt_vl.vognløbsdato, "HH:mm")
-    SvigtGUI_vognløbsnummer_edit.Value := svigt_vl.vognløbsnummer
-    SvigtGUI_vognløb_status.Text := svigt_vl.status
+    SvigtGUI.Title := "Svigt vl. " p_vl_obj.vognløbsnummer " d. " FormatTime(p_vl_obj.vognløbsdato_timestamp, "dd-MM-yy") " kl. " FormatTime(tid_for_svigt, "HH:mm")
+    SvigtGUI_vognløbsnummer_edit.Value := p_vl_obj.vognløbsnummer
+    SvigtGUI_vognløb_status.Text := p_vl_obj.status
 
 
-    if svigt_vl.gv
+    if p_vl_obj.vl_type = "aktiv garanti"
         SvigtGUI_vl_type_radio_gv.Value := 1
-    if svigt_vl.gv_variabel
+    if p_vl_obj.vl_type = "variabel garanti"
         SvigtGUI_vl_type_radio_gv_variabel.Value := 1
-    if svigt_vl.variabel
+    if p_vl_obj.vl_type = "variabel"
         SvigtGUI_vl_type_radio_variabel.Value := 1
-    if svigt_vl.vogngruppe
+    if p_vl_obj.vl_type = "vogngruppe"
         SvigtGUI_vl_type_radio_vogngruppe.Value := 1
 
 
@@ -67,12 +67,12 @@ opret_svigt(p_vl_obj)
 
 return
 
+
 !e::
 {
-    vl := vognløbObj()
     vl_data := P6_hent_data_vognløb_alt()
-    vl.hent_data_vognløb_alt_obj(vl_data)
-    opret_svigt(vl)
+    test_vl.hent_data_vognløb_alt_obj(vl_data)
+    opret_svigt(test_vl)
 
     return
 }
