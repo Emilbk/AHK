@@ -7,6 +7,8 @@ class vognløbObj extends Object
         this.kørselsaftale := 0
         this.garantivogn_tjek := 0
         this.gv := 0
+        this.vognløbsdato_timestamp := 0
+
         this.gv_variabel := 0
         this.variabel := 0
         this.vogngruppe := 0
@@ -45,6 +47,7 @@ class vognløbObj extends Object
         this.vognløbsdato := data["vognløbsdato"]
         this.kørselsaftale_uden_styresystem := data["kørselsaftale"]
         this.styresystem := data["styresystem"]
+        this.vognløbsdato_timestamp := SubStr(this.vognløbsdato, -4, 4) . SubStr(this.vognløbsdato, 4, 2) . SubStr(this.vognløbsdato, 1, 2)
         this.kørselsaftale := this.kørselsaftale_uden_styresystem "_" this.styresystem
 
         return
