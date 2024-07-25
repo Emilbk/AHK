@@ -101,7 +101,7 @@ class vognløbObj extends Object
                     this.garanti_periode_hv := e[3]
                     this.garanti_periode_we := e[4]
                     this.garanti_mandag := e[5]
-                    this.garanti_tirdag := e[6]
+                    this.garanti_tirsdag := e[6]
                     this.garanti_onsdag := e[7]
                     this.garanti_tordag := e[8]
                     this.garanti_fredag := e[9]
