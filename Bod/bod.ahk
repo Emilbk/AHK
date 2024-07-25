@@ -101,8 +101,11 @@ outlook := ComObjCreate("Outlook.application")
                 
                 sleep 150
                 SendInput, {tab}
-                sendinput, {f2} ^v
-                sleep 200
+                sleep 50
+                sendinput, {f2}
+                sleep 100
+                SendInput, ^v
+                sleep 280
                 SendInput, {tab}
                 sleep 40
                 SendInput, mtebk{tab}
@@ -117,10 +120,11 @@ outlook := ComObjCreate("Outlook.application")
                 Clipboard := mailbody[1]
                 sleep 150
                 SendInput, {tab}
+                sleep 50
                 sendinput, {f2}
-                sleep 40
+                sleep 100
                 sendinput ^v
-                sleep 200
+                sleep 280
                 SendInput, {tab}
                 sleep 40
                 SendInput, mtebk{tab}
