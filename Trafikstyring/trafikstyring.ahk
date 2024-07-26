@@ -3136,7 +3136,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
             FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
             vl_array := vlliste_priv_lav_array(vl)
             vlliste_vl_array_til_liste(vl_array)
-            P6_notat("Pausen ikke kvitteret, tekst og pause sendt til chf" initialer " ")
+            P6_notat("Pausen ikke kvitteret, tekst sendt til chf" initialer " ")
             gui, cancel
             sys_afslut_genvej()
             return
