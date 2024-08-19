@@ -210,7 +210,7 @@ if (bruger_genvej.71 = 1)
     }
     if not WinExist("ahk_class Addressbook")
     {
-        ControlClick, x368 y68, ahk_class Agent Main GUI , , ,, ,,
+            ControlClick, x373 y72, ahk_class Agent Main GUI
     }
 }
 ;if not WinExist("ahk_exe OUTLOOK.EXE")
@@ -4587,11 +4587,7 @@ vlliste_vis_note_fra_planbillede()
 Trio_opkald(telefon)
 {
     ifWinNotExist, ahk_class Addressbook
-    {
-        ; ControlClick, x368 y68, ahk_class Agent Main GUI , , ,, ,, ; Main vindue
-        ControlClick, x365 y18, Trio Agent, , ,, ,, ; Skrivebordsværkstøjsline
-        sleep 100
-    }
+            ControlClick, x373 y72, ahk_class Agent Main GUI
     ; ControlGetText, OutputVar [, Control, WinTitle, WinText, ExcludeTitle, ExcludeText]
     ; if (Con)
     trio_pause()
@@ -4613,7 +4609,7 @@ Trio_opkald(telefon)
     while (tlf_test != "")
     {
         if !WinExist("ahk_class Addressbook")
-            ControlClick, ToolbarWindow321, ahk_class Agent Main GUI
+            ControlClick, x373 y72, ahk_class Agent Main GUI
         controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
         sleep 100
         ControlGetText, tlf_test, Edit2, Trio Attendant
