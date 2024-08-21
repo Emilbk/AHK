@@ -504,6 +504,26 @@ Gui opkald: New
 Gui opkald: add, Text, , Opkald på telefonnummer:
 Gui opkald: add, edit, vGuitlf
 
+
+    gui, Taxa:Default
+    Gui, Taxa:Add,Button,vtaxa1,&Århus Taxa
+    Gui, Taxa:Add,Button,vtaxa2,Århus Taxa Sk&ole
+    Gui, Taxa:Add,Button,vtaxa3,&Dantaxi
+    Gui, Taxa:Add,Button,vtaxa4,Taxa &Midt
+    Gui, Taxa:Add,Button,vtaxa5,D&K Taxi
+    menu, FileMenu, add, &Vogngrupper`tAlt+v,central_menu
+    menu, centralmenu, add, &Vogngrupper, :Filemenu
+    gui, menu, centralmenu
+
+        gui, Vogngrupper:Default
+        Gui, Vogngrupper:Add,Button,vcentral1,&Århusstat
+        Gui, Vogngrupper:Add,Button,vcentral2,&Horstat
+        Gui, Vogngrupper:Add,Button,vcentral3,H&olsstat
+        Gui, Vogngrupper:Add,Button,vcentral4,&Silketstat1
+        Gui, Vogngrupper:Add,Button,vcentral5,S&kandstat
+        Gui, Vogngrupper:Add,Button,vcentral6,&Viborgstat
+        Gui, Vogngrupper:Add,Button,vcentral7,&Hernistcar
+        Gui, Vogngrupper:Add,Button,vcentral8,&Silherstat
 ;; END AUTOEXEC
 Return
 +^z::
@@ -5362,40 +5382,22 @@ return
 
 l_p6_central_ring_op:
     sys_genvej_start(19)
-    gui, Taxa:Default
-    Gui,Add,Button,vtaxa1,&Århus Taxa
-    Gui,Add,Button,vtaxa2,Århus Taxa Sk&ole
-    Gui,Add,Button,vtaxa3,&Dantaxi
-    Gui,Add,Button,vtaxa4,Taxa &Midt
-    Gui,Add,Button,vtaxa5,D&K Taxi
-    menu, FileMenu, add, &Vogngrupper`tAlt+v,central_menu
-    menu, centralmenu, add, &Vogngrupper, :Filemenu
-    gui, menu, centralmenu
-    Gui,Show, AutoSize Center , Ring op til central
+    Gui, Taxa:Show, AutoSize Center , Ring op til central
     taxaknap1:=Func("opkaldtaxa").Bind("89484892")
     taxaknap2:=Func("opkaldtaxa").Bind("89484837")
     taxaknap3:=Func("opkaldtaxa").Bind("96341121")
     taxaknap4:=Func("opkaldtaxa").Bind("97120777")
     taxaknap5:=Func("opkaldtaxa").Bind("87113030")
-    GuiControl,+g,taxa1,%taxaknap1%
-    GuiControl,+g,taxa2,%taxaknap2%
-    GuiControl,+g,taxa3,%taxaknap3%
-    GuiControl,+g,taxa4,%taxaknap4%
-    GuiControl,+g,taxa5,%taxaknap5%
+    GuiControl, Taxa:+g,taxa1,%taxaknap1%
+    GuiControl, Taxa:+g,taxa2,%taxaknap2%
+    GuiControl, Taxa:+g,taxa3,%taxaknap3%
+    GuiControl, Taxa:+g,taxa4,%taxaknap4%
+    GuiControl, Taxa:+g,taxa5,%taxaknap5%
 return
 central_menu:
     {
         gui taxa: hide
-        gui, Vogngrupper:Default
-        Gui,Add,Button,vcentral1,&Århusstat
-        Gui,Add,Button,vcentral2,&Horstat
-        Gui,Add,Button,vcentral3,H&olsstat
-        Gui,Add,Button,vcentral4,&Silketstat1
-        Gui,Add,Button,vcentral5,S&kandstat
-        Gui,Add,Button,vcentral6,&Viborgstat
-        Gui,Add,Button,vcentral7,&Hernistcar
-        Gui,Add,Button,vcentral8,&Silherstat
-        Gui,Show, AutoSize Center , Ring op til central
+        Gui, Vogngrupper:Show, AutoSize Center , Ring op til central
         centralknap1:=Func("opkaldtaxa").Bind("89484892")
         centralknap2:=Func("opkaldtaxa").Bind("89484892")
         centralknap3:=Func("opkaldtaxa").Bind("87113030")
@@ -5415,7 +5417,7 @@ central_menu:
         return
     }
     Opkaldtaxa(p*){
-        Gui, Vogngrupper: Destroy
+        Gui, Vogngrupper: hide
         telefon := % p.1
         sleep 100
         tjek := Trio_opkald(telefon)
@@ -5429,24 +5431,21 @@ central_menu:
         trio_klar()
         sys_afslut_genvej()
     }
-VogngrupperGuiClose:
-    sys_afslut_genvej()
-    gui, Destroy
-return
 
 VogngrupperGuiEscape:
+VogngrupperGuiClose:
     sys_afslut_genvej()
-    Gui, Destroy
+    gui, Vogngrupper: Hide
 return
 
 TaxaGuiClose:
     sys_afslut_genvej()
-    gui, Destroy
+    gui, Taxa: Hide
 return
 
 TaxaGuiEscape:
     sys_afslut_genvej()
-    Gui, Destroy
+    Gui, Taxa: Hide
 return
 
 vis_sygehus_1()
