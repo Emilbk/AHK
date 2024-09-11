@@ -33,7 +33,7 @@ P6_nav_aktiver()
 ; Aktiverer alt-menu i P6, tager op til to taste-sekvenser
 P6_nav_alt_menu(tast1, tast2?)
 {
-    SendInput "{alt}"
+    SendInput "{esc}{alt}"
     sleep 20
     Sendinput tast1
     if IsSet(tast2)
