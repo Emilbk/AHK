@@ -4,25 +4,28 @@ class vognløbObj extends Object
 
     __New(vognløbsnummer := 0) {
         this.vognløbsnummer := vognløbsnummer
+        this.telefon_nummer := 0
+        this.vm_telefon_nummer := 0
         this.kørselsaftale := 0
         this.vognløbsdato_timestamp := 0
 
-        ; vognløbsstatus, gv eller variabel
+        ; vognløbsstatus, gv 1 eller variabel 0
         this.gv_bool := 0
 
-        ; gv
+        ; gv tvungen luk
         this.gv_tvungen_ferie := 0
         this.gv_tvungen_lukkedag := 0
 
 
         this.vl_type := 0
+        ; Er gv aktiv på gældende dato?
         this.aktiv_gv := 0
+        ; Er gv aktiv på gældende klokkeslæt?
         this.gv_variabel := 0
         this.variabel := 0
         this.vogngruppe := 0
 
-        ; Garantidata
-        this.garanti_data := 0
+        ; Indhent opdateret garantivognsdata
         this.garanti_data := vognløbObj.indhent_garanti_data()
     }
 
@@ -67,7 +70,7 @@ class vognløbObj extends Object
     {
         if p_kørselsaftale
             this.kørselsaftale := p_kørselsaftale
-        if this.kørselsaftale = 0
+        if !this.kørselsaftale
             throw Error("Kørselsaftale er ikke defineret.")
 
         for i, e in this.garanti_data

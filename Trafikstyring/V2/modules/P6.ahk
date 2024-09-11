@@ -33,7 +33,7 @@ P6_nav_aktiver()
 ; Aktiverer alt-menu i P6, tager op til to taste-sekvenser
 P6_nav_alt_menu(tast1, tast2?)
 {
-    SendInput "{alt}"
+    SendInput "{esc}{alt}"
     sleep 20
     Sendinput tast1
     if IsSet(tast2)
@@ -51,7 +51,7 @@ P6_nav_alt_menu(tast1, tast2?)
 ;
 P6_nav_planbillede()
 {
-    P6_nav_aktiver()
+    ; P6_nav_aktiver()
     P6_nav_alt_menu("tp")
 
     return
@@ -59,7 +59,7 @@ P6_nav_planbillede()
 
 P6_nav_rejsesøg()
 {
-    P6_nav_aktiver()
+    ; P6_nav_aktiver()
     P6_nav_alt_menu("rr")
     sleep 200
     SendInput "^t"
@@ -85,7 +85,7 @@ P6_nav_rejsesøg_hylde(dato, datoslut?)
 
 P6_nav_bestilling()
 {
-    P6_nav_aktiver()
+    ; P6_nav_aktiver()
     P6_nav_alt_menu("rb")
 
     return
@@ -93,7 +93,7 @@ P6_nav_bestilling()
 
 P6_nav_kørselsaftale()
 {
-    P6_nav_aktiver()
+    ; P6_nav_aktiver()
     P6_nav_planbillede()
     P6_nav_alt_menu("tk")
 
@@ -105,7 +105,7 @@ P6_nav_kørselsaftale()
 }
 P6_nav_kundealarm()
 {
-    P6_nav_aktiver()
+    ; P6_nav_aktiver()
     P6_nav_alt_menu("ta")
 
     return
@@ -114,7 +114,7 @@ P6_nav_kundealarm()
 
 p6_nav_udråb()
 {
-    p6_nav_aktiver()
+    ; p6_nav_aktiver()
     p6_nav_alt_menu("ta", "!u")
 
     return
@@ -122,18 +122,25 @@ p6_nav_udråb()
 
 p6_nav_tal()
 {
-    p6_nav_aktiver()
+    ; p6_nav_aktiver()
     p6_nav_alt_menu("ta", "!t")
 
     return
 }
 
-;
+; Opdelt vognløbsbillede-funktion, omskrives?
 
 ; går til aktive vognløbs vognløbsbillede, return true når indlæst
-P6_nav_vognløbsbillede(planbillede_vognløb)
+; omskriv navn, så det giver mening, plus object
+P6_nav_vognløbsbillede(p_vl_obj)
 {
-    P6_nav_aktiver()
+    P6_nav_planbillede()
+    
+    P6_nav_vognløbsbillede_åben(p_vl_obj)
+    return
+}
+P6_nav_vognløbsbillede_åben(p_vl_obj)
+{
 
     sleep 30
     SendInput "^{F12}"
@@ -150,11 +157,11 @@ P6_nav_vognløbsbillede(planbillede_vognløb)
     SendInput "+{F10}c"
     ClipWait 1
     vognløbsbillede_vognløb := A_Clipboard
-    while (vognløbsbillede_vognløb != planbillede_vognløb)
+    while (vognløbsbillede_vognløb != p_vl_obj.vognløbsnummer)
     {
         if (A_Index == 6)
         {
-            return false
+            throw error("VL-nummer ikke indhentet")
         }
         SendInput "!l"
         sleep 10
@@ -166,8 +173,8 @@ P6_nav_vognløbsbillede(planbillede_vognløb)
     return true
 }
 
-;
-P6_nav_vognløbsbillede_ændr_1(planbillede_kørselsaftale)
+
+P6_nav_vognløbsbillede_afsnit_åbningstider(p_vl_obj)
 {
     SendInput "^æ"
     A_Clipboard := ""
@@ -185,7 +192,7 @@ P6_nav_vognløbsbillede_ændr_1(planbillede_kørselsaftale)
     A_Clipboard := ""
     SendInput "+{F10}c"
     ClipWait 0.3
-    while (A_Clipboard != planbillede_kørselsaftale)
+    while (A_Clipboard != p_vl_obj.kørselsaftale)
     {
         if (A_Index == 10)
             return false
@@ -214,25 +221,35 @@ P6_nav_vognløbsbillede_ændr_1(planbillede_kørselsaftale)
 
 }
 
-P6_nav_vognløbsbillede_ændr_2()
+P6_nav_vognløbsbillede_afsnit_åbningstider_afslut()
 {
 
-    SendInput "{enter}"
+    SendInput "{enter} 2"
 
+    return
 }
-P6_nav_vognløbsbillede_ændr_afslut()
+P6_nav_vognløbsbillede_afsnit_telefon(p_vl_obj)
+{
+    P6_nav_vognløbsbillede_afsnit_åbningstider(p_vl_obj)
+
+    SendInput "{enter}"
+    return
+}
+P6_nav_vognløbsbillede_afsnit_telefon_afslut()
 {
 
     SendInput "{enter}"
 
+    return
 }
 ;; P6 indhent data
 
-; Henter tlf fra vl hvis intet parameter, indsætter tlf på vognløb hvis der er
-P6_hent_data_vognløbsbillede_telefon(telefonnummer?)
+; Henter tlfnummer fra vl_obj.vognløbsnummer, hvis p_nyt_telefonnummer defineret indsætter det i stedet
+P6_hent_data_vognløbsbillede_hent_data_telefon(p_vl_obj, p_nyt_telefonnummer?)
 {
     {
-        SendInput "{enter}!ø{tab 2}"
+        ; P6_nav_vognløbsbillede()
+        SendInput "!ø{tab 2}"
         sleep 20
         A_Clipboard := ""
         SendInput "+{F10}c"
@@ -246,11 +263,12 @@ P6_hent_data_vognløbsbillede_telefon(telefonnummer?)
             SendInput "+{F10}c"
             ClipWait 0.3
         }
-        if IsSet(telefonnummer)
+        if IsSet(p_nyt_telefonnummer)
         {
-            SendInput telefonnummer
+            SendInput p_nyt_telefonnummer
             sleep 20
             SendInput "{enter}"
+            p_vl_obj.telefon_nummer := p_nyt_telefonnummer
         }
         else
         {
@@ -258,14 +276,18 @@ P6_hent_data_vognløbsbillede_telefon(telefonnummer?)
             SendInput "+{F10}c"
             ClipWait 0.5
             SendInput "{enter}"
-            return A_Clipboard
+            sleep 20
+            P6_nav_planbillede()
+            p_vl_obj.telefon_nummer := A_Clipboard
+            return 
         }
     }
     return
 }
 
-P6_hent_data_vm_telefon()
+P6_hent_data_vm_telefon(p_vl_obj)
 {
+    P6_nav_planbillede()
     P6_nav_kørselsaftale()
     SendInput "^æ"
     sleep 40
@@ -276,6 +298,7 @@ P6_hent_data_vm_telefon()
     while (StrLen(A_Clipboard) != 8)
     {
         if (a_index == 4)
+            ; omskriv throw
             return false
 
         SendInput "!a{tab 4}"
@@ -285,7 +308,8 @@ P6_hent_data_vm_telefon()
     }
 
     SendInput "^a"
-    return A_Clipboard
+    p_vl_obj.vm_telefon_nummer := A_Clipboard
+    return 
 }
 
 p6_hent_data_rejsesøg_telefon(telefon)
@@ -308,7 +332,7 @@ P6_ret_data_vognløbsbillede_ændre_sluttid(vognløb, kørselsaftale, sluttid, d
 {
     P6_nav_aktiver()
     P6_nav_vognløbsbillede(vognløb)
-    P6_nav_vognløbsbillede_ændr_1(kørselsaftale)
+    P6_nav_vognløbsbillede_afsnit_åbningstider(kørselsaftale)
 
     SendInput "{tab 2}"
     if IsSet(dato)
@@ -336,166 +360,21 @@ P6_ret_data_vognløbsbillede_ændre_sluttid(vognløb, kørselsaftale, sluttid, d
 
 }
 
-; Return array[4], vognløbsnummer som [1]
-P6_hent_data_vognløb_vognløbsnummer()
-{
-    hent_data_vognløb_output := ["", "", "", ""]
-    indhentet_data := ""
 
-    P6_nav_aktiver()
-    P6_nav_planbillede()
-
-    for i, e in ["vognløbsnummer", "", "", ""]
-    {
-        indhentet_data := P6_hent_data_vognløb_funk(e)
-        if (indhentet_data == "fejl")
-        {
-            hent_data_vognløb_output[i] := indhentet_data
-            break
-
-        }
-
-        hent_data_vognløb_output[i] := indhentet_data
-    }
-
-    return hent_data_vognløb_output
-}
-; Return array[4], vognløbsnummer som [1]
-; uden at aktivere planbillede
-P6_hent_data_vognløb_vognløbsnummer_i_planbillede()
-{
-    hent_data_vognløb_output := ["", "", "", ""]
-    indhentet_data := ""
-
-    for i, e in ["vognløbsnummer", "", "", ""]
-    {
-        indhentet_data := P6_hent_data_vognløb_funk(e)
-        if (indhentet_data == "fejl")
-        {
-            hent_data_vognløb_output[i] := indhentet_data
-            break
-
-        }
-
-        hent_data_vognløb_output[i] := indhentet_data
-    }
-
-    return hent_data_vognløb_output
-}
-
-
-; Return array[4], vognløbsdato som [2]
-P6_hent_data_vognløb_vognløbsdato()
-{
-    hent_data_vognløb_output := ["", "", "", ""]
-    indhentet_data := ""
-
-    P6_nav_aktiver()
-    P6_nav_planbillede()
-
-    for i, e in ["", "vognløbsdato", "", ""]
-    {
-        indhentet_data := P6_hent_data_vognløb_funk(e)
-        if (indhentet_data == "fejl")
-        {
-            hent_data_vognløb_output[i] := indhentet_data
-            break
-
-        }
-
-        hent_data_vognløb_output[i] := indhentet_data
-    }
-
-    return hent_data_vognløb_output
-}
-
-
-; Return array[4], vognløbsnummer som [1], vognløbsdato som [2]
-P6_hent_data_vognløb_vognløbsnummer_og_vognløbsdato()
-{
-    hent_data_vognløb_output := ["", "", "", ""]
-    indhentet_data := ""
-
-    P6_nav_aktiver()
-    P6_nav_planbillede()
-
-    for i, e in ["vognløbsnummer", "vognløbsdato", "", ""]
-    {
-        indhentet_data := P6_hent_data_vognløb_funk(e)
-        if (indhentet_data == "fejl")
-        {
-            hent_data_vognløb_output[i] := indhentet_data
-            break
-
-        }
-
-        hent_data_vognløb_output[i] := indhentet_data
-    }
-
-    return hent_data_vognløb_output
-}
-; Return array[4], kørselsaftale som [3], styresystem som [4]
-P6_hent_data_vognløb_kørselsaftale_og_styresystem()
-{
-    hent_data_vognløb_output := ["", "", "", ""]
-    indhentet_data := ""
-
-    P6_nav_aktiver()
-    P6_nav_planbillede()
-
-    for i, e in ["", "", "kørselsaftale", "styresystem"]
-    {
-        indhentet_data := P6_hent_data_vognløb_funk(e)
-        if (indhentet_data == "fejl")
-        {
-            hent_data_vognløb_output[i] := indhentet_data
-            break
-
-        }
-
-        hent_data_vognløb_output[i] := indhentet_data
-    }
-
-    return hent_data_vognløb_output
-}
-
-
-; Return array[4], [1] vognløbsnummer, [2] vognløbsdato, [3] kørselsaftale (uden styresystem), [4] styresystem
-P6_hent_data_vognløb_alt()
-{
-    hent_data_vognløb_output := map()
-    indhentet_data := ""
-
-    P6_nav_aktiver()
-    P6_nav_planbillede()
-
-    for index, ønsket_data in ["vognløbsnummer", "vognløbsdato", "kørselsaftale", "styresystem"]
-    {
-        indhentet_data := P6_hent_data_vognløb_funk(ønsket_data)
-        if (indhentet_data == "fejl")
-        {
-            hent_data_vognløb_output[ønsket_data] := indhentet_data
-            break
-
-        }
-
-        hent_data_vognløb_output[ønsket_data] := indhentet_data
-    }
-
-    return hent_data_vognløb_output
-}
-
-
-; Tager valgt 1 datatype som input, "vognløb", "vognløbsdato", "kørselsaftale", "styresystem"
+; Tager valgt datatype (array) som input, "vognløb", "vognløbsdato", "kørselsaftale", "styresystem"
+; Giver mulighed for valg af specifik data, hvis intet hent alle fire
 ; Return "fejl" hvis fejl i indhentning
 ; => str
-P6_hent_data_vognløb_funk(valgt_data)
+P6_hent_data_vognløb_funk(p_vl_obj, p_valgt_data := ["vognløbsnummer", "vognløbsdato", "kørselsaftale", "styresystem"])
 {
+
+    P6_nav_planbillede()
+
     ; [1] planetgenvej, [2] kopieringsgenvej
-    hent_data_input :=
+    hent_data_key_input :=
         Map(
             "vognløbsnummer", ["!l", "+{F10}c"],
-            "vognløbsdato", ["!l{tab}", "^c"],
+            "vognløbsdato", ["!l", "{tab}^c"],
             "kørselsaftale", ["!k", "+{F10}c"],
             "styresystem", ["!k{tab}", "+{F10}c"]
         )
@@ -503,37 +382,17 @@ P6_hent_data_vognløb_funk(valgt_data)
     hent_data_output := ""
 
 
-    if (valgt_data != "")
+    for ønsket_data in p_valgt_data
     {
-        SendInput hent_data_input[valgt_data][1]
+
         A_Clipboard := ""
-        SendInput hent_data_input[valgt_data][2]
-        ClipWait 0.5
-        hent_data_output := A_Clipboard
-        while (hent_data_output == "")
-        {
-            if (A_Index == 3 and valgt_data == "kørselsaftale")
-            {
-                hent_data_output := "vogngruppe"
+        ; delt op, hvis sleep er nødvendig i mellem - er det?
+        SendInput hent_data_key_input[ønsket_data][1]
+        SendInput hent_data_key_input[ønsket_data][2]
+        clipwait 3
+        p_vl_obj.%ønsket_data% := A_Clipboard
 
-                return hent_data_output
-            }
-            if (A_Index == 10 and valgt_data != "kørselsaftale")
-            {
-                P6_hent_data_vis_fejlbesked(valgt_data)
-                hent_data_output := "fejl"
-
-                return hent_data_output
-            }
-            P6_nav_aktiver()
-            P6_nav_planbillede()
-            SendInput hent_data_input[valgt_data][1]
-            A_Clipboard := ""
-            SendInput hent_data_input[valgt_data][2]
-            ClipWait 0.2
-            hent_data_output := A_Clipboard
-        }
     }
-    return hent_data_output
+    p_vl_obj.vognløbsdato_timestamp := A_Now
+   return p_vl_obj
 }
-
