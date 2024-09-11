@@ -6587,7 +6587,9 @@ l_outlook_genaaben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     }
     clipboard :=
     P6_aktiver()
+    sleep 200
     SendInput, !{PrintScreen}
+    sleep 50
     ClipWait, 3, 1
     if (clipboardall := "")
     {
