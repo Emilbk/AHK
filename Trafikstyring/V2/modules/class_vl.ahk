@@ -70,7 +70,7 @@ class vognløbObj extends Object
     {
         if p_kørselsaftale
             this.kørselsaftale := p_kørselsaftale
-        if this.kørselsaftale = 0
+        if !this.kørselsaftale
             throw Error("Kørselsaftale er ikke defineret.")
 
         for i, e in this.garanti_data
