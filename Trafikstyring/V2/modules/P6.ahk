@@ -132,9 +132,15 @@ p6_nav_tal()
 
 ; går til aktive vognløbs vognløbsbillede, return true når indlæst
 ; omskriv navn, så det giver mening, plus object
-P6_nav_vognløbsbillede(planbillede_vognløb)
+P6_nav_vognløbsbillede(p_vl_obj)
 {
-    ; P6_nav_aktiver()
+    P6_nav_planbillede()
+    
+    P6_nav_vognløbsbillede_åben(p_vl_obj)
+    return
+}
+P6_nav_vognløbsbillede_åben(p_vl_obj)
+{
 
     sleep 30
     SendInput "^{F12}"
@@ -151,11 +157,11 @@ P6_nav_vognløbsbillede(planbillede_vognløb)
     SendInput "+{F10}c"
     ClipWait 1
     vognløbsbillede_vognløb := A_Clipboard
-    while (vognløbsbillede_vognløb != planbillede_vognløb)
+    while (vognløbsbillede_vognløb != p_vl_obj.vognløbsnummer)
     {
         if (A_Index == 6)
         {
-            return false
+            throw error("VL-nummer ikke indhentet")
         }
         SendInput "!l"
         sleep 10
@@ -168,7 +174,7 @@ P6_nav_vognløbsbillede(planbillede_vognløb)
 }
 
 
-P6_nav_vognløbsbillede_ændr_1(planbillede_kørselsaftale)
+P6_nav_vognløbsbillede_afsnit_åbningstider(p_vl_obj)
 {
     SendInput "^æ"
     A_Clipboard := ""
@@ -186,7 +192,7 @@ P6_nav_vognløbsbillede_ændr_1(planbillede_kørselsaftale)
     A_Clipboard := ""
     SendInput "+{F10}c"
     ClipWait 0.3
-    while (A_Clipboard != planbillede_kørselsaftale)
+    while (A_Clipboard != p_vl_obj.kørselsaftale)
     {
         if (A_Index == 10)
             return false
@@ -215,25 +221,35 @@ P6_nav_vognløbsbillede_ændr_1(planbillede_kørselsaftale)
 
 }
 
-P6_nav_vognløbsbillede_ændr_2()
+P6_nav_vognløbsbillede_afsnit_åbningstider_afslut()
 {
 
-    SendInput "{enter}"
+    SendInput "{enter} 2"
 
+    return
 }
-P6_nav_vognløbsbillede_ændr_afslut()
+P6_nav_vognløbsbillede_afsnit_telefon(p_vl_obj)
+{
+    P6_nav_vognløbsbillede_afsnit_åbningstider(p_vl_obj)
+
+    SendInput "{enter}"
+    return
+}
+P6_nav_vognløbsbillede_afsnit_telefon_afslut()
 {
 
     SendInput "{enter}"
 
+    return
 }
 ;; P6 indhent data
 
-; Henter tlf fra vl hvis intet parameter, indsætter tlf på vognløb hvis der er
-P6_hent_data_vognløbsbillede_telefon(telefonnummer?)
+; Henter tlfnummer fra vl_obj.vognløbsnummer, hvis p_nyt_telefonnummer defineret indsætter det i stedet
+P6_hent_data_vognløbsbillede_hent_data_telefon(p_vl_obj, p_nyt_telefonnummer?)
 {
     {
-        SendInput "{enter}!ø{tab 2}"
+        ; P6_nav_vognløbsbillede()
+        SendInput "!ø{tab 2}"
         sleep 20
         A_Clipboard := ""
         SendInput "+{F10}c"
@@ -247,11 +263,12 @@ P6_hent_data_vognløbsbillede_telefon(telefonnummer?)
             SendInput "+{F10}c"
             ClipWait 0.3
         }
-        if IsSet(telefonnummer)
+        if IsSet(p_nyt_telefonnummer)
         {
-            SendInput telefonnummer
+            SendInput p_nyt_telefonnummer
             sleep 20
             SendInput "{enter}"
+            p_vl_obj.telefon_nummer := p_nyt_telefonnummer
         }
         else
         {
@@ -259,14 +276,18 @@ P6_hent_data_vognløbsbillede_telefon(telefonnummer?)
             SendInput "+{F10}c"
             ClipWait 0.5
             SendInput "{enter}"
-            return A_Clipboard
+            sleep 20
+            P6_nav_planbillede()
+            p_vl_obj.telefon_nummer := A_Clipboard
+            return 
         }
     }
     return
 }
 
-P6_hent_data_vm_telefon()
+P6_hent_data_vm_telefon(p_vl_obj)
 {
+    P6_nav_planbillede()
     P6_nav_kørselsaftale()
     SendInput "^æ"
     sleep 40
@@ -277,6 +298,7 @@ P6_hent_data_vm_telefon()
     while (StrLen(A_Clipboard) != 8)
     {
         if (a_index == 4)
+            ; omskriv throw
             return false
 
         SendInput "!a{tab 4}"
@@ -286,7 +308,8 @@ P6_hent_data_vm_telefon()
     }
 
     SendInput "^a"
-    return A_Clipboard
+    p_vl_obj.vm_telefon_nummer := A_Clipboard
+    return 
 }
 
 p6_hent_data_rejsesøg_telefon(telefon)
@@ -309,7 +332,7 @@ P6_ret_data_vognløbsbillede_ændre_sluttid(vognløb, kørselsaftale, sluttid, d
 {
     P6_nav_aktiver()
     P6_nav_vognløbsbillede(vognløb)
-    P6_nav_vognløbsbillede_ændr_1(kørselsaftale)
+    P6_nav_vognløbsbillede_afsnit_åbningstider(kørselsaftale)
 
     SendInput "{tab 2}"
     if IsSet(dato)
@@ -418,6 +441,6 @@ P6_hent_data_vognløb_funk(p_vl_obj, p_valgt_data := ["vognløbsnummer", "vognl�
         p_vl_obj.%ønsket_data% := A_Clipboard
 
     }
-
+    p_vl_obj.vognløbsdato_timestamp := A_Now
    return p_vl_obj
 }
