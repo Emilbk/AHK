@@ -360,55 +360,7 @@ P6_ret_data_vognløbsbillede_ændre_sluttid(vognløb, kørselsaftale, sluttid, d
 
 }
 
-; Return array[4], vognløbsnummer som [1]
-P6_hent_data_vognløb_vognløbsnummer()
-{
-    hent_data_vognløb_output := ["", "", "", ""]
-    indhentet_data := ""
 
-    P6_nav_aktiver()
-    P6_nav_planbillede()
-
-    for i, e in ["vognløbsnummer", "", "", ""]
-    {
-        indhentet_data := P6_hent_data_vognløb_funk(e)
-        if (indhentet_data == "fejl")
-        {
-            hent_data_vognløb_output[i] := indhentet_data
-            break
-
-        }
-
-        hent_data_vognløb_output[i] := indhentet_data
-    }
-
-    return hent_data_vognløb_output
-}
-; Return array[4], vognløbsnummer som [1]
-; uden at aktivere planbillede
-P6_hent_data_vognløb_vognløbsnummer_i_planbillede()
-{
-    hent_data_vognløb_output := ["", "", "", ""]
-    indhentet_data := ""
-
-    for i, e in ["vognløbsnummer", "", "", ""]
-    {
-        indhentet_data := P6_hent_data_vognløb_funk(e)
-        if (indhentet_data == "fejl")
-        {
-            hent_data_vognløb_output[i] := indhentet_data
-            break
-
-        }
-
-        hent_data_vognløb_output[i] := indhentet_data
-    }
-
-    return hent_data_vognløb_output
-}
-
-
-; I PLANBILLEDE
 ; Tager valgt datatype (array) som input, "vognløb", "vognløbsdato", "kørselsaftale", "styresystem"
 ; Giver mulighed for valg af specifik data, hvis intet hent alle fire
 ; Return "fejl" hvis fejl i indhentning
