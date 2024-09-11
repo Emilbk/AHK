@@ -51,7 +51,7 @@ P6_nav_alt_menu(tast1, tast2?)
 ;
 P6_nav_planbillede()
 {
-    P6_nav_aktiver()
+    ; P6_nav_aktiver()
     P6_nav_alt_menu("tp")
 
     return
@@ -59,7 +59,7 @@ P6_nav_planbillede()
 
 P6_nav_rejsesøg()
 {
-    P6_nav_aktiver()
+    ; P6_nav_aktiver()
     P6_nav_alt_menu("rr")
     sleep 200
     SendInput "^t"
