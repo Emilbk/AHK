@@ -18,7 +18,7 @@ F3::
 }
 +F8::
 {
-    vl := String(P6_hent_data_vognløb_vognløbsnummer_i_planbillede()[1])
+    ; vl := String(P6_hent_data_vognløb_vognløbsnummer_i_planbillede()[1])
     ; MsgBox vl
 
     return
