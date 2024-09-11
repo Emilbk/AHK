@@ -406,37 +406,17 @@ P6_hent_data_vognløb_funk(p_vl_obj, p_valgt_data := ["vognløbsnummer", "vognl�
     hent_data_output := ""
 
 
-    if (valgt_data != "")
+    for ønsket_data in p_valgt_data
     {
-        SendInput hent_data_input[valgt_data][1]
+
         A_Clipboard := ""
-        SendInput hent_data_input[valgt_data][2]
-        ClipWait 0.5
-        hent_data_output := A_Clipboard
-        while (hent_data_output == "")
-        {
-            if (A_Index == 3 and valgt_data == "kørselsaftale")
-            {
-                hent_data_output := "vogngruppe"
+        ; delt op, hvis sleep er nødvendig i mellem - er det?
+        SendInput hent_data_key_input[ønsket_data][1]
+        SendInput hent_data_key_input[ønsket_data][2]
+        clipwait 3
+        p_vl_obj.%ønsket_data% := A_Clipboard
 
-                return hent_data_output
-            }
-            if (A_Index == 10 and valgt_data != "kørselsaftale")
-            {
-                P6_hent_data_vis_fejlbesked(valgt_data)
-                hent_data_output := "fejl"
-
-                return hent_data_output
-            }
-            P6_nav_aktiver()
-            P6_nav_planbillede()
-            SendInput hent_data_input[valgt_data][1]
-            A_Clipboard := ""
-            SendInput hent_data_input[valgt_data][2]
-            ClipWait 0.2
-            hent_data_output := A_Clipboard
-        }
     }
-    return hent_data_output
-}
 
+   return p_vl_obj
+}
