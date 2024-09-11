@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 FileEncoding "UTF-8"
 Persistent
-
+#SingleInstance Force
 #include "modules/opstart.ahk"
 #include "modules/svigtGUI.ahk"
 #include "modules/P6.ahk"
@@ -72,9 +72,17 @@ return
 {
 
     
+    p6_nav_tal()
+    P6_nav_rejsesøg()
+    P6_nav_planbillede()
+    P6_nav_rejsesøg_hylde(FormatTime(A_Now, "dd"), "14")
     P6_hent_data_vognløb_funk(test_vl, ["vognløbsnummer", "kørselsaftale"])
-    P6_hent_data_vm_telefon(test_vl)
-    opret_svigt(test_vl)
+    p6_nav_udråb()
+    P6_nav_kørselsaftale()
+    P6_nav_vognløbsbillede(test_vl)
+    ; P6_hent_data_vognløb_funk(test_vl, ["vognløbsnummer", "kørselsaftale"])
+    ; P6_hent_data_vm_telefon(test_vl)
+    ; opret_svigt(test_vl)
     ; P6_nav_vognløbsbillede(test_vl)
     ; P6_nav_vognløbsbillede_afsnit_telefon(test_vl)
     ; P6_hent_data_vognløbsbillede_hent_data_telefon(test_vl, "28569252")
