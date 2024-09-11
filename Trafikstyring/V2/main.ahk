@@ -39,16 +39,16 @@ opret_svigt(p_vl_obj)
 {
     tid_for_svigt := p_vl_obj.vognløbsdato_timestamp . SubStr(a_now, -6, 6)
 
-    MsgBox(FormatTime(tid_for_svigt, "HH:mm"))
+    MsgBox(FormatTime(p_vl_obj.vognløbsdato_timestamp, "HH:mm"))
     p_vl_obj.vognløb_status()
 
 
     SvigtGUIresetfunk()
 
-    SvigtGUI.Title := "Svigt vl. " p_vl_obj.vognløbsnummer " d. " FormatTime(p_vl_obj.vognløbsdato_timestamp, "dd-MM-yy") " kl. " FormatTime(tid_for_svigt, "HH:mm")
+    SvigtGUI.Title := "Svigt vl. " p_vl_obj.vognløbsnummer " d. " FormatTime(p_vl_obj.vognløbsdato_timestamp, "dd-MM-yy") " kl. " FormatTime(p_vl_obj.vognløbsdato_timestamp, "HH:mm")
     SvigtGUI_vognløbsnummer_edit.Value := p_vl_obj.vognløbsnummer
     SvigtGUI_vognløb_status.Text := p_vl_obj.status
-
+    SvigtGUI_beskrivelse_edit.Text := p_vl_obj.vm_telefon_nummer
 
     if p_vl_obj.vl_type = "aktiv garanti"
         SvigtGUI_vl_type_radio_gv.Value := 1
@@ -68,8 +68,22 @@ opret_svigt(p_vl_obj)
 return
 
 
-!e::
+^e::
 {
+
+    
+    P6_hent_data_vognløb_funk(test_vl, ["vognløbsnummer", "kørselsaftale"])
+    P6_hent_data_vm_telefon(test_vl)
+    opret_svigt(test_vl)
+    ; P6_nav_vognløbsbillede(test_vl)
+    ; P6_nav_vognløbsbillede_afsnit_telefon(test_vl)
+    ; P6_hent_data_vognløbsbillede_hent_data_telefon(test_vl, "28569252")
+    ; sleep 1000
+    ; MsgBox test_vl.vm_telefon_nummer
+    ; P6_nav_vognløbsbillede_afsnit_åbningstider(test_vl)
+    ; tlf := P6_hent_data_vognløbsbillede_telefon()
+    ; msgbox tlf
+    ; P6_hent_data_vognløb_funk(test_vl, ["vognløbsnummer", "vognløbsdato", "kørselsaftale", "styresystem"])
     ; vl_data := P6_hent_data_vognløb_alt()
     ; test_vl.hent_data_vognløb_alt_obj(vl_data)
     ; opret_svigt(test_vl)
