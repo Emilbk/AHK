@@ -14,7 +14,7 @@ GroupAdd, trafikstyringsgruppe, ahk_class AccessBar
 GroupAdd, trafikstyringsgruppe, ahk_class Agent Main GUI
 GroupAdd, trafikstyringsgruppe, ahk_class Addressbook
 GroupAdd, trafikstyringsgruppe, ahk_class Transparent Windows Client
-GroupAdd, trafikstyringsgruppe, ahk_class Planet Version 
+GroupAdd, trafikstyringsgruppe, ahk_class Planet Version
 ;; lib
 #Include, %A_linefile%\..\lib\AHKDb\ahkdb.ahk
 #Include, %A_linefile%\..\lib\JSON.ahk
@@ -80,28 +80,28 @@ else if (vl_liste_array_json != "")
 SetTimer, note_tjek_tid, 60000
 
 SpecialAdresseArray := ["! Offentlige kontorer, posthuse, færger, lufthavne", "% Apoteker", "$ Banker", "_ Banegårde og rutebilstationer", ". Forsamlingshuse og beboerhuse", ") Terapi; fod-, fysio- og zoneterapi, kiropraktor", "; Haveforeninger/Kolonihaver", ": Sportshaller", "/ Indkøbscenter, supermarkeder, kiosker", "+ Kirker og kirkegårde", "= Læger", "& Pladser og torve", "> Plejehjem, boenheder, institutioner, aktivitetscentre", "( Restauranter - Hoteller", "* Skoler", "< Sygehuse", "- Flextur - Flexbus", "# Bo- og aktivitetscentre"]
-SpecialAdresseString := 
+SpecialAdresseString :=
 for i,e in SpecialAdresseArray
+{
+    if (i = SpecialAdresseArray.MaxIndex())
     {
-        if (i = SpecialAdresseArray.MaxIndex())
-            {
-            SpecialAdresseString := SpecialAdresseString . e
-            break
-            }
-        SpecialAdresseString := SpecialAdresseString . e "|"
+        SpecialAdresseString := SpecialAdresseString . e
+        break
     }
+    SpecialAdresseString := SpecialAdresseString . e "|"
+}
 
 SpecialAdresseArray := ["! Offentlige kontorer, posthuse, færger, lufthavne", "% Apoteker", "$ Banker", "_ Banegårde og rutebilstationer", ". Forsamlingshuse og beboerhuse", ") Terapi; fod-, fysio- og zoneterapi, kiropraktor", "; Haveforeninger/Kolonihaver", ": Sportshaller", "/ Indkøbscenter, supermarkeder, kiosker", "+ Kirker og kirkegårde", "= Læger", "& Pladser og torve", "> Plejehjem, boenheder, institutioner, aktivitetscentre", "( Restauranter - Hoteller", "* Skoler", "< Sygehuse", "- Flextur - Flexbus", "# Bo- og aktivitetscentre"]
-SpecialAdresseString := 
+SpecialAdresseString :=
 for i,e in SpecialAdresseArray
+{
+    if (i = SpecialAdresseArray.MaxIndex())
     {
-        if (i = SpecialAdresseArray.MaxIndex())
-            {
-            SpecialAdresseString := SpecialAdresseString . e
-            break
-            }
-        SpecialAdresseString := SpecialAdresseString . e "|"
+        SpecialAdresseString := SpecialAdresseString . e
+        break
     }
+    SpecialAdresseString := SpecialAdresseString . e "|"
+}
 ;   bruger_genvej  telenor_opr     telenor_ahk
 ; FileRead, vl_repl_liste, %vl_repl_tekst%
 
@@ -126,7 +126,7 @@ Hotkey, % bruger_genvej.7, l_p6_vis_k_aftale ; F3
 Hotkey, % bruger_genvej.8, l_p6_ret_vl_tlf ; +F3
 Hotkey, % bruger_genvej.9, l_p6_vaelg_vl ; ^F3
 Hotkey, % bruger_genvej.10, l_p6_vaelg_vl ; F4
-Hotkey, % bruger_genvej.61, l_p6_vaelg_vl_liste ; ^+Down
+Hotkey, % bruger_genvej.61, l_p6_vaelg_vl_liste ; !+Down
 Hotkey, % bruger_genvej.11, l_p6_vl_ring_op ; +F5
 Hotkey, % bruger_genvej.12, l_p6_vm_ring_op ; ^+F5
 Hotkey, % bruger_genvej.13, l_p6_vl_luk ; #F5
@@ -210,13 +210,13 @@ if (bruger_genvej.71 = 1)
     }
     if not WinExist("ahk_class Addressbook")
     {
-            ControlClick, x373 y72, ahk_class Agent Main GUI
+        ControlClick, x373 y72, ahk_class Agent Main GUI
     }
 }
 ;if not WinExist("ahk_exe OUTLOOK.EXE")
- ;  {
-   ; run "C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
-    ;}
+;  {
+; run "C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
+;}
 ;; GUI
 ; Ring til sygehus
 gui sygehus:+Labelsygehus
@@ -379,8 +379,6 @@ Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vr, Fo&r
 Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui va, T(a)&l forgæves
 Gui p6_tekst_valg: Add, button, w181 h23 gP6_TekstTilChfSendTekstFraGui vv, (&v)ariabel opstart OBS
 
-
-
 gui note: +Labelnote
 Gui note: Font, s9, Segoe UI
 Gui note: Add, Edit, x16 y8 w438 h206 vnote_note
@@ -391,12 +389,12 @@ Gui note: Add, checkbox, x319 y240 w76 h21 vnote_reminder, &Reminder
 Gui note: Add, Edit, x394 y240 w50 h21 number vnote_tid,
 
 ; svigtMenu
-; Menu, SvigtFilmenu, add, Vogngruppe`tCtrl+t, SvigtVGMenu  
-; Menu, SvigtSkærmprintMenu, add, FlexFinder-skærmprint`tCtrl+f, flexfinderskærmprint  
-; Menu, SvigtSkærmprintMenu, add, Tilføj nuværende skærmprint`tCtrl+n, nuværendeSkærmprint  
-; Menu, SvigtSkærmprintMenu, add, Vis tilføjede skærmprint`tCtrl+v, SvigtSkærmprintOversigt  
-Menu, SvigtOmmenu, add, Hjælp`tF1, svigtHjælp  
-Menu, SvigtVGMenu, add, Opret Vogngruppesvigt`tCtrl+t, p6_vgsvigt 
+; Menu, SvigtFilmenu, add, Vogngruppe`tCtrl+t, SvigtVGMenu
+; Menu, SvigtSkærmprintMenu, add, FlexFinder-skærmprint`tCtrl+f, flexfinderskærmprint
+; Menu, SvigtSkærmprintMenu, add, Tilføj nuværende skærmprint`tCtrl+n, nuværendeSkærmprint
+; Menu, SvigtSkærmprintMenu, add, Vis tilføjede skærmprint`tCtrl+v, SvigtSkærmprintOversigt
+Menu, SvigtOmmenu, add, Hjælp`tF1, svigtHjælp
+Menu, SvigtVGMenu, add, Opret Vogngruppesvigt`tCtrl+t, p6_vgsvigt
 Menu, SvigtMenu, add, &Vogngruppe, :SvigtVGMenu,
 ; Menu, SvigtMenu, add, S&kærmprint, :SvigtSkærmprintMenu,
 Menu, SvigtMenu, add, Hjælp, :SvigtOmMenu, +right
@@ -412,7 +410,7 @@ Gui svigt: Font
 Gui svigt: Add, Edit, vSvigtVlEdit x16 y24 w120 h21, %vl%
 Gui svigt: Font, s9, Segoe UI
 ; Gui svigt: Font, w600
-Gui, svigt:Add, GroupBox,  x150 y0 w140 h130 ,Hvis GV &lukket:
+Gui, svigt:Add, GroupBox, x150 y0 w140 h130 ,Hvis GV &lukket:
 ; Gui svigt: Add, Text, x161 y0 w130 h25 +0x200, Hvis GV &lukket:
 Gui svigt: Font
 Gui svigt: Font, s9, Segoe UI
@@ -440,7 +438,7 @@ Gui svigt: Add, Radio, x304 y24 w120 h16 gvlTypeGv vvlTypeGaranti, &Garanti
 Gui svigt: Add, Radio, x304 y40 w120 h32 gVlTypeGvVariabel vvlTypeGarantiVariabel, G&arantivognløb i variabel tid
 Gui svigt: Add, Radio, x304 y72 w120 h23 gVlTypeVariabel vvlTypeVariabel , Va&riabel
 Gui svigt: Add, Radio, disabled vvlTypeVogngruppe x304 y92 w120 h32, V&ogngruppe
-Gui svigt: Add, GroupBox,  x150 y130 w283 h48 ,Kontakt til Vognmand (cirka tidspunkt):
+Gui svigt: Add, GroupBox, x150 y130 w283 h48 ,Kontakt til Vognmand (cirka tidspunkt):
 Gui svigt: Add, Radio, gSvigtVMKontaktRadioFunk vSvigtVmKontaktradio x160 y147 h23, Kontaktet
 Gui svigt: Add, Radio, gSvigtVMKontaktRadioFunk vSvigtIngenVmKontaktRadio x240 y147 h23, Forgæves kontakt
 Gui svigt: Add, Edit, disabled vsvigtVmKontaktEdit x360 y147 w50, ca. kl.
@@ -457,10 +455,10 @@ Gui svigt: menu, svigtMenu
 ; Gui svigt: Add, text , x280 y261, Anden &Dato
 ; Gui svigt: Add, Edit , vny_dato x360 y256 w60,
 
-Gui vgSvigt: new 
+Gui vgSvigt: new
 gui vgSvigt: add, Text, X+M y+M , Hvilket vognløb skal der registreres svigt på?
-gui vgSvigt: add, edit, Y+M  vvalgtVgVL number, vognløb
-gui vgSvigt: add, Text, Y+M  , Hvilken vogngruppe skal der registreres svigt på?
+gui vgSvigt: add, edit, Y+M vvalgtVgVL number, vognløb
+gui vgSvigt: add, Text, Y+M , Hvilken vogngruppe skal der registreres svigt på?
 Gui vgSvigt: add, DropDownList, vValgtVG, Århusstat|Horstat|Holsstat|Silherstat|Hernistcar|Danaarstat|Silkestat1|Skiøkostat|Randanstat|Danaarstat|Herdanmpv|Hordanmpv|Odddanmpv|Randanstat|Randanmpv|Silkestat1|Skandstat|Skbdanmpv|Skivestat|Skidanmpv|Viborgstat|Vibdanmpv|Rskdanmpv|Sildanmpv|Århdanmpv|Århusmpv
 Gui vgSvigt: add, Button, Default vVGOK gp6_vgsvigt_skprint , &OK
 Gui vgSvigt: add, Button, x+25 gVGSvigtAfbryd vVGAfbryd , &Afbryd
@@ -493,7 +491,6 @@ Gui, kvitteringGUI: Add, Edit, vk_tid x120 y157 w120 h21, Oprindelig kvittering
 Gui, kvitteringGUI: Add, Button, gk_chfok x81 y200 w80 h23 +Default, &OK
 Gui, kvitteringGUI: Add, Button, gk_annuller x216 y200 w80 h23, &Annuller
 
-
 Gui vmsvigt: new
 gui vmSvigt: add, Text, X+M y+M , Er vognmand ikke informeret?
 ;; GUI vl-note
@@ -504,173 +501,170 @@ Gui opkald: New
 Gui opkald: add, Text, , Opkald på telefonnummer:
 Gui opkald: add, edit, vGuitlf
 
+gui, Taxa:Default
+Gui, Taxa:Add,Button,vtaxa1,&Århus Taxa
+Gui, Taxa:Add,Button,vtaxa2,Århus Taxa Sk&ole
+Gui, Taxa:Add,Button,vtaxa3,&Dantaxi
+Gui, Taxa:Add,Button,vtaxa4,Taxa &Midt
+Gui, Taxa:Add,Button,vtaxa5,D&K Taxi
+menu, FileMenu, add, &Vogngrupper`tAlt+v,central_menu
+menu, centralmenu, add, &Vogngrupper, :Filemenu
+gui, menu, centralmenu
 
-    gui, Taxa:Default
-    Gui, Taxa:Add,Button,vtaxa1,&Århus Taxa
-    Gui, Taxa:Add,Button,vtaxa2,Århus Taxa Sk&ole
-    Gui, Taxa:Add,Button,vtaxa3,&Dantaxi
-    Gui, Taxa:Add,Button,vtaxa4,Taxa &Midt
-    Gui, Taxa:Add,Button,vtaxa5,D&K Taxi
-    menu, FileMenu, add, &Vogngrupper`tAlt+v,central_menu
-    menu, centralmenu, add, &Vogngrupper, :Filemenu
-    gui, menu, centralmenu
-
-        gui, Vogngrupper:Default
-        Gui, Vogngrupper:Add,Button,vcentral1,&Århusstat
-        Gui, Vogngrupper:Add,Button,vcentral2,&Horstat
-        Gui, Vogngrupper:Add,Button,vcentral3,H&olsstat
-        Gui, Vogngrupper:Add,Button,vcentral4,&Silketstat1
-        Gui, Vogngrupper:Add,Button,vcentral5,S&kandstat
-        Gui, Vogngrupper:Add,Button,vcentral6,&Viborgstat
-        Gui, Vogngrupper:Add,Button,vcentral7,&Hernistcar
-        Gui, Vogngrupper:Add,Button,vcentral8,&Silherstat
+gui, Vogngrupper:Default
+Gui, Vogngrupper:Add,Button,vcentral1,&Århusstat
+Gui, Vogngrupper:Add,Button,vcentral2,&Horstat
+Gui, Vogngrupper:Add,Button,vcentral3,H&olsstat
+Gui, Vogngrupper:Add,Button,vcentral4,&Silketstat1
+Gui, Vogngrupper:Add,Button,vcentral5,S&kandstat
+Gui, Vogngrupper:Add,Button,vcentral6,&Viborgstat
+Gui, Vogngrupper:Add,Button,vcentral7,&Hernistcar
+Gui, Vogngrupper:Add,Button,vcentral8,&Silherstat
 ;; END AUTOEXEC
 Return
 +^z::
-{
+    {
 
-    MouseGetPos, musposx, musposy
-    gui, specialadresser: Show, x%musposx% y%musposy%, Specialadresser
-    WinWaitActive, Specialadresser
-    SendInput, !{down}
-    return
+        MouseGetPos, musposx, musposy
+        gui, specialadresser: Show, x%musposx% y%musposy%, Specialadresser
+        WinWaitActive, Specialadresser
+        SendInput, !{down}
+        return
 
-
-}
+    }
 
 specialadresserguiescape:
 specialadresserguiclose:
-gui, specialadresser: hide
+    gui, specialadresser: hide
 return
 
 vgsvigtguiescape:
 vgsvigtguiclose:
-{
-    vgsvigtafbryd()
-    return
-}
-vgSvigtAfbryd()
-{
-   gui vgsvigt: hide
-   sleep 100 
-   GuiControl, svigt:,  SvigtVlLukketRadio , 0
-   GuiControl, svigt:,  SvigtVLSlettetRadio , 0
-   GuiControl, svigt:,  SvigtÅbningstidRadio , 0 
-   GuiControl, svigt:,  SvigtVlLukketRadio , 0 
-   GuiControl, svigt:,  SvligtVLSlettetRadio , 0 
-   GuiControl, svigt:,  vlTypeGaranti , 0 
-   GuiControl, svigt:,  vlTypeGarantiVariabel , 0 
-   GuiControl, svigt:,  vlTypeVariabel , 0 
-   GuiControl, svigt:,  vlTypeGogngruppe , 0 
-   GuiControl, svigt:,  SvigtVMKontaktRadio , 0 
-   GuiControl, svigt:,  SvigtIngenVmKontaktRadio , 0 
-   GuiControl, svigt: disable, svigtVmKontaktradio
-   GuiControl, svigt: disable, svigtIngenVMKontaktRadio
-   GuiControl, svigt:,  GemtSkærmprint , 0
-   GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
-   GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl. 
-   GuiControl, svigt: disable , SvigtÅbningstidEdit
-   GuiControl, svigt: disable , GvHjemzoneTid
-   GuiControl, svigt: enable, vlTypeGaranti
-   GuiControl, svigt: enable, vlTypeGarantiVariabel
-   GuiControl, svigt: enable, vlTypeVariabel
-   GuiControl, svigt: disable, vlTypeVogngruppe
-   GuiControl, svigt: disable, SvigtVmKontaktEdit
-   SvigtSlettetKnapTjekVar := 0
-   SvigtLukketKnapTjekVar := 0
-   SvigtÅbningstidUdskudtKnapTjekVar := 0
-   GuiControl, svigt:,  vlTypeVogngruppe , 0
-
-   Gui svigt: Show, w448 h397, Svigt
-;    GuiControl, svigt:,  Button4 , 1
-   return
-}
-p6_vgsvigt()
-{
-       vg_svigt := 1
-       gui svigt: hide
-       sleep 100
-       GuiControl, vgsvigt:, Edit1, Vognløb
-       GuiControl, svigt: , vlTypeVogngruppe, 1
-       gui vgsvigt: show, AutoSize Center, Vogngruppesvigt
-       WinWaitActive, Vogngruppesvigt
-       WinWaitClose, Vogngruppesvigt
-    ; ImageShow(VGprint.1)
-    ; ImageShow(VGprint.2)
+    {
+        vgsvigtafbryd()
+        return
+    }
+    vgSvigtAfbryd()
+    {
+        gui vgsvigt: hide
         sleep 100
-        Gui svigt: Show, w448 h397, Svigt 
+        GuiControl, svigt:, SvigtVlLukketRadio , 0
+        GuiControl, svigt:, SvigtVLSlettetRadio , 0
+        GuiControl, svigt:, SvigtÅbningstidRadio , 0
+        GuiControl, svigt:, SvigtVlLukketRadio , 0
+        GuiControl, svigt:, SvligtVLSlettetRadio , 0
+        GuiControl, svigt:, vlTypeGaranti , 0
+        GuiControl, svigt:, vlTypeGarantiVariabel , 0
+        GuiControl, svigt:, vlTypeVariabel , 0
+        GuiControl, svigt:, vlTypeGogngruppe , 0
+        GuiControl, svigt:, SvigtVMKontaktRadio , 0
+        GuiControl, svigt:, SvigtIngenVmKontaktRadio , 0
+        GuiControl, svigt: disable, svigtVmKontaktradio
+        GuiControl, svigt: disable, svigtIngenVMKontaktRadio
+        GuiControl, svigt:, GemtSkærmprint , 0
+        GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl.
+        GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl.
+        GuiControl, svigt: disable , SvigtÅbningstidEdit
+        GuiControl, svigt: disable , GvHjemzoneTid
+        GuiControl, svigt: enable, vlTypeGaranti
+        GuiControl, svigt: enable, vlTypeGarantiVariabel
+        GuiControl, svigt: enable, vlTypeVariabel
+        GuiControl, svigt: disable, vlTypeVogngruppe
+        GuiControl, svigt: disable, SvigtVmKontaktEdit
+        SvigtSlettetKnapTjekVar := 0
+        SvigtLukketKnapTjekVar := 0
+        SvigtÅbningstidUdskudtKnapTjekVar := 0
+        GuiControl, svigt:, vlTypeVogngruppe , 0
 
-        
-    return
-}
-p6_vgsvigt_skprint()
-{
-    global ValgtVG
-    global VGPrint
-    global ValgtVGVl
-    gui vgsvigt: Submit
-    GuiControl, svigt: enable, vlTypeVogngruppe
-    GuiControl, svigt:,  vlTypeVogngruppe, 1
-    GuiControl, svigt: disable, vlTypeGaranti
-    GuiControl, svigt: disable, vlTypeGarantiVariabel
-    GuiControl, svigt: disable, vlTypeVariabel
-    GuiControl, svigt: disable, SvigtÅbningstidRadio
-    GuiControl, svigt: disable, SvigtVlLukketRadio
-    GuiControl, svigt: disable, SvigtVlSlettetRadio
-    GuiControl, svigt:text, SvigtVlTekst, Vogngruppe 
-    GuiControl, svigt:text, SvigtGarantiTid, Vogngruppe`n%valgtvg%
-    VGprint := [[], [], valgtvg]
-    EnvAdd, tid, -1 , hours
-    FormatTime, tid, %tid%, HH:mm
-    EnvAdd, tid_2, 2 , hours
-    FormatTime, tid_2, %tid_2%, HH:mm
-    FormatTime, datoVG, A_Now , dd
-    p6_aktiver()
-    sleep 500
-    GuiControl, trio_genvej:text, Button1, Slår VG-skema op
-    p6_alt_menu("{esc}{alt}", "td")
-    sleep 1000
-    sendinput, %valgtvg%
-    sleep 500
-    SendInput, {tab}%datoVG%{enter}
-    clipboard :=
-    GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
-    Input, tast , B L1 T10, {Esc},{Enter}
-    SendInput, !{PrintScreen}
-    sleep 400
-    ClipWait, 3, 1
-    VGprint[1][1] := ImagePutBuffer(clipboardall)
-    GuiControl, trio_genvej:text, Button1, Slår VG-liste op
-    p6_alt_menu("{esc}{alt}", "tv")
-    sleep 1000
-    SendInput, !g%valgtvg%
-    sleep 100
-    SendInput, !s%datoVG%{tab}%tid%
-    sleep 100
-    SendInput, {tab}%datoVG%{tab}%tid_2%{enter}
-    clipboard :=
-    sleep 500
-    GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
-    Input, tast , B L1 T10, {Esc},{Enter}
-    SendInput, !{PrintScreen}
-    sleep 400
-    ClipWait, 3, 1
-    VGprint[1][2] := ImagePutBuffer(clipboardall)
-    GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
-    p6_vaelg_vl(valgtvgvl)
-    Input, tast , B L1 T10, {Esc},{Enter}
-    VGprint[2][3] := valgtvgvl
-    SendInput, !{PrintScreen}
-    sleep 400
-    ClipWait, 3, 1
-    VGprint[1][3] := ImagePutBuffer(clipboardall)
-    sleep 200
-    GuiControl, trio_genvej:text, Button1, Yderligere vognløb?
-    MsgBox, 36, Yderligere vognløb?, % "Vognløb " VGprint[2][3] " er registreret.`nSkal der registeres svigt på flere vognløb i vogngruppen?"
-    sleep 100
-    IfMsgBox, no
-        return 
-    IfMsgBox, Yes
+        Gui svigt: Show, w448 h397, Svigt
+        ;    GuiControl, svigt:,  Button4 , 1
+        return
+    }
+    p6_vgsvigt()
+    {
+        vg_svigt := 1
+        gui svigt: hide
+        sleep 100
+        GuiControl, vgsvigt:, Edit1, Vognløb
+        GuiControl, svigt: , vlTypeVogngruppe, 1
+        gui vgsvigt: show, AutoSize Center, Vogngruppesvigt
+        WinWaitActive, Vogngruppesvigt
+        WinWaitClose, Vogngruppesvigt
+        ; ImageShow(VGprint.1)
+        ; ImageShow(VGprint.2)
+        sleep 100
+        Gui svigt: Show, w448 h397, Svigt
+
+        return
+    }
+    p6_vgsvigt_skprint()
+    {
+        global ValgtVG
+        global VGPrint
+        global ValgtVGVl
+        gui vgsvigt: Submit
+        GuiControl, svigt: enable, vlTypeVogngruppe
+        GuiControl, svigt:, vlTypeVogngruppe, 1
+        GuiControl, svigt: disable, vlTypeGaranti
+        GuiControl, svigt: disable, vlTypeGarantiVariabel
+        GuiControl, svigt: disable, vlTypeVariabel
+        GuiControl, svigt: disable, SvigtÅbningstidRadio
+        GuiControl, svigt: disable, SvigtVlLukketRadio
+        GuiControl, svigt: disable, SvigtVlSlettetRadio
+        GuiControl, svigt:text, SvigtVlTekst, Vogngruppe
+        GuiControl, svigt:text, SvigtGarantiTid, Vogngruppe`n%valgtvg%
+        VGprint := [[], [], valgtvg]
+        EnvAdd, tid, -1 , hours
+        FormatTime, tid, %tid%, HH:mm
+        EnvAdd, tid_2, 2 , hours
+        FormatTime, tid_2, %tid_2%, HH:mm
+        FormatTime, datoVG, A_Now , dd
+        p6_aktiver()
+        sleep 500
+        GuiControl, trio_genvej:text, Button1, Slår VG-skema op
+        p6_alt_menu("{esc}{alt}", "td")
+        sleep 1000
+        sendinput, %valgtvg%
+        sleep 500
+        SendInput, {tab}%datoVG%{enter}
+        clipboard :=
+        GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
+        Input, tast , B L1 T10, {Esc},{Enter}
+        SendInput, !{PrintScreen}
+        sleep 400
+        ClipWait, 3, 1
+        VGprint[1][1] := ImagePutBuffer(clipboardall)
+        GuiControl, trio_genvej:text, Button1, Slår VG-liste op
+        p6_alt_menu("{esc}{alt}", "tv")
+        sleep 1000
+        SendInput, !g%valgtvg%
+        sleep 100
+        SendInput, !s%datoVG%{tab}%tid%
+        sleep 100
+        SendInput, {tab}%datoVG%{tab}%tid_2%{enter}
+        clipboard :=
+        sleep 500
+        GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
+        Input, tast , B L1 T10, {Esc},{Enter}
+        SendInput, !{PrintScreen}
+        sleep 400
+        ClipWait, 3, 1
+        VGprint[1][2] := ImagePutBuffer(clipboardall)
+        GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
+        p6_vaelg_vl(valgtvgvl)
+        Input, tast , B L1 T10, {Esc},{Enter}
+        VGprint[2][3] := valgtvgvl
+        SendInput, !{PrintScreen}
+        sleep 400
+        ClipWait, 3, 1
+        VGprint[1][3] := ImagePutBuffer(clipboardall)
+        sleep 200
+        GuiControl, trio_genvej:text, Button1, Yderligere vognløb?
+        MsgBox, 36, Yderligere vognløb?, % "Vognløb " VGprint[2][3] " er registreret.`nSkal der registeres svigt på flere vognløb i vogngruppen?"
+        sleep 100
+        IfMsgBox, no
+            return
+        IfMsgBox, Yes
         {
             sleep 100
             P6_aktiver()
@@ -704,56 +698,55 @@ p6_vgsvigt_skprint()
             tidligere_vl := nu_vl
             nu_vl :=
             while (nu_vl != tidligere_vl)
-                {
-                    tidligere_vl := nu_vl
-                    P6_planvindue()
-                    GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
-                    SendInput, !{Down}
-                    sleep 40
-                    clipboard :=
-                    SendInput, !l
-                    sleep 20
-                    SendInput, +{AppsKey}c
-                    ClipWait, 3
-                    nu_vl := clipboard
-                    if (nu_vl = tidligere_vl)
-                        break
-                    Input, tast , B L1 T5, {Esc},{Enter}
-                    clipboard :=
-                    GuiControl, trio_genvej:text, Button1, Tager skærmprint
-                    SendInput, !{PrintScreen}
-                    sleep 400
-                    ClipWait, 3, 1
-                    VGPrint[1].push(ImagePutBuffer(clipboardall))
-                    VGPrint[2].Push(nu_vl)
-                }
+            {
+                tidligere_vl := nu_vl
+                P6_planvindue()
+                GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
+                SendInput, !{Down}
+                sleep 40
+                clipboard :=
+                SendInput, !l
+                sleep 20
+                SendInput, +{AppsKey}c
+                ClipWait, 3
+                nu_vl := clipboard
+                if (nu_vl = tidligere_vl)
+                    break
+                Input, tast , B L1 T5, {Esc},{Enter}
+                clipboard :=
+                GuiControl, trio_genvej:text, Button1, Tager skærmprint
+                SendInput, !{PrintScreen}
+                sleep 400
+                ClipWait, 3, 1
+                VGPrint[1].push(ImagePutBuffer(clipboardall))
+                VGPrint[2].Push(nu_vl)
+            }
             vl_dobbelt := 0
             for i,e in VGPrint
                 for i2, e2 in e
+                {
+                    if (i = 2)
                     {
-                        if (i = 2)
-                        {
                         sammenlignVL := e2
                         sammenlignVLindex := i2
                         for i2, e2 in e
-                            {
-                                if (i2 != sammenlignVLindex)
-                                    if (e2 = sammenlignVL)
-                                        vl_dobbelt := i2
-                            }
+                        {
+                            if (i2 != sammenlignVLindex)
+                                if (e2 = sammenlignVL)
+                                    vl_dobbelt := i2
                         }
                     }
+                }
             MsgBox, 64, Skærmprint taget!, Der er nu taget skærmprint af de valgte vognløb, 3
             if (vl_dobbelt != 0)
-                {
-            VGprint[1].RemoveAt(vl_dobbelt)
-            VGprint[2].RemoveAt(vl_dobbelt)
-                }
+            {
+                VGprint[1].RemoveAt(vl_dobbelt)
+                VGprint[2].RemoveAt(vl_dobbelt)
+            }
             return
 
-
         }
-}
+    }
 
 p6_billede_ok:
     gui p6_billede: Submit
@@ -768,7 +761,7 @@ p6_billede_ok:
     {
         KeyWait, alt
         P6_aktiver()
-        P6_alt_menu("{alt}", "td")
+        P6_alt_menu("{esc}{alt}", "td")
         return
     }
     if (p6_billedeGUI_radio = 3)
@@ -1274,7 +1267,7 @@ note_slet:
                 vl_liste_array[i][5] := ""
                 vl_liste_array_til_json_tekst()
                 ; GuiControl, , note_reminder, 0
-                Gui, Hide 
+                Gui, Hide
                 P6_aktiver()
                 return
             }
@@ -1523,14 +1516,14 @@ tlfKopi:
         clipboard :=
         GuiControlGet, tlfkopi, , ,
         if (TjekKeyControl = "D")
-            {
-                tlfkopi := RegExReplace(tlfkopi, "\D")
-                Clipboard := tlfkopi
-                ClipWait, 3,
-                Trio_opkald(tlfkopi)
-                sleep 500
-                trio_klar()
-            }
+        {
+            tlfkopi := RegExReplace(tlfkopi, "\D")
+            Clipboard := tlfkopi
+            ClipWait, 3,
+            Trio_opkald(tlfkopi)
+            sleep 500
+            trio_klar()
+        }
         if (TjekKeyShift = "D")
         {
             tlfkopi := Trio_hent_tlf()
@@ -1978,7 +1971,6 @@ P6_hent_vl_d_k_s()
     global s
     vl := []
 
-
     P6_planvindue()
     SendInput, !l
     clipboard := ""
@@ -2282,77 +2274,75 @@ P6_alarmer()
     tal_tjek := 0
     for i, e in tal
         if (SubStr(e, 1, 1) = "3" and StrLen(e) = 4)
-            {
-                tal_tjek := 1
-                break
-            }
+        {
+            tal_tjek := 1
+            break
+        }
     SendInput, !k
     SendInput, ^{up}
     sleep 100 + s * 10
     SendInput, ^{F10}
     if (tal_tjek = 1)
-        {
+    {
         sleep 1100
         p6_tal_tjek(tal)
-        }
+    }
     ; MsgBox, , ,i %tal%
-
-
 
     return
 }
 
 P6_tal_tjek(tal)
 {
-global 
-gui, talgui: destroy
-Gui, talGUI:+LabeltalGUI
-counter := 0
-x_pos := 10
-y_pos := 0
+    global
+    gui, talgui: destroy
+    Gui, talGUI:+LabeltalGUI
+    counter := 0
+    x_pos := 10
+    y_pos := 0
 
-gui talGUI: Add, Text, Y10 X5 vtekst , Du har en tal!
-for i, e in tal
+    gui talGUI: Add, Text, Y10 X5 vtekst , Du har en tal!
+    for i, e in tal
     {
         if (SubStr(e, 1, 1) = "3" and StrLen(e) = 4)
-            {
-                x_pos += 0
-                y_pos += 30
-                counter++
-                k_aftale := e
-                s_system := tal[i+1]
-                ventetid := tal[i+2]
-                gui talGUI: Add, Button, x%x_pos% y%y_pos% gbutton vVL%counter% ,% e "_" tal[i+1]
-                gui talGUI: Add, Text, YP+5 XP+80 vVLtekst%counter% ,% ventetid " min. gammel"
+        {
+            x_pos += 0
+            y_pos += 30
+            counter++
+            k_aftale := e
+            s_system := tal[i+1]
+            ventetid := tal[i+2]
+            gui talGUI: Add, Button, x%x_pos% y%y_pos% gbutton vVL%counter% ,% e "_" tal[i+1]
+            gui talGUI: Add, Text, YP+5 XP+80 vVLtekst%counter% ,% ventetid " min. gammel"
 
-                ; MsgBox, , , % counter 
-                ; MsgBox, , , %  e "_" tal[i+1]
-            }
+            ; MsgBox, , , % counter
+            ; MsgBox, , , %  e "_" tal[i+1]
+        }
     }
-; sk := GetMonitor()
-; MsgBox, , , %sk%,
-CoordMode, Mouse, Screen
-MouseGetPos, musposx, musposy
-Gui talgui: Show, AutoSize x%musposx% y%musposy% , TAL
-sleep 200
-WinActivate, TAL
-Loop, 8
+    ; sk := GetMonitor()
+    ; MsgBox, , , %sk%,
+    CoordMode, Mouse, Screen
+    MouseGetPos, musposx, musposy
+    Gui talgui: Show, AutoSize x%musposx% y%musposy% , TAL
+    sleep 200
+    WinActivate, TAL
+    Loop, 8
     {
-Gui talgui: Color, Red 
-sleep 300
-Gui talgui: Color, Yellow  
-sleep 300
+        Gui talgui: Color, Red
+        sleep 300
+        Gui talgui: Color, Yellow
+        sleep 300
     }
-return
+    return
 }
 talguiblink:
 return
 button:
-gui talGUI: submit 
-vl := []
-vl.1 := k_aftale
-vl.2 := s_system
-P6_udfyld_k_og_s(vl)
+    gui talGUI: submit
+    vl := []
+    vl.1 := k_aftale
+    vl.2 := s_system
+    P6_udfyld_k_og_s(vl)
 return
 ; MsgBox, , , % "knap " A_GuiControl " vognløb " k_aftale "_" s_system ", ventetid " ventetid " min."
 ; ***
@@ -2658,9 +2648,9 @@ P6_ret_tlf_vl(ByRef telefon:=" ")
     while (StrLen(gammel_tlf) != 8 and A_Index <= 5)
     {
         if (A_Index = 5)
-            {
-                return "fejl"
-            }
+        {
+            return "fejl"
+        }
         sleep 100
         SendInput, !ø{tab 2}
         sleep 200
@@ -2670,7 +2660,7 @@ P6_ret_tlf_vl(ByRef telefon:=" ")
         gammel_tlf := clipboard
         ; SendInput, ^a
         ; sys_afslut_genvej()
-        
+
     }
     SendInput, %telefon%
     SendInput, {enter}
@@ -2941,17 +2931,17 @@ P6_TekstTilChfSendTekstFraGui()
     return
 }
 P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
-{ 
-    
+{
+
     FormatTime, tid, ,HHmm
     initialer = /mt%A_userName%%tid%
     initialer_udentid =/mt%A_userName%
     if (valgtTekstTilChf = "m")
-        {
-            GuiControl, trio_genvej:text, Button1, Vælg fra menu
-            gui p6_tekst_valg: show, AutoSize, Tekst til chauffør
-            return 
-        }
+    {
+        GuiControl, trio_genvej:text, Button1, Vælg fra menu
+        gui p6_tekst_valg: show, AutoSize, Tekst til chauffør
+        return
+    }
     if (valgtTekstTilChf = "t")
     {
         GuiControl, trio_genvej:text, Button1, Skriv tekst til chauffør
@@ -2961,7 +2951,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     }
     if (valgtTekstTilChf = "f")
     {
-    
+
         GuiControl, trio_genvej:text, Button1, Sender tekst om forgæves
         sys_tjek := p6_tekst_tjek_for_system(styresystem)
         if (sys_tjek = 1)
@@ -2971,48 +2961,47 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
         }
         {
 
-
             Gui forgævesGUI: Show,x812 y22 w381 h220, Send tekst om forgæves til chauffør
             Return
 
             f_annuller:
             f_chfGuiEscape:
             f_chfGuiClose:
-                {
-                    gui, Cancel
-                    sys_afslut_genvej()
-                    return
-                }
-            f_chfok:
-    FormatTime, tid, ,HHmm
-    initialer = /mt%A_userName%%tid%
-    initialer_udentid =/mt%A_userName%
-                GuiControlGet, f_stop, forgævesGUI:
-                GuiControlGet, s_stop, , ,
-                GuiControlGet, k_navn, , ,
-                GuiControlGet, k_navn2, , ,
-                ; MsgBox, , , % tekst,
-                gui, cancel
-                P6_tekstTilChf("Jeg kan ikke ringe dig op. Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 ", i stedet - Mvh. Midttrafik", kørselsaftale, styresystem)
-                sleep 500
-                MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
-                IfMsgBox, Yes
-                {
-                    SendInput, ^s
-                    ; KeyWait, Ctrl
-                    sleep 1000
-                    SendInput, {enter}
-                    P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf." initialer)
-                    sys_afslut_genvej()
-                    return
-                }
-                IfMsgBox, No
-                {
-                    sleep 200
-                    MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-                    gui, cancel
-                }
+            {
+                gui, Cancel
                 sys_afslut_genvej()
+                return
+            }
+            f_chfok:
+            FormatTime, tid, ,HHmm
+            initialer = /mt%A_userName%%tid%
+            initialer_udentid =/mt%A_userName%
+            GuiControlGet, f_stop, forgævesGUI:
+            GuiControlGet, s_stop, , ,
+            GuiControlGet, k_navn, , ,
+            GuiControlGet, k_navn2, , ,
+            ; MsgBox, , , % tekst,
+            gui, cancel
+            P6_tekstTilChf("Jeg kan ikke ringe dig op. Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 ", i stedet - Mvh. Midttrafik", kørselsaftale, styresystem)
+            sleep 500
+            MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+            IfMsgBox, Yes
+            {
+                SendInput, ^s
+                ; KeyWait, Ctrl
+                sleep 1000
+                SendInput, {enter}
+                P6_notat("Ingen kontakt til chf. St. " f_stop " forgæves`, " s_stop " og tekst sendt til chf." initialer)
+                sys_afslut_genvej()
+                return
+            }
+            IfMsgBox, No
+            {
+                sleep 200
+                MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+                gui, cancel
+            }
+            sys_afslut_genvej()
             return
         }
     }
@@ -3039,7 +3028,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
             sys_afslut_genvej()
             Return
         }
-        P6_tekstTilChf("Er der glemt at bede om ny tur v. ankomst? Der skal altid trykkes for næste køreordre ved ankomst på en adresse, uanset om det er en afhentning eller en aflevering. Mvh. Midttrafik", kørselsaftale, styresystem)
+        P6_tekstTilChf("Er der glemt at bede om ny tur v. ankomst ved stop " stop "? Der skal altid trykkes for næste køreordre ved ankomst på en adresse, uanset om det er en afhentning eller en aflevering. Mvh. Midttrafik", kørselsaftale, styresystem)
         sleep 500
         MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
         IfMsgBox, Yes
@@ -3082,53 +3071,52 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
             k_annuller:
             k_chfGuiEscape:
             k_chfGuiClose:
-                {
-                    gui, Cancel
-                    sys_afslut_genvej()
-                    return
-                }
-            k_chfok:
-    FormatTime, tid, ,HHmm
-    initialer = /mt%A_userName%%tid%
-    initialer_udentid =/mt%A_userName%
-                GuiControlGet, f_stop, , ,
-                GuiControlGet, s_stop, , ,
-                GuiControlGet, k_navn, , ,
-                GuiControlGet, k_navn2, , ,
-                GuiControlGet, k_tid, , ,
-                gui, cancel
-                P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st. " f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 " - Mvh. Midttrafik", kørselsaftale, styresystem)
-                sleep 500
-                MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
-                IfMsgBox, Yes
-                {
-                    SendInput, ^s
-                    sleep 1000
-                    SendInput, {enter}
-                    FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
-                    vl_array := vlliste_kvittering_lav_array(vl)
-                    vlliste_vl_array_til_liste(vl_array)
-                    if (k_tid != "Oprindelig kvittering")
-                    {
-                        P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. tid " k_tid initialer " ")
-                        return
-                    }
-                    else
-                        P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. " initialer " ")
-                    sys_afslut_genvej()
-                    return
-                }
-                IfMsgBox, No
-                {
-                    sleep 200
-                    MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
-                    gui, cancel
-                }
+            {
+                gui, Cancel
                 sys_afslut_genvej()
+                return
+            }
+            k_chfok:
+            FormatTime, tid, ,HHmm
+            initialer = /mt%A_userName%%tid%
+            initialer_udentid =/mt%A_userName%
+            GuiControlGet, f_stop, , ,
+            GuiControlGet, s_stop, , ,
+            GuiControlGet, k_navn, , ,
+            GuiControlGet, k_navn2, , ,
+            GuiControlGet, k_tid, , ,
+            gui, cancel
+            P6_tekstTilChf("Husk at bede om ny tur ved ankomst. Jeg har bekræftet ankomst ved st. " f_stop "`, " . k_navn "`, og sendt st. " s_stop "`, " k_navn2 " - Mvh. Midttrafik", kørselsaftale, styresystem)
+            sleep 500
+            MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
+            IfMsgBox, Yes
+            {
+                SendInput, ^s
+                sleep 1000
+                SendInput, {enter}
+                FormatTime, tid, YYYYMMDDHH24MISS, HH:mm
+                vl_array := vlliste_kvittering_lav_array(vl)
+                vlliste_vl_array_til_liste(vl_array)
+                if (k_tid != "Oprindelig kvittering")
+                {
+                    P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. Oprindeligt kvitt. tid " k_tid initialer " ")
+                    return
+                }
+                else
+                    P6_notat("St. " f_stop " ikke kvitteret ved ankomst`, st. " s_stop " og tekst sendt til chf. " initialer " ")
+                sys_afslut_genvej()
+                return
+            }
+            IfMsgBox, No
+            {
+                sleep 200
+                MsgBox, , Ikke sendt, Tekst er ikke blevet sendt,
+                gui, cancel
+            }
+            sys_afslut_genvej()
             return
         }
     }
-
 
     if (valgtTekstTilChf == "x")
     {
@@ -3170,7 +3158,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
         sys_afslut_genvej()
         return
     }
-     
+
     if (valgtTekstTilChf == "v")
     {
 
@@ -3446,7 +3434,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     }
     if (valgtTekstTilChf == "r")
     {
-        GuiControl, trio_genvej:text, Button1, Send advisering om forkert telefonnummer 
+        GuiControl, trio_genvej:text, Button1, Send advisering om forkert telefonnummer
         systjek := p6_tekst_tjek_for_system(styresystem)
         if (systjek = 1)
         {
@@ -4124,80 +4112,80 @@ p6_vl_vindue_laas(vl)
 ;; return GV-dag som array, string "variabel" hvis variabel
 p6_svigt_tjek_ugedag(k_aftale, dato)
 {
-        gv_svigt := []
-        FileRead, gv_svigt_ind, db\gv_svigt.txt
-        gv_svigt_ind := StrReplace(gv_svigt_ind, "`r", "")
-        gv_svigt_ind := StrSplit(gv_svigt_ind, "`n")
-        for i,e in gv_svigt_ind
-            {
-                gv_svigt[i] := StrSplit(gv_svigt_ind[i], "`t")
-            }
-for i, e in gv_svigt
+    gv_svigt := []
+    FileRead, gv_svigt_ind, db\gv_svigt.txt
+    gv_svigt_ind := StrReplace(gv_svigt_ind, "`r", "")
+    gv_svigt_ind := StrSplit(gv_svigt_ind, "`n")
+    for i,e in gv_svigt_ind
+    {
+        gv_svigt[i] := StrSplit(gv_svigt_ind[i], "`t")
+    }
+    for i, e in gv_svigt
     {
         ; MsgBox, , , %gv_svigt%, Timeout]
         if (gv_svigt[i][1] = k_aftale)
-            {
+        {
             vl := gv_svigt[i][2]
             break
-            }
-    } 
-; MsgBox, , , %vl%
-dato_dag_måned := SubStr(dato, 7, 4) . SubStr(dato, 4, 2) . SubStr(dato, 1, 2)
-FormatTime, ugedag, %dato_dag_måned%, dddd
-FormatTime, ugenr, %dato_dag_måned%, YWeek
-ugenr := SubStr(ugenr, 5, 2)
-; Tjek indlæs åbningstid på ugedag
-ugedag_navn := ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
-for i,e in ugedag_navn
+        }
+    }
+    ; MsgBox, , , %vl%
+    dato_dag_måned := SubStr(dato, 7, 4) . SubStr(dato, 4, 2) . SubStr(dato, 1, 2)
+    FormatTime, ugedag, %dato_dag_måned%, dddd
+    FormatTime, ugenr, %dato_dag_måned%, YWeek
+    ugenr := SubStr(ugenr, 5, 2)
+    ; Tjek indlæs åbningstid på ugedag
+    ugedag_navn := ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
+    for i,e in ugedag_navn
     {
         if (ugedag = ugedag_navn[i])
             ugedag_tal := i + 1
     }
-gv_dag := []
-FileRead, gv_dag_ind, db\gv_garanti_dag.txt
-gv_dag_ind := StrReplace(gv_dag_ind, "`r", "")
-gv_dag_ind := StrSplit(gv_dag_ind, "`n")
-for i,e in gv_dag_ind
-{
-    gv_dag[i] := StrSplit(gv_dag_ind[i], "`t")
-}
-; Indlæs åbningstid på ferieuge og helligdag
-gv_ferie := []
-FileRead, gv_ferie_ind, db\GV ferie helligdage.tsv
-gv_ferie_ind := StrReplace(gv_ferie_ind, "`r", "")
-gv_ferie_ind := StrSplit(gv_ferie_ind, "`n")
-        for i,e in gv_ferie_ind
-            {
-                gv_ferie[i] := StrSplit(gv_ferie_ind[i], "`t")
-            }
-; for i,e in gv_ferie
-;     {
-;         if (InStr(e[3], ugenr))
-;             MsgBox, , , % gv_ferie[i][1] " har ferie uge " ugenr
-;     }
+    gv_dag := []
+    FileRead, gv_dag_ind, db\gv_garanti_dag.txt
+    gv_dag_ind := StrReplace(gv_dag_ind, "`r", "")
+    gv_dag_ind := StrSplit(gv_dag_ind, "`n")
+    for i,e in gv_dag_ind
+    {
+        gv_dag[i] := StrSplit(gv_dag_ind[i], "`t")
+    }
+    ; Indlæs åbningstid på ferieuge og helligdag
+    gv_ferie := []
+    FileRead, gv_ferie_ind, db\GV ferie helligdage.tsv
+    gv_ferie_ind := StrReplace(gv_ferie_ind, "`r", "")
+    gv_ferie_ind := StrSplit(gv_ferie_ind, "`n")
+    for i,e in gv_ferie_ind
+    {
+        gv_ferie[i] := StrSplit(gv_ferie_ind[i], "`t")
+    }
+    ; for i,e in gv_ferie
+    ;     {
+    ;         if (InStr(e[3], ugenr))
+    ;             MsgBox, , , % gv_ferie[i][1] " har ferie uge " ugenr
+    ;     }
 
-for i,e in gv_dag
+    for i,e in gv_dag
     {
         if (gv_dag[i][1] = gv_ferie[i][1])
-            {
-                gv_dag[i].Push(gv_ferie[i][3])
-                gv_dag[i].Push(gv_ferie[i][4])
-                gv_dag[i].Push(gv_ferie[i][5])
-            }
+        {
+            gv_dag[i].Push(gv_ferie[i][3])
+            gv_dag[i].Push(gv_ferie[i][4])
+            gv_dag[i].Push(gv_ferie[i][5])
+        }
     }
-; Tjek åbningstid på ugedage, feriuge og helligdag
-gv_ja_nej := []
-for i,e in gv_dag
+    ; Tjek åbningstid på ugedage, feriuge og helligdag
+    gv_ja_nej := []
+    for i,e in gv_dag
     {
         if (e[1] = vl)
-            {
-                gv_ja_nej := []
+        {
+            gv_ja_nej := []
 
             if (InStr(gv_dag[i][9], ugenr))
-                {
-                    gv_ja_nej.Push("Nej", ugenr)
-                    break
-                }
+            {
+                gv_ja_nej.Push("Nej", ugenr)
+                break
+            }
             if (InStr(dato, "25-12") or instr(dato, "26-12"))
                 if (gv_dag[i][10] = "Nej")
                 {
@@ -4211,25 +4199,25 @@ for i,e in gv_dag
                     break
                 }
 
-                if (gv_dag[i][ugedag_tal] = "Ja")
-                    {
-                        gv_ja_nej.Push("Ja", ugedag)
-                        if (ugedag_tal = 7 or ugedag_tal = 8)
-                            gv_ja_nej.Push("weekend")
-                        else
-                            gv_ja_nej.Push("hverdag")
+            if (gv_dag[i][ugedag_tal] = "Ja")
+            {
+                gv_ja_nej.Push("Ja", ugedag)
+                if (ugedag_tal = 7 or ugedag_tal = 8)
+                    gv_ja_nej.Push("weekend")
+                else
+                    gv_ja_nej.Push("hverdag")
 
-                        break
-                    }
-                if (gv_dag[i][ugedag_tal] = "Nej")
-                    {
-                        gv_ja_nej.Push("Nej", ugedag)
-                        break
-                    }   
-                 }
-                 gv_ja_nej := ["variabel"]
+                break
+            }
+            if (gv_dag[i][ugedag_tal] = "Nej")
+            {
+                gv_ja_nej.Push("Nej", ugedag)
+                break
+            }
+        }
+        gv_ja_nej := ["variabel"]
     }
-return gv_ja_nej
+    return gv_ja_nej
 }
 ; konverter vl_liste_array til JSON, dump i tekst
 vl_liste_array_til_json_tekst()
@@ -4607,7 +4595,7 @@ vlliste_vis_note_fra_planbillede()
 Trio_opkald(telefon)
 {
     ifWinNotExist, ahk_class Addressbook
-            ControlClick, x373 y72, ahk_class Agent Main GUI
+        ControlClick, x373 y72, ahk_class Agent Main GUI
     ; ControlGetText, OutputVar [, Control, WinTitle, WinText, ExcludeTitle, ExcludeText]
     ; if (Con)
     trio_pause()
@@ -4622,7 +4610,7 @@ Trio_opkald(telefon)
     ControlGetText, tlf_test, Edit2, Trio Attendant
     sleep 100
     loop_test := 0
-    controlsend, ,  +{Escape}, ahk_class Addressbook
+    controlsend, , +{Escape}, ahk_class Addressbook
     ; controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
     sleep 100
     ControlGetText, tlf_test, Edit2, Trio Attendant
@@ -4653,7 +4641,7 @@ Trio_opkald(telefon)
     ; }
     ; Else
     ; {
-    controlsend, ,  {NumpadDot}, ahk_class Addressbook
+    controlsend, , {NumpadDot}, ahk_class Addressbook
     Return
     ; }
 }
@@ -4857,52 +4845,52 @@ trio_tlf_knap(ByRef tlf := "")
 ; Opdel Opslag i flexfinder og hent af K_aftale
 Flexfinder_opslag(k_aftale, sty_sys)
 {
-        k_aftale := SubStr("000" . k_aftale, -3) ; indsætter nuller og tager sidste fire cifre i strengen (kun i spil når mindre end fire cifre ind).
-        sty_sys := SubStr("000" . sty_sys, -3) ; indsætter nuller og tager sidste fire cifre i strengen (kun i spil når mindre end fire cifre ind).
-        opslag := k_aftale "_" sty_sys
-        ; MsgBox, , er 4 , % k_aFtale
+    k_aftale := SubStr("000" . k_aftale, -3) ; indsætter nuller og tager sidste fire cifre i strengen (kun i spil når mindre end fire cifre ind).
+    sty_sys := SubStr("000" . sty_sys, -3) ; indsætter nuller og tager sidste fire cifre i strengen (kun i spil når mindre end fire cifre ind).
+    opslag := k_aftale "_" sty_sys
+    ; MsgBox, , er 4 , % k_aFtale
+    sleep 200
+    WinActivate, FlexDanmark FlexFinder
+    winwaitactive, FlexDanmark FlexFinder
+    sleep 40
+    SendInput, {Home}
+    sleep 400
+    SendInput, {PgUp}
+    sleep 200
+    SendInput, {Home}
+    sleep 400
+    WinGetPos, W_X, W_Y, , , FlexDanmark FlexFinder, , ,
+    if(W_X = "1920" or W_X = "-1920")
+    {
+        PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6CF2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
         sleep 200
-        WinActivate, FlexDanmark FlexFinder
-        winwaitactive, FlexDanmark FlexFinder
+        click %Px% %Py%
+        sleep 200
+        ControlClick, x322 y100, FlexDanmark FlexFinder
         sleep 40
-        SendInput, {Home}
-        sleep 400
-        SendInput, {PgUp}
+        SendInput, +{tab}{up}{tab}
+        sleep 300
+        SendInput, %opslag%
+        sleep 900
+        SendInput, {enter}
+        sleep 100
+    }
+    Else
+    {
+        PixelSearch, Px, Py, 90, 190, 1250, 250, 0x5E6FF2, 0, Fast
         sleep 200
-        SendInput, {Home}
-        sleep 400
-        WinGetPos, W_X, W_Y, , , FlexDanmark FlexFinder, , ,
-        if(W_X = "1920" or W_X = "-1920")
-        {
-            PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6CF2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
-            sleep 200
-            click %Px% %Py%
-            sleep 200
-            ControlClick, x322 y100, FlexDanmark FlexFinder
-            sleep 40
-            SendInput, +{tab}{up}{tab}
-            sleep 300
-            SendInput, %opslag%
-            sleep 900
-            SendInput, {enter}
-            sleep 100
-        }
-        Else
-        {
-            PixelSearch, Px, Py, 90, 190, 1250, 250, 0x5E6FF2, 0, Fast
-            sleep 200
-            click %Px% %Py%
-            sleep 200
-            ControlClick, x244 y215, FlexDanmark FlexFinder
-            sleep 40
-            SendInput, +{tab}{up}{tab}
-            sleep 300
-            SendInput, %opslag%
-            sleep 900
-            SendInput, {enter}
-            sleep 100
-        }
-        ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
+        click %Px% %Py%
+        sleep 200
+        ControlClick, x244 y215, FlexDanmark FlexFinder
+        sleep 40
+        SendInput, +{tab}{up}{tab}
+        sleep 300
+        SendInput, %opslag%
+        sleep 900
+        SendInput, {enter}
+        sleep 100
+    }
+    ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
     Return
 }
 
@@ -5194,32 +5182,31 @@ excel_p6_faerge()
     </o:shapelayout></xml><![endif]--></head><body lang=DA link="#467886" vlink="#96607D" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal>%broedtekst%<o:p></o:p></p><p class=MsoNormal><span style='mso-ligatures:none'><br><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%snap_navn%"><img width=1897 height=986 style='width:19.7604in;height:10.2708in' id="Billede_x0020_2" src="cid:%hou_navn%"></span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
 
         )
-   
+
     faerge_template.htmlbody := html_tekst
     faerge_template.subject := "Hou og Snaptun"
     ImageDestroy(hou)
     ImageDestroy(snap)
     faerge_template.display()
-    
 
-}
-;; System
+    }
+    ;; System
 
-; asd
+    ; asd
 
-mod_up()
-{
+    mod_up()
+    {
     SendInput, {AltUp}{ShiftUp}{CtrlUp}{LWinUp}{RWinUp}
-    ; Loop, 0xFF
-    ;     IF GetKeyState(Key:=Format("VK{:X}",A_Index))
-    ;         SendInput, {%Key% up}
-    ; Return
-}
+        ; Loop, 0xFF
+        ;     IF GetKeyState(Key:=Format("VK{:X}",A_Index))
+        ;         SendInput, {%Key% up}
+        ; Return
+    }
 
-; *
-; færdigskrives
-sys_genveje_opslag()
-{
+    ; *
+    ; færdigskrives
+    sys_genveje_opslag()
+    {
     global bruger_genvej
     global genvej_ren := []
     global genvej_navn := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 1)
@@ -5256,10 +5243,10 @@ sys_genveje_opslag()
 
     ; MsgBox, , Genvej, % StrReplace(bruger_genvej.30, "+" , "Shift + ")
     return
-}
-; omdan genvejstaster til AHK-key. Tager genvejens kolonnenummer
-sys_genvej_til_ahk_tast(byref kolonne := "")
-{
+    }
+    ; omdan genvejstaster til AHK-key. Tager genvejens kolonnenummer
+    sys_genvej_til_ahk_tast(byref kolonne := "")
+    {
     global bruger_genvej
     genvej_mod := []
     genvej := RegExReplace(bruger_genvej[kolonne], "[\^!\^\+\#]")
@@ -5275,14 +5262,14 @@ sys_genvej_til_ahk_tast(byref kolonne := "")
         genvej_mod[i] := StrReplace(genvej_mod[i], "#", "lwin")
     }
     return genvej_mod
-    ; genvej_mod := StrReplace(genvej_mod, "+", "shift")
-    ; genvej_mod := StrReplace(genvej_mod, "^", "control")
-    ; win skal være enten left/right - hvordan?
-    ; MsgBox, , , % genvej_mod
-    ; KeyWait, %genvej_mod%
-}
-sys_genvej_keywait(byref genvej_mod := "")
-{
+        ; genvej_mod := StrReplace(genvej_mod, "+", "shift")
+        ; genvej_mod := StrReplace(genvej_mod, "^", "control")
+        ; win skal være enten left/right - hvordan?
+        ; MsgBox, , , % genvej_mod
+        ; KeyWait, %genvej_mod%
+    }
+    sys_genvej_keywait(byref genvej_mod := "")
+    {
     global bruger_genvej
     bruger_genvej_midl := []
     for i,e in bruger_genvej
@@ -5303,84 +5290,84 @@ sys_genvej_keywait(byref genvej_mod := "")
             keywait, %genvej_mod3%
     }
     return
-}
-sys_initialer()
-{
+    }
+    sys_initialer()
+    {
     FormatTime, tid, ,HHmm ;definerer format på tid/dato
     initialer = /mt%A_userName%%tid%
     return initialer
-}
-; l_sys_inputbox_til_fra:
+    }
+    ; l_sys_inputbox_til_fra:
 
-; brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
-; p6_udregn_minut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,44)
-; p6_vl_slut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,42)
-; if (p6_udregn_minut_ops = 0)
-;     min_default := 2
-; if (p6_udregn_minut_ops = 1)
-;     min_default := 1
-; if (p6_vl_slut_ops = 0)
-;     vl_default := 2
-; if (p6_vl_slut_ops = 1)
-;     vl_default := 1
-; Gui, sys:New
-; Gui, sys:default
-; Gui Font, s9, Segoe UI
-; Gui Add, Text, x9 y32 w115 h23 +0x200, P6 - VL Sluttid
-; Gui Add, Text, x8 y64 w123 h23 +0x200, P6 - Minutudregner
-; Gui Add, DropDownList, vp6_vl_slut x144 y32 w120 Choose%vl_default%, Med Inputbox|Uden Inputbox|
-; Gui Add, DropDownList, vp6_minut x144 y64 w120 Choose%min_default%, Med Inputbox|Uden Inputbox|
-; Gui Add, Button, gsysok, &OK
+    ; brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1)
+    ; p6_udregn_minut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,44)
+    ; p6_vl_slut_ops := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1,42)
+    ; if (p6_udregn_minut_ops = 0)
+    ;     min_default := 2
+    ; if (p6_udregn_minut_ops = 1)
+    ;     min_default := 1
+    ; if (p6_vl_slut_ops = 0)
+    ;     vl_default := 2
+    ; if (p6_vl_slut_ops = 1)
+    ;     vl_default := 1
+    ; Gui, sys:New
+    ; Gui, sys:default
+    ; Gui Font, s9, Segoe UI
+    ; Gui Add, Text, x9 y32 w115 h23 +0x200, P6 - VL Sluttid
+    ; Gui Add, Text, x8 y64 w123 h23 +0x200, P6 - Minutudregner
+    ; Gui Add, DropDownList, vp6_vl_slut x144 y32 w120 Choose%vl_default%, Med Inputbox|Uden Inputbox|
+    ; Gui Add, DropDownList, vp6_minut x144 y64 w120 Choose%min_default%, Med Inputbox|Uden Inputbox|
+    ; Gui Add, Button, gsysok, &OK
 
-; Gui Show, w307 h332, Window
-; Return
+    ; Gui Show, w307 h332, Window
+    ; Return
 
-; sysok:
-; GuiControlGet, p6_vl_slut
-; GuiControlGet, p6_minut
-; if (p6_vl_slut ="Med Inputbox")
-; {
-;     p6_vl_ops = 1
-;     gui, cancel
-;     databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 42, p6_vl_ops)
-; }
-; if (p6_vl_slut ="Uden Inputbox")
-; {
-;     p6_vl_ops = 0
-;     gui, cancel
-;     databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 42, p6_vl_ops)
-; }
-; if (p6_minut ="Med Inputbox")
-; {
-;     p6_minut_ops = 1
-;     gui, cancel
-;     databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 44, p6_minut_ops)
-; }
-; if (p6_minut ="Uden Inputbox")
-; {
-;     p6_minut_ops = 0
-;     gui, cancel
-;     databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 44, p6_minut_ops)
-; }
-; sleep 200
-; WinActivate, PLANET
-; return
+    ; sysok:
+    ; GuiControlGet, p6_vl_slut
+    ; GuiControlGet, p6_minut
+    ; if (p6_vl_slut ="Med Inputbox")
+    ; {
+    ;     p6_vl_ops = 1
+    ;     gui, cancel
+    ;     databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 42, p6_vl_ops)
+    ; }
+    ; if (p6_vl_slut ="Uden Inputbox")
+    ; {
+    ;     p6_vl_ops = 0
+    ;     gui, cancel
+    ;     databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 42, p6_vl_ops)
+    ; }
+    ; if (p6_minut ="Med Inputbox")
+    ; {
+    ;     p6_minut_ops = 1
+    ;     gui, cancel
+    ;     databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 44, p6_minut_ops)
+    ; }
+    ; if (p6_minut ="Uden Inputbox")
+    ; {
+    ;     p6_minut_ops = 0
+    ;     gui, cancel
+    ;     databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 44, p6_minut_ops)
+    ; }
+    ; sleep 200
+    ; WinActivate, PLANET
+    ; return
 
-sysGuiEscape:
-sysGuiClose:
+    sysGuiEscape:
+    sysGuiClose:
     gui, cancel
-return
+    return
 
-;; Misc
-; *
-; SygehusGUI
-; omskrives
-l_p6_sygehus_ring_op:
+    ;; Misc
+    ; *
+    ; SygehusGUI
+    ; omskrives
+    l_p6_sygehus_ring_op:
     sys_genvej_start(18)
     vis_sygehus_1()
-return
+    return
 
-l_p6_central_ring_op:
+    l_p6_central_ring_op:
     sys_genvej_start(19)
     Gui, Taxa:Show, AutoSize Center , Ring op til central
     taxaknap1:=Func("opkaldtaxa").Bind("89484892")
@@ -5393,8 +5380,8 @@ l_p6_central_ring_op:
     GuiControl, Taxa:+g,taxa3,%taxaknap3%
     GuiControl, Taxa:+g,taxa4,%taxaknap4%
     GuiControl, Taxa:+g,taxa5,%taxaknap5%
-return
-central_menu:
+    return
+    central_menu:
     {
         gui taxa: hide
         Gui, Vogngrupper:Show, AutoSize Center , Ring op til central
@@ -5432,38 +5419,38 @@ central_menu:
         sys_afslut_genvej()
     }
 
-VogngrupperGuiEscape:
-VogngrupperGuiClose:
+    VogngrupperGuiEscape:
+    VogngrupperGuiClose:
     sys_afslut_genvej()
     gui, Vogngrupper: Hide
-return
+    return
 
-TaxaGuiClose:
+    TaxaGuiClose:
     sys_afslut_genvej()
     gui, Taxa: Hide
-return
+    return
 
-TaxaGuiEscape:
+    TaxaGuiEscape:
     sys_afslut_genvej()
     Gui, Taxa: Hide
-return
+    return
 
-vis_sygehus_1()
-{
+    vis_sygehus_1()
+    {
     Gui, sygehus:Show, w144 h240, Ring til Sygehus
     Return
-}
-vis_sygehus_2(navn)
-{
+    }
+    vis_sygehus_2(navn)
+    {
     if (navn = "misc")
         Gui, sygehus%navn%:Show, w144 h300, AUH
     else
         Gui, sygehus%navn%:Show, w144 h240, AUH
     Return
-}
+    }
 
-l_p6_specialadresser:
-{
+    l_p6_specialadresser:
+    {
 
     sys_genvej_start(73)
     CoordMode, Mouse, Screen
@@ -5474,71 +5461,70 @@ l_p6_specialadresser:
     sys_afslut_genvej()
     return
 
-}
+    }
 
+    ;; Testknap
 
-;; Testknap
-
-GuiOpkald()
+    GuiOpkald()
     {
         CoordMode, Mouse, Screen
         MouseGetPos, musposx, musposy
         gui, opkald: Show, x%musposx% y%musposy% AutoSize , Opkald
-        GuiControl, opkald: , Guitlf, 
+        GuiControl, opkald: , Guitlf,
         GuiControl, opkald: focus, Guitlf
         return
     }
-;; HOTKEYS
+    ;; HOTKEYS
 
-;; Global
-l_quitAHK:
-ExitApp
-Return
+    ;; Global
+    l_quitAHK:
+    ExitApp
+    Return
 
-l_p6_aktiver:
+    l_p6_aktiver:
     p6_aktiver()
     sys_afslut_genvej()
-return
-;; PLANET
-l_p6_hastighed:
+    return
+    ;; PLANET
+    l_p6_hastighed:
     P6_hastighed()
     sys_afslut_genvej()
-return
-; skriv/fjern initialer. Kolonne 5
-l_p6_initialer: ;; Initialer til/fra
+    return
+    ; skriv/fjern initialer. Kolonne 5
+    l_p6_initialer: ;; Initialer til/fra
     sys_genvej_start(5)
     P6_initialer()
     sys_afslut_genvej()
-Return
-l_p6_initialer_slet_eget:
+    Return
+    l_p6_initialer_slet_eget:
     sys_genvej_start(55)
     P6_initialer_slet_eget()
     sys_afslut_genvej()
-Return
-l_p6_initialer_skift_eget:
+    Return
+    l_p6_initialer_skift_eget:
     sys_genvej_start(59)
     P6_initialer_skift_eget()
     sys_afslut_genvej()
-Return
-; skriv initialer, fortsæt notat. Kolonne 6
-l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
+    Return
+    ; skriv initialer, fortsæt notat. Kolonne 6
+    l_p6_initialer_skriv: ; skriv initialer og forsæt notering.
     sys_genvej_start(6)
     P6_initialer_skriv()
     sys_afslut_genvej()
-return
-; gentag notat. Kolonne 57
-l_p6_notat_igen: ; skriv initialer og forsæt notering.
+    return
+    ; gentag notat. Kolonne 57
+    l_p6_notat_igen: ; skriv initialer og forsæt notering.
     sys_genvej_start(57)
     P6_notat_igen()
     sys_afslut_genvej()
-return
+    return
 
-l_p6_vis_k_aftale: ;Vis kørselsaftale for aktivt vognløb
+    l_p6_vis_k_aftale: ;Vis kørselsaftale for aktivt vognløb
     P6_vis_k()
     sys_afslut_genvej()
-Return
+    Return
 
-l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
+    l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     faste_dage := ["ma", "ti", "on", "to", "fr", "lø", "sø"]
     uge_dage := ["faste mandage", "faste tirsdage", "faste onsdage", "faste torsdage", "faste fredage", "faste lørdage", "faste søndage"]
 
@@ -5681,11 +5667,11 @@ l_p6_ret_vl_tlf: ; +F3 - ret vl-tlf til triopkald
     }
     ; }
     sys_afslut_genvej()
-return
+    return
 
-#IfWinActive ; for at resette indent
-; ***
-l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
+    #IfWinActive ; for at resette indent
+    ; ***
+    l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
     global s
     tlf := Trio_hent_tlf()
     WinActivate, PLANET, , ,
@@ -5703,10 +5689,10 @@ l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
         sleep s * 40
     P6_udfyld_k_og_s(vl)
     sys_afslut_genvej()
-Return
+    Return
 
-; ***r
-l_trio_til_p6: ;træk tlf til rejsesøg
+    ; ***r
+    l_trio_til_p6: ;træk tlf til rejsesøg
     global s
 
     If (IfWinNotExist, PLANET, , , )
@@ -5737,19 +5723,19 @@ l_trio_til_p6: ;træk tlf til rejsesøg
             return
         }
     }
-return
+    return
 
-; gå i vl
-l_p6_vaelg_vl:
+    ; gå i vl
+    l_p6_vaelg_vl:
     p6_vaelg_vl()
     sys_afslut_genvej()
-return
-l_p6_vaelg_vl_liste:
+    return
+    l_p6_vaelg_vl_liste:
     p6_vaelg_vl_liste()
     sys_afslut_genvej()
-return
-;træk tlf fra aktiv planbillede, ring op i Trio. Col 11
-l_p6_vl_ring_op:
+    return
+    ;træk tlf fra aktiv planbillede, ring op i Trio. Col 11
+    l_p6_vl_ring_op:
     sys_genvej_start(11)
     sleep s * 100
     vl_tlf := P6_hent_vl_tlf()
@@ -5781,12 +5767,12 @@ l_p6_vl_ring_op:
     sleep 3000
     trio_klar()
     sys_afslut_genvej()
-return
+    return
 
-; ***
+    ; ***
 
-; ^+F5 col 12
-l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
+    ; ^+F5 col 12
+    l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
     sys_genvej_start(12)
     P6_planvindue()
     sleep s * 100
@@ -5809,10 +5795,10 @@ l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
     sleep 3000
     trio_klar()
     sys_afslut_genvej()
-Return
+    Return
 
-; P6 - ring op til kunde markeret i Vl (kræver tlf opsat på kundetilladelse)
-l_p6_ring_til_kunde:
+    ; P6 - ring op til kunde markeret i Vl (kræver tlf opsat på kundetilladelse)
+    l_p6_ring_til_kunde:
     p6_hent_kunde_tlf(telefon)
     sleep s * 200
     if (SubStr(telefon, 1, 3) = "888")
@@ -5835,16 +5821,16 @@ l_p6_ring_til_kunde:
         sys_afslut_genvej()
         return
     }
-return
-l_p6_laas_vl:
+    return
+    l_p6_laas_vl:
     sys_genvej_beskrivelse(62)
     genvej_mod := sys_genvej_til_ahk_tast(62)
     sys_genvej_keywait(genvej_mod)
 
     p6_marker_vl_laas()
-return
-; #F5, col 13
-l_p6_vl_luk:
+    return
+    ; #F5, col 13
+    l_p6_vl_luk:
     sys_genvej_start(13)
     gemtklip := ClipboardAll
 
@@ -5863,9 +5849,9 @@ l_p6_vl_luk:
 
     clipboard := gemtklip
     gemtklip :=
-return
+    return
 
-l_p6_udregn_minut:
+    l_p6_udregn_minut:
     sys_genvej_start(17)
     tid := P6_udregn_minut()
     tid_tekst := tid.1
@@ -5883,78 +5869,78 @@ l_p6_udregn_minut:
 
     sleep 100
     Gui Show, w260 h125, Resultat
-Return
-l_p6_cpr_til_bestillingsvindue:
+    Return
+    l_p6_cpr_til_bestillingsvindue:
     {
         sys_genvej_start(58)
         p6_cpr_til_bestillingsvindue()
         return
     }
-ok:
+    ok:
     {
         gui, cancel
         sys_afslut_genvej()
         return
     }
-udklip:
+    udklip:
     {
         Clipboard := tid.2
         gui, cancel
         sys_afslut_genvej()
         return
     }
-plustidGuiEscape:
-plustidGuiClose:
+    plustidGuiEscape:
+    plustidGuiClose:
     gui, cancel
     sys_afslut_genvej()
-return
-l_p6_billede_gui:
+    return
+    l_p6_billede_gui:
     {
         sys_genvej_start(69)
         Gui p6_billede: Show, w218 h303, Alt F9
         sys_afslut_genvej()
         return
     }
-l_p6_tjek_andre_rejser:
+    l_p6_tjek_andre_rejser:
     {
         sys_genvej_start(66)
         p6_tjek_andre_rejser()
         sys_afslut_genvej()
         return
     }
-l_p6_soeg_hylde_dagsdato:
+    l_p6_soeg_hylde_dagsdato:
     {
         sys_genvej_start(72)
         p6_soeg_hylde_dagsdato()
         sys_afslut_genvej()
         return
     }
-l_p6_alarmer:
+    l_p6_alarmer:
     sys_genvej_start(14)
     P6_alarmer()
     sys_afslut_genvej()
-return
+    return
 
-l_p6_udraabsalarmer:
+    l_p6_udraabsalarmer:
     sys_genvej_start(15)
     P6_udraabsalarmer()
     sys_afslut_genvej()
-return
+    return
 
-l_p6_tag_alarm:
+    l_p6_tag_alarm:
     sys_genvej_start(56)
     p6_tag_alarm()
     sys_afslut_genvej()
-Return
+    Return
 
-l_p6_tag_alarm_vl_box:
+    l_p6_tag_alarm_vl_box:
     sys_genvej_beskrivelse(56)
     p6_tag_alarm_vl_box()
     sys_afslut_genvej()
-Return
+    Return
 
-; Replaner og gem i liste, kolonne 49
-l_p6_replaner_liste_vl:
+    ; Replaner og gem i liste, kolonne 49
+    l_p6_replaner_liste_vl:
     sys_genvej_start(49)
     vl := p6_replaner_hent_vl()
     if (vl = 0)
@@ -5962,9 +5948,9 @@ l_p6_replaner_liste_vl:
     vl_array := vlliste_replaner_lav_array(vl)
     vlliste_vl_array_til_liste(vl_array)
     sys_afslut_genvej()
-return
-; Replaner og gå til VL, kolonne 60
-l_p6_replaner_opslag_vl:
+    return
+    ; Replaner og gå til VL, kolonne 60
+    l_p6_replaner_opslag_vl:
     sys_genvej_start(60)
     vl := p6_replaner_hent_vl()
     if (vl = 0)
@@ -5972,10 +5958,10 @@ l_p6_replaner_opslag_vl:
     sleep 200
     p6_vaelg_vl(vl)
     sys_afslut_genvej()
-return
+    return
 
-; Gem aktiv vl på liste, kolonne 50
-l_p6_liste_vl:
+    ; Gem aktiv vl på liste, kolonne 50
+    l_p6_liste_vl:
     sys_genvej_start(50)
     FormatTime, vl_tid , YYYYMMDDHH24MISS, HH:mm
     vl := P6_hent_vl()
@@ -5987,18 +5973,18 @@ l_p6_liste_vl:
     vl_array := vlliste_listet_lav_array(vl)
     vlliste_vl_array_til_liste(vl_array)
     sys_afslut_genvej()
-return
+    return
 
-; vist VL-liste, kolonne 51
-l_p6_vis_liste_vl:
+    ; vist VL-liste, kolonne 51
+    l_p6_vis_liste_vl:
 
     sys_genvej_start(51)
     vlListe_vis_gui()
     sys_afslut_genvej()
 
-return
+    return
 
-l_p6_vis_liste_fra_planbillede:
+    l_p6_vis_liste_fra_planbillede:
     {
         sys_genvej_start(67)
         vlliste_vis_note_fra_planbillede()
@@ -6006,7 +5992,7 @@ l_p6_vis_liste_fra_planbillede:
         return
     }
 
-l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
+    l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     sys_genvej_start(20)
     FormatTime, tid, ,HHmm
     initialer = /mt%A_userName%%tid%
@@ -6037,49 +6023,49 @@ l_p6_tekst_til_chf: ; Send tekst til aktive vognløb
     P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     sys_afslut_genvej()
     return
-#IfWinActive ; udelukkende for at resette indentering i auto-formatering
+    #IfWinActive ; udelukkende for at resette indentering i auto-formatering
 
-;; Trio
-l_trio_klar: ;Trio klar
+    ;; Trio
+    l_trio_klar: ;Trio klar
     trio_klar()
-Return
+    Return
 
-l_trio_pause: ;Trio pause
+    l_trio_pause: ;Trio pause
     trio_pause()
-Return
+    Return
 
-l_trio_udenov: ;Trio Midt uden overløb
+    l_trio_udenov: ;Trio Midt uden overløb
     trio_udenov()
     trio_klar()
-Return
+    Return
 
-l_trio_efterbehandling: ;Trio efterbehandling
+    l_trio_efterbehandling: ;Trio efterbehandling
     trio_efterbehandling()
     trio_pauseklar()
-Return
-l_trio_linie1: ;Trio efterbehandling
+    Return
+    l_trio_linie1: ;Trio efterbehandling
     trio_linie1()
-Return
-l_trio_linie2: ;Trio efterbehandling
+    Return
+    l_trio_linie2: ;Trio efterbehandling
     trio_linie2()
-Return
+    Return
 
-l_trio_alarm: ;Trio alarm bruger.9
+    l_trio_alarm: ;Trio alarm bruger.9
     trio_alarm()
-Return
+    Return
 
-l_trio_frokost: ;Trio frokostr. bruger.10
+    l_trio_frokost: ;Trio frokostr. bruger.10
     trio_frokost()
-Return
+    Return
 
-l_triokald_til_udklip: ; trækker indkommende kald til udklip, ringer ikke op.
+    l_triokald_til_udklip: ; trækker indkommende kald til udklip, ringer ikke op.
     sys_genvej_start(29)
     clipboard := Trio_hent_tlf()
     sys_afslut_genvej()
-Return
+    Return
 
-; Telenor accepter indgående kald, søg planet
-l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
+    ; Telenor accepter indgående kald, søg planet
+    l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
     sys_genvej_start(4)
     if (!WinExist("--- ahk_exe Miralix OfficeClient.exe") and !WinExist("+ ahk_exe Miralix OfficeClient.exe"))
     {
@@ -6138,8 +6124,8 @@ l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
         return
     }
 
-; Opkald på markeret tekst. Kolonne 28
-l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
+    ; Opkald på markeret tekst. Kolonne 28
+    l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     sys_genvej_start(28)
     SendInput, {click}
     sleep 100
@@ -6172,18 +6158,18 @@ l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
     sleep 3100 ; for at genvejsbeskrivelsen bliver der - et problem?
     trio_klar()
     sys_afslut_genvej()
-Return
+    Return
 
-; Minus på numpad afslutter Trioopkald global (Skal der tilbage til P6?)
-l_trio_afslut_opkald:
-l_trio_afslut_opkaldB:
+    ; Minus på numpad afslutter Trioopkald global (Skal der tilbage til P6?)
+    l_trio_afslut_opkald:
+    l_trio_afslut_opkaldB:
     sys_genvej_start(30)
     Trio_afslutopkald()
     sys_afslut_genvej()
-Return
+    Return
 
-;; Flexfinder
-l_flexf_fra_p6:
+    ;; Flexfinder
+    l_flexf_fra_p6:
     sys_genvej_start(36)
     If (WinExist("FlexDanmark FlexFinder"))
         {
@@ -6200,9 +6186,9 @@ l_flexf_fra_p6:
         MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den forreste fane)
         sys_afslut_genvej()
         }
-Return
-; slå VL op i FF. Kolonne 36
-l_flexf_til_p6:
+    Return
+    ; slå VL op i FF. Kolonne 36
+    l_flexf_til_p6:
     sys_genvej_start(35)
     sleep 200
     vl :=Flexfinder_til_p6()
@@ -6222,51 +6208,51 @@ l_flexf_til_p6:
         Return
     }
 
-;; Outlook
-l_outlook_ny_mail: ; opretter ny mail. Bruger.16
+    ;; Outlook
+    l_outlook_ny_mail: ; opretter ny mail. Bruger.16
     sys_genvej_start(37)
     Outlook_nymail()
     sys_afslut_genvej()
-Return
+    Return
 
-;; Excel til vl.
-l_excel_vl_til_P6_A:
-l_excel_vl_til_P6_B:
+    ;; Excel til vl.
+    l_excel_vl_til_P6_A:
+    l_excel_vl_til_P6_B:
     sys_genvej_start(40)
     vl := Excel_vl_til_udklip()
     sleep 400
     SendInput, {Esc}
     Excel_udklip_til_p6(vl)
-return
+    return
 
-l_excel_mange_ture:
+    l_excel_mange_ture:
     sys_genvej_start(52)
     excel_p6_kundenummer()
     sys_afslut_genvej()
-return
+    return
 
-l_excel_p6_id:
+    l_excel_p6_id:
     sys_genvej_start(53)
     excel_p6_id()
     sys_afslut_genvej()
-return
+    return
 
-l_excel_p6_cpr:
+    l_excel_p6_cpr:
     sys_genvej_start(54)
     excel_p6_cpr()
     sys_afslut_genvej()
-return
+    return
 
-l_restartAHK: ; AHK-reload
+    l_restartAHK: ; AHK-reload
     sys_genvej_start(46)
     Reload
     sleep 2000
-Return
+    Return
 
-;; GUI-hjælp
+    ;; GUI-hjælp
 
-;hjælp GUI
-l_gui_hjælp:
+    ;hjælp GUI
+    l_gui_hjælp:
     sys_genvej_start(47)
     brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
     bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
@@ -6446,12 +6432,12 @@ l_gui_hjælp:
     Gui Tab
 
     Gui Show, w747 h670, AHK
-Return
+    Return
 
-Return
-gui, Submit, nohide
+    Return
+    gui, Submit, nohide
 
-sysok:
+    sysok:
     GuiControlGet, p6_vl_slut
     GuiControlGet, p6_minut
     GuiControlGet, p6_hastighed_ops
@@ -6478,12 +6464,12 @@ sysok:
     }
     databasemodifycell("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1, 41, p6_hastighed_ops)
 
-GuiEscape:
-genvejGuiClose:
+    GuiEscape:
+    genvejGuiClose:
     gui, destroy
     sys_afslut_genvej()
-return
-l_outlook_genaaben: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
+    return
+    l_outlook_genaaben: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     sys_genvej_start(70)
     FormatTime, dato, , dd-MM-y
     ; FormatTime, tid, , HH:mm
@@ -6624,11 +6610,11 @@ l_outlook_genaaben: ; tag skærmprint af P6-vindue og indsæt i ny mail til plan
     html_tekst =
         (
         <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40"><head><meta name=Generator content="Microsoft Word 15 (filtered medium)"><!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
-o\:* {behavior:url(#default#VML);}
-w\:* {behavior:url(#default#VML);}
-.shape {behavior:url(#default#VML);}
-</style><![endif]--><style><!--
+    <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40"><head><meta name=Generator content="Microsoft Word 15 (filtered medium)"><!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
+    o\:* {behavior:url(#default#VML);}
+    w\:* {behavior:url(#default#VML);}
+    .shape {behavior:url(#default#VML);}
+    </style><![endif]--><style><!--
     /* Font Definitions */
     @font-face
     	{font-family:"Cambria Math";
@@ -6683,17 +6669,17 @@ w\:* {behavior:url(#default#VML);}
 
         sys_afslut_genvej()
         return
-;; Svigt til outlook
-; #TODO #89 standard beskeder i svigtGUI
+    ;; Svigt til outlook
+    ; #TODO #89 standard beskeder i svigtGUI
     l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
         sys_genvej_start(38)
         ; tjek for åbent
         if WinExist("Svigt vl. ")
             {
-            WinActivate, Svigt vl.  
+            WinActivate, Svigt vl.
             return
             }
-        ; FormatTime, dato, , dd-MM-y
+         ; FormatTime, dato, , dd-MM-y
          FormatTime, tidForSvigt, , HH:mm
         ; GuiControl, svigt: disable, Button9
         vg_svigt := 0
@@ -6713,20 +6699,20 @@ w\:* {behavior:url(#default#VML);}
             }
     GuiControl, svigt:,  SvigtVlLukketRadio , 0
     GuiControl, svigt:,  SvigtVLSlettetRadio , 0
-    GuiControl, svigt:,  SvigtÅbningstidRadio , 0 
-    GuiControl, svigt:,  SvigtVlLukketRadio , 0 
-    GuiControl, svigt:,  SvligtVLSlettetRadio , 0 
-    GuiControl, svigt:,  vlTypeGaranti , 0 
-    GuiControl, svigt:,  vlTypeGarantiVariabel , 0 
-    GuiControl, svigt:,  vlTypeVariabel , 0 
-    GuiControl, svigt:,  vlTypeGogngruppe , 0 
-    GuiControl, svigt:,  SvigtVMKontaktRadio , 0 
-    GuiControl, svigt:,  SvigtIngenVmKontaktRadio , 0 
+    GuiControl, svigt:,  SvigtÅbningstidRadio , 0
+    GuiControl, svigt:,  SvigtVlLukketRadio , 0
+    GuiControl, svigt:,  SvligtVLSlettetRadio , 0
+    GuiControl, svigt:,  vlTypeGaranti , 0
+    GuiControl, svigt:,  vlTypeGarantiVariabel , 0
+    GuiControl, svigt:,  vlTypeVariabel , 0
+    GuiControl, svigt:,  vlTypeGogngruppe , 0
+    GuiControl, svigt:,  SvigtVMKontaktRadio , 0
+    GuiControl, svigt:,  SvigtIngenVmKontaktRadio , 0
     GuiControl, svigt: disable, svigtVmKontaktradio
     GuiControl, svigt: disable, svigtIngenVMKontaktRadio
     GuiControl, svigt:,  GemtSkærmprint , 0
-    GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
-    GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl. 
+    GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl.
+    GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl.
     GuiControl, svigt: disable , SvigtÅbningstidEdit
     GuiControl, svigt: disable , GvHjemzoneTid
     GuiControl, svigt: enable, vlTypeGaranti
@@ -6737,17 +6723,17 @@ w\:* {behavior:url(#default#VML);}
     SvigtSlettetKnapTjekVar := 0
     SvigtLukketKnapTjekVar := 0
     SvigtÅbningstidUdskudtKnapTjekVar := 0
-    
+
         ; GuiControl, svigt: enable, Button6
         ; GuiControl, svigt: enable, Button4
         ; GuiControl, svigt: enable, Button3
         ; GuiControl, svigt: enable, Button2
-        GuiControl, svigt:text, svigtVlTekst, Vognløb 
+        GuiControl, svigt:text, svigtVlTekst, Vognløb
         P6_aktiver()
         vl_array := P6_hent_vl_d_k_s()
         ; vl_array := []
-        ; vl_array.2 := "ingen k" 
-        ; vl_array.3 := "32" 
+        ; vl_array.2 := "ingen k"
+        ; vl_array.3 := "32"
         if (vl_array = "fejl")
         {
             sys_afslut_genvej()
@@ -6784,7 +6770,7 @@ w\:* {behavior:url(#default#VML);}
                 vlType := "Variabel"
                 SvigtGarantitid := "Variabelt vognløb"
                     GuiControl, svigt:,  SvigtGarantitid , %SvigtGarantitid%
-                    GuiControl, svigt: , vlTypeVariabel , 1 
+                    GuiControl, svigt: , vlTypeVariabel , 1
                     GuiControl, svigt: Focus, SvigtBeskrivelse
                     Gosub, vlTypeVariabel
             }
@@ -6797,7 +6783,7 @@ w\:* {behavior:url(#default#VML);}
             if (vl_array[5][1] = "Ja")
                 {
                 vlType := "GV"
-                ; SvigtGarantitid := "GV i variabel tid"
+                    ; SvigtGarantitid := "GV i variabel tid"
                     if (vl_array[5][3] = "Weekend")
                         {
                     garanti_start := SubStr(gv_svigt[i][4], 1, 2)
@@ -6808,23 +6794,23 @@ w\:* {behavior:url(#default#VML);}
                     garanti_start := SubStr(gv_svigt[i][3], 1, 2)
                     garanti_slut := SubStr(gv_svigt[i][3], 9, 2)
                         }
-                    SvigtGarantitidTekst := "Garantiperiode:`n" garanti_start ":00 - " garanti_slut ":00" 
+                    SvigtGarantitidTekst := "Garantiperiode:`n" garanti_start ":00 - " garanti_slut ":00"
                     SvigtGarantiTidTekstMail := garanti_start ":00 - " garanti_slut ":00"
                     GuiControl, svigt:,  SvigtGarantitid , % SvigtGarantitidTekst
-                    GuiControl, svigt: , vlTypeGaranti, 1 
+                    GuiControl, svigt: , vlTypeGaranti, 1
                     GuiControl, svigt: enable , SvigtÅbningstidRadio
                     GuiControl, svigt: enable , SvigtVlLukketRadio
                     GuiControl, svigt: enable , SvigtVlSlettetRadio
                     GuiControl, svigt: Focus, SvigtBeskrivelse
-                    ; GuiControl, svigt:,  SvigtGarantitid , Garantiperiode: %SvigtGarantitid% `n%garanti_start%:00-%garanti_slut%:00 
-                ; Tjek om udenfor garantiperiode
+        ; GuiControl, svigt:,  SvigtGarantitid , Garantiperiode: %SvigtGarantitid% `n%garanti_start%:00-%garanti_slut%:00
+        ; Tjek om udenfor garantiperiode
         if (SubStr(tidForSvigt, 1, 2) < garanti_start or substr(tidForSvigt, 1, 2) > garanti_slut)
                     {
                     vlType := "GV udenfor garanti"
-                    SvigtGarantitidTekst := "Vognløb udenfor garantitid`nGarantiperiode:`n" garanti_start ":00 - " garanti_slut ":00" 
+                    SvigtGarantitidTekst := "Vognløb udenfor garantitid`nGarantiperiode:`n" garanti_start ":00 - " garanti_slut ":00"
                     SvigtGarantiTidTekstMail := garanti_start ":00 - " garanti_slut ":00"
-                    GuiControl, svigt:,  SvigtGarantitid , %  SvigtGarantitidTekst 
-                    GuiControl, svigt: , vlTypeGarantiVariabel , 1 
+                    GuiControl, svigt:,  SvigtGarantitid , %  SvigtGarantitidTekst
+                    GuiControl, svigt: , vlTypeGarantiVariabel , 1
                     GuiControl, svigt: Focus, SvigtBeskrivelse
                     }
                 break
@@ -6840,8 +6826,8 @@ w\:* {behavior:url(#default#VML);}
                 if (StrLen(vl_array.5.2) = 2)
                     SvigtGarantitid .= "`nTvunget lukket uge " vl_array.5.2
                 vlTypeGv()
-                GuiControl, svigt:,  SvigtGarantitid , %  SvigtGarantitidTekst 
-                GuiControl, svigt: , vlTypeGarantiVariabel , 1 
+                GuiControl, svigt:,  SvigtGarantitid , %  SvigtGarantitidTekst
+                GuiControl, svigt: , vlTypeGarantiVariabel , 1
                 GuiControl, svigt: Focus, SvigtBeskrivelse
 
                 break
@@ -6850,7 +6836,7 @@ w\:* {behavior:url(#default#VML);}
         }
         ; if (vlType = "variabel")
         ;     {
-        ;             GuiControl, svigt: , vlTypeVariabelt , 1 
+        ;             GuiControl, svigt: , vlTypeVariabelt , 1
         ;             GuiControl, svigt:,  SvigtGarantitid , %SvigtGarantitid%
         ;             GuiControl, svigt: Focus, SvigtBeskrivelse
 
@@ -6860,20 +6846,20 @@ w\:* {behavior:url(#default#VML);}
         ; if (SubStr(tidForSvigt, 1, 2) < garanti_start or substr(tidForSvigt, 1, 2) > garanti_slut)
         ;             {
         ;             vlType := "GV udenfor garanti"
-        ;             GuiControl, svigt: , vlTypeGarantiVariabel , 1 
+        ;             GuiControl, svigt: , vlTypeGarantiVariabel , 1
         ;             GuiControl, svigt: Focus, SvigtBeskrivelse
         ;             }
         ; if (vlType = "GV")
         ; if (SubStr(tidForSvigt, 1, 2) > garanti_start and substr(tidForSvigt, 1, 2) < garanti_slut)
         ;             {
-        ;             GuiControl, svigt: , vlTypeGaranti , 1 
+        ;             GuiControl, svigt: , vlTypeGaranti , 1
         ;             GuiControl, svigt: Focus, SvigtBeskrivelse
         ;             }
     }
     if (vl_array.2 = "ingen k" and vl_array.3 != "")
        {
         p6_vgsvigt()
-       }       
+       }
     GuiControl, svigt:,  SvigtVlEdit , %vl%
     tidForKontakt := SubStr(tidForSvigt, 1, 2) . SubStr(tidForSvigt, 4, 2)
     GuiControl, svigt:,  SvigtVmKontaktEdit , %tidForKontakt%
@@ -6911,7 +6897,6 @@ w\:* {behavior:url(#default#VML);}
     mod_up()
     Return
 
-
     gui_svigt_vis_mail:
     gui, submit
     ; gui_svigt_tekst := gui_svigt_opret(ny_dato, SvigtBeskrivelse, lukket, type, tid, årsag, SvigtGarantitid, SvigtVlSlettetRadio, dato, vl, GemtSkærmprint, gemtklip, vmKontakt, vmKontaktTid)
@@ -6920,7 +6905,6 @@ w\:* {behavior:url(#default#VML);}
         return
     gui_svigt_vis(gui_svigt_tekst, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
     return
-
 
     gui_svigt_send_mail:
     gui, submit
@@ -6931,13 +6915,13 @@ w\:* {behavior:url(#default#VML);}
     gui_svigt_send(gui_svigt_tekst, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
     return
 
-; TODO #86 omskriv opret-funktion
+    ; TODO #86 omskriv opret-funktion
 
-gui_svigt_opret()
-{
-    global 
+    gui_svigt_opret()
+    {
+    global
     ; global vgprint
-    
+
     mail_indhold := {emnefelt: "", broedtekst: ""}
     if (ny_dato != "")
         {
@@ -7014,7 +6998,7 @@ gui_svigt_opret()
                 sleep 100
                 Gui Show, w448 h397, Svigt
                 return 0
-            }    
+            }
     if (vlTypeGaranti = 0 and vlTypeGarantiVariabel = 0 and vlTypeVariabel = 0 and vlTypeVogngruppe = 0)
     {
         sleep 100
@@ -7078,7 +7062,7 @@ gui_svigt_opret()
                 mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - lukket kl. " GVHjemzoneTid " d. " dato
                 ; MsgBox, , 2, % mail_indhold.emnefelt,
                 mail_indhold.broedtekst := "GV (" SvigtGarantiTidTekstMail "): lukket kl. " GVHjemzoneTid ". VM kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
-        
+
                 gui, hide
                 return mail_indhold
             }
@@ -7087,36 +7071,36 @@ gui_svigt_opret()
                 mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - lukket kl. " GVHjemzoneTid " d. " dato
                 ; MsgBox, , 2, % mail_indhold.emnefelt,
                 mail_indhold.broedtekst := "GV (" SvigtGarantiTidTekstMail "): lukket kl. " GVHjemzoneTid ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
-        
+
                 gui, hide
                 return mail_indhold
             }
         }
     if (vlTypeGaranti = 1 and SvigtÅbningstidRadio = 1 and årsag != "")
     {
-        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - d. " dato " kl. " tidForSvigt 
-        ; MsgBox, , 3, % mail_indhold.emnefelt,
+        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - d. " dato " kl. " tidForSvigt
+    ; MsgBox, , 3, % mail_indhold.emnefelt,
     mail_indhold.broedtekst := "GV: " SvigtGarantitidTekstMail ", åbningstid udskudt til " SvigtÅbningstidEdit " — " svigtBeskrivelse
         gui, hide
         return mail_indhold
     }
     if (vlTypeGaranti = 1 and SvigtÅbningstidRadio = 1 and årsag = "")
     {
-        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - d. " dato " kl. " tidForSvigt 
-        ; MsgBox, , 3, % mail_indhold.emnefelt,
+        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type " - d. " dato " kl. " tidForSvigt
+    ; MsgBox, , 3, % mail_indhold.emnefelt,
     mail_indhold.broedtekst := "GV: " SvigtGarantitidTekstMail ", åbningstid udskudt til " SvigtÅbningstidEdit " — " svigtBeskrivelse
         gui, hide
         return mail_indhold
     }
     if (vlTypeGaranti = 1 and SvigtVlLukketRadio = 0 and årsag != "")
     {
-        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - d. " dato " kl. " tidForSvigt 
+        mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - d. " dato " kl. " tidForSvigt
         ; MsgBox, , 3, % mail_indhold.emnefelt,
         mail_indhold.broedtekst := svigtBeskrivelse
         gui, hide
         return mail_indhold
     }
-    if (vlTypeGaranti = 1 and SvigtVlLukketRadio = 0 and SvigtVlSlettetRadio = 0 and årsag = "")  
+    if (vlTypeGaranti = 1 and SvigtVlLukketRadio = 0 and SvigtVlSlettetRadio = 0 and årsag = "")
     {
         mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " d. " dato " kl. " tidForSvigt
         mail_indhold.broedtekst := svigtBeskrivelse
@@ -7148,7 +7132,7 @@ gui_svigt_opret()
         {
             mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - ikke startet op d. " dato
             ; MsgBox, , 5.1, % mail_indhold.emnefelt,
-            mail_indhold.broedtekst := "Vl slettet. Garantitid " SvigtGarantiTidTekstMail  ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse 
+            mail_indhold.broedtekst := "Vl slettet. Garantitid " SvigtGarantiTidTekstMail  ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
             gui, hide
             return mail_indhold
         }
@@ -7156,7 +7140,7 @@ gui_svigt_opret()
         {
             mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - ikke startet op d. " dato
             ; MsgBox, , 5.1, % mail_indhold.emnefelt,
-            mail_indhold.broedtekst := "Vl slettet. Garantitid " SvigtGarantiTidTekstMail  ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse 
+            mail_indhold.broedtekst := "Vl slettet. Garantitid " SvigtGarantiTidTekstMail  ". VM forgæves forsøgt kontaktet cirka " svigtVmKontaktEdit " — " . svigtBeskrivelse
             gui, hide
             return mail_indhold
         }
@@ -7194,7 +7178,7 @@ gui_svigt_opret()
                     gui, hide
                     return mail_indhold
                 }
-                
+
             if (vlTypeGarantiVariabel = 1 and SvigtVlSlettetRadio = 1 and årsag != "")
                 if (SvigtVmKontaktradio = 1)
                             {
@@ -7212,7 +7196,7 @@ gui_svigt_opret()
                                 gui, hide
                                 return mail_indhold
                             }
-                            ; skrives om, tid_slet bruges ikke
+        ; skrives om, tid_slet bruges ikke
         if (vlTypeGarantiVariabel = 1 and SvigtVlLukketRadio = 1 and årsag != "")
         {
             mail_indhold.emnefelt := "Svigt VL " SvigtVlEdit " " vl_type ": " årsag " - lukket kl. " GVHjemzoneTid " d. " dato
@@ -7253,7 +7237,7 @@ gui_svigt_opret()
         }
         if (vlTypevogngruppe = 1)
         {
-            ; MsgBox, , 11, % mail_indhold.emnefelt,
+        ; MsgBox, , 11, % mail_indhold.emnefelt,
         for i,e in VGPrint
             if (i = 2)
                 {
@@ -7284,24 +7268,24 @@ gui_svigt_opret()
             gui, hide
             return mail_indhold
         }
-MsgBox, 16, Alarm!, Mail bliver afsendt tom! Send skærmprint af svigtmakro til Emil, tak.
+    MsgBox, 16, Alarm!, Mail bliver afsendt tom! Send skærmprint af svigtmakro til Emil, tak.
         sleep 100
         Gui Show, w448 h397, Svigt
-return 
+    return
     }
-gui_svigt_vis(mail_indhold, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
-{
+    gui_svigt_vis(mail_indhold, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
+    {
 
        outlook := ComObjCreate("Outlook.application")
         outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
         svigt_template := outlook.createitemfromtemplate(outlook_template)
-        svigtdir := A_ScriptDir "\svigt\" A_UserName "_svigt\" 
+        svigtdir := A_ScriptDir "\svigt\" A_UserName "_svigt\"
         if (VGPrint[3] = "ikke vg")
             {
         if (GemtSkærmprint = 1)
-            udklip := ImagePutFile(gemtklip, svigtdir "svigt.png")   
-        else 
-            udklip := ImagePutFile(skærmprint, svigtdir "svigt.png")   
+            udklip := ImagePutFile(gemtklip, svigtdir "svigt.png")
+        else
+            udklip := ImagePutFile(skærmprint, svigtdir "svigt.png")
         udklip_array := StrSplit(udklip, "\")
         udklip_navn := udklip_array[udklip_array.MaxIndex()]
         udklip_lok := A_ScriptDir "\svigt\" A_UserName "_svigt\" udklip_navn
@@ -7402,19 +7386,19 @@ gui_svigt_vis(mail_indhold, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
     WinActivate, Svigt VL
     Return
         }
-gui_svigt_send(mail_indhold, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
-{
+    gui_svigt_send(mail_indhold, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
+    {
 
         outlook := ComObjCreate("Outlook.application")
         outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
         svigt_template := outlook.createitemfromtemplate(outlook_template)
-        svigtdir := A_ScriptDir "\svigt\" A_UserName "_svigt\" 
+        svigtdir := A_ScriptDir "\svigt\" A_UserName "_svigt\"
         if (VGPrint[3] = "ikke vg")
             {
         if (GemtSkærmprint = 1)
-            udklip := ImagePutFile(gemtklip, svigtdir "svigt.png")   
-        else 
-            udklip := ImagePutFile(skærmprint, svigtdir "svigt.png")   
+            udklip := ImagePutFile(gemtklip, svigtdir "svigt.png")
+        else
+            udklip := ImagePutFile(skærmprint, svigtdir "svigt.png")
         udklip_array := StrSplit(udklip, "\")
         udklip_navn := udklip_array[udklip_array.MaxIndex()]
         udklip_lok := A_ScriptDir "\svigt\" A_UserName "_svigt\" udklip_navn
@@ -7422,11 +7406,9 @@ gui_svigt_send(mail_indhold, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
         svigt_template.attachments.add(udklip_lok)
             }
 
-
         signatur_navn := "image001.png"
         signatur_lok := A_ScriptDir "\lib\" . signatur_navn
 
-            
         if (VGPrint[3] != "")
             for i,e in VGPrint
                 {
@@ -7445,7 +7427,6 @@ gui_svigt_send(mail_indhold, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
                             }
                         }
                     }
-
 
         svigt_template.attachments.add(signatur_lok)
         svigt_template.to := "planet@midttrafik.dk"
@@ -7530,17 +7511,17 @@ gui_svigt_send(mail_indhold, skærmprint, GemtSkærmprint, gemtklip, VGPrint)
         }
     sys_afslut_genvej()
     Return
-l_gui_opkald:
-{
+    l_gui_opkald:
+    {
     sys_genvej_start(74)
     GuiOpkald()
     sys_afslut_genvej()
     return
-}
-#IfWinActive, Specialadresser
-NumpadEnter::
-Enter::
-{
+    }
+    #IfWinActive, Specialadresser
+    NumpadEnter::
+    Enter::
+    {
     Gui, Specialadresser: Submit
     P6_aktiver()
     sleep 100
@@ -7548,22 +7529,22 @@ Enter::
     SendRaw, % ValgtSpecialAdresse
     return
 
-}
-#IfWinActive, Opkald
-NumpadEnter::
-Enter::
-{
+    }
+    #IfWinActive, Opkald
+    NumpadEnter::
+    Enter::
+    {
     Gui, opkald: Submit
     Trio_opkald(guitlf)
     return
 
-}
-Esc::
-{
+    }
+    Esc::
+    {
     gui, opkald: Submit
     return
-}
-#IfWinActive
+    }
+    #IfWinActive
 
     test()
     {
@@ -7760,103 +7741,101 @@ Esc::
         SendInput, !{Down}
         return
     }
-; Fra notatvindue - indsætter samme notat igen, til når der timeoutes - skal der tages hensyn til nye notater, der kan være skrevet i mellemtiden?
+    ; Fra notatvindue - indsætter samme notat igen, til når der timeoutes - skal der tages hensyn til nye notater, der kan være skrevet i mellemtiden?
 
-; +^e::FlexFinder_addresse()
-; FlexFinder_addresse()
-; {
-;     ; SendInput, +{tab} {Down} {Tab}
-;     If (WinExist("FlexDanmark FlexFinder"))
-;     {
-;         sleep 200
-;         WinActivate, FlexDanmark FlexFinder
-;         winwaitactive, FlexDanmark FlexFinder
-;         sleep 40
-;         SendInput, {Home}
-;         sleep 400
-;         SendInput, {PgUp}
-;         sleep 200
-;         WinGetPos, W_X, W_Y, , , FlexDanmark FlexFinder, , ,
-;         if(W_X = "1920" or W_X = "-1920")
-;         {
-;             ; PixelSearch, Px, Py, 0, 0, , 11, 0xF26C5B, 0, Fast
-;             sleep 200
-;             click %Px% %Py%
-;             sleep 999
-;             SendInput, {tab 3} {down} {tab}
-;             ; ControlClick, x322 y100, FlexDanmark FlexFinder
-;             sleep 40
-;             return
-;         }
-;         Else
-;         {
-;             ; PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6C2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
-;             ImageSearch, Ix, Iy, 0 , 0, A_ScreenWidth , A_ScreenHeight *100 , /lib/ff.png
-;             MsgBox, , , % ix
-;             sleep 200
-;             click %Px% %Py%
-;             sleep 200
-;             ControlClick, x322 y100, FlexDanmark FlexFinder
-;             sleep 40
-;             SendInput, +{tab}{down}{tab}
-;             return
-;         }
-;         ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
-;     }
-;     Else
-;         MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den forreste fane)
-;     Return
-; }
-;
+    ; +^e::FlexFinder_addresse()
+    ; FlexFinder_addresse()
+    ; {
+    ;     ; SendInput, +{tab} {Down} {Tab}
+    ;     If (WinExist("FlexDanmark FlexFinder"))
+    ;     {
+    ;         sleep 200
+    ;         WinActivate, FlexDanmark FlexFinder
+    ;         winwaitactive, FlexDanmark FlexFinder
+    ;         sleep 40
+    ;         SendInput, {Home}
+    ;         sleep 400
+    ;         SendInput, {PgUp}
+    ;         sleep 200
+    ;         WinGetPos, W_X, W_Y, , , FlexDanmark FlexFinder, , ,
+    ;         if(W_X = "1920" or W_X = "-1920")
+    ;         {
+    ;             ; PixelSearch, Px, Py, 0, 0, , 11, 0xF26C5B, 0, Fast
+    ;             sleep 200
+    ;             click %Px% %Py%
+    ;             sleep 999
+    ;             SendInput, {tab 3} {down} {tab}
+    ;             ; ControlClick, x322 y100, FlexDanmark FlexFinder
+    ;             sleep 40
+    ;             return
+    ;         }
+    ;         Else
+    ;         {
+    ;             ; PixelSearch, Px, Py, 1097, 74, 1202, 123, 0x5B6C2, 0, Fast ; Virker ikke i fuld skærm. ControlClick i stedet?
+    ;             ImageSearch, Ix, Iy, 0 , 0, A_ScreenWidth , A_ScreenHeight *100 , /lib/ff.png
+    ;             MsgBox, , , % ix
+    ;             sleep 200
+    ;             click %Px% %Py%
+    ;             sleep 200
+    ;             ControlClick, x322 y100, FlexDanmark FlexFinder
+    ;             sleep 40
+    ;             SendInput, +{tab}{down}{tab}
+    ;             return
+    ;         }
+    ;         ; SendInput, {CtrlUp}{ShiftUp} ; for at undgå at de hænger fast
+    ;     }
+    ;     Else
+    ;         MsgBox, , FlexFinder, Flexfinder ikke åben (skal være den forreste fane)
+    ;     Return
+    ; }
+    ;
 
-; ^z::
-; {
-; if WinExist("+ ahk_exe Miralix OfficeClient.exe")
-;     MsgBox, , , kald,
-; Else
-;     MsgBox, , , ikke kald
-; }
+    ; ^z::
+    ; {
+    ; if WinExist("+ ahk_exe Miralix OfficeClient.exe")
+    ;     MsgBox, , , kald,
+    ; Else
+    ;     MsgBox, , , ikke kald
+    ; }
 
-; ^+z::
-; {
-;     p6_soeg_hylde_dagsdato()
-; }
-    GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl. 
+    ; ^+z::
+    ; {
+    ;     p6_soeg_hylde_dagsdato()
+    ; }
+    GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl.
 
+    svigtHjælp:
+    flexfinderskærmprint:
 
-
-svigtHjælp:
-flexfinderskærmprint:
-
-nuværendeSkærmprint:
-SvigtSkærmprintOversigt:
-SvigtÅbningstidUdskudt:
-{
+    nuværendeSkærmprint:
+    SvigtSkærmprintOversigt:
+    SvigtÅbningstidUdskudt:
+    {
     if (SvigtÅbningstidUdskudtKnapTjekVar = 1)
         {
-        GuiControl, svigt: , SvigtÅbningstidRadio , 0 
-        GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
+        GuiControl, svigt: , SvigtÅbningstidRadio , 0
+        GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl.
         GuiControl, svigt: , SvigtVlSlettetRadio , 0
         GuiControl, svigt: , SvigtVMKontaktRadio , 0
         GuiControl, svigt: , SvigtIngenVMKontaktRadio , 0
-        GuiControl, svigt: disable, SvigtÅbningstidEdit 
+        GuiControl, svigt: disable, SvigtÅbningstidEdit
         GuiControl, svigt: disable, SvigtVMKontaktRadio
         GuiControl, svigt: disable, SvigtIngenVMKontaktRadio
-        GuiControl, svigt: disable, SvigtVMKontaktEdit 
+        GuiControl, svigt: disable, SvigtVMKontaktEdit
         ; GuiControl, svigt:,  SvigtVmKontaktEdit , %tidForSvigt%
         SvigtÅbningstidUdskudtKnapTjekVar := 0
         return
         }
-    GuiControl, svigt: enable, SvigtÅbningstidEdit 
+    GuiControl, svigt: enable, SvigtÅbningstidEdit
     GuiControl, svigt: , SvigtÅbningstidEdit ,
-    GuiControl, svigt: focus, SvigtÅbningstidEdit 
-    GuiControl, svigt: , SvigtVlLukketRadio, 0 
-    GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl. 
+    GuiControl, svigt: focus, SvigtÅbningstidEdit
+    GuiControl, svigt: , SvigtVlLukketRadio, 0
+    GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl.
     GuiControl, svigt: , SvigtVlSlettetRadio , 0
-    GuiControl, svigt: disable, GvHjemzoneTid 
+    GuiControl, svigt: disable, GvHjemzoneTid
         GuiControl, svigt: disable, SvigtVMKontaktRadio
         GuiControl, svigt: disable, SvigtIngenVMKontaktRadio
-        GuiControl, svigt: disable, SvigtVMKontaktEdit 
+        GuiControl, svigt: disable, SvigtVMKontaktEdit
         GuiControl, svigt: , SvigtIngenVMKontaktRadio , 0
         GuiControl, svigt: , SvigtVMKontaktRadio , 0
     SvigtLukketKnapTjekVar := 0
@@ -7864,40 +7843,40 @@ SvigtÅbningstidUdskudt:
     SvigtÅbningstidUdskudtKnapTjekVar := 1
     GuiControl, svigt: , vlTypeGaranti , 1
     return
-}
-SvigtVlLukket:
-{
+    }
+    SvigtVlLukket:
+    {
     if (SvigtLukketKnapTjekVar = 1)
         {
-        GuiControl, svigt: , SvigtVlLukketRadio , 0 
-        GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl. 
+        GuiControl, svigt: , SvigtVlLukketRadio , 0
+        GuiControl, svigt: , GvHjemzoneTid, Hjemzone kl.
         GuiControl, svigt: , SvigtVlSlettetRadio , 0
         GuiControl, svigt: , SvigtVMKontaktRadio , 0
         GuiControl, svigt: , SvigtIngenVMKontaktRadio , 0
-        GuiControl, svigt: disable, GvHjemzoneTid 
+        GuiControl, svigt: disable, GvHjemzoneTid
         GuiControl, svigt: disable, SvigtVMKontaktRadio
         GuiControl, svigt: disable, SvigtIngenVMKontaktRadio
-        GuiControl, svigt: disable, SvigtVMKontaktEdit 
+        GuiControl, svigt: disable, SvigtVMKontaktEdit
         GuiControl, svigt:,  SvigtVmKontaktEdit , %tidForSvigt%
         SvigtLukketKnapTjekVar := 0
         return
         }
-    GuiControl, svigt: enable, GvHjemzoneTid 
+    GuiControl, svigt: enable, GvHjemzoneTid
     GuiControl, svigt: , GvHjemzoneTid ,
-    GuiControl, svigt: focus, GvHjemzoneTid 
-    GuiControl, svigt: , SvigtÅbningstidRadio , 0 
-    GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
+    GuiControl, svigt: focus, GvHjemzoneTid
+    GuiControl, svigt: , SvigtÅbningstidRadio , 0
+    GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl.
     GuiControl, svigt: , SvigtVlSlettetRadio , 0
-    GuiControl, svigt: disable, SvigtÅbningstidEdit 
+    GuiControl, svigt: disable, SvigtÅbningstidEdit
     GuiControl, svigt: enable, SvigtVMKontaktRadio
     GuiControl, svigt: enable, SvigtIngenVMKontaktRadio
     SvigtÅbningstidUdskudtKnapTjekVar := 0
     SvigtSlettetKnapTjekVar := 0
-    SvigtLukketKnapTjekVar := 1 
+    SvigtLukketKnapTjekVar := 1
     return
-}
-SvigtVlSlettet:
-{
+    }
+    SvigtVlSlettet:
+    {
     if (SvigtSlettetKnapTjekVar = 1)
         {
         GuiControl, svigt: , SvigtVlSlettetRadio , 0
@@ -7906,145 +7885,144 @@ SvigtVlSlettet:
         GuiControl, svigt: disable, SvigtVMKontaktRadio
         GuiControl, svigt: disable, SvigtIngenVMKontaktRadio
         GuiControl, svigt:,  SvigtVmKontaktEdit , %tidForSvigt%
-        GuiControl, svigt: disable, SvigtVMKontaktEdit 
+        GuiControl, svigt: disable, SvigtVMKontaktEdit
         SvigtSlettetKnapTjekVar := 0
         return
         }
-    GuiControl, svigt: disable, SvigtÅbningstidEdit 
-    GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
-    GuiControl, svigt: disable, GvHjemzoneTid 
-    GuiControl, svigt: , GvHjemzoneTid , Hjemzone kl. 
-    GuiControl, svigt: , SvigtÅbningstidRadio , 0 
-    GuiControl, svigt: , SvigtVlLukketRadio , 0 
+    GuiControl, svigt: disable, SvigtÅbningstidEdit
+    GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl.
+    GuiControl, svigt: disable, GvHjemzoneTid
+    GuiControl, svigt: , GvHjemzoneTid , Hjemzone kl.
+    GuiControl, svigt: , SvigtÅbningstidRadio , 0
+    GuiControl, svigt: , SvigtVlLukketRadio , 0
     GuiControl, svigt: enable, SvigtVMKontaktRadio
     GuiControl, svigt: enable, SvigtIngenVMKontaktRadio
     SvigtÅbningstidUdskudtKnapTjekVar := 0
     SvigtLukketKnapTjekVar := 0
     SvigtSlettetKnapTjekVar := 1
     return
-}
+    }
 
-VlTypeVariabel:
-{
-    GuiControl, svigt: disable, SvigtVlLukketRadio 
-    GuiControl, svigt: disable, SvigtVlSlettetRadio 
-    GuiControl, svigt: disable, svigtÅbningstidRadio 
-    GuiControl, svigt: disable, SvigtÅbningstidEdit 
-    GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl. 
-    GuiControl, svigt: disable, GvHjemzoneTid 
-    GuiControl, svigt: disable, SvigtVmKontaktEdit 
-    GuiControl, svigt: disable, SvigtVMKontaktRadio 
+    VlTypeVariabel:
+    {
+    GuiControl, svigt: disable, SvigtVlLukketRadio
+    GuiControl, svigt: disable, SvigtVlSlettetRadio
+    GuiControl, svigt: disable, svigtÅbningstidRadio
+    GuiControl, svigt: disable, SvigtÅbningstidEdit
+    GuiControl, svigt: , SvigtÅbningstidEdit , VL start kl.
+    GuiControl, svigt: disable, GvHjemzoneTid
+    GuiControl, svigt: disable, SvigtVmKontaktEdit
+    GuiControl, svigt: disable, SvigtVMKontaktRadio
     GuiControl, svigt: , SvigtVMKontaktRadio , 0
-    GuiControl, svigt: , SvigtIngenVMKontaktRadio , 0 
-    GuiControl, svigt: disable, SvigtIngenVMKontaktRadio 
-    GuiControl, svigt: , GvHjemzoneTid , Hjemzone kl. 
-    GuiControl, svigt: , SvigtÅbningstidRadio , 0 
-    GuiControl, svigt: , SvigtVlLukketRadio , 0 
+    GuiControl, svigt: , SvigtIngenVMKontaktRadio , 0
+    GuiControl, svigt: disable, SvigtIngenVMKontaktRadio
+    GuiControl, svigt: , GvHjemzoneTid , Hjemzone kl.
+    GuiControl, svigt: , SvigtÅbningstidRadio , 0
+    GuiControl, svigt: , SvigtVlLukketRadio , 0
     GuiControl, svigt: , SvigtVlSlettetRadio , 0
     SvigtÅbningstidUdskudtKnapTjekVar := 0
     SvigtLukketKnapTjekVar := 0
     SvigtSlettetKnapTjekVar := 0
     return
-}
-vlTypeGv()
-{
-    GuiControl, svigt: enable, SvigtVlLukketRadio 
-    GuiControl, svigt: enable, SvigtVlSlettetRadio 
-    GuiControl, svigt: enable, svigtÅbningstidRadio 
+    }
+    vlTypeGv()
+    {
+    GuiControl, svigt: enable, SvigtVlLukketRadio
+    GuiControl, svigt: enable, SvigtVlSlettetRadio
+    GuiControl, svigt: enable, svigtÅbningstidRadio
     return
-}
+    }
 
-vlTypeGvVariabel()
-{
-    GuiControl, svigt: enable, SvigtVlLukketRadio 
-    GuiControl, svigt: enable, SvigtVlSlettetRadio 
-    GuiControl, svigt: enable, svigtÅbningstidRadio 
+    vlTypeGvVariabel()
+    {
+    GuiControl, svigt: enable, SvigtVlLukketRadio
+    GuiControl, svigt: enable, SvigtVlSlettetRadio
+    GuiControl, svigt: enable, svigtÅbningstidRadio
     return
-}
+    }
 
-
-SvigtVMKontaktRadioFunk()
-{
-    GuiControl, svigt: enable, SvigtVMKontaktEdit 
+    SvigtVMKontaktRadioFunk()
+    {
+    GuiControl, svigt: enable, SvigtVMKontaktEdit
     return
-}
+    }
 
-;; MISC
+    ;; MISC
 
-GetMonitor(hwnd := 0) {
-    ; If no hwnd is provided, use the Active Window
+    GetMonitor(hwnd := 0) {
+        ; If no hwnd is provided, use the Active Window
         if (hwnd)
             WinGetPos, winX, winY, winW, winH, ahk_id %hwnd%
         else
             WinGetActiveStats, winTitle, winW, winH, winX, winY
-    
+
         SysGet, numDisplays, MonitorCount
         SysGet, idxPrimary, MonitorPrimary
-    
+
         Loop %numDisplays%
         {	SysGet, mon, MonitorWorkArea, %a_index%
-        ; Left may be skewed on Monitors past 1
+            ; Left may be skewed on Monitors past 1
             if (a_index > 1)
                 monLeft -= 10
-        ; Right overlaps Left on Monitors past 1
+            ; Right overlaps Left on Monitors past 1
             else if (numDisplays > 1)
                 monRight -= 10
-        ; Tracked based on X. Cannot properly sense on Windows "between" monitors
+            ; Tracked based on X. Cannot properly sense on Windows "between" monitors
             if (winX >= monLeft && winX < monRight)
                 return %a_index%
         }
-    ; Return Primary Monitor if can't sense
+        ; Return Primary Monitor if can't sense
         return idxPrimary
     }
-;; TODO
-; svigt - tjek for åbent svigtGUI ved ekstra tryk på F1
+    ;; TODO
+    ; svigt - tjek for åbent svigtGUI ved ekstra tryk på F1
 
-#IfWinActive Tekst til chauffør 
-w::
-ControlClick, (&w)akeUp, Tekst til chauffør
-return
-+w::
-ControlClick, (&W)akeUp-lås, Tekst til chauffør
-return
-k::
-ControlClick, (&k)vittering-OBS, Tekst til chauffør
-return
-+k::
-ControlClick, (&K)vittering sendt, Tekst til chauffør
-return
-p::
-ControlClick, (&p)rivatrejse-OBS, Tekst til chauffør
-return
-+p::
-ControlClick, (&P)rivatrejse-lås, Tekst til chauffør
-return
-t::
-ControlClick, (&t)ekst til chf, Tekst til chauffør
-return
-x::
-ControlClick, (x)p&ause-OBS, Tekst til chauffør
-return
-f::
-ControlClick, (&f)orgæves, Tekst til chauffør
-return
-s::
-ControlClick, (&s)koletur-OBS, Tekst til chauffør
-return
-+s::
-ControlClick, (&S)koletur sendt, Tekst til chauffør
-return
-r::
-ControlClick, Fo&rke(r)t tlf, kontakt driften, Tekst til chauffør
-return
-a::
-ControlClick, T(a)&l forgæves, Tekst til chauffør
-return
-v::
-ControlClick, (&v)ariabel opstart OBS
-return
-#IfWinActive
+    #IfWinActive Tekst til chauffør
+    w::
+    ControlClick, (&w)akeUp, Tekst til chauffør
+    return
+    +w::
+    ControlClick, (&W)akeUp-lås, Tekst til chauffør
+    return
+    k::
+    ControlClick, (&k)vittering-OBS, Tekst til chauffør
+    return
+    +k::
+    ControlClick, (&K)vittering sendt, Tekst til chauffør
+    return
+    p::
+    ControlClick, (&p)rivatrejse-OBS, Tekst til chauffør
+    return
+    +p::
+    ControlClick, (&P)rivatrejse-lås, Tekst til chauffør
+    return
+    t::
+    ControlClick, (&t)ekst til chf, Tekst til chauffør
+    return
+    x::
+    ControlClick, (x)p&ause-OBS, Tekst til chauffør
+    return
+    f::
+    ControlClick, (&f)orgæves, Tekst til chauffør
+    return
+    s::
+    ControlClick, (&s)koletur-OBS, Tekst til chauffør
+    return
+    +s::
+    ControlClick, (&S)koletur sendt, Tekst til chauffør
+    return
+    r::
+    ControlClick, Fo&rke(r)t tlf, kontakt driften, Tekst til chauffør
+    return
+    a::
+    ControlClick, T(a)&l forgæves, Tekst til chauffør
+    return
+    v::
+    ControlClick, (&v)ariabel opstart OBS
+    return
+    #IfWinActive
 
-#IfWinActive Svigt vl.
-^Backspace::
-Send ^+{Left}{Backspace}
-#IfWinActive
+    #IfWinActive Svigt vl.
+    ^Backspace::
+    Send ^+{Left}{Backspace}
+    #IfWinActive
