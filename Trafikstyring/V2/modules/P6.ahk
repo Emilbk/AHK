@@ -384,118 +384,21 @@ P6_hent_data_vognløb_vognløbsnummer_i_planbillede()
 }
 
 
-; Return array[4], vognløbsdato som [2]
-P6_hent_data_vognløb_vognløbsdato()
-{
-    hent_data_vognløb_output := ["", "", "", ""]
-    indhentet_data := ""
-
-    P6_nav_aktiver()
-    P6_nav_planbillede()
-
-    for i, e in ["", "vognløbsdato", "", ""]
-    {
-        indhentet_data := P6_hent_data_vognløb_funk(e)
-        if (indhentet_data == "fejl")
-        {
-            hent_data_vognløb_output[i] := indhentet_data
-            break
-
-        }
-
-        hent_data_vognløb_output[i] := indhentet_data
-    }
-
-    return hent_data_vognløb_output
-}
-
-
-; Return array[4], vognløbsnummer som [1], vognløbsdato som [2]
-P6_hent_data_vognløb_vognløbsnummer_og_vognløbsdato()
-{
-    hent_data_vognløb_output := ["", "", "", ""]
-    indhentet_data := ""
-
-    P6_nav_aktiver()
-    P6_nav_planbillede()
-
-    for i, e in ["vognløbsnummer", "vognløbsdato", "", ""]
-    {
-        indhentet_data := P6_hent_data_vognløb_funk(e)
-        if (indhentet_data == "fejl")
-        {
-            hent_data_vognløb_output[i] := indhentet_data
-            break
-
-        }
-
-        hent_data_vognløb_output[i] := indhentet_data
-    }
-
-    return hent_data_vognløb_output
-}
-; Return array[4], kørselsaftale som [3], styresystem som [4]
-P6_hent_data_vognløb_kørselsaftale_og_styresystem()
-{
-    hent_data_vognløb_output := ["", "", "", ""]
-    indhentet_data := ""
-
-    P6_nav_aktiver()
-    P6_nav_planbillede()
-
-    for i, e in ["", "", "kørselsaftale", "styresystem"]
-    {
-        indhentet_data := P6_hent_data_vognløb_funk(e)
-        if (indhentet_data == "fejl")
-        {
-            hent_data_vognløb_output[i] := indhentet_data
-            break
-
-        }
-
-        hent_data_vognløb_output[i] := indhentet_data
-    }
-
-    return hent_data_vognløb_output
-}
-
-
-; Return array[4], [1] vognløbsnummer, [2] vognløbsdato, [3] kørselsaftale (uden styresystem), [4] styresystem
-P6_hent_data_vognløb_alt()
-{
-    hent_data_vognløb_output := map()
-    indhentet_data := ""
-
-    P6_nav_aktiver()
-    P6_nav_planbillede()
-
-    for index, ønsket_data in ["vognløbsnummer", "vognløbsdato", "kørselsaftale", "styresystem"]
-    {
-        indhentet_data := P6_hent_data_vognløb_funk(ønsket_data)
-        if (indhentet_data == "fejl")
-        {
-            hent_data_vognløb_output[ønsket_data] := indhentet_data
-            break
-
-        }
-
-        hent_data_vognløb_output[ønsket_data] := indhentet_data
-    }
-
-    return hent_data_vognløb_output
-}
-
-
-; Tager valgt 1 datatype som input, "vognløb", "vognløbsdato", "kørselsaftale", "styresystem"
+; I PLANBILLEDE
+; Tager valgt datatype (array) som input, "vognløb", "vognløbsdato", "kørselsaftale", "styresystem"
+; Giver mulighed for valg af specifik data, hvis intet hent alle fire
 ; Return "fejl" hvis fejl i indhentning
 ; => str
-P6_hent_data_vognløb_funk(valgt_data)
+P6_hent_data_vognløb_funk(p_vl_obj, p_valgt_data := ["vognløbsnummer", "vognløbsdato", "kørselsaftale", "styresystem"])
 {
+
+    P6_nav_planbillede()
+
     ; [1] planetgenvej, [2] kopieringsgenvej
-    hent_data_input :=
+    hent_data_key_input :=
         Map(
             "vognløbsnummer", ["!l", "+{F10}c"],
-            "vognløbsdato", ["!l{tab}", "^c"],
+            "vognløbsdato", ["!l", "{tab}^c"],
             "kørselsaftale", ["!k", "+{F10}c"],
             "styresystem", ["!k{tab}", "+{F10}c"]
         )
