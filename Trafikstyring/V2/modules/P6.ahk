@@ -85,7 +85,7 @@ P6_nav_rejsesøg_hylde(dato, datoslut?)
 
 P6_nav_bestilling()
 {
-    P6_nav_aktiver()
+    ; P6_nav_aktiver()
     P6_nav_alt_menu("rb")
 
     return
@@ -93,7 +93,7 @@ P6_nav_bestilling()
 
 P6_nav_kørselsaftale()
 {
-    P6_nav_aktiver()
+    ; P6_nav_aktiver()
     P6_nav_planbillede()
     P6_nav_alt_menu("tk")
 
@@ -105,7 +105,7 @@ P6_nav_kørselsaftale()
 }
 P6_nav_kundealarm()
 {
-    P6_nav_aktiver()
+    ; P6_nav_aktiver()
     P6_nav_alt_menu("ta")
 
     return
@@ -114,7 +114,7 @@ P6_nav_kundealarm()
 
 p6_nav_udråb()
 {
-    p6_nav_aktiver()
+    ; p6_nav_aktiver()
     p6_nav_alt_menu("ta", "!u")
 
     return
@@ -122,18 +122,19 @@ p6_nav_udråb()
 
 p6_nav_tal()
 {
-    p6_nav_aktiver()
+    ; p6_nav_aktiver()
     p6_nav_alt_menu("ta", "!t")
 
     return
 }
 
-;
+; Opdelt vognløbsbillede-funktion, omskrives?
 
 ; går til aktive vognløbs vognløbsbillede, return true når indlæst
+; omskriv navn, så det giver mening, plus object
 P6_nav_vognløbsbillede(planbillede_vognløb)
 {
-    P6_nav_aktiver()
+    ; P6_nav_aktiver()
 
     sleep 30
     SendInput "^{F12}"
@@ -166,7 +167,7 @@ P6_nav_vognløbsbillede(planbillede_vognløb)
     return true
 }
 
-;
+
 P6_nav_vognløbsbillede_ændr_1(planbillede_kørselsaftale)
 {
     SendInput "^æ"
