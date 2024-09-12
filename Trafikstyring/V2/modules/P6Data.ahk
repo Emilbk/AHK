@@ -1,13 +1,16 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 
-nuværendeExcelRække := 1
-totalExcelRække := 200
+nuværendeExcelRække := 0
+totalExcelRække := 0
 excelRækkeTekst := "Excelrække " nuværendeExcelRække "/" totalExcelRække
-nuværendeVognløb := 31200
-nuværendeKørselsaftale := "3100_47"
-vognløbTekst := "Vognløb " nuværendeVognløb " - " nuværendeKørselsaftale
-indlæstExcelFil := "test.excel"
+nuværendeVognløb := "0"
+nuværendeKørselsaftale := "0"
+nuværendeStyresystem := "0"
+nuværendeKørStyr := nuværendeKørselsaftale "_" nuværendeStyresystem
+vognløbTekst := "Vognløb " nuværendeVognløb " - Kørselsaftale " nuværendeKørStyr
+indlæstExcelFil := "Ingen fil"
+indlæstExcelFilTekst := "Indlæst excel-fil: " indlæstExcelFil
 
 ikkeFuldført := ""
 fuldført := "✔️"
@@ -23,7 +26,7 @@ DataMenuKategorier.Add("Skemaer", (*) => ExitApp())
 DataMenuKategorier.Add("Vognløbsnotat", (*) => ExitApp())
 
 DatamenuData := Menu()
-DatamenuData.Add("Indlæs Excel", (*) => FileSelect())
+DatamenuData.Add("Indlæs Excel", (*) => vælgExcelFil()) 
 DatamenuData.Add("Liste indlæste vognløb", (*) => ExitApp())
 
 DataMenuHjælp := Menu()
@@ -38,8 +41,8 @@ DataMenu.Add("Data", DatamenuData)
 DataMenu.Add("Om", DataMenuHjælp, "Right")
 
 ; Pos-udgangspunkt
-yUdgangspunkt := 20
 xUdgangspunkt := 10
+yUdgangspunkt := 5
 
 ; Pos-Overskrift
 overskriftX := xUdgangspunkt
@@ -58,9 +61,9 @@ katogoriTotal := 7
 DataStatus := DataGUI.Add("StatusBar", , "Fuldførte kategorier ud valgte kategorier: " kategoriFuldført "/" katogoriTotal)
 
 DataGUI.SetFont("Bold")
-DataGUI.Add("Text", "Y" overskriftY , "Indlæst excelfil: " indlæstExcelFil)
-DataGUI.Add("Text", "Y" overskriftY +20 " X" overskriftX , excelRækkeTekst)
-DataGUI.Add("Text", "Y" overskriftY +35 " X" overskriftX, vognløbTekst)
+overskriftExcelfil := DataGUI.Add("Text", "Y" overskriftY , indlæstExcelFilTekst)
+overskriftExcelRækker := DataGUI.Add("Text", "Y" overskriftY +20 " X" overskriftX , excelRækkeTekst)
+overskriftVognløb := DataGUI.Add("Text", "Y" overskriftY +35 " X" overskriftX, vognløbTekst)
 DataGUI.SetFont("Norm")
 
 DataGUI.Add("Text", "X" planskemaX " Y" planskemaY -20, "Skemaer")
@@ -122,3 +125,15 @@ knap := DataGUI.Add("Button", "X" knapX " Y" knapY , "Sæt igang")
 
 
 DataGUI.Show("AutoSize")
+
+
+
+; funk
+
+vælgExcelFil()
+{
+    indlæstExcelFil := FileSelect()
+    indlæstExcelFilTekst := "Indlæst excel-fil: " . indlæstExcelFil
+    overskriftExcelfil.Text := "tekst"
+    return
+}
