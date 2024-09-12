@@ -2,83 +2,107 @@
 #SingleInstance Force
 
 nuværendeExcelRække := 1
-totalExcelRække := 1
+totalExcelRække := 200
 excelRækkeTekst := "Excelrække " nuværendeExcelRække "/" totalExcelRække
 nuværendeVognløb := 31200
 nuværendeKørselsaftale := "3100_47"
 vognløbTekst := "Vognløb " nuværendeVognløb " - " nuværendeKørselsaftale
+indlæstExcelFil := "test.excel"
 
 ikkeFuldført := ""
 fuldført := "✔️"
 ; GUImenu
 DataMenu := MenuBar()
 
+DataMenuFil :=  Menu()
+DataMenuFil.Add("Exit", (*) => ExitApp())
+
 DataMenuKategorier :=  Menu()
 DataMenuKategorier.Add("Alle", (*) => ExitApp())
 DataMenuKategorier.Add("Skemaer", (*) => ExitApp())
 DataMenuKategorier.Add("Vognløbsnotat", (*) => ExitApp())
 
-DataMenuFil :=  Menu()
-DataMenuFil.Add("Exit", (*) => ExitApp())
+DatamenuData := Menu()
+DatamenuData.Add("Indlæs Excel", (*) => FileSelect())
+DatamenuData.Add("Liste indlæste vognløb", (*) => ExitApp())
 
 DataMenuHjælp := Menu()
 DataMenuHjælp.Add("Hjælp", (*) => ExitApp())
+
 ; GUI
 DataGUI := Gui(, "P6-Data")
 DataGUI.MenuBar := DataMenu
 DataMenu.Add("Filer", DataMenuFil)
 DataMenu.Add("Kategorier", DataMenuKategorier)
+DataMenu.Add("Data", DatamenuData)
 DataMenu.Add("Om", DataMenuHjælp, "Right")
+
+; Pos-udgangspunkt
 yUdgangspunkt := 20
 xUdgangspunkt := 10
 
-DataGUI.Add("Text", "Y" yUdgangspunkt , excelRækkeTekst)
+; Pos-Overskrift
+overskriftX := xUdgangspunkt
+overskriftY := yUdgangspunkt
 
+; Pos-kategorier
 planskemaX := xUdgangspunkt
-planskemaY := yUdgangspunkt + 55
+planskemaY := yUdgangspunkt + 75
 økonomiskemaX := planskemaX
 økonomiskemaY := planskemaY + 25
 
 
-DataGUI.Add("Text", "Y" yUdgangspunkt " X" xUdgangspunkt + 100, vognløbTekst)
+; GUIstatus
+kategoriFuldført := 0
+katogoriTotal := 7
+DataStatus := DataGUI.Add("StatusBar", , "Fuldførte kategorier ud valgte kategorier: " kategoriFuldført "/" katogoriTotal)
+
+DataGUI.SetFont("Bold")
+DataGUI.Add("Text", "Y" overskriftY , "Indlæst excelfil: " indlæstExcelFil)
+DataGUI.Add("Text", "Y" overskriftY +20 " X" overskriftX , excelRækkeTekst)
+DataGUI.Add("Text", "Y" overskriftY +35 " X" overskriftX, vognløbTekst)
+DataGUI.SetFont("Norm")
+
 DataGUI.Add("Text", "X" planskemaX " Y" planskemaY -20, "Skemaer")
 PlanskemaCheckbox := DataGUI.Add("Checkbox", "Section" " X" planskemaX " Y" planskemaY, "Planskema")
-DataGUI.Add("Text", " X" planskemaX +100 " Y" planskemaY -20, "Forventet")
-PlanskemaEditboxTidligere := DataGUI.Add("Edit", "X" planskemaX + 100 " Y" planskemaY -5, "AB232")
-DataGUI.Add("Text", " X" planskemaX +150 " Y" planskemaY -20, "Indlæst")
-PlanskemaEditboxTidligere := DataGUI.Add("Edit", "X" planskemaX + 150 " Y" planskemaY -5, "AB232")
-planskemaFuldført := DataGUI.Add("Text", " X" planskemaX +200 " Y" planskemaY -5, fuldført)
+DataGUI.Add("Text", " X" planskemaX +110 " Y" planskemaY -20, "Forventet")
+PlanskemaEditboxTidligere := DataGUI.Add("Text", "X" planskemaX + 110 " Y" planskemaY, "AB232")
+DataGUI.Add("Text", " X" planskemaX +160 " Y" planskemaY -20, "Indlæst")
+PlanskemaEditboxTidligere := DataGUI.Add("Text", "X" planskemaX + 160 " Y" planskemaY, "AB232")
+planskemaFuldført := DataGUI.Add("Text", " X" planskemaX +200 " Y" planskemaY, fuldført)
 
 økonomiskemaCheckbox := DataGUI.Add("Checkbox", "Section" " X" økonomiskemaX " Y" økonomiskemaY, "Økonomiskema")
-økonomiskemaEditboxTidligere := DataGUI.Add("Edit", "X" økonomiskemaX + 100 " Y" økonomiskemaY -5, "AB232")
-økonomiskemaEditboxTidligere := DataGUI.Add("Edit", "X" økonomiskemaX + 150 " Y" økonomiskemaY -5, "AB232")
-økonomiskemaFuldført := DataGUI.Add("Text", " X" økonomiskemaX +200 " Y" økonomiskemaY -5, ikkeFuldført)
+økonomiskemaEditboxTidligere := DataGUI.Add("Text", "X" økonomiskemaX + 110 " Y" økonomiskemaY , "AB232")
+økonomiskemaEditboxTidligere := DataGUI.Add("Text", "X" økonomiskemaX + 160 " Y" økonomiskemaY , "AB232")
+økonomiskemaFuldført := DataGUI.Add("Text", " X" økonomiskemaX +200 " Y" økonomiskemaY, ikkeFuldført)
 
 vognløbskategoriX := xUdgangspunkt
 vognløbskategoriY := yUdgangspunkt + 150
 
 DataGUI.Add("Text", "X" vognløbskategoriX " Y" vognløbskategoriY -20, "Vognløbskategori")
 VognløbskategoriCheckbox := DataGUI.Add("Checkbox", "Section" " X" vognløbskategoriX " Y" vognløbskategoriY, "Vognløbskategori")
-DataGUI.Add("Text", " X" vognløbskategoriX +100 " Y" vognløbskategoriY -20, "Forventet")
-vognløbskategoriEditboxTidligere := DataGUI.Add("Edit", "X" vognløbskategoriX + 100 " Y" vognløbskategoriY -5, "FG8")
-DataGUI.Add("Text", " X" vognløbskategoriX +150 " Y" vognløbskategoriY -20, "Indlæst")
-vognløbskategoriEditboxTidligere := DataGUI.Add("Edit", "X" vognløbskategoriX + 150 " Y" vognløbskategoriY -5, "FG9")
-vognløbskategoriFuldført := DataGUI.Add("Text", " X" vognløbskategoriX +200 " Y" vognløbskategoriY -5, fuldført)
+DataGUI.Add("Text", " X" vognløbskategoriX +110 " Y" vognløbskategoriY -20, "Forventet")
+vognløbskategoriEditboxTidligere := DataGUI.Add("Text", "X" vognløbskategoriX + 110 " Y" vognløbskategoriY , "FG8")
+DataGUI.Add("Text", " X" vognløbskategoriX +160 " Y" vognløbskategoriY -20, "Indlæst")
+vognløbskategoriEditboxTidligere := DataGUI.Add("Text", "X" vognløbskategoriX + 160 " Y" vognløbskategoriY , "FG9")
+vognløbskategoriFuldført := DataGUI.Add("Text", " X" vognløbskategoriX +200 " Y" vognløbskategoriY , fuldført)
 
 ; Omskriv?
-vognløbsnotatX := xUdgangspunkt
-vognløbsnotatY := yUdgangspunkt + 200
+vognløbsnotatX := xUdgangspunkt + 300
+vognløbsnotatY := yUdgangspunkt + 75
 vognløbsnotatEditForventetTekst := "GV 8-16, Type 8 adasdlkjadlkjsaldkjasldladasdlj"
 vognløbsnotatEditIndlæstTekst := "GV 8-16, Type 8 sdlfsldflkjglrejg reljg dflgkjfd glkdjg lkjd g"
 
 
 ; DataGUI.Add("Text", "X" vognløbsnotatX " Y" vognløbsnotatY -20, "Vognløbsnotat")
+vognløbsnotatEditboxTidligere := DataGUI.Add("Text", "W200" " X" vognløbsnotatX " Y" vognløbsnotatY -20, "Vognløbsnotat")
 vognløbsnotatCheckbox := DataGUI.Add("Checkbox", "Section" " X" vognløbsnotatX " Y" vognløbsnotatY, "Vognløbsnotat")
-DataGUI.Add("Text", " X" vognløbsnotatX " Y" vognløbsnotatY +20, "Forventet")
-vognløbsnotatEditboxTidligere := DataGUI.Add("Edit", "X" vognløbsnotatX+ 100 " Y" vognløbsnotatY +20, vognløbsnotatEditForventetTekst) 
-DataGUI.Add("Text", " X" vognløbsnotatX " Y" vognløbsnotatY +40, "Indlæst")
-vognløbsnotatEditboxTidligere := DataGUI.Add("Edit", "X" vognløbsnotatX +100 " Y" vognløbsnotatY +40, vognløbsnotatEditIndlæstTekst)
+vognløbsnotatEditboxTidligere := DataGUI.Add("Text", "W200" " X" vognløbsnotatX " Y" vognløbsnotatY +25, vognløbsnotatEditIndlæstTekst)
+vognløbsnotatFuldført := DataGUI.Add("Text", " X" vognløbsnotatX +100 " Y" vognløbsnotatY , fuldført)
 
+knapX := xUdgangspunkt + 200
+knapY := yUdgangspunkt + 400
+knap := DataGUI.Add("Button", "X" knapX " Y" knapY , "Sæt igang")
 ; DataGUI.Add("Text", "XP" , "Skema")
 ; PlanskemaEditboxNy := DataGUI.Add("Edit",EditboxPos , "AB232")
 ; PlanskemaCheckbox := DataGUI.Add("Checkbox", "XS Section", "Planskema")
