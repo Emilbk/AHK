@@ -33,6 +33,8 @@ loop EndRow
     {
         col_index := A_Index
         currentCell := usedrangeArr[row_index, col_index]
+        if Type(currentCell) = "Float"
+            currentCell := String(Floor(currentCell))
         data[row_index].Push(currentCell)
     }
 
