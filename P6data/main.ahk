@@ -12,6 +12,8 @@ DataGUI.Show("AutoSize")
 
 vælgExcelFil()
 {
+    ; DataGUI.opt("+Disabled")
+    ; WinActivate(DataGUINavn)
     valgtExcelFilLong := FileSelect()
     SplitPath(valgtExcelFilLong, &valgtExcelFil)
     indlæstExcelFilTekst := "Indlæst excel-fil: " . valgtExcelFil

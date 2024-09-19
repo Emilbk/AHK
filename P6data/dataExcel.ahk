@@ -41,5 +41,7 @@ loop EndRow
 }
 excel.quit()
 MsgBox "Data indlæst!" 
+; DataGUI.opt("-Disabled")
+; WinActivate(DataguiNavn)
 return data
 }
