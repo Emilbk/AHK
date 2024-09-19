@@ -15,6 +15,8 @@ vælgExcelFil()
     ; DataGUI.opt("+Disabled")
     ; WinActivate(DataGUINavn)
     valgtExcelFilLong := FileSelect()
+    if !valgtExcelFilLong
+        return
     SplitPath(valgtExcelFilLong, &valgtExcelFil)
     indlæstExcelFilTekst := "Indlæst excel-fil: " . valgtExcelFil
     overskriftExcelfil.Text := indlæstExcelFilTekst
