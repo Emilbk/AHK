@@ -9,8 +9,8 @@ Persistent
 excelIndlæsArr(p_excel_fil)
 {
 
-undtagneTrKolStart := 11
-undtagneTrKolSlut := 20
+undtagneTrKolStart := 13
+undtagneTrKolSlut := 22
 
 excel := ComObject("Excel.Application")
 excel.Visible := 0
