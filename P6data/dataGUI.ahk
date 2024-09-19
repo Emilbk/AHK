@@ -35,7 +35,8 @@ DataMenuHjælp.Add("Hjælp", (*) => ExitApp())
 
 
 ; GUI
-DataGUI := Gui(, "P6-Data")
+DataGUINavn := "P6-Data"
+DataGUI := Gui(, DataGUINavn)
 DataGUI.MenuBar := DataMenu
 DataMenu.Add("Filer", DataMenuFil)
 DataMenu.Add("Kategorier", DataMenuKategorier)
