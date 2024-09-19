@@ -5,7 +5,7 @@ Persistent
 #Include dataGUI.ahk
 
 excel_fil := "C:\Users\ebk\Trafikstyring V2\P6data\VL.xlsx"
-    DataGUI.excelData := excelIndlæsArr(excel_fil)
+    ; DataGUI.excelData := excelIndlæsArr(excel_fil)
 
 
 
@@ -19,6 +19,19 @@ vælgExcelFil()
     indlæstExcelFilTekst := "Indlæst excel-fil: " . valgtExcelFil
     overskriftExcelfil.Text := indlæstExcelFilTekst
     DataGUI.excelData := excelIndlæsArr(valgtExcelFilLong)
+            
+    for i, e in DataGUI.excelData[1]
+    {
+        dataListview.InsertCol(i, , e)
+    }
+
+    for i, e in DataGUI.excelData
+        if i > 1
+        {
+            dataListview.Insert(1, , e*)
+            ;dataListview.Insert(i, , DataGUI.excelData[i])
+        }
+    dataListview.ModifyCol()
     return 
 }
 

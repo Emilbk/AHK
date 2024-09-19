@@ -129,17 +129,5 @@ knap := DataGUI.Add("Button", "X" knapX " Y" knapY, "Sæt igang")
 
 listviewVisData()
 {
-    for i, e in DataGUI.excelData[1]
-    {
-        dataListview.InsertCol(i, , e)
-    }
-
-    for i, e in DataGUI.excelData
-        if i > 1
-        {
-            dataListview.Insert(1, , e*)
-            ;dataListview.Insert(i, , DataGUI.excelData[i])
-        }
-    dataListview.ModifyCol()
     dataListviewGUI.Show("AutoSize")
 }

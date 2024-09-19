@@ -6,7 +6,10 @@ data := [
     ["Alice", 30, "Doctor"],
     ["Bob", 22, "Artist"]
 ]
-
+test := 31202.00
+test := Floor(test)
+test := String(test)
+MsgBox Type(test)
 ; Create the GUI
 myGui := Gui()
 
