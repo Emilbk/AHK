@@ -28,7 +28,7 @@ DataMenuKategorier.Add("Vognløbsnotat", (*) => ExitApp())
 
 DatamenuData := Menu()
 DatamenuData.Add("Indlæs Excel", (*) => vælgExcelFil())
-DatamenuData.Add("Liste indlæste vognløb", (*) => listviewVisData())
+DatamenuData.Add("Liste indlæste vognløb", (*) => dataListviewGUI.Show("AutoSize"))
 
 DataMenuHjælp := Menu()
 DataMenuHjælp.Add("Hjælp", (*) => ExitApp())
@@ -126,8 +126,3 @@ knap := DataGUI.Add("Button", "X" knapX " Y" knapY, "Sæt igang")
 
 
 ; funk
-
-listviewVisData()
-{
-    dataListviewGUI.Show("AutoSize")
-}
