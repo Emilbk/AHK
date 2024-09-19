@@ -5,9 +5,7 @@ Persistent
 #Include dataGUI.ahk
 
 excel_fil := "C:\Users\ebk\Trafikstyring V2\P6data\VL.xlsx"
-    ; DataGUI.excelData := excelIndlæsArr(excel_fil)
-
-
+; DataGUI.excelData := excelIndlæsArr(excel_fil)
 
 
 DataGUI.Show("AutoSize")
@@ -15,11 +13,17 @@ DataGUI.Show("AutoSize")
 vælgExcelFil()
 {
     valgtExcelFilLong := FileSelect()
-    SplitPath(valgtExcelFilLong, &valgtExcelFil )
+    SplitPath(valgtExcelFilLong, &valgtExcelFil)
     indlæstExcelFilTekst := "Indlæst excel-fil: " . valgtExcelFil
     overskriftExcelfil.Text := indlæstExcelFilTekst
     DataGUI.excelData := excelIndlæsArr(valgtExcelFilLong)
-            
+
+    ; listview
+    dataListview.Delete()
+    columnNumber := dataListview.GetCount("Col")
+    if columnNumber != 0
+        loop columnNumber
+            dataListview.DeleteCol(1)
     for i, e in DataGUI.excelData[1]
     {
         dataListview.InsertCol(i, , e)
@@ -32,6 +36,5 @@ vælgExcelFil()
             ;dataListview.Insert(i, , DataGUI.excelData[i])
         }
     dataListview.ModifyCol()
-    return 
+    return
 }
-
