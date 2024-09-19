@@ -6,7 +6,7 @@ Persistent
 
 ; MsgBox test[1, 2].value
 
-excelIndlæsArr()
+excelIndlæsArr(p_excel_fil)
 {
 
 undtagneTrKolStart := 11
@@ -14,7 +14,7 @@ undtagneTrKolSlut := 20
 
 excel := ComObject("Excel.Application")
 excel.Visible := 0
-excel_fil := "C:\Users\ebk\Trafikstyring V2\P6data\VL.xlsx"
+excel_fil := p_excel_fil
 workbook := excel.Workbooks.open(excel_fil, , "ReadOnly" = true)
 workbook_sheet := workbook.Sheets(1)
 
@@ -38,10 +38,6 @@ loop EndRow
 
 }
 excel.quit()
- 
+MsgBox "Data indlæst!" 
 return data
 }
-
-data := excelIndlæsArr()
-
-MsgBox data[1][2]
