@@ -4,6 +4,11 @@ Persistent
 
 ; var
 
+; MsgBox test[1, 2].value
+
+excelIndlæsArr()
+{
+
 undtagneTrKolStart := 11
 undtagneTrKolSlut := 20
 
@@ -17,8 +22,6 @@ workbook_sheet := workbook.Sheets(1)
 EndRow := workbook_sheet.usedrange.rows.count
 EndCol := workbook_sheet.usedrange.columns.count
 usedrangeArr := workbook_sheet.usedrange.value
-
-; MsgBox test[1, 2].value
 
 data := Array()
 
@@ -34,6 +37,11 @@ loop EndRow
     }
 
 }
+excel.quit()
  
+return data
+}
 
-MsgBox "test"
+data := excelIndlæsArr()
+
+MsgBox data[1][2]
