@@ -5401,7 +5401,8 @@ excel_p6_faerge()
         GuiControl, Vogngrupper: +g,central6,%centralknap6%
         GuiControl, Vogngrupper: +g,central7,%centralknap7%
         GuiControl, Vogngrupper: +g,central8,%centralknap8%
-        WinActivate, "Ring op til central"
+        sleep 100
+        WinActivate, Ring op til central
         return
     }
     Opkaldtaxa(p*){
