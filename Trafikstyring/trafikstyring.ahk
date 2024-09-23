@@ -5393,17 +5393,19 @@ excel_p6_faerge()
         centralknap6:=Func("opkaldtaxa").Bind("96341121")
         centralknap7:=Func("opkaldtaxa").Bind("97120777")
         centralknap8:=Func("opkaldtaxa").Bind("97120777")
-        GuiControl,+g,central1,%centralknap1%
-        GuiControl,+g,central2,%centralknap2%
-        GuiControl,+g,central3,%centralknap3%
-        GuiControl,+g,central4,%centralknap4%
-        GuiControl,+g,central5,%centralknap5%
-        GuiControl,+g,central6,%centralknap6%
-        GuiControl,+g,central7,%centralknap7%
-        GuiControl,+g,central8,%centralknap8%
+        GuiControl, Vogngrupper: +g,central1,%centralknap1%
+        GuiControl, Vogngrupper: +g,central2,%centralknap2%
+        GuiControl, Vogngrupper: +g,central3,%centralknap3%
+        GuiControl, Vogngrupper: +g,central4,%centralknap4%
+        GuiControl, Vogngrupper: +g,central5,%centralknap5%
+        GuiControl, Vogngrupper: +g,central6,%centralknap6%
+        GuiControl, Vogngrupper: +g,central7,%centralknap7%
+        GuiControl, Vogngrupper: +g,central8,%centralknap8%
+        WinActivate, "Ring op til central"
         return
     }
     Opkaldtaxa(p*){
+        Gui, Taxa: hide
         Gui, Vogngrupper: hide
         telefon := % p.1
         sleep 100
@@ -5422,6 +5424,7 @@ excel_p6_faerge()
     VogngrupperGuiEscape:
     VogngrupperGuiClose:
     sys_afslut_genvej()
+    Gui, Taxa:Show, AutoSize Center , Ring op til central
     gui, Vogngrupper: Hide
     return
 
@@ -6475,10 +6478,10 @@ excel_p6_faerge()
     ; FormatTime, tid, , HH:mm
     ; svigt := []
     tidligere_notat := clipboard
-    gemtklip := ClipboardAlldd
+    gemtklip := ClipboardAll
     ClipWait, 2, 1
     SendInput, ^a^{F12}
-    sleep 100
+    sleep 1500
     clipboard :=
     SendInput, {AppsKey}c
     ClipWait, 2, 0
