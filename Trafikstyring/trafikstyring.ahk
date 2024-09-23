@@ -6482,28 +6482,10 @@ excel_p6_faerge()
     gemtklip := ClipboardAll
     ClipWait, 2, 1
     SendInput, ^a^{F12}
-    sleep 1500
+    sleep 2500
     clipboard :=
     SendInput, {AppsKey}c
     ClipWait, 2, 0
-    vl := clipboard
-    loop_test := ""
-    while (vl = "" and loop_test < 10)
-    {
-        P6_aktiver()
-        clipboard := ""
-        SendInput, !l
-        SendInput, {AppsKey}c
-        ClipWait, 0.3
-        vl := clipboard
-        loop_test += 1
-    }
-    if (vl = "")
-    {
-        MsgBox, 16, Fejl, Prøv igen
-        sys_afslut_genvej()
-        Return
-    }
     sys := p6_vl_vindue_edit()
     if (sys = "lukket")
     {
@@ -6556,34 +6538,15 @@ excel_p6_faerge()
     SendInput, {tab}{AppsKey}c
     ClipWait, 1
     aabningstid := clipboard
-    clipboard :=
-    SendInput, {enter}!v+{up}
-    sleep 200
-    if (InStr(tidligere_notat, "GV") or InStr(tidligere_notat, "garanti"))
-    {
-        clipboard := tidligere_notat
-        sleep 200
-        SendInput, ^v{enter}
-        sleep 200
-        tidligere_notat := 1
-
-    }
-    if (tidligere_notat != 1)
-    {
-        SendInput, ^c
-        ClipWait, 1
-        vl_notat := clipboard
-        sleep 500
-    }
-    clipboard :=
     P6_aktiver()
-    sleep 200
+    sleep 300
     SendInput, !{PrintScreen}
-    sleep 50
+    sleep 200
     ClipWait, 3, 1
     if (clipboardall := "")
     {
         SendInput, !{PrintScreen}
+        sleep 200
         ClipWait, 3, 1
     }
     udklip := ImagePutFile(clipboardall, "genåbnet.png")
@@ -6660,16 +6623,9 @@ excel_p6_faerge()
 
     svigt_template.send
     ImageDestroy(udklip)
-    if (vl_notat = "" and tidligere_notat != 1)
-        {
-            MsgBox, 48, Mail sendt - husk notat på VL, Mail om genåbningen er blevet sendt - husk det faste notat på VL (garanti-tider osv.)
-        }
-    else
-     {
      MsgBox, 64, Mail sendt, Mail om genåbningen er blevet sendt, 3
      SendInput, ^a
      P6_planvindue()
-     }
 
         sys_afslut_genvej()
         return
