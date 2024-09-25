@@ -6486,6 +6486,7 @@ excel_p6_faerge()
     clipboard :=
     SendInput, {AppsKey}c
     ClipWait, 2, 0
+    vl := clipboard
     sys := p6_vl_vindue_edit()
     if (sys = "lukket")
     {
