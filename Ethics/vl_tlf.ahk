@@ -1,86 +1,61 @@
-﻿#NoEnv
-#SingleInstance, Force
-SendMode, Input
-SetBatchLines, -1
-SetWorkingDir, %A_ScriptDir%
+﻿#Include dsvparser-ahk2.ahk
 
-#Include, %A_linefile%\..\DSVParser\DSVParser.ahk
+; inputs
 
-FileRead, FV8_input, FV8 - FlexVariabel.txt
-FileRead, FV8_VG_input, FV8 - FlexVariabel_VG.txt
-FileRead, FG8_input, Genudbud FG8 - FlexGaranti.txt
-FormatTime, tid, YYYYMMDDHH24MISS, dd/MM-yy
-opdateret := "Opdateret `t" tid "`n"
+inputFG8csv := FileRead("Genudbud FG8 - FlexGaranti.txt")
+inputFV8csv := FileRead("FV8 - FlexVariabel.txt")
+inputFV8VGcsv := FileRead("FV8 - FlexVariabel_VG.txt")
 
-FG8_output := tekst_til_array(FG8_input)
-FV8_output := tekst_til_array(FV8_input)
-FV8_VG_output:= tekst_til_array(FV8_VG_input)
+inputFG8Array := TSVParser.ToArray(inputFG8csv)
+inputFV8Array := TSVParser.ToArray(inputFV8csv)
+inputFV8VGArray := TSVParser.ToArray(inputFV8VGcsv)
 
-tekst_til_array(input)
+rensFG8Array := arrayRens(inputFG8Array)
+rensFV8Array := arrayRens(inputFV8Array)
+rensFV8VGArray := arrayRens(inputFV8VGArray)
+
+outputArray := []
+
+outputArray.Push(rensFG8Array*)
+outputArray.Push(rensFV8Array*)
+outputArray.Push(rensFV8VGArray*)
+
+outputTSV := TSVParser.FromArray(outputArray)
+if FileExist("vl_tlf_output.txt")
+FileDelete("vl_tlf_output.txt")
+FileAppend(outputTSV, "vl_tlf_output.txt")
+
+arrayRens(p_array_input)
 {
-    input:= TSVParser.ToArray(input)
-    input2 := []
-for i,e in input
-    for i2,e2 in e
-    if (i = 1)
+    array_output := []
+    for index, element in p_array_input
     {
-        if (e2 = "Vognløbsnummer")
-            vl := i2
-        if (e2 = "Telefonnummer til chauffør" )
-            tlf := i2
-    }
-    else Break 1
-for i,e in input
-    {
-        if (input[i][tlf] != "" and input[i][vl] != "") 
+        if (element[1] != "" and element[2] != "" and InStr(element[2], "_"))
+        {
+            parantes_start_pos := InStr(element[2], "(")
+            parantes_slut_pos := InStr(element[2], ")")
+            underscore_pos := InStr(element[2], "_")
+            if (InStr(element[2], "("))
             {
-            input2.Push(input[i])
+                k_aftale := SubStr(element[2], parantes_start_pos + 1, underscore_pos - parantes_start_pos - 1)
+                sys := SubStr(element[2], underscore_pos + 1, parantes_slut_pos - underscore_pos - 1)
             }
-    }
-
-input := input2
-for i,e in input
-    {
-        if InStr(input[i][vl], "(")
+            else
             {
-            RegExMatch(input[i][vl], "\([^)]*\)", test)
-            test := SubStr(test, 2 , 7)
-            if InStr(test, "_9)")
-                {
-                    test := SubStr(test, 1, 6)
-                }
-            input[i][vl] := test
+                element_split := StrSplit(element[2], "_")
+                ; position := InStr(element[2], "_")
+                k_aftale := element_split[1]
+                sys := element_split[2]
+                ; if (InStr(sys, "9)"))
+                ; sys := "09"
             }
+            element[2] := k_aftale . "_" sys
+            array_output.Push(element)
+        }
     }
 
-for i,e in Input
-    {
-        ; tjek for dobbelt VL
-    }
-
-for i,e in input
-    {
-        output := output . input[i][tlf] "`t"
-        output := output . input[i][vl] "`n"
-
-    }
-
-return output
+    return array_output
 }
 
 
-
-FileDelete, FG8_resultat.txt
-FileDelete, FV8_resultat.txt
-FileDelete, FV8_VG_resultat.txt
-FileAppend, %FG8_output%, FG8_resultat.txt
-FileAppend, %FV8_output%, FV8_resultat.txt
-FileAppend, %FV8_VG_output%, FV8_VG_resultat.txt
-
-FileDelete, samlet.txt
-FileAppend, Opdateret d. %tid% `n, samlet.txt
-FileAppend, % FG8_output, samlet.txt
-FileAppend, % FV8_output, samlet.txt
-FileAppend, % FV8_VG_output, samlet.txt
-
-MsgBox, , , Færdig
+return

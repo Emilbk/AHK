@@ -481,8 +481,8 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 30281440	4231
-22641277	4216
-28155323	31217 (3417_47) Type 2
+93102394	4216
+71961557	31217 (3417_47) Type 2
 	
 	
 28998365	4900_9
@@ -490,7 +490,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 42132698	31300 (3300_47) Type 7 på hjul
-93923154	2671
+	2671
 28106506	2659
 	
 	
@@ -513,29 +513,29 @@ Telefonnummer til chauffør	Vognløbsnummer
 28998359	4939_9
 	
 28106371	4999_9
-22504372	4206
+93102376	4206
 42132684	2649
 28998361	2691
-61675085	31323 (3323_32) Type 6 på hjul
+93102392	31323 (3323_47) Type 6 på hjul
 28933255	31311 (3211_47) Type 6 på hjul
 	
 	
 	
 	
 28128646	4208_9
-60679636	31277 (3277_26) Type 6 på larvefødder
+52135459	31277 (3277_47) Type 6 på larvefødder
 	
 60387859	2648
 	
 	
 28128516	4256_9
 21220626	31377 (3377_26) Type 6 på larvefødder
-42449880	4239
+93102381	4239
 	
-22265623	4204
+93102386	4204
 	
 	
-28297419	31246 (3246_9) Type 6 på hjul
+40602135	31246 (3246_9) Type 6 på hjul
 	
 28998371	4997_9
 	
@@ -573,7 +573,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 26776101	2669
 	
 	
-42132690	31369 (3369_47) Type 6 på hjul
+42132699	31369 (3369_47) Type 6 på hjul
 	
 	
 	
@@ -582,7 +582,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 28298121	2665
 26667602	4933_9
-60515493	2694
+93101707	2694
 	
 	
 	
@@ -600,7 +600,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 28128636	31306 (3306_47) Type 2
 	
 26313410	4920_9
-28128618	4257_9
+42137481	4257_9
 	
 	
 	
@@ -618,7 +618,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 28998358	2672
 	
-91852533	4247_48
+25761466	4247_48
 	
 28106415	2676
 28499260	31268 (3268_22) T7 på hjul
@@ -653,7 +653,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 26667603	4971_9
 	
 60387756	31324 (3324_47) Type 7 på hjul
-93854818	2629
+93103172	2629
 91822088	31263 (3263_32) Type 6 på hjul
 28128769	31282 (3182_47) Type 2
 	
@@ -674,7 +674,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 31443451	31329 (3329_32) Type 2
-28128331	4210_9
+28128331	4210_48
 	
 	
 	
@@ -683,7 +683,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 60387864	4921
-93940873	31353 (3353_32) Type 6 på larvefødder
+93102377	31353 (3353_47) Type 6 på larvefødder
 	
 	
 	
@@ -692,7 +692,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 42132691	2627
 	
 42132692	31321 (3321_47) Type 6 på larvefødder
-42156623	4203_48
+93102384	4203_48
 93108062	4953_12
 	
 28998362	31278 (3178_47) Type 5
@@ -704,15 +704,15 @@ Telefonnummer til chauffør	Vognløbsnummer
 28308252	4209_9
 	
 	
-40752232	31223 (3223_47) Type 5
-22644478	2693
+93102389	31223 (3223_47) Type 5
+93102471	2693
 28128322	2670
-22214177	4233
-28999042	4907_9
+91830606	4233
+28998356	4907_9
 	
 28298569	31292 (3292_9) Type 6 på larvefødder
 	
-60387860	4936_9
+28350333	4936_9
 	
 	
 	
@@ -727,15 +727,15 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-26667607	4905
-28128309	31385 (3385_47) Type 9
+28106323	4905
+28106266	31385 (3385_47) Type 9
 	
 28998370	31352 (3352_47) Type 6 på hjul
 	
 42650286	4957
-91962356	4994_48
+93102404	4994_48
 28933261	4998_9
-60872103	31236 (3236_47) Type 5
+93102378	31236 (3236_47) Type 5
 	
 	
 28128472	4255_9
@@ -768,11 +768,11 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-28106266	31296 (3296_26) Type 6 på hjul
+42132688	31296 (3296_26) Type 6 på hjul
 28128435	4245_9
 	
 	
-42365727	4205
+93102398	4205
 	
 	
 28308217	4922
@@ -780,7 +780,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-21581382	31216 (3216_47) Type 2
+42905917	31216 (3216_47) Type 2
 28122011	31368 (3368_47) Type 6 på larvefødder
 	
 	
@@ -796,10 +796,10 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 28350302	4973_9
-26667608	31313 (3313_9) Type 6 på hjul
+26667608	31313 (3313_47) Type 6 på hjul
 	
-22767896	2630
-28345181	31308 (3308_47) Type 5
+93100579	2630
+28106371	31308 (3308_47) Type 5
 	
 28128437	4250_9
 	
@@ -809,7 +809,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-40554260	2625
+93107094	2625
 28296831	2692
 26313415	4984_9
 	
@@ -819,10 +819,10 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-91982279	4996
-28128330	4207_9
-28308679	4902_9
-91820103	31206 (3206_47) Type 2
+93102426	4996
+28128330	4207_48
+93409027	4902_9
+21990232	31206 (3206_47) Type 2
 	
 	
 	
@@ -982,8 +982,8 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 81943605	31234 (3134_32) Type 5
 	
-31815333	31305 (3305_26) Type 9
-26787799	31302 (3302_26) Type 8
+27157196	31305 (3305_26) Type 9
+31895342	31302 (3302_26) Type 8
 	
 	
 	
@@ -1086,7 +1086,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 31376787	31350 (3350_47) Type 5
 	
 	
-31867182	2643
+28453260	2643
 	
 42562103	31231 (3231_47) Type 5
 22644663	31238 (3238_47) Type 5
@@ -1115,7 +1115,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 93801703	31205 (3205_47) Type 0
 	
-61281763	31276 (3276_47) Type 2
+81323169	31276 (3276_47) Type 2
 	
 	
 	
@@ -1147,7 +1147,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-71487186	31239 (3239_47) Type 5
+20701300	31239 (3239_47) Type 5
 	
 	
 	
@@ -1329,7 +1329,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 61776911	4928_48
 29873237	2639
 	
-40182749	2624
+29867469	2624
 	31276
 	
 	
@@ -1608,8 +1608,8 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-53628838	31307 (3307_32) Type 2
-53622916	31285 (3285_32) Type 2
+53613966	31307 (3307_32) Type 2
+31702079	31285 (3285_32) Type 2
 	
 	
 	
@@ -1621,7 +1621,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-53613966	31284 (3284_32) Type 2
+53628838	31284 (3284_32) Type 2
 	
 	
 	
@@ -1684,7 +1684,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-53615966	31287 (3287_32) Type 2
+53706255	31287 (3287_32) Type 2
 	
 	
 	
@@ -1712,7 +1712,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-53613966	31287 (3287_32) Type 2
+53628838	31287 (3287_32) Type 2
 	
 	
 	
@@ -1744,7 +1744,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-60539215	31226 (3126_26) Type 5
+60539215	31226 (3126_47) Type 5
 	
 	
 	
@@ -1758,7 +1758,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-60539278	31364 (3164_26) Type 2
+60539278	31364 (3264_47) Type 2
 	
 	
 	
@@ -1799,8 +1799,8 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-93401749	4226_26
-60269418	4938_26
+30142947	4226_26
+93404734	4938_26
 	
 	
 	
@@ -2425,7 +2425,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-61102582	4911_48
+25761463	4911_48
 	
 	
 	
@@ -2895,7 +2895,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 60393248	2626
 	
-42523582	31210 (3110_50) Type 2
+42523582	31210 (3110_47) Type 2
 	
 	
 	
@@ -2988,7 +2988,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-26444043	4201_48
+50136226	4201_48
 	
 	
 	
@@ -3050,7 +3050,7 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-40409193	31332 (3332_22) Type 0
+	31332 (3332_22) Type 0
 	
 	
 	
@@ -3060,22 +3060,12 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-22252424	31245 (3245_22) Type 5
+	31245 (3245_22) Type 5
 	
 	
 	
 	
-21441113	31333 (3333_22) Type 0
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	31333 (3333_22) Type 0
 	
 	
 	
@@ -3093,7 +3083,17 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 	
 	
-21586305	4261_48
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+23364794	4261_48
 51356269	4260_48
 21428714	4262_48
 	
@@ -3114,5 +3114,5 @@ Telefonnummer til chauffør	Vognløbsnummer
 	
 31395953	2695
 22184713	2673
-71831905	
-42328778	
+71831905	31299 (3299_26)
+42328778	31286 (3286_26) Type 2
