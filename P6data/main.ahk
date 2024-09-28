@@ -6,7 +6,6 @@ Persistent
 #Include vlObj.ahk
 
 
-
 test := vlObj()
 
 excel_fil := "C:\Users\ebk\Trafikstyring V2\P6data\VL.xlsx"
@@ -24,7 +23,7 @@ vælgExcelFilTest()
     ; WinActivate(DataGUINavn)
     ; valgtExcelFilLong := FileSelect()
     ; if !valgtExcelFilLong
-        ; return
+    ; return
     ; SplitPath(excel_fil, &valgtExcelFil)
     excel_fil := "C:\Users\ebk\Trafikstyring V2\P6data\VL.xlsx"
     indlæstExcelFilTekst := "Indlæst excel-fil: " . excel_fil
@@ -95,10 +94,10 @@ testfunk(*)
     loop DataGUI.excelData.Length
     {
         vl := vlObj()
-        if (A_Index >= 2)
+        if (A_Index >= 2 or A_Index <= (A_Index - 1))
         {
             vl.vlIndhentData(DataGUI.excelData, A_Index)
-            MsgBox A_Index
+            vl.p6IndlæsData()
         }
     }
 }
