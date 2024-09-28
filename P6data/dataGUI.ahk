@@ -133,9 +133,9 @@ vognløbsnotatEditIndlæstTekst := "GV 8-16, Type 8 sdlfsldflkjglrejg reljg dflg
 
 
 ; DataGUI.Add("Text", "X" vognløbsnotatX " Y" vognløbsnotatY -20, "Vognløbsnotat")
-vognløbsnotatEditboxTidligere := DataGUI.Add("Text", "W200" " X" vognløbsnotatX " Y" vognløbsnotatY - 20, "Vognløbsnotat")
+vognløbsnotatEditboxForventet := DataGUI.Add("Text", "W200" " X" vognløbsnotatX " Y" vognløbsnotatY - 20, "Vognløbsnotat")
 vognløbsnotatCheckbox := DataGUI.Add("Checkbox", "Disabled Section" " X" vognløbsnotatX " Y" vognløbsnotatY, "Vognløbsnotat")
-vognløbsnotatEditboxTidligere := DataGUI.Add("Text", "W200" " X" vognløbsnotatX " Y" vognløbsnotatY + 25, vognløbsnotatEditIndlæstTekst)
+vognløbsnotatEditboxIndlæst := DataGUI.Add("Text", "W200" " X" vognløbsnotatX " Y" vognløbsnotatY + 25, vognløbsnotatEditIndlæstTekst)
 vognløbsnotatFuldført := DataGUI.Add("Text", " X" vognløbsnotatX + 100 " Y" vognløbsnotatY, fuldført)
 
 knapX := xUdgangspunkt + 200
