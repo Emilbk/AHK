@@ -15,6 +15,28 @@ indlæstExcelFilTekst := "Indlæst excel-fil: " indlæstExcelFil
 ikkeFuldført := ""
 fuldført := "✔️"
 
+kolonneBudnummer := ""
+
+kolonneVognløbsNummer := ""
+kolonneKørselsAftale := ""
+kolonneStyreSystem := ""
+
+kolonneMobilnrChf := ""
+kolonneMobilnrVm := ""
+
+kolonneØkonomiSkema := ""
+kolonnePlanSkema := ""
+kolonneVognløbsKategori := ""
+kolonneStatistikGruppe := ""
+
+kolonneHjemzoneAdresse := ""
+kolonneHjemzonePlanetZone := ""
+kolonneStartzone := ""
+kolonneSlutzone := ""
+
+kolonneUndtagneTransportTyper := []
+
+
 ; GUImenu
 DataMenu := MenuBar()
 
@@ -27,7 +49,7 @@ DataMenuKategorier.Add("Skemaer", (*) => ExitApp())
 DataMenuKategorier.Add("Vognløbsnotat", (*) => ExitApp())
 
 DatamenuData := Menu()
-DatamenuData.Add("Indlæs Excel", (*) => vælgExcelFil())
+; DatamenuData.Add("Indlæs Excel", (*) => vælgExcelFil())
 DatamenuData.Add("Liste indlæste vognløb", (*) => dataListviewGUI.Show("AutoSize"))
 
 DataMenuHjælp := Menu()
@@ -46,7 +68,7 @@ DataMenu.Add("Om", DataMenuHjælp, "Right")
 ; GUIListview
 dataListviewGUI := Gui(, "Indlæste vognløbsdata")
 dataListviewGUI.listviewArray := Array()
-dataListview := dataListviewGUI.Add("ListView", "W1100 R30" , dataListviewGUI.listviewArray)
+dataListview := dataListviewGUI.Add("ListView", "W1100 R30", dataListviewGUI.listviewArray)
 
 
 ; Pos-udgangspunkt
@@ -65,9 +87,9 @@ planskemaY := yUdgangspunkt + 75
 
 
 ; GUIstatus
-kategoriFuldført := 0
-katogoriTotal := 7
-DataStatus := DataGUI.Add("StatusBar", , "Fuldførte kategorier ud valgte kategorier: " kategoriFuldført "/" katogoriTotal)
+; kategoriFuldført := 0
+; katogoriTotal := 7
+; DataStatus := DataGUI.Add("StatusBar", , "Fuldførte kategorier ud valgte kategorier: " kategoriFuldført "/" katogoriTotal)
 
 DataGUI.SetFont("Bold")
 ; TODO lav fornuftig autoresize ved tekstændring overskrift
@@ -77,27 +99,27 @@ overskriftVognløb := DataGUI.Add("Text", "Y" overskriftY + 35 " X" overskriftX,
 DataGUI.SetFont("Norm")
 
 DataGUI.Add("Text", "X" planskemaX " Y" planskemaY - 20, "Skemaer")
-PlanskemaCheckbox := DataGUI.Add("Checkbox", "Section" " X" planskemaX " Y" planskemaY, "Planskema")
+PlanskemaCheckbox := DataGUI.Add("Checkbox", "Disabled Section" " X" planskemaX " Y" planskemaY, "Planskema")
 DataGUI.Add("Text", " X" planskemaX + 110 " Y" planskemaY - 20, "Forventet")
-PlanskemaEditboxTidligere := DataGUI.Add("Text", "X" planskemaX + 110 " Y" planskemaY, "AB232")
+PlanskemaEditboxForventet := DataGUI.Add("Text", "X" planskemaX + 110 " Y" planskemaY, "AB232")
 DataGUI.Add("Text", " X" planskemaX + 160 " Y" planskemaY - 20, "Indlæst")
-PlanskemaEditboxTidligere := DataGUI.Add("Text", "X" planskemaX + 160 " Y" planskemaY, "AB232")
+PlanskemaEditboxIndlæst := DataGUI.Add("Text", "X" planskemaX + 160 " Y" planskemaY, "")
 planskemaFuldført := DataGUI.Add("Text", " X" planskemaX + 200 " Y" planskemaY, fuldført)
 
-økonomiskemaCheckbox := DataGUI.Add("Checkbox", "Section" " X" økonomiskemaX " Y" økonomiskemaY, "Økonomiskema")
-økonomiskemaEditboxTidligere := DataGUI.Add("Text", "X" økonomiskemaX + 110 " Y" økonomiskemaY, "AB232")
-økonomiskemaEditboxTidligere := DataGUI.Add("Text", "X" økonomiskemaX + 160 " Y" økonomiskemaY, "AB232")
+økonomiskemaCheckbox := DataGUI.Add("Checkbox", "Disabled Section" " X" økonomiskemaX " Y" økonomiskemaY, "Økonomiskema")
+økonomiskemaEditboxForventet := DataGUI.Add("Text", "X" økonomiskemaX + 110 " Y" økonomiskemaY, "AB232")
+økonomiskemaEditboxIndlæst := DataGUI.Add("Text", "X" økonomiskemaX + 160 " Y" økonomiskemaY, "")
 økonomiskemaFuldført := DataGUI.Add("Text", " X" økonomiskemaX + 200 " Y" økonomiskemaY, ikkeFuldført)
 
 vognløbskategoriX := xUdgangspunkt
 vognløbskategoriY := yUdgangspunkt + 150
 
 DataGUI.Add("Text", "X" vognløbskategoriX " Y" vognløbskategoriY - 20, "Vognløbskategori")
-VognløbskategoriCheckbox := DataGUI.Add("Checkbox", "Section" " X" vognløbskategoriX " Y" vognløbskategoriY, "Vognløbskategori")
+VognløbskategoriCheckbox := DataGUI.Add("Checkbox", "Disabled Section" " X" vognløbskategoriX " Y" vognløbskategoriY, "Vognløbskategori")
 DataGUI.Add("Text", " X" vognløbskategoriX + 110 " Y" vognløbskategoriY - 20, "Forventet")
-vognløbskategoriEditboxTidligere := DataGUI.Add("Text", "X" vognløbskategoriX + 110 " Y" vognløbskategoriY, "FG8")
+vognløbskategoriEditboxForventet := DataGUI.Add("Text", "X" vognløbskategoriX + 110 " Y" vognløbskategoriY, "FG8")
 DataGUI.Add("Text", " X" vognløbskategoriX + 160 " Y" vognløbskategoriY - 20, "Indlæst")
-vognløbskategoriEditboxTidligere := DataGUI.Add("Text", "X" vognløbskategoriX + 160 " Y" vognløbskategoriY, "FG9")
+vognløbskategoriEditboxIndlæst := DataGUI.Add("Text", "X" vognløbskategoriX + 160 " Y" vognløbskategoriY, "")
 vognløbskategoriFuldført := DataGUI.Add("Text", " X" vognløbskategoriX + 200 " Y" vognløbskategoriY, fuldført)
 
 ; Omskriv?
@@ -109,13 +131,14 @@ vognløbsnotatEditIndlæstTekst := "GV 8-16, Type 8 sdlfsldflkjglrejg reljg dflg
 
 ; DataGUI.Add("Text", "X" vognløbsnotatX " Y" vognløbsnotatY -20, "Vognløbsnotat")
 vognløbsnotatEditboxTidligere := DataGUI.Add("Text", "W200" " X" vognløbsnotatX " Y" vognløbsnotatY - 20, "Vognløbsnotat")
-vognløbsnotatCheckbox := DataGUI.Add("Checkbox", "Section" " X" vognløbsnotatX " Y" vognløbsnotatY, "Vognløbsnotat")
+vognløbsnotatCheckbox := DataGUI.Add("Checkbox", "Disabled Section" " X" vognløbsnotatX " Y" vognløbsnotatY, "Vognløbsnotat")
 vognløbsnotatEditboxTidligere := DataGUI.Add("Text", "W200" " X" vognløbsnotatX " Y" vognløbsnotatY + 25, vognløbsnotatEditIndlæstTekst)
 vognløbsnotatFuldført := DataGUI.Add("Text", " X" vognløbsnotatX + 100 " Y" vognløbsnotatY, fuldført)
 
 knapX := xUdgangspunkt + 200
 knapY := yUdgangspunkt + 400
 knap := DataGUI.Add("Button", "X" knapX " Y" knapY, "Sæt igang")
+knap.OnEvent("Click", (*) => testfunk())
 ; DataGUI.Add("Text", "XP" , "Skema")
 ; PlanskemaEditboxNy := DataGUI.Add("Edit",EditboxPos , "AB232")
 ; PlanskemaCheckbox := DataGUI.Add("Checkbox", "XS Section", "Planskema")
@@ -126,4 +149,9 @@ knap := DataGUI.Add("Button", "X" knapX " Y" knapY, "Sæt igang")
 ; PlanskemaCheckBox := DataGUI.Add("Edit", "X" PlanskemaEditW "" , "AB232")
 
 
+; DataGUI.Show("AutoSize")
 ; funk
+DataGUIopdater(p_vl_obj)
+{
+
+}

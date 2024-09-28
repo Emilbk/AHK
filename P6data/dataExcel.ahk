@@ -40,8 +40,93 @@ loop EndRow
 
 }
 excel.quit()
+
+for index, kolonne in data[1]
+{
+    if (kolonne = "Budnummer")
+    {
+        DataGUI.kolonneBudnummer := index
+        ; tilvælg knap
+    }
+
+    if (kolonne = "vognløbsnummer")
+    {
+        DataGUI.kolonnevognløbsnummer := index
+        ; tilvælg knap
+    }
+
+    if (kolonne = "Kørselsaftale")
+    {
+        DataGUI.kolonneKørselsaftale := index
+        ; tilvælg knap
+    }
+
+    if (kolonne = "Styresystem")
+    {
+        DataGUI.kolonneStyresystem := index
+        ; tilvælg knap
+    }
+
+    if (kolonne = "Startzone")
+    {
+        DataGUI.kolonneStartzone := index
+        ; tilvælg knap
+    }
+
+    if (kolonne = "Slutzone")
+    {
+        DataGUI.kolonneSlutzone := index
+        ; tilvælg knap
+    }
+
+    if (kolonne = "Hjemzone")
+    {
+        DataGUI.kolonneHjemzone := index
+        ; tilvælg knap
+    }
+
+    if (kolonne = "MobilnrChf")
+    {
+        DataGUI.kolonneMobilnrChf := index
+        ; tilvælg knap
+    }
+
+    if (kolonne = "Vognløbskategori")
+    {
+        DataGUI.kolonneVognløbskategori := index
+        VognløbskategoriCheckbox.Enabled := 1
+    }
+
+    if (kolonne = "Planskema")
+    {
+        DataGUI.kolonnePlanskema := index
+        PlanskemaCheckBox.Enabled := 1
+    }
+
+    if (kolonne = "Økonomiskema")
+    {
+        DataGUI.kolonneØkonomiskema := index
+        økonomiskemaCheckbox.Enabled := 1
+    }
+
+    if (kolonne = "Statistikgruppe")
+    {
+        DataGUI.kolonneStatistikgruppe := index
+        ; tilvælg knap
+    }
+
+    ; hvordan?
+    if (kolonne = "Undtagne transporttyper")
+    {
+        DataGUI.kolonneUndtagneTransporttyper := index
+        ; tilvælg knap
+    }
+}
+
 MsgBox "Data indlæst!" 
 ; DataGUI.opt("-Disabled")
 ; WinActivate(DataguiNavn)
 return data
 }
+
+
