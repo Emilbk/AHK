@@ -12,9 +12,9 @@ excel_fil := "C:\Users\ebk\Trafikstyring V2\P6data\VL.xlsx"
 ; DataGUI.excelData := excelIndlæsArr(excel_fil)
 
 
-vælgExcelFilTest()
+; vælgExcelFilTest()
 
-test.vlIndhentData(DataGUI.excelData, 2)
+; test.vlIndhentData(DataGUI.excelData, 2)
 DataGUI.Show("AutoSize")
 
 vælgExcelFilTest()
@@ -48,6 +48,7 @@ vælgExcelFilTest()
             ;dataListview.Insert(i, , DataGUI.excelData[i])
         }
     dataListview.ModifyCol()
+
     return
 }
 
@@ -77,10 +78,14 @@ vælgExcelFil()
     for i, e in DataGUI.excelData
         if i > 1
         {
-            dataListview.Insert(1, , e*)
+            ; +1 for at indsætte fra bunden
+            dataListview.Insert(DataGUI.excelData.Length + 1, , e*)
             ;dataListview.Insert(i, , DataGUI.excelData[i])
         }
     dataListview.ModifyCol()
+    ; lav bedre løsning
+    vl := vlObj()
+    vl.vlIndhentData(DataGUI.excelData, 2)
     return
 }
 

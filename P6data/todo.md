@@ -9,6 +9,9 @@
 
 ## GUI
 
+### MainGUI
+- Håndtér opdatering af GUI ved indlæsning af excel (første vl) 
+
 ### Faste dage og datoer
 - Seperat GUI
 - Vælg faste dage, vælg start dato

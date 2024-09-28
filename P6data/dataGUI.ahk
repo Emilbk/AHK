@@ -49,12 +49,14 @@ DataMenuKategorier.Add("Skemaer", (*) => ExitApp())
 DataMenuKategorier.Add("Vognløbsnotat", (*) => ExitApp())
 
 DatamenuData := Menu()
-; DatamenuData.Add("Indlæs Excel", (*) => vælgExcelFil())
+DatamenuData.Add("Indlæs Excel", (*) => vælgExcelFil())
 DatamenuData.Add("Liste indlæste vognløb", (*) => dataListviewGUI.Show("AutoSize"))
 
 DataMenuHjælp := Menu()
 DataMenuHjælp.Add("Hjælp", (*) => ExitApp())
 
+; datoer
+DatamenuDato := Menu()
 
 ; GUI
 DataGUINavn := "P6-Data"
@@ -63,12 +65,13 @@ DataGUI.MenuBar := DataMenu
 DataMenu.Add("Filer", DataMenuFil)
 DataMenu.Add("Kategorier", DataMenuKategorier)
 DataMenu.Add("Data", DatamenuData)
+DataMenu.Add("Datoer", DatamenuDato)
 DataMenu.Add("Om", DataMenuHjælp, "Right")
 
 ; GUIListview
 dataListviewGUI := Gui(, "Indlæste vognløbsdata")
 dataListviewGUI.listviewArray := Array()
-dataListview := dataListviewGUI.Add("ListView", "W1100 R30", dataListviewGUI.listviewArray)
+dataListview := dataListviewGUI.Add("ListView", "Grid NoSort W1100 R30", dataListviewGUI.listviewArray)
 
 
 ; Pos-udgangspunkt
