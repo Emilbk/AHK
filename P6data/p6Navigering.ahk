@@ -125,13 +125,17 @@ p6_åben_vognløb_kørselsaftale(p_vl_obj)
     return
 }
 
+; lav modulær opbygning
 p6_åben_vognløb_åbningstider(p_vl_obj)
 {
     P6_aktiver()
     SendInput("{enter}")
-    SendInput(p_vl_obj.vl_data["Dato"][1] "{tab 2}")
-    SendInput(p_vl_obj.vl_data["Dato"][1] "{tab 2}")
-    SendInput(p_vl_obj.vl_data["Dato"][1] "{tab 2}")
+    SendInput(p_vl_obj.vl_data["Dato"][1] "{tab}")
+    SendInput(p_vl_obj.vl_data["Starttid"] "{tab}")
+    SendInput(p_vl_obj.vl_data["Dato"][1] "{tab}")
+    SendInput(p_vl_obj.vl_data["Sluttid"] "{tab}")
+    SendInput(p_vl_obj.vl_data["Dato"][1] "{tab}")
+    SendInput(p_vl_obj.vl_data["Sluttid"] "{tab}")
     SendInput(p_vl_obj.vl_data["Startzone"] "{tab}")
     SendInput(p_vl_obj.vl_data["Slutzone"] "{tab}")
     SendInput(p_vl_obj.vl_data["Hjemzone"] "{tab}")
