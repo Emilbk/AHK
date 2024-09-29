@@ -13,19 +13,21 @@ class vlObj extends Class
         "MobilnrChf", 0,
         "Vognløbskategori", 0,
         "Planskema", 0,
+        "Økonomiskema", 0,
         "Statistikgruppe", 0,
         "Undtagne transporttyper", []
     )
 
 
-    vlIndhentData(p_data_array)
+    ; fjern kobling til datagui
+    IndhentData(p_data_array)
     {
 
-        undtagneTransportTyperStart := DataGUI.xl.kolonne_nummer["Undtagne transporttyper"][1]
-        undtagneTransportTyperSlut := undtagneTransportTyperStart + DataGUI.xl.kolonne_nummer["Undtagne transporttyper"].Length -1
+        undtagneTransportTyperStart := DataGUI.xlObj.kolonne_nummer["Undtagne transporttyper"][1]
+        undtagneTransportTyperSlut := undtagneTransportTyperStart + DataGUI.xlObj.kolonne_nummer["Undtagne transporttyper"].Length -1
 
         for kolonneNummerExcel, kolonneIndholdExcel in p_data_array
-            for kolonneNavn, kolonneNummer in DataGUI.xl.kolonne_nummer
+            for kolonneNavn, kolonneNummer in DataGUI.xlObj.kolonne_nummer
             {
                 if kolonneNummerExcel >= undtagneTransportTyperStart and kolonneNummerExcel <= undtagneTransportTyperSlut
                 {
