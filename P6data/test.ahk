@@ -6,7 +6,7 @@
 P6_aktiver()
 P6_luk_vinduer()
 P6_nav_vognløb()
-p6_åben_vognløb(test_vl, "MA")
+p6_åben_vognløb(test_vl)
 p6_åben_vognløb_kørselsaftale(test_vl)
 p6_åben_vognløb_åbningstider(test_vl)
 p6_åben_vognløb_resten(test_vl)

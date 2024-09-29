@@ -63,12 +63,13 @@ P6_nav_vognløb()
     return
 }
 
-p6_åben_vognløb(p_vl_obj, dato)
+; TODO hvordan håndteres dato-array?
+p6_åben_vognløb(p_vl_obj)
 {
     P6_aktiver()
     SendInput(p_vl_obj.vl_data["Vognløbsnummer"])
     SendInput "{tab}"
-    SendInput(dato)
+    SendInput(p_vl_obj.vl_data["Dato"][1])
     SendInput("{enter}")
     sleep 20
     A_Clipboard := ""
@@ -88,7 +89,7 @@ p6_åben_vognløb(p_vl_obj, dato)
     SendInput("{tab}")
     ; SendInput("^{F4}")
     indlæst_dato := A_Clipboard
-    if (p_vl_obj.vl_data["Vognløbsnummer"] = indlæst_vognløbsnummer and dato = indlæst_dato)
+    if (p_vl_obj.vl_data["Vognløbsnummer"] = indlæst_vognløbsnummer and p_vl_obj.vl_data["Dato"][1] = indlæst_dato)
         korrekt := 1
     ; MsgBox "korrekt"
     return
