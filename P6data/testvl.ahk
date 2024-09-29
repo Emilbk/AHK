@@ -16,11 +16,14 @@ test_vl.vl_data["Slutzone"] := "Årh804"
 test_vl.vl_data["Hjemzone"] := "Årh804"
 ; test_vl.vl_data["Vognløbsnotering"] := 0
 test_vl.vl_data["Vognløbsnotering"] := "Ny notering til VL"
+test_vl.vl_data["Vognløbskategori"] := "9999"
 test_vl.vl_data["MobilnrChf"] := "70112210"
 test_vl.vl_data["Statistikgruppe"] := "2GVEL"
 ; test_vl.vl_data["Undtagne transporttyper"] := 0
 test_vl.vl_data["Undtagne transporttyper"] := ["LAV", "NJA", "TRANSPORT", "TMHJUL", "TMLARVE", "FYN24", "SYD24", "MIDT24", "FYN", "CROSSER" ]
 test_vl.vl_data["Dato"] := ["MA"]
+test_vl.vl_data["Starttid"] := "08:00"
+test_vl.vl_data["Sluttid"] := "17:00"
 
 
 test_vl2 := vlObj()
