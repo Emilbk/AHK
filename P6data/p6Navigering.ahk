@@ -93,7 +93,7 @@ p6_åben_vognløb(p_vl_obj, dato)
     ; MsgBox "korrekt"
     return
 }
-
+; TODO beslut hvordan hele vognløb-funktion skal struktureres
 p6_åben_vognløb_kørselsaftale(p_vl_obj)
 {
     P6_aktiver()
@@ -138,6 +138,7 @@ p6_åben_vognløb_åbningstider(p_vl_obj)
 
     return
 }
+; modulær opbygning
 p6_åben_vognløb_resten(p_vl_obj)
 {
     P6_aktiver()
