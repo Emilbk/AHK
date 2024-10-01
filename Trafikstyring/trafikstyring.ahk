@@ -2512,55 +2512,58 @@ P6_hent_vl_tlf()
 
     global s
     gemt_klip := clipboard
-
-    vl_tilstand := p6_vl_vindue()
-    if (vl_tilstand = 0)
-    {
-        sleep 100
-        MsgBox, 16 , For lang tid brugt, Noget er gået galt. Prøv igen.
-        sys_afslut_genvej()
-        return 0
-    }
-    vl_tilstand := p6_vl_vindue_edit()
-    if (vl_tilstand = "lukket")
-    {
-        sleep 100
-        MsgBox, , Vl er lukket, Kan ikke trække telefonnummer, vl er afsluttet
-        sys_afslut_genvej()
-        return 0
-    }
-    if (vl_tilstand = 0)
-    {
-        sys_afslut_genvej()
-        return
-    }
-    sleep 100
-    SendInput {Enter}{Enter}
-    sleep s * 40
-    SendInput !ø
-    sleep s * 40
-    Clipboard :=
-    SendInput {tab}{tab}
-    loop_test := 0
-    clipboard :=
-    SendInput ^c
-    ClipWait, 1
-    while (StrLen(clipboard) != 8)
-    {
-        P6_aktiver()
-        SendInput, !ø{tab 2}
-        clipboard :=
-        SendInput ^c
-        ClipWait, 1
-        sleep 400
-        loop_test += 1
-        if (loop_test > 5)
-        {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen `n(virker ctrl+c ctrl+v fra P8 til Windows?)
-            return 0
-        }
-    }
-    SendInput ^a
+    P6_planvindue()
+clipboard := ""
+SendInput, ^+c
+ClipWait, 1
+    ; vl_tilstand := p6_vl_vindue()
+    ; if (vl_tilstand = 0)
+    ; {
+    ;     sleep 100
+    ;     MsgBox, 16 , For lang tid brugt, Noget er gået galt. Prøv igen.
+    ;     sys_afslut_genvej()
+    ;     return 0
+    ; }
+    ; vl_tilstand := p6_vl_vindue_edit()
+    ; if (vl_tilstand = "lukket")
+    ; {
+    ;     sleep 100
+    ;     MsgBox, , Vl er lukket, Kan ikke trække telefonnummer, vl er afsluttet
+    ;     sys_afslut_genvej()
+    ;     return 0
+    ; }
+    ; if (vl_tilstand = 0)
+    ; {
+    ;     sys_afslut_genvej()
+    ;     return
+    ; }
+    ; sleep 100
+    ; SendInput {Enter}{Enter}
+    ; sleep s * 40
+    ; SendInput !ø
+    ; sleep s * 40
+    ; Clipboard :=
+    ; SendInput {tab}{tab}
+    ; loop_test := 0
+    ; clipboard :=
+    ; SendInput ^c
+    ; ClipWait, 1
+    ; while (StrLen(clipboard) != 8)
+    ; {
+    ;     P6_aktiver()
+    ;     SendInput, !ø{tab 2}
+    ;     clipboard :=
+    ;     SendInput ^c
+    ;     ClipWait, 1
+    ;     sleep 400
+    ;     loop_test += 1
+    ;     if (loop_test > 5)
+    ;     {
+    ;         MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen `n(virker ctrl+c ctrl+v fra P8 til Windows?)
+    ;         return 0
+    ;     }
+    ; }
+    ; SendInput ^a
     vl_tlf := Clipboard
     clipboard := gemt_klip
     Return vl_tlf
