@@ -2513,9 +2513,9 @@ P6_hent_vl_tlf()
     global s
     gemt_klip := clipboard
     P6_planvindue()
-clipboard := ""
-SendInput, ^+c
-ClipWait, 1
+    clipboard := ""
+    SendInput, ^+c
+    ClipWait, 1
     ; vl_tilstand := p6_vl_vindue()
     ; if (vl_tilstand = 0)
     ; {
@@ -6541,7 +6541,18 @@ excel_p6_faerge()
     SendInput, {enter}
     SendInput, {tab}{AppsKey}c
     ClipWait, 1
+    while (clipboard = "" and A_Index =< 10)
+    {
+        sleep 200
+        SendInput, {AppsKey}c
+    }
     aabningstid := clipboard
+    if aabningstid = ""
+    {
+    MsgBox, , , Fejl i indlæsning af tidspunkt, prøv igen
+    SendInput, ^a
+    Return
+    }
     P6_aktiver()
     sleep 300
     SendInput, !{PrintScreen}
