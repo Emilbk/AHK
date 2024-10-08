@@ -6478,17 +6478,29 @@ excel_p6_faerge()
     return
     l_outlook_genaaben: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
     sys_genvej_start(70)
-    FormatTime, dato, , dd-MM-y
+    ; FormatTime, dato, , dd-MM-y
     ; FormatTime, tid, , HH:mm
     ; svigt := []
     tidligere_notat := clipboard
     gemtklip := ClipboardAll
     ClipWait, 2, 1
     SendInput, ^a^{F12}
-    sleep 2500
     clipboard :=
     SendInput, {AppsKey}c
     ClipWait, 2, 0
+    vl_første_indlæsning := clipboard
+    sleep 1000
+    clipboard :=
+    SendInput, {AppsKey}c
+    ClipWait, 2, 0
+    vl := clipboard
+    if (vl_første_indlæsning != vl)
+    {
+        clipboard := ""
+        sleep 1000
+        SendInput, {AppsKey}c
+        clipwait 1
+    }
     vl := clipboard
     sys := p6_vl_vindue_edit()
     if (sys = "lukket")
@@ -6537,14 +6549,32 @@ excel_p6_faerge()
         sys_afslut_genvej()
         return
     }
-    clipboard :=
     SendInput, {enter}
-    SendInput, {tab}{AppsKey}c
-    ClipWait, 1
+    clipboard := ""
+    SendInput, ^c
+    ClipWait, 0.3
     while (clipboard = "" and A_Index =< 10)
     {
-        sleep 200
+        clipboard := ""
+        SendInput, ^c
+        ClipWait, 1
+    }
+    dato := clipboard
+    if dato = ""
+    {
+    MsgBox, , , Fejl i indlæsning af dato, prøv igen
+    SendInput, ^a
+    Return
+    }
+    SendInput, {tab}
+    clipboard :=
+    SendInput, {AppsKey}c
+    ClipWait, 0.3
+    while (clipboard = "" and A_Index =< 10)
+    {
+        clipboard := ""
         SendInput, {AppsKey}c
+        ClipWait, 1
     }
     aabningstid := clipboard
     if aabningstid = ""
@@ -6636,14 +6666,30 @@ excel_p6_faerge()
 
     svigt_template.htmlbody :=  html_tekst . signatur
 
-    svigt_template.send
+    svigt_template.Send
     ImageDestroy(udklip)
+    clipboard := ""
+    SendInput, {enter}!v+{Up}^c
+    ClipWait, 1
+    if (clipboard = "")
+    {
+        MsgBox, 16 , Fast notat, Mail sendt, husk vognløbets faste notat
+        sleep 50
+        SendInput, ^a
+        sleep 100
+        P6_planvindue()
+        sys_afslut_genvej()
+        return
+    }
      MsgBox, 64, Mail sendt, Mail om genåbningen er blevet sendt, 3
+     sleep 100
      SendInput, ^a
+     sleep 100
      P6_planvindue()
 
         sys_afslut_genvej()
         return
+
     ;; Svigt til outlook
     ; #TODO #89 standard beskeder i svigtGUI
     l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
