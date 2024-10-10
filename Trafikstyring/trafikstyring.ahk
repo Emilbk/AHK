@@ -2515,7 +2515,15 @@ P6_hent_vl_tlf()
     P6_planvindue()
     clipboard := ""
     SendInput, ^+c
-    ClipWait, 1
+    ClipWait, 2
+    if (clipboard = "")
+    {
+        MsgBox, , , clipboard
+        P6_aktiver()
+        sleep 100
+        SendInput, ^+c
+        ClipWait, 1
+    }
     ; vl_tilstand := p6_vl_vindue()
     ; if (vl_tilstand = 0)
     ; {
