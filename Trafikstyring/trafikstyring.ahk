@@ -2518,11 +2518,11 @@ P6_hent_vl_tlf()
     ClipWait, 2
     if (clipboard = "")
     {
-        MsgBox, , , clipboard
+        ; MsgBox, , , clipboard
         P6_aktiver()
         sleep 100
         SendInput, ^+c
-        ClipWait, 1
+        ClipWait, 3
     }
     ; vl_tilstand := p6_vl_vindue()
     ; if (vl_tilstand = 0)
@@ -2859,8 +2859,8 @@ P6_initialer_skriv()
     Sendinput %initialer%
     Sendinput %A_space%
     Sendinput {home}
-    sleep 2000 ; ikke P6-afhængig
     ; gemtklip := ""
+    sleep 2000 ; ikke P6-afhængig
     return
 }
 
@@ -5211,7 +5211,7 @@ excel_p6_faerge()
         ; Loop, 0xFF
         ;     IF GetKeyState(Key:=Format("VK{:X}",A_Index))
         ;         SendInput, {%Key% up}
-        ; Return
+        Return
     }
 
     ; *
@@ -5752,7 +5752,6 @@ excel_p6_faerge()
     ;træk tlf fra aktiv planbillede, ring op i Trio. Col 11
     l_p6_vl_ring_op:
     sys_genvej_start(11)
-    sleep s * 100
     vl_tlf := P6_hent_vl_tlf()
     if (vl_tlf = 0)
     {
@@ -6541,6 +6540,7 @@ excel_p6_faerge()
         gv_svigt[i] := SubStr(gv_svigt[i], 1 , -1)
         gv_svigt[i] := StrSplit(gv_svigt[i], "`t")
     }
+    opr_vl := ""
     for i,e in gv_svigt
     {
         if (k_aftale = gv_svigt[i][1])
@@ -6561,36 +6561,37 @@ excel_p6_faerge()
     clipboard := ""
     SendInput, ^c
     ClipWait, 0.3
-    while (clipboard = "" and A_Index =< 10)
+    while (clipboard = "")
     {
-        clipboard := ""
-        SendInput, ^c
-        ClipWait, 1
-    }
-    dato := clipboard
-    if dato = ""
+        if (A_Index > 10)
     {
     MsgBox, , , Fejl i indlæsning af dato, prøv igen
     SendInput, ^a
     Return
     }
+        clipboard := ""
+        SendInput, ^c
+        ClipWait, 1
+    }
+    dato := clipboard
     SendInput, {tab}
     clipboard :=
     SendInput, {AppsKey}c
     ClipWait, 0.3
-    while (clipboard = "" and A_Index =< 10)
+    while (clipboard = "")
     {
-        clipboard := ""
-        SendInput, {AppsKey}c
-        ClipWait, 1
-    }
-    aabningstid := clipboard
-    if aabningstid = ""
+
+    if (A_Index > 10)
     {
     MsgBox, , , Fejl i indlæsning af tidspunkt, prøv igen
     SendInput, ^a
     Return
     }
+        clipboard := ""
+        SendInput, {AppsKey}c
+        ClipWait, 1
+    }
+    aabningstid := clipboard
     P6_aktiver()
     sleep 300
     SendInput, !{PrintScreen}
@@ -6674,23 +6675,27 @@ excel_p6_faerge()
 
     svigt_template.htmlbody :=  html_tekst . signatur
 
-    svigt_template.Send
-    ImageDestroy(udklip)
     clipboard := ""
     SendInput, {enter}!v+{Up}^c
-    ClipWait, 1
+    ClipWait, 3
+    svigt_template.send
+    ImageDestroy(udklip)
     if (clipboard = "")
     {
         MsgBox, 16 , Fast notat, Mail sendt, husk vognløbets faste notat
         sleep 50
+        P6_aktiver()
         SendInput, ^a
         sleep 100
         P6_planvindue()
         sys_afslut_genvej()
         return
     }
-     MsgBox, 64, Mail sendt, Mail om genåbningen er blevet sendt, 3
+
+    else
+    {     MsgBox, 64, Mail sendt, Mail om genåbningen er blevet sendt, 3
      sleep 100
+     P6_aktiver()
      SendInput, ^a
      sleep 100
      P6_planvindue()
@@ -6698,6 +6703,7 @@ excel_p6_faerge()
         sys_afslut_genvej()
         return
 
+    }
     ;; Svigt til outlook
     ; #TODO #89 standard beskeder i svigtGUI
     l_outlook_svigt: ; tag skærmprint af P6-vindue og indsæt i ny mail til planet
@@ -6839,7 +6845,8 @@ excel_p6_faerge()
                     SvigtGarantitidTekst := "Vognløb udenfor garantitid`nGarantiperiode:`n" garanti_start ":00 - " garanti_slut ":00"
                     SvigtGarantiTidTekstMail := garanti_start ":00 - " garanti_slut ":00"
                     GuiControl, svigt:,  SvigtGarantitid , %  SvigtGarantitidTekst
-                    GuiControl, svigt: , vlTypeGarantiVariabel , 1
+                    GuiControl, svigt: , vlTypeGarantiVariabel , 0
+                    GuiControl, svigt: , vlTypeGaranti, 0
                     GuiControl, svigt: Focus, SvigtBeskrivelse
                     }
                 break
