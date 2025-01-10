@@ -36,10 +36,10 @@ GroupAdd, trafikstyringsgruppe, ahk_class Planet Version
 ;; kendte fejl
 ;; Globale variabler
 
-brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", A_UserName, ,1) ; brugerens række i databasen
+brugerrække := databasefind("%A_linefile%\..\db\bruger_ops_beta.tsv", A_UserName, ,1) ; brugerens række i databasen
 if (brugerrække = 0)
-    brugerrække := databasefind("%A_linefile%\..\db\bruger_ops.tsv", "xyz", ,1)
-bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", brugerrække.1) ; array med alle brugerens data
+    brugerrække := databasefind("%A_linefile%\..\db\bruger_ops_beta.tsv", "xyz", ,1)
+bruger_genvej := databaseget("%A_linefile%\..\db\bruger_ops_beta.tsv", brugerrække.1) ; array med alle brugerens data
 genvej_ren := []
 genvej_navn := []
 valg :=
@@ -91,17 +91,6 @@ for i,e in SpecialAdresseArray
     SpecialAdresseString := SpecialAdresseString . e "|"
 }
 
-SpecialAdresseArray := ["! Offentlige kontorer, posthuse, færger, lufthavne", "% Apoteker", "$ Banker", "_ Banegårde og rutebilstationer", ". Forsamlingshuse og beboerhuse", ") Terapi; fod-, fysio- og zoneterapi, kiropraktor", "; Haveforeninger/Kolonihaver", ": Sportshaller", "/ Indkøbscenter, supermarkeder, kiosker", "+ Kirker og kirkegårde", "= Læger", "& Pladser og torve", "> Plejehjem, boenheder, institutioner, aktivitetscentre", "( Restauranter - Hoteller", "* Skoler", "< Sygehuse", "- Flextur - Flexbus", "# Bo- og aktivitetscentre"]
-SpecialAdresseString :=
-for i,e in SpecialAdresseArray
-{
-    if (i = SpecialAdresseArray.MaxIndex())
-    {
-        SpecialAdresseString := SpecialAdresseString . e
-        break
-    }
-    SpecialAdresseString := SpecialAdresseString . e "|"
-}
 ;   bruger_genvej  telenor_opr     telenor_ahk
 ; FileRead, vl_repl_liste, %vl_repl_tekst%
 
@@ -130,7 +119,7 @@ Hotkey, % bruger_genvej.61, l_p6_vaelg_vl_liste ; !+Down
 Hotkey, % bruger_genvej.11, l_p6_vl_ring_op ; +F5
 Hotkey, % bruger_genvej.12, l_p6_vm_ring_op ; ^+F5
 Hotkey, % bruger_genvej.13, l_p6_vl_luk ; #F5
-Hotkey, % bruger_genvej.62, l_p6_laas_vl ; #F5
+; Hotkey, % bruger_genvej.62, l_p6_laas_vl ; #F5
 Hotkey, % bruger_genvej.14, l_p6_alarmer ; F7
 Hotkey, % bruger_genvej.15, l_p6_udraabsalarmer ; +F7
 Hotkey, % bruger_genvej.69, l_p6_billede_gui ; +F7
@@ -154,6 +143,8 @@ Hotkey, % bruger_genvej.56, l_p6_tag_alarm ; F1
 Hotkey, % bruger_genvej.58, l_p6_cpr_til_bestillingsvindue ; ^F1
 Hotkey, % bruger_genvej.66, l_p6_tjek_andre_rejser ; +^F
 ; Hotkey, % bruger_genvej.45, l_sys_inputbox_til_fra ; ^½
+Hotkey, % bruger_genvej.75, l_p6_afhadr_maps ; +^F
+Hotkey, % bruger_genvej.76, l_p6_afladr_maps ; +^F
 Hotkey, IfWinActive
 
 Hotkey, IfWinActive, Planet Version ; specifikt alarmrepl-infobox
@@ -198,21 +189,26 @@ Hotkey, % bruger_genvej.54, l_excel_p6_cpr ; !Lbutton
 ; Hotkey, % bruger_genvej.74, l_excel_p6_faerge ; !Lbutton
 Hotkey, IfWinActive, ,
 ;; Trio-setup
+if not WinExist("Miralix Desktop")
+    run "C:\Program Files\Miralix\Miralix OfficeClient\Miralix OfficeClient.exe"
 if (bruger_genvej.71 = 1)
 {
     if not WinExist("ahk_class Agent Main GUI")
     {
         run "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Trio Enterprise\Contact Center\Agent Client.lnk"
-    }
-    if not WinExist("ahk_class AccessBar")
-    {
+        WinWait, ahk_class Agent Main GUI, , 60, ,
         WinMenuSelectItem, ahk_class Agent Main GUI, , Vis, Skrivebordsværktøjslinie
-    }
-    if not WinExist("ahk_class Addressbook")
-    {
         ControlClick, x373 y72, ahk_class Agent Main GUI
     }
+    Else
+    {
+        if not WinExist("ahk_class AccessBar")
+            WinMenuSelectItem, ahk_class Agent Main GUI, , Vis, Skrivebordsværktøjslinie
+        if not WinExist("ahk_class Addressbook")
+            ControlClick, x373 y72, ahk_class Agent Main GUI
+    }
 }
+
 ;if not WinExist("ahk_exe OUTLOOK.EXE")
 ;  {
 ; run "C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE"
@@ -449,7 +445,7 @@ Gui svigt: Add, Edit, vSvigtBeskrivelse x16 y180 w410 h106
 Gui svigt: Add, CheckBox, vGemtSkærmprint x16 y294, Brug &forrige skærmklip
 ; Gui svigt: Add, CheckBox, vgemt_j x5 y374, Tilføj & skærmklip
 Gui svigt: Add, Button, x160 y309 w60 h23 gGui_svigt_vis_mail vvis +default, &Vis
-Gui svigt: Add, Button, x240 y309 w60 h23 gGui_svigt_send_mail vsend , &Send
+; Gui svigt: Add, Button, x240 y309 w60 h23 gGui_svigt_send_mail vsend , &Send
 ; Gui svigt: Add, Button , vvogngruppesvigt x320 y354 w80, Op&ret vogngruppesvigt
 Gui svigt: menu, svigtMenu
 ; Gui svigt: Add, text , x280 y261, Anden &Dato
@@ -462,6 +458,14 @@ gui vgSvigt: add, Text, Y+M , Hvilken vogngruppe skal der registreres svigt på?
 Gui vgSvigt: add, DropDownList, vValgtVG, Århusstat|Horstat|Holsstat|Silherstat|Hernistcar|Danaarstat|Silkestat1|Skiøkostat|Randanstat|Danaarstat|Herdanmpv|Hordanmpv|Odddanmpv|Randanstat|Randanmpv|Silkestat1|Skandstat|Skbdanmpv|Skivestat|Skidanmpv|Viborgstat|Vibdanmpv|Rskdanmpv|Sildanmpv|Århdanmpv|Århusmpv
 Gui vgSvigt: add, Button, Default vVGOK gp6_vgsvigt_skprint , &OK
 Gui vgSvigt: add, Button, x+25 gVGSvigtAfbryd vVGAfbryd , &Afbryd
+
+Gui omstillingGUI: new
+Gui omstillingGUI: add, button, , Bestillingsmodtagelse, Handicap - 87408394
+Gui omstillingGUI: add, button, , Bestillingsmodtagelse, Handicap Landsdækkende - 87408383
+Gui omstillingGUI: add, button, , Bestillingsmodtagelse, Flextur, Flexbus, Plustur - 87408395
+Gui omstillingGUI: add, button, , Økonomi faktura (åben 9-11) - 87408252
+Gui omstillingGUI: add, button, , Administration (IKKE KUNDER!) - 87408383
+Gui omstillingGUI: add, button, , Bestillingsmodtagelse, Julebestillgin - 87408391
 
 gui, forgævesGUI:New
 Gui, forgævesGUI: Font, s9, Segoe UI
@@ -1654,7 +1658,7 @@ return
 ;; P6
 sys_afslut_genvej()
 {
-    GuiControl, trio_genvej:text, Button1, Genvejsoversigt
+    GuiControl, trio_genvej:text, Button1, ❄️ Genvejsoversigt 🧣🧤
     mod_up()
     return
 }
@@ -1891,6 +1895,59 @@ P6_hent_vl()
     return vl
 }
 ;; 1 = vl, 2 = kørselsaftale, 3 = styresystem
+P6_hent_k_s()
+{
+    global s
+    vl := []
+
+    P6_planvindue()
+    SendInput, !k
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    vl.2 := clipboard
+    loop_test := 0
+    while (vl.2 = "")
+    {
+        P6_planvindue()
+        SendInput, !k
+        sleep 500
+        SendInput, +{F10}c
+        ClipWait, 1, 0
+        vl.2 := clipboard
+        loop_test += 1
+        if (loop_test > 5)
+        {
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (Der skal være sat bil på, hvis VG)
+            return "fejl"
+        }
+    }
+    SendInput, {tab}
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    vl.3 := clipboard
+    loop_test := 0
+    while (vl.3 = "")
+    {
+        P6_planvindue()
+        SendInput, !k{tab}
+        sleep 500
+        SendInput, +{F10}c
+        ClipWait, 1, 0
+        vl.3 := clipboard
+        loop_test += 1
+        if (loop_test > 5)
+        {
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
+            return "fejl"
+        }
+    }
+    return vl
+}
+;; 1 = vl, 2 = kørselsaftale, 3 = styresystem
 P6_hent_vl_k_s()
 {
     global s
@@ -1993,6 +2050,7 @@ P6_hent_vl_d_k_s()
         {
             MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (virker ctrl+c ctrl+v fra P6 til Windows?)
             vl.1 := "intet vl"
+            return
         }
     }
     clipboard := ""
@@ -2268,16 +2326,18 @@ P6_alarmer()
     SendInput, ^c
     ClipWait, 0.3
     tal := clipboard
-    ; tal := "Vogne`t`t`r`n3375`t47`t`r`n3211`t32`t`r`n3211`t32`t`r`n3211`t32`t`r`n3211`t32`t"
+    ; tal := "Vogne`t`t`r`n3375`t47`t40`t`r`n3211`t32`t41`t`r`n3212`t32`t42`t`r`n3213`t32`t`r`n3214`t32`t"
     tal := StrReplace(tal, "`r" "`n")
     tal := StrSplit(tal, "`t")
     tal_tjek := 0
+    talArray := []
     for i, e in tal
         if (SubStr(e, 1, 1) = "3" and StrLen(e) = 4)
         {
+            talArray.Push({"kørselsaftale": e, "styresystem": tal[i +1], "ventetid": tal[i +2]})
             tal_tjek := 1
-            break
         }
+    tal := talArray
     SendInput, !k
     SendInput, ^{up}
     sleep 100 + s * 10
@@ -2300,24 +2360,21 @@ P6_tal_tjek(tal)
     counter := 0
     x_pos := 10
     y_pos := 0
-
     gui talGUI: Add, Text, Y10 X5 vtekst , Du har en tal!
     for i, e in tal
     {
-        if (SubStr(e, 1, 1) = "3" and StrLen(e) = 4)
-        {
-            x_pos += 0
-            y_pos += 30
-            counter++
-            k_aftale := e
-            s_system := tal[i+1]
-            ventetid := tal[i+2]
-            gui talGUI: Add, Button, x%x_pos% y%y_pos% gbutton vVL%counter% ,% e "_" tal[i+1]
-            gui talGUI: Add, Text, YP+5 XP+80 vVLtekst%counter% ,% ventetid " min. gammel"
+        x_pos += 0
+        y_pos += 30
+        counter++
+        k_aftale := e.kørselsaftale
+        s_system := e.styresystem
+        ventetid := e.ventetid
+        knapvar := [k_aftale, s_system]
+        gui talGUI: Add, Button, x%x_pos% y%y_pos% gbutton v%knapvar% ,% k_aftale "_" s_system
+        gui talGUI: Add, Text, YP+5 XP+80 vVLtekst%counter% ,% ventetid " min. gammel"
 
-            ; MsgBox, , , % counter
-            ; MsgBox, , , %  e "_" tal[i+1]
-        }
+        ; MsgBox, , , % counter
+        ; MsgBox, , , %  e "_" tal[i+1]
     }
     ; sk := GetMonitor()
     ; MsgBox, , , %sk%,
@@ -2339,9 +2396,10 @@ talguiblink:
 return
 button:
     gui talGUI: submit
+    knap := A_GuiControl
     vl := []
-    vl.1 := k_aftale
-    vl.2 := s_system
+    vl.1 := SubStr(knap, 1, 4)
+    vl.2 := SubStr(knap, 6, 2)
     P6_udfyld_k_og_s(vl)
 return
 ; MsgBox, , , % "knap " A_GuiControl " vognløb " k_aftale "_" s_system ", ventetid " ventetid " min."
@@ -2584,6 +2642,8 @@ P6_hent_vm_tlf()
     gemtklip := clipboard
     global s
     P6_vis_k()
+    sleep s * 40
+    sendinput ^a
     sleep s * 40
     sendinput ^æ
     sleep s * 40
@@ -2993,7 +3053,9 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
             GuiControlGet, k_navn2, , ,
             ; MsgBox, , , % tekst,
             gui, cancel
-            P6_tekstTilChf("Jeg kan ikke ringe dig op. Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 ", i stedet - Mvh. Midttrafik", kørselsaftale, styresystem)
+            tlf := ""
+            tlf := P6_hent_vl_tlf()
+            P6_tekstTilChf("Jeg kan ikke ringe dig op på " tlf ". Jeg har meldt st. " f_stop "`, " . k_navn "`, forgæves og sendt st. " s_stop "`, " k_navn2 ", i stedet - Mvh. Midttrafik", kørselsaftale, styresystem)
             sleep 500
             MsgBox, 4, Send til chauffør?, Send tekst til chauffør?,
             IfMsgBox, Yes
@@ -3480,7 +3542,9 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     if (valgtTekstTilChf = "a")
     {
         GuiControl, trio_genvej:text, Button1, Send advisering om forgæves tal
-        sys_tjek := P6_tekstTilChf("Jeg kan ikke ringe dig op. Tryk for opkald igen, hvis du stadig gerne vil ringes op. Mvh. Midttrafik", kørselsaftale, styresystem)
+        tlf := ""
+        tlf := P6_hent_vl_tlf()
+        sys_tjek := P6_tekstTilChf("Jeg kan ikke ringe dig op på " tlf ". Tryk for opkald igen, hvis du stadig gerne vil ringes op. Mvh. Midttrafik", kørselsaftale, styresystem)
         if (sys_tjek = 1)
         {
             P6_notat("Tal forgæves" initialer " ")
@@ -4778,7 +4842,7 @@ trio_klar()
 {
     WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Klar
     ; WinActivate, ahk_class AccessBar
-    ; winwaitactive, ahk_class AccessBar
+    ; winwaitactive,0 ahk_class AccessBar
     ; Sleep 100
     ; SendInput, {F4}
     ; WinActivate, PLANET
@@ -4882,7 +4946,7 @@ Flexfinder_opslag(k_aftale, sty_sys)
         SendInput, +{tab}{up}{tab}
         sleep 300
         SendInput, %opslag%
-        sleep 900
+        sleep 1700
         SendInput, {enter}
         sleep 100
     }
@@ -4897,7 +4961,7 @@ Flexfinder_opslag(k_aftale, sty_sys)
         SendInput, +{tab}{up}{tab}
         sleep 300
         SendInput, %opslag%
-        sleep 900
+        sleep 1700
         SendInput, {enter}
         sleep 100
     }
@@ -6094,7 +6158,7 @@ excel_p6_faerge()
         return
     }
 
-    if (WinExist("--- ahk_exe Miralix OfficeClient.exe") OR WinExist("+ ahk_exe Miralix OfficeClient.exe"))
+    if (WinExist("--- ahk_exe Miralix OfficeClient.exe") OR WinExist("+ ahk_exe Miralix OfficeClient.exe")OR WinExist("Århus ahk_exe Miralix OfficeClient.exe"))
     {
         ControlGetText, koble_test, Button1, Trio Attendant
         SendInput, % bruger_genvej[68] ; Misser den af og til?
@@ -6187,7 +6251,9 @@ excel_p6_faerge()
     sys_genvej_start(36)
     If (WinExist("FlexDanmark FlexFinder"))
         {
-    vl := P6_hent_vl_d_k_s()
+    vl := P6_hent_k_s()
+    if !vl
+        return
     k_aftale := vl.2
     sty_sys := vl.3
     Flexfinder_opslag(k_aftale, sty_sys)
@@ -6501,7 +6567,7 @@ excel_p6_faerge()
     SendInput, {AppsKey}c
     ClipWait, 2, 0
     vl := clipboard
-    if (vl_første_indlæsning != vl)
+    if (vl_første_indlæsning != vl or vl = "")
     {
         clipboard := ""
         sleep 1000
@@ -6605,10 +6671,22 @@ excel_p6_faerge()
     }
     udklip := ImagePutFile(clipboardall, "genåbnet.png")
     emnefelt :=
+    if vl = ""
+    {
+        MsgBox, , Fejl, Fejl i indlæsning af VL, prøv igen
+        return
+    }
     if (vl = opr_vl)
         emnefelt := "VL " vl " genåbnet d. " dato " kl. " aabningstid
     if (vl != opr_vl)
+    {
+    if opr_vl = ""
+    {
+        MsgBox, , Fejl, Fejl i indlæsning af VL, prøv igen
+        return
+    }
         emnefelt := "VL " opr_vl " genåbnet som VL " vl " d. " dato " kl. " aabningstid
+    }
     outlook := ComObjCreate("Outlook.application")
     outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
     svigt_template := outlook.createitemfromtemplate(outlook_template)
@@ -6618,7 +6696,7 @@ excel_p6_faerge()
     signatur_navn := "image001.png"
     signatur_lok := A_ScriptDir "\lib\" . signatur_navn
 
-    svigt_template.attachments.add(signatur_lok)
+    ; svigt_template.attachments.add(signatur_lok)
     svigt_template.attachments.add(udklip_lok)
     svigt_template.to := "planet@midttrafik.dk"
     svigt_template.subject := emnefelt
@@ -6673,34 +6751,38 @@ excel_p6_faerge()
 
     )
 
-    svigt_template.htmlbody :=  html_tekst . signatur
+    svigt_template.htmlbody :=  html_tekst
 
     clipboard := ""
     SendInput, {enter}!v+{Up}^c
     ClipWait, 3
-    svigt_template.send
+        SendInput, ^a
+    svigt_template.display
     ImageDestroy(udklip)
     if (clipboard = "")
     {
-        MsgBox, 16 , Fast notat, Mail sendt, husk vognløbets faste notat
+        MsgBox, 16 , Fast notat, Mail, husk vognløbets faste notat
         sleep 50
-        P6_aktiver()
-        SendInput, ^a
-        sleep 100
-        P6_planvindue()
+        ; P6_aktiver()
+        ; sleep 100
+        ; P6_planvindue()
         sys_afslut_genvej()
+        sleep 100
+        WinActivate, ahk_exe OUTLOOK.EXE
         return
     }
 
     else
-    {     MsgBox, 64, Mail sendt, Mail om genåbningen er blevet sendt, 3
-     sleep 100
-     P6_aktiver()
-     SendInput, ^a
-     sleep 100
-     P6_planvindue()
+    {
+        ; MsgBox, 64, Mail sendt, Mail om genåbningen er blevet sendt, 3
+        ;  sleep 100
+        ;  P6_aktiver()
+        ;  sleep 100
+        ;  P6_planvindue()
 
         sys_afslut_genvej()
+        sleep 100
+        WinActivate, ahk_exe OUTLOOK.EXE
         return
 
     }
@@ -7025,7 +7107,7 @@ excel_p6_faerge()
             return 0
         }
     }
-    if (vlTypeGaranti = 1 or vlTypeGarantiVariabel = 2)
+    if (vlTypeGaranti = 1 or vlTypeGarantiVariabel = 1)
         if (SvigtVlLukketRadio = 1 or SvigtVlSlettetRadio = 1)
             if (SvigtVMKontaktRadio = 0 and SvigtIngenVmKontaktRadio = 0)
             {
@@ -7033,6 +7115,7 @@ excel_p6_faerge()
                 MsgBox, , Kontakt til VM?, Der skal afkrydses i kontakt til VM
                 sleep 100
                 Gui Show, w448 h397, Svigt
+                SendInput, !b+{tab}
                 return 0
             }
     if (vlTypeGaranti = 0 and vlTypeGarantiVariabel = 0 and vlTypeVariabel = 0 and vlTypeVogngruppe = 0)
@@ -8061,4 +8144,104 @@ excel_p6_faerge()
     #IfWinActive Svigt vl.
     ^Backspace::
     Send ^+{Left}{Backspace}
+    #IfWinActive
+    #IfWinActive PLANET version
+    p6_adresse_til_var(){
+
+        adr := ""
+        settitlematchmode, 2
+        if !WinExist("Maps")
+        {
+            MsgBox, , , Google Maps skal være åben i aktiv fane
+            Return 0
+        }
+
+        SendInput, {CtrlUp}
+        P6_aktiver()
+        P6_planvindue()
+        Clipboard := ""
+        SendInput, ^{F9}!r
+        sleep 800
+        SendInput, ^c
+        ClipWait, 1
+        test := Clipboard
+        while test = ""
+        {
+            P6_aktiver()
+            P6_planvindue()
+            sleep 500
+            SendInput, ^{F9}
+            sleep 500
+            SendInput, !r^c
+            ClipWait, 1
+            test := clipboard
+        }
+
+       SendInput, ^{F10}
+
+        testArr := StrSplit(test, "`r")
+
+        kolonne := StrSplit(testArr[1], "`t")
+        r := StrSplit(testArr[2], "`t")
+
+        data := {}
+        data.afhAdr := r[7]
+        data.afhSted := r[8]
+        data.afhKomm := r[9]
+        data.afhTid := r[5]
+        data.afhDato := r[4]
+        data.aflAdr := r[10]
+        data.aflSted := r[11]
+        data.aflKomm := r[12]
+
+        return data
+    }
+    l_p6_afhadr_maps:
+    {
+        sys_genvej_start(75)
+        data := ""
+        glKlip := clipboard
+        data := p6_adresse_til_var()
+        if !data
+            return
+        adr := data.afhAdr " " data.afhKomm
+        winactivate, Maps
+    sendinput, !d
+    sleep 600
+        winactivate, Maps
+    sendinput, google.dk/maps/?q=%adr%
+    sleep 800
+    sendinput, {enter}
+    sys_afslut_genvej()
+        clipboard := glklip
+    sleep 200
+    p6_aktiver()
+        return
+
+    }
+
+    l_p6_afladr_maps:
+    {
+        sys_genvej_start(76)
+        data := ""
+        data := p6_adresse_til_var()
+        adr := data.aflAdr " " data.aflKomm
+        if !data
+            return
+
+        winactivate, Maps
+    sendinput, !d
+    sleep 600
+        winactivate, Maps
+    sendinput, google.dk/maps/?q=%adr%
+    sleep 800
+    sendinput, {enter}
+    sys_afslut_genvej()
+    clipboard := glklip
+    sleep 200
+    p6_aktiver()
+    return
+
+    }
+
     #IfWinActive
