@@ -1,4 +1,5 @@
-﻿#NoEnv ; Recommended for performance and compatibility with future AutoHotkey releases.
+﻿; ÅT Århus Taxa (+4589484848)
+#NoEnv ; Recommended for performance and compatibility with future AutoHotkey releases.
 #InstallKeybdHook
 #InstallMouseHook
 ;FileEncoding UTF-8
@@ -1805,21 +1806,7 @@ P6_hent_k()
     ; Sendinput !tp!k
     P6_planvindue()
     SendInput, !k
-    clipboard := ""
-    Sendinput +{F10}c
-    ClipWait 1
-    sleep s * 50
-    loop_test := 0
-    while (clipboard = "")
-    {
-        P6_planvindue()
-        SendInput, !k
-        clipboard := ""
-        Sendinput +{F10}c
-        ClipWait 1
-        sleep s * 50
-    }
-    kørselsaftale := clipboard
+    kørselsaftale := sys_clipwait_Shift()
     return kørselsaftale
 }
 ;udfyld kørselsaftale
@@ -1842,10 +1829,7 @@ P6_hent_s()
     global s
     ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
     Sendinput !k{tab}
-    clipboard := ""
-    Sendinput +{F10}c
-    ClipWait 1
-    styresystem := clipboard
+    styresystem := sys_clipwait_Shift()
     return styresystem
 }
 
@@ -1871,27 +1855,7 @@ P6_hent_vl()
     global s
     P6_planvindue()
     SendInput, !l
-    clipboard := ""
-    sleep 50 ; ikke P6-afhængig
-    SendInput, +{F10}c
-    ClipWait, 1, 0
-    vl := clipboard
-    loop_test := 0
-    while (vl = "")
-    {
-        P6_planvindue()
-        SendInput, !l
-        sleep 500
-        SendInput, +{F10}c
-        ClipWait, 1, 0
-        vl := clipboard
-        loop_test += 1
-        if (loop_test > 5)
-        {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
-            return 0
-        }
-    }
+    vl := sys_clipwait_Shift()
     return vl
 }
 ;; 1 = vl, 2 = kørselsaftale, 3 = styresystem
@@ -1902,27 +1866,9 @@ P6_hent_k_s()
 
     P6_planvindue()
     SendInput, !k
-    clipboard := ""
-    sleep 50 ; ikke P6-afhængig
-    SendInput, +{F10}c
-    ClipWait, 1, 0
-    vl.2 := clipboard
-    loop_test := 0
-    while (vl.2 = "")
-    {
-        P6_planvindue()
-        SendInput, !k
-        sleep 500
-        SendInput, +{F10}c
-        ClipWait, 1, 0
-        vl.2 := clipboard
-        loop_test += 1
-        if (loop_test > 5)
-        {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (Der skal være sat bil på, hvis VG)
-            return "fejl"
-        }
-    }
+    vl.2 := sys_clipwait_Shift()
+    if vl.2 = "fejl"
+        MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (Der skal være sat bil på, hvis VG)
     SendInput, {tab}
     clipboard := ""
     sleep 50 ; ikke P6-afhængig
@@ -2133,7 +2079,7 @@ p6_vl_vindue()
         return
     }
     sleep 30
-    SendInput, ^{F12}
+    p6_åben_vlbillede_fiks()
     sleep 150
     clipboard :=
     SendInput, ^c
@@ -4684,24 +4630,23 @@ Trio_opkald(telefon)
     }
     ControlGetText, tlf_test, Edit2, Trio Attendant
     sleep 100
-    loop_test := 0
     controlsend, , +{Escape}, ahk_class Addressbook
     ; controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
     sleep 100
     ControlGetText, tlf_test, Edit2, Trio Attendant
     while (tlf_test != "")
     {
-        if !WinExist("ahk_class Addressbook")
-            ControlClick, x373 y72, ahk_class Agent Main GUI
-        controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
-        sleep 100
-        ControlGetText, tlf_test, Edit2, Trio Attendant
-        if (loop_test > 5)
+        if (A_Index > 5)
         {
             MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
             trio_klar()
             return 0
         }
+        if !WinExist("ahk_class Addressbook")
+            ControlClick, x373 y72, ahk_class Agent Main GUI
+        controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
+        sleep 100
+        ControlGetText, tlf_test, Edit2, Trio Attendant
     }
     sleep 80
     controlsend, Edit2, %telefon%, ahk_class Addressbook
@@ -5611,7 +5556,10 @@ excel_p6_faerge()
     sleep 100
     klip := clipboard
     sleep 200
+    ClipWait, 3
     telefon := Trio_hent_tlf()
+    if (telefon = "63112200")
+        telefon := "telefonnummer"
 
     WinActivate, PLANET
     vl := P6_hent_vl()
@@ -5779,6 +5727,12 @@ excel_p6_faerge()
     Else
     {
         telefon := Trio_hent_tlf()
+        if (telefon = "63112200"){
+            P6_aktiver()
+            p6_vaelg_vl()
+            sys_afslut_genvej()
+            return
+        }
         if (telefon = "")
         {
             MsgBox, , Intet indgående telefonnummer, Der er intet indgående telefonnummer, 1
@@ -6158,7 +6112,7 @@ excel_p6_faerge()
         return
     }
 
-    if (WinExist("--- ahk_exe Miralix OfficeClient.exe") OR WinExist("+ ahk_exe Miralix OfficeClient.exe")OR WinExist("Århus ahk_exe Miralix OfficeClient.exe"))
+    if (WinExist("--- ahk_exe Miralix OfficeClient.exe") OR WinExist("+ ahk_exe Miralix OfficeClient.exe")OR WinExist(" ahk_exe Miralix OfficeClient.exe"))
     {
         ControlGetText, koble_test, Button1, Trio Attendant
         SendInput, % bruger_genvej[68] ; Misser den af og til?
@@ -6166,6 +6120,14 @@ excel_p6_faerge()
         telefon := Trio_hent_tlf()
         sleep 40
         P6_aktiver()
+        if (telefon = "63112200")
+        {
+            P6_aktiver()
+            sleep 100
+            p6_vaelg_vl()
+            sys_afslut_genvej()
+            return
+        }
         if (telefon = "")
         {
             MsgBox, , , Intet indgående telefonnummer el. hemmeligt nummer, 1
@@ -6557,8 +6519,9 @@ excel_p6_faerge()
     tidligere_notat := clipboard
     gemtklip := ClipboardAll
     ClipWait, 2, 1
-    SendInput, ^a^{F12}
-    clipboard :=
+    SendInput, ^a
+    p6_åben_vlbillede_fiks()
+        clipboard :=
     SendInput, {AppsKey}c
     ClipWait, 2, 0
     vl_første_indlæsning := clipboard
@@ -8063,6 +8026,9 @@ excel_p6_faerge()
     SvigtVMKontaktRadioFunk()
     {
     GuiControl, svigt: enable, SvigtVMKontaktEdit
+    FormatTime, tid_nu, YYYYMMDDHH24MISS, HHmm
+    GuiControl, svigt:, svigtvmkontaktedit, %tid_nu%
+
     return
     }
 
@@ -8143,7 +8109,10 @@ excel_p6_faerge()
 
     #IfWinActive Svigt vl.
     ^Backspace::
-    Send ^+{Left}{Backspace}
+    {
+        Send ^+{Left}{Backspace}
+    return
+    }
     #IfWinActive
     #IfWinActive PLANET version
     p6_adresse_til_var(){
@@ -8167,6 +8136,11 @@ excel_p6_faerge()
         test := Clipboard
         while test = ""
         {
+            if A_Index > 5
+            {
+                MsgBox fejl
+                Return
+            }
             P6_aktiver()
             P6_planvindue()
             sleep 500
@@ -8238,10 +8212,85 @@ excel_p6_faerge()
     sendinput, {enter}
     sys_afslut_genvej()
     clipboard := glklip
-    sleep 200
+    sleep 20
     p6_aktiver()
     return
 
     }
 
     #IfWinActive
+
+    #IfWinActive PLANET version
+    ; ctrl+F12 fiks
+    ^F12::
+    {
+    p6_åben_vlbillede_fiks()
+    return
+    }
+    #IfWinActive
+
+    p6_åben_vlbillede_fiks(){
+    SendInput, "!v{down 5}{enter}"
+        return
+    }
+
+    sys_clipwait_CtrlC()
+    {
+        try
+        {
+            Clipboard := ""
+            SendInput, ^c
+            ClipWait, 2
+            while Clipboard = ""
+                {
+                if A_Index > 5{
+                    MsgBox, , FEjl, FEjl
+                    return "fejl"
+                }
+                else {
+                    try
+                    {
+                        SendInput, ^c
+                        ClipWait, 2
+                    } Catch, fejl {
+            MsgBox, , Except, %e%
+            Return
+                }
+                }
+            }
+        } Catch, fejl {
+            MsgBox, , Except, %e%
+            Return
+        }
+        return Clipboard
+    }
+
+    sys_clipwait_Shift()
+    {
+
+        try
+        {
+            Clipboard := ""
+            SendInput, +{F10}c
+            ClipWait, 2
+            while Clipboard = "" {
+                if A_Index > 5
+                    {
+                    MsgBox, , FEjl, FEjl
+                    return "fejl"
+                }
+                else
+                    {
+                    try
+                    {
+                        SendInput, +{F10}c
+                        ClipWait, 2
+                    } Catch, fejl {
+            MsgBox, , Except, %e%
+            Return
+                    }
+        }
+    }
+    }
+    return Clipboard
+    }
