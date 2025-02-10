@@ -134,6 +134,7 @@ Hotkey, % bruger_genvej.19, l_p6_central_ring_op ; ^+c
 Hotkey, % bruger_genvej.20, l_p6_tekst_til_chf ; ^+t
 Hotkey, % bruger_genvej.36, l_flexf_fra_p6 ; +^F
 Hotkey, % bruger_genvej.48, l_p6_rejsesog ; F1
+Hotkey, % bruger_genvej.77, l_p6_åben_vlbillede_fiks ; ^å
 Hotkey, % bruger_genvej.50, l_p6_liste_vl ; ^å
 Hotkey, % bruger_genvej.67, l_p6_vis_liste_fra_planbillede
 ;Hotkey, % bruger_genvej.63, l_p6_liste_vl_notat ; ^+F10
@@ -1806,7 +1807,21 @@ P6_hent_k()
     ; Sendinput !tp!k
     P6_planvindue()
     SendInput, !k
-    kørselsaftale := sys_clipwait_Shift()
+    clipboard := ""
+    Sendinput +{F10}c
+    ClipWait 1
+    sleep s * 50
+    loop_test := 0
+    while (clipboard = "")
+    {
+        P6_planvindue()
+        SendInput, !k
+        clipboard := ""
+        Sendinput +{F10}c
+        ClipWait 1
+        sleep s * 50
+    }
+    kørselsaftale := clipboard
     return kørselsaftale
 }
 ;udfyld kørselsaftale
@@ -1829,7 +1844,10 @@ P6_hent_s()
     global s
     ;WinActivate PLANET version 6   Jylland-Fyn DRIFT
     Sendinput !k{tab}
-    styresystem := sys_clipwait_Shift()
+    clipboard := ""
+    Sendinput +{F10}c
+    ClipWait 1
+    styresystem := clipboard
     return styresystem
 }
 
@@ -1855,7 +1873,27 @@ P6_hent_vl()
     global s
     P6_planvindue()
     SendInput, !l
-    vl := sys_clipwait_Shift()
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    vl := clipboard
+    loop_test := 0
+    while (vl = "")
+    {
+        P6_planvindue()
+        SendInput, !l
+        sleep 500
+        SendInput, +{F10}c
+        ClipWait, 1, 0
+        vl := clipboard
+        loop_test += 1
+        if (loop_test > 5)
+        {
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv ige `n (virker ctrl+c ctrl+v fra P6 til Windows?)
+            return 0
+        }
+    }
     return vl
 }
 ;; 1 = vl, 2 = kørselsaftale, 3 = styresystem
@@ -1866,9 +1904,27 @@ P6_hent_k_s()
 
     P6_planvindue()
     SendInput, !k
-    vl.2 := sys_clipwait_Shift()
-    if vl.2 = "fejl"
-        MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (Der skal være sat bil på, hvis VG)
+    clipboard := ""
+    sleep 50 ; ikke P6-afhængig
+    SendInput, +{F10}c
+    ClipWait, 1, 0
+    vl.2 := clipboard
+    loop_test := 0
+    while (vl.2 = "")
+    {
+        P6_planvindue()
+        SendInput, !k
+        sleep 500
+        SendInput, +{F10}c
+        ClipWait, 1, 0
+        vl.2 := clipboard
+        loop_test += 1
+        if (loop_test > 5)
+        {
+            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen`n (Der skal være sat bil på, hvis VG)
+            return "fejl"
+        }
+    }
     SendInput, {tab}
     clipboard := ""
     sleep 50 ; ikke P6-afhængig
@@ -2518,8 +2574,12 @@ P6_hent_vl_tlf()
     gemt_klip := clipboard
     P6_planvindue()
     clipboard := ""
+    Try {
     SendInput, ^+c
     ClipWait, 2
+    } catch e {
+
+    }
     if (clipboard = "")
     {
         ; MsgBox, , , clipboard
@@ -8222,9 +8282,11 @@ excel_p6_faerge()
 
     #IfWinActive PLANET version
     ; ctrl+F12 fiks
-    ^F12::
+    l_p6_åben_vlbillede_fiks:
     {
+    sys_genvej_start(77)
     p6_åben_vlbillede_fiks()
+    sys_afslut_genvej()
     return
     }
     #IfWinActive
@@ -8234,63 +8296,3 @@ excel_p6_faerge()
         return
     }
 
-    sys_clipwait_CtrlC()
-    {
-        try
-        {
-            Clipboard := ""
-            SendInput, ^c
-            ClipWait, 2
-            while Clipboard = ""
-                {
-                if A_Index > 5{
-                    MsgBox, , FEjl, FEjl
-                    return "fejl"
-                }
-                else {
-                    try
-                    {
-                        SendInput, ^c
-                        ClipWait, 2
-                    } Catch, fejl {
-            MsgBox, , Except, %e%
-            Return
-                }
-                }
-            }
-        } Catch, fejl {
-            MsgBox, , Except, %e%
-            Return
-        }
-        return Clipboard
-    }
-
-    sys_clipwait_Shift()
-    {
-
-        try
-        {
-            Clipboard := ""
-            SendInput, +{F10}c
-            ClipWait, 2
-            while Clipboard = "" {
-                if A_Index > 5
-                    {
-                    MsgBox, , FEjl, FEjl
-                    return "fejl"
-                }
-                else
-                    {
-                    try
-                    {
-                        SendInput, +{F10}c
-                        ClipWait, 2
-                    } Catch, fejl {
-            MsgBox, , Except, %e%
-            Return
-                    }
-        }
-    }
-    }
-    return Clipboard
-    }
