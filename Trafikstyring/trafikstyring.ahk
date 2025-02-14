@@ -3594,7 +3594,8 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
 ; hvis tid for sidste stop og tid til hjemzone udfyldt, luk til tiden fra sidste stop til hjemzone, plus 2 min
 p6_tekst_tjek_for_system(styresystem)
 {
-    for i,e in ["2" , "4" , "6" , "7" , "8" , "10" , "11" , "13" , "14" , "16" , "17" , "18" , "19" , "20"]
+    ; sys 16 fjernet, tjekket og modtager
+    for i,e in ["2" , "4" , "6" , "7" , "8" , "10" , "11" , "13" , "14" , "17" , "18" , "19" , "20"]
     {
         if (styresystem = e)
         {
