@@ -134,7 +134,7 @@ Hotkey, % bruger_genvej.19, l_p6_central_ring_op ; ^+c
 Hotkey, % bruger_genvej.20, l_p6_tekst_til_chf ; ^+t
 Hotkey, % bruger_genvej.36, l_flexf_fra_p6 ; +^F
 Hotkey, % bruger_genvej.48, l_p6_rejsesog ; F1
-Hotkey, % bruger_genvej.77, l_p6_åben_vlbillede_fiks ; ^å
+; Hotkey, % bruger_genvej.77, l_p6_åben_vlbillede_fiks ; ^å
 Hotkey, % bruger_genvej.50, l_p6_liste_vl ; ^å
 Hotkey, % bruger_genvej.67, l_p6_vis_liste_fra_planbillede
 ;Hotkey, % bruger_genvej.63, l_p6_liste_vl_notat ; ^+F10
@@ -147,6 +147,7 @@ Hotkey, % bruger_genvej.66, l_p6_tjek_andre_rejser ; +^F
 ; Hotkey, % bruger_genvej.45, l_sys_inputbox_til_fra ; ^½
 Hotkey, % bruger_genvej.75, l_p6_afhadr_maps ; +^F
 Hotkey, % bruger_genvej.76, l_p6_afladr_maps ; +^F
+Hotkey, % bruger_genvej.78, l_p6_underretning ; ^!F
 Hotkey, IfWinActive
 
 Hotkey, IfWinActive, Planet Version ; specifikt alarmrepl-infobox
@@ -261,7 +262,7 @@ Gui sygehusrand: Add, Button, gsygehusmenu2 v78420000 x16 y8 w115 h23, &Randers 
 Gui sygehusrand: Add, Button, gsygehusmenu2 v78421590 x16 y32 w115 h23, &Dialyse
 Gui sygehusrand: Add, Button, gsygehusmenu2 v78475300 x16 y56 w115 h23, &Psyk.
 
-gui sygehusvib:+Labelsygehus2
+gui sygehusvib:+Labelsygehus
 Gui sygehusvib: Font, s9, Segoe UI
 Gui sygehusvib: Add, Button, gsygehusmenu2 v78440000 x16 y8 w115 h23, &Viborg syg.
 Gui sygehusvib: Add, Button, gsygehusmenu2 v78447720 x16 y32 w115 h23, &Dialyse
@@ -457,9 +458,21 @@ Gui vgSvigt: new
 gui vgSvigt: add, Text, X+M y+M , Hvilket vognløb skal der registreres svigt på?
 gui vgSvigt: add, edit, Y+M vvalgtVgVL number, vognløb
 gui vgSvigt: add, Text, Y+M , Hvilken vogngruppe skal der registreres svigt på?
-Gui vgSvigt: add, DropDownList, vValgtVG, Århusstat|Horstat|Holsstat|Silherstat|Hernistcar|Danaarstat|Silkestat1|Skiøkostat|Randanstat|Danaarstat|Herdanmpv|Hordanmpv|Odddanmpv|Randanstat|Randanmpv|Silkestat1|Skandstat|Skbdanmpv|Skivestat|Skidanmpv|Viborgstat|Vibdanmpv|Rskdanmpv|Sildanmpv|Århdanmpv|Århusmpv
+Gui vgSvigt: add, ComboBox, vValgtVG, Århusstat|Horstat|Holsstat|Silherstat|Hernistcar|Danaarstat|Silkestat1|Skiøkostat|Randanstat|Danaarstat|Herdanmpv|Hordanmpv|Odddanmpv|Randanstat|Randanmpv|Silkestat1|Skandstat|Skbdanmpv|Skivestat|Skidanmpv|Viborgstat|Vibdanmpv|Rskdanmpv|Sildanmpv|Århdanmpv|Århusmpv
 Gui vgSvigt: add, Button, Default vVGOK gp6_vgsvigt_skprint , &OK
 Gui vgSvigt: add, Button, x+25 gVGSvigtAfbryd vVGAfbryd , &Afbryd
+
+; forgæves GUI
+GUI underretningGUI: New, , Underretning patientbefordring
+gui underretningGUI: add, Text, X+M y+M, &Underretning:
+gui underretningGUI: add, Edit, Y+M W250 H150 gUnderretningLængde vUnderretningBeskrivelse,
+gui underretningGUI: add, Text, X+M, Type af underretning:
+gui underretningGUI: add, Radio ,vUnderretningRadio Y+M , Forg., &ingen kontakt
+gui underretningGUI: add, Radio ,y+M , Forg., forkert &vogntype/hjælpemiddel
+gui underretningGUI: add, Radio ,y+M , Forg., forkert &dato/tidspunkt
+gui underretningGUI: add, Radio ,y+M , For mange &serviceminutter
+gui underretningGUI: add, text, y180 x20 w300 vUnderretningLængde, Antal karakterer: 0/120 (hvis P6-bemærkning)
+gui underretningGUI: add, Button, w50 y200 x20 Default gunderretningGUIOK, &OK
 
 Gui omstillingGUI: new
 Gui omstillingGUI: add, button, , Bestillingsmodtagelse, Handicap - 87408394
@@ -467,7 +480,7 @@ Gui omstillingGUI: add, button, , Bestillingsmodtagelse, Handicap Landsdækkende
 Gui omstillingGUI: add, button, , Bestillingsmodtagelse, Flextur, Flexbus, Plustur - 87408395
 Gui omstillingGUI: add, button, , Økonomi faktura (åben 9-11) - 87408252
 Gui omstillingGUI: add, button, , Administration (IKKE KUNDER!) - 87408383
-Gui omstillingGUI: add, button, , Bestillingsmodtagelse, Julebestillgin - 87408391
+Gui omstillingGUI: add, button, , Bestillingsmodtagelse, Julebestilling - 87408391
 
 gui, forgævesGUI:New
 Gui, forgævesGUI: Font, s9, Segoe UI
@@ -1660,7 +1673,7 @@ return
 ;; P6
 sys_afslut_genvej()
 {
-    GuiControl, trio_genvej:text, Button1, ❄️ Genvejsoversigt 🧣🧤
+    GuiControl, trio_genvej:text, Button1, 🌱️ Genvejsoversigt 🐣☀️
     mod_up()
     return
 }
@@ -1764,7 +1777,7 @@ P6_vis_k()
     global s
     P6_alt_menu("{alt},", "tk")
     sleep s * 40
-    SendInput !{F5}
+    SendInput ^a!{F5}
     return
 }
 
@@ -2135,7 +2148,7 @@ p6_vl_vindue()
         return
     }
     sleep 30
-    p6_åben_vlbillede_fiks()
+    SendInput, ^{F12}
     sleep 150
     clipboard :=
     SendInput, ^c
@@ -2575,8 +2588,8 @@ P6_hent_vl_tlf()
     P6_planvindue()
     clipboard := ""
     Try {
-    SendInput, ^+c
-    ClipWait, 2
+        SendInput, ^+c
+        ClipWait, 2
     } catch e {
 
     }
@@ -3282,7 +3295,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     {
 
         GuiControl, trio_genvej:text, Button1, Send reminder om skoletur
-        sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for skoleturen? Mvh. Midttrafik", kørselsaftale ,styresystem)
+        sys_tjek := P6_tekstTilChf("Er der blevet glemt at bede om ny ordre til skoleturen? Husk at få sendt ordrer ud ved opstart. Mvh. Midttrafik", kørselsaftale ,styresystem)
         sleep 500
         if (sysstjek = 1)
         {
@@ -5491,6 +5504,9 @@ excel_p6_faerge()
         Gui, Vogngrupper: hide
         telefon := % p.1
         sleep 100
+        FormatTime, taxa_time , YYYYMMDDHH24MISS, TT
+        if(telefon = "96341121" and (taxa_time > 16 or taxa_time < 7))
+            telefon := "87408021"
         tjek := Trio_opkald(telefon)
         if (tjek = 0)
         {
@@ -6581,7 +6597,7 @@ excel_p6_faerge()
     gemtklip := ClipboardAll
     ClipWait, 2, 1
     SendInput, ^a
-    p6_åben_vlbillede_fiks()
+    p6_vl_vindue()
         clipboard :=
     SendInput, {AppsKey}c
     ClipWait, 2, 0
@@ -8281,19 +8297,184 @@ excel_p6_faerge()
 
     #IfWinActive
 
-    #IfWinActive PLANET version
+    ; #IfWinActive PLANET version
     ; ctrl+F12 fiks
-    l_p6_åben_vlbillede_fiks:
-    {
-    sys_genvej_start(77)
-    p6_åben_vlbillede_fiks()
-    sys_afslut_genvej()
-    return
-    }
-    #IfWinActive
+    ; l_p6_åben_vlbillede_fiks:
+    ; {
+    ; sys_genvej_start(77)
+    ; p6_åben_vlbillede_fiks()
+    ; sys_afslut_genvej()
+    ; return
+    ; }
+    ; #IfWinActive
 
-    p6_åben_vlbillede_fiks(){
-    SendInput, "!v{down 5}{enter}"
+    ; p6_åben_vlbillede_fiks(){
+    ; SendInput, "!v{down 5}{enter}"
+    ;     return
+    ; }
+
+    flexfindertest(){
+
+    }
+
+    forgævesTilAfdeling(){
+        global underretningRadio
+        global underretningBeskrivelse
+
+        gui underretningGUI: Submit
+
+        if underretningRadio = 0
+            {
+            sleep 100
+            MsgBox, , Afkryds Type, Der skal vælges type af underretning
+        gui underretningGUI: Show, H250 W500
+        WinActivate, Underretning patientbefordring
+            Return
+        }
+    if underretningBeskrivelse = ""
+        {
+        sleep 100
+        MsgBox, , Beskriv forgæves, Der skal laves en beskrivelse
+        gui underretningGUI: Show, H250 W500
+        WinActivate, Underretning patientbefordring
+            Return
+    }
+
+    P6_aktiver()
+    sleep 200
+
+    A_Clipboard := ""
+    SendInput, ^{F9}!r^c
+    ClipWait, 3
+    if !InStr(A_Clipboard, "Række"){
+    sleep 500
+    SendInput, ^c
+    ClipWait, 3
+    }
+
+    turInfo := A_Clipboard
+    turLinie := StrSplit(turInfo, "`n")
+    turArray := StrSplit(turLinie[2], "`t")
+
+    afd := ""
+
+    for index, adr in [turArray[7], turArray[10]]
+        if InStr(adr, "<")
+            afd := adr
+
+    turResult := {fraAdresse: turArray[7]
+     ,tilAdr: turArray[10]
+     ,PatientNavn: turArray[14]
+     ,turDato: turArray[4]
+     ,turTidspunkt: turArray[5]
+    , årsag: underretningBeskrivelse
+    , afd: afd
+    , afhentningKommune: turArray[9]
+    , afleveringKommune: turArray[12]}
+
+    switch underretningRadio {
+        case 1:
+        turResult.Overskrift := "Forgæves, ingen kontakt"
+        case 2:
+        turResult.Overskrift := "Forgæves, forkert vogntype/hjælpemiddel"
+        case 3:
+        turResult.Overskrift := "Forgæves, forkert afhentningsdato/klokkeslæt"
+        case 4:
+        turResult.Overskrift := "For mange serviceminutter"
+    }
+
+    turResult.fraAdresse := format("{:T}", turResult.fraAdresse)
+    turResult.tilAdr := format("{:T}", turResult.tilAdr)
+    turResult.PatientNavn := format("{:T}", turResult.PatientNavn)
+    turResult.afhentningKommune := format("{:T}", turResult.afhentningKommune)
+    turResult.afleveringKommune := format("{:T}", turResult.afleveringKommune)
+    sleep 100
+    A_Clipboard := ""
+    SendInput, !o
+    sleep 100
+    SendInput, +{tab 4}^c
+    ClipWait, 3
+    turResult.patientCPR := A_Clipboard
+
+    P6_aktiver()
+    SendInput, !{PrintScreen}
+    sleep 100
+    ClipWait, 3, 1
+    ; skærmpr := ImagePutFile(clipboardall, "forg\forgæves.png")
+    ; skærmprNavn := SubStr(skærmpr, 5)
+    ; skærmPrLok := A_ScriptDir "\forg\" skærmprNavn
+    P6_planvindue()
+
+    if turResult.PatientNavn = "" or turResult.patientCPR = ""{
+        sleep 100
+        MsgBox, , Fejl, Fejl i indhentning - prøv igen,
+        P6_aktiver()
+        P6_planvindue()
         return
     }
 
+    turResult.afd := turResult.afd = "" ? "Ingen specialadresse" : turResult.afd
+
+    outlook := ComObjCreate("Outlook.application")
+    outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
+    forgTemplate := outlook.createitemfromtemplate(outlook_template)
+    forgTemplate.sentOnBehalfOfName := "planet@midttrafik.dk"
+    forgTemplate.to := "patientbefordringsmail"
+    forgTemplate.subject := turResult.Overskrift ": "turResult.PatientNavn " (" turResult.afd ")"
+    ; forgTemplate.body := ImagePutFile(skærmpr)
+    ; forgTemplate.attachments.add(skærmprLok)
+
+    forgTekst := "
+    (
+    Bemærkning: {1}
+    Patient: {2}
+    CPR: {3}
+    Afhentningsadresse: {4}
+    Afleveringsadresse: {5}
+    Afdeling: {6}
+    Dato for afhentning: {7}
+    Klokkeslæt for afhentning: {8}
+
+
+
+
+
+    )"
+    forgTekst := format(forgTekst, turResult.årsag, turResult.PatientNavn, turResult.patientCPR, turResult.fraAdresse ", " turResult.afhentningKommune, turResult.tilAdr ", " turResult.afleveringKommune, turResult.afd, turResult.turDato, turResult.turTidspunkt)
+    forgTemplate.body := forgTekst
+
+    forgTemplate.display()
+    WinActivate, "forgæves"
+    SendInput, {down 12} ^v {PgUp 2}
+
+    GuiControl, Text, underretningBeskrivelse,
+    GuiControl, , underretningRadio, 0
+
+    while !WinActive("PLANET version 6"){
+        sleep 200
+    }
+    A_Clipboard := turResult.årsag
+
+    Return
+
+    }
+
+    l_p6_underretning:
+        sys_genvej_start(78)
+        sleep 100
+        gui underretningGUI: Show, H250 W500
+        ControlFocus, Edit1, Underretning patientbefordring
+        sys_afslut_genvej()
+
+    Return
+
+    underretningGUIOK(){
+    forgævesTilAfdeling()
+    Return
+    }
+
+    underretningLængde(){
+        GuiControlGet, tekst, , Edit1,
+        længde := StrLen(tekst)
+        GuiControl, Text, static3, Antal karakterer: %længde%/120 (hvis P6-bemærkning)
+    }
