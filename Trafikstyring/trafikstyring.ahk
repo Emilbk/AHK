@@ -192,25 +192,25 @@ Hotkey, % bruger_genvej.54, l_excel_p6_cpr ; !Lbutton
 ; Hotkey, % bruger_genvej.74, l_excel_p6_faerge ; !Lbutton
 Hotkey, IfWinActive, ,
 ;; Trio-setup
-if not WinExist("Miralix Desktop")
-    run "C:\Program Files\Miralix\Miralix OfficeClient\Miralix OfficeClient.exe"
-if (bruger_genvej.71 = 1)
-{
-    if not WinExist("ahk_class Agent Main GUI")
-    {
-        run "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Trio Enterprise\Contact Center\Agent Client.lnk"
-        WinWait, ahk_class Agent Main GUI, , 60, ,
-        WinMenuSelectItem, ahk_class Agent Main GUI, , Vis, Skrivebordsværktøjslinie
-        ControlClick, x373 y72, ahk_class Agent Main GUI
-    }
-    Else
-    {
-        if not WinExist("ahk_class AccessBar")
-            WinMenuSelectItem, ahk_class Agent Main GUI, , Vis, Skrivebordsværktøjslinie
-        if not WinExist("ahk_class Addressbook")
-            ControlClick, x373 y72, ahk_class Agent Main GUI
-    }
-}
+; if not WinExist("Miralix Desktop")
+;     run "C:\Program Files\Miralix\Miralix OfficeClient\Miralix OfficeClient.exe"
+; if (bruger_genvej.71 = 1)
+; {
+;     if not WinExist("ahk_class Agent Main GUI")
+;     {
+;         run "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Trio Enterprise\Contact Center\Agent Client.lnk"
+;         WinWait, ahk_class Agent Main GUI, , 60, ,
+;         WinMenuSelectItem, ahk_class Agent Main GUI, , Vis, Skrivebordsværktøjslinie
+;         ControlClick, x373 y72, ahk_class Agent Main GUI
+;     }
+;     Else
+;     {
+;         if not WinExist("ahk_class AccessBar")
+;             WinMenuSelectItem, ahk_class Agent Main GUI, , Vis, Skrivebordsværktøjslinie
+;         if not WinExist("ahk_class Addressbook")
+;             ControlClick, x373 y72, ahk_class Agent Main GUI
+;     }
+; }
 
 ;if not WinExist("ahk_exe OUTLOOK.EXE")
 ;  {
@@ -314,7 +314,7 @@ Gui trio_genvej: -MinimizeBox -MaximizeBox +AlwaysOnTop +Owner -Caption +ToolWin
 Gui trio_genvej: Font, s12, Segoe UI
 Gui trio_genvej: Add, Button, vtrio_genvej gtrio_genvej x0 y0 h42 w240, %trio_genvej%
 
-Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
+; Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 ; Gui trio_genvej: Show, x1120 y3 w120 h42 w240 NA, %trio_genvej%
 
 ;; gui vl-liste
@@ -640,20 +640,20 @@ vgsvigtguiclose:
         FormatTime, datoVG, A_Now , dd
         p6_aktiver()
         sleep 500
-        GuiControl, trio_genvej:text, Button1, Slår VG-skema op
+        ; GuiControl, trio_genvej:text, Button1, Slår VG-skema op
         p6_alt_menu("{esc}{alt}", "td")
         sleep 1000
         sendinput, %valgtvg%
         sleep 500
         SendInput, {tab}%datoVG%{enter}
         clipboard :=
-        GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
+        ; GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
         Input, tast , B L1 T10, {Esc},{Enter}
         SendInput, !{PrintScreen}
         sleep 400
         ClipWait, 3, 1
         VGprint[1][1] := ImagePutBuffer(clipboardall)
-        GuiControl, trio_genvej:text, Button1, Slår VG-liste op
+        ; GuiControl, trio_genvej:text, Button1, Slår VG-liste op
         p6_alt_menu("{esc}{alt}", "tv")
         sleep 1000
         SendInput, !g%valgtvg%
@@ -663,13 +663,13 @@ vgsvigtguiclose:
         SendInput, {tab}%datoVG%{tab}%tid_2%{enter}
         clipboard :=
         sleep 500
-        GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
+        ; GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
         Input, tast , B L1 T10, {Esc},{Enter}
         SendInput, !{PrintScreen}
         sleep 400
         ClipWait, 3, 1
         VGprint[1][2] := ImagePutBuffer(clipboardall)
-        GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
+        ; GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
         p6_vaelg_vl(valgtvgvl)
         Input, tast , B L1 T10, {Esc},{Enter}
         VGprint[2][3] := valgtvgvl
@@ -678,7 +678,7 @@ vgsvigtguiclose:
         ClipWait, 3, 1
         VGprint[1][3] := ImagePutBuffer(clipboardall)
         sleep 200
-        GuiControl, trio_genvej:text, Button1, Yderligere vognløb?
+        ; GuiControl, trio_genvej:text, Button1, Yderligere vognløb?
         MsgBox, 36, Yderligere vognløb?, % "Vognløb " VGprint[2][3] " er registreret.`nSkal der registeres svigt på flere vognløb i vogngruppen?"
         sleep 100
         IfMsgBox, no
@@ -692,17 +692,17 @@ vgsvigtguiclose:
             sleep 100
             SendInput, ^{Del}
             sleep 100
-            GuiControl, trio_genvej:text, Button1, Markér yderligere svigt
+            ; GuiControl, trio_genvej:text, Button1, Markér yderligere svigt
             MsgBox, 64, Føj svigt til liste, Marker de valgte vognløb i vognløbslisten, afslut med CTRL+L.`n`nEscape for escape
             Input, inputtekst, M E V, % Chr(12)
             nu_vl := 1
             tidligere_vl := 2
             P6_planvindue()
             SendInput, !{Down}
-            GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
+            ; GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
             Input, tast , B L1 T5, {Esc},{Enter}
             clipboard :=
-            GuiControl, trio_genvej:text, Button1, Tager skærmprint
+            ; GuiControl, trio_genvej:text, Button1, Tager skærmprint
             SendInput, !{PrintScreen}
             sleep 400
             ClipWait, 3, 1
@@ -720,7 +720,7 @@ vgsvigtguiclose:
             {
                 tidligere_vl := nu_vl
                 P6_planvindue()
-                GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
+                ; GuiControl, trio_genvej:text, Button1, Bekræft skærmprint med Enter
                 SendInput, !{Down}
                 sleep 40
                 clipboard :=
@@ -733,7 +733,7 @@ vgsvigtguiclose:
                     break
                 Input, tast , B L1 T5, {Esc},{Enter}
                 clipboard :=
-                GuiControl, trio_genvej:text, Button1, Tager skærmprint
+                ; GuiControl, trio_genvej:text, Button1, Tager skærmprint
                 SendInput, !{PrintScreen}
                 sleep 400
                 ClipWait, 3, 1
@@ -1521,47 +1521,8 @@ Return
 return
 ;; GUI-labels
 trio_genvej:
-    GetKeyState, tjek_key, Shift,
-    if (tjek_key = "D")
-    {
-        SendInput, {ShiftUp}
-        goto l_restartAHK
-    }
 return
 tlfKopi:
-    {
-        GetKeyState, TjekKeyControl, Control,
-        GetKeyState, TjekKeyShift, Shift,
-        clipboard :=
-        GuiControlGet, tlfkopi, , ,
-        if (TjekKeyControl = "D")
-        {
-            tlfkopi := RegExReplace(tlfkopi, "\D")
-            Clipboard := tlfkopi
-            ClipWait, 3,
-            Trio_opkald(tlfkopi)
-            sleep 500
-            trio_klar()
-        }
-        if (TjekKeyShift = "D")
-        {
-            tlfkopi := Trio_hent_tlf()
-            Clipboard := tlfkopi
-            ClipWait, 3,
-            return
-        }
-        if (tlfkopi = "Tlf: ")
-        {
-            tlfkopi := Trio_hent_tlf()
-        }
-        Else
-        {
-            tlfkopi := RegExReplace(tlfkopi, "\D")
-        }
-        Clipboard := tlfkopi
-        ClipWait, 3,
-        return
-    }
 
 sygehusmenu1:
     GuiControlGet, navn, sygehus: name , % A_GuiControl
@@ -1673,7 +1634,7 @@ return
 ;; P6
 sys_afslut_genvej()
 {
-    GuiControl, trio_genvej:text, Button1, 🌱️ Genvejsoversigt 🐣☀️
+    ; GuiControl, trio_genvej:text, Button1, 🌱️ Genvejsoversigt 🐣☀️
     mod_up()
     return
 }
@@ -1681,7 +1642,7 @@ sys_afslut_genvej()
 sys_genvej_beskrivelse(kolonne)
 {
     trio_genvej := databaseget("%A_linefile%\..\db\bruger_ops.tsv", 3, kolonne)
-    GuiControl, trio_genvej:text, Button1, %trio_genvej%
+    ; GuiControl, trio_genvej:text, Button1, %trio_genvej%
     return trio_genvej
 }
 ; henter GUI-control, der har fokus
@@ -3007,7 +2968,7 @@ P6_TekstTilChfSendTekstFraGui()
     valgtTekstTilChf := SubStr(A_GuiControl, 1, 1)
     ; KeyWait Alt
     ; keywait Ctrl
-    GuiControl, trio_genvej:text, Button1, Valg af tekstbesked-menu
+    ; GuiControl, trio_genvej:text, Button1, Valg af tekstbesked-menu
     vl := P6_hent_vl()
     if (vl = 0)
     {
@@ -3028,13 +2989,13 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     initialer_udentid =/mt%A_userName%
     if (valgtTekstTilChf = "m")
     {
-        GuiControl, trio_genvej:text, Button1, Vælg fra menu
+        ; GuiControl, trio_genvej:text, Button1, Vælg fra menu
         gui p6_tekst_valg: show, AutoSize, Tekst til chauffør
         return
     }
     if (valgtTekstTilChf = "t")
     {
-        GuiControl, trio_genvej:text, Button1, Skriv tekst til chauffør
+        ; GuiControl, trio_genvej:text, Button1, Skriv tekst til chauffør
         P6_tekstTilChf( , kørselsaftale, styresystem) ; tager tekst ("eksempel") som parameter (accepterer variabel)
         sys_afslut_genvej()
         return
@@ -3042,7 +3003,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     if (valgtTekstTilChf = "f")
     {
 
-        GuiControl, trio_genvej:text, Button1, Sender tekst om forgæves
+        ; GuiControl, trio_genvej:text, Button1, Sender tekst om forgæves
         sys_tjek := p6_tekst_tjek_for_system(styresystem)
         if (sys_tjek = 1)
         {
@@ -3099,7 +3060,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     }
     if ( valgtTekstTilChf == "k")
     {
-        GuiControl, trio_genvej:text, Button1, Sender reminder om kvittering
+        ; GuiControl, trio_genvej:text, Button1, Sender reminder om kvittering
         systjek := p6_tekst_tjek_for_system(styresystem)
         if (systjek = 1)
         {
@@ -3148,7 +3109,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     }
     if (valgtTekstTilChf == "K")
     {
-        GuiControl, trio_genvej:text, Button1, Send tekst om kvitteret stop til chauffør
+        ; GuiControl, trio_genvej:text, Button1, Send tekst om kvitteret stop til chauffør
         systjek := p6_tekst_tjek_for_system(styresystem)
         if (systjek = 1)
         {
@@ -3213,7 +3174,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     if (valgtTekstTilChf == "x")
     {
 
-        GuiControl, trio_genvej:text, Button1, Send reminder om pause
+        ; GuiControl, trio_genvej:text, Button1, Send reminder om pause
         sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for pausen? Mvh. Midttrafik", kørselsaftale ,styresystem)
         sleep 500
         if (sys_tjek = 1)
@@ -3254,7 +3215,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     if (valgtTekstTilChf == "v")
     {
 
-        GuiControl, trio_genvej:text, Button1, Send reminder om skoletur
+        ; GuiControl, trio_genvej:text, Button1, Send reminder om skoletur
         sys_tjek := P6_tekstTilChf("Vognløbet er ikke startet op til variabel kørsel, og jeg kan ikke ringe dig op. Vognløbet er ændret til opstart til garanti-tid. Mvh Midttrafik", kørselsaftale ,styresystem)
         sleep 500
         if (sysstjek = 1)
@@ -3294,7 +3255,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     if (valgtTekstTilChf == "s")
     {
 
-        GuiControl, trio_genvej:text, Button1, Send reminder om skoletur
+        ; GuiControl, trio_genvej:text, Button1, Send reminder om skoletur
         sys_tjek := P6_tekstTilChf("Er der blevet glemt at bede om ny ordre til skoleturen? Husk at få sendt ordrer ud ved opstart. Mvh. Midttrafik", kørselsaftale ,styresystem)
         sleep 500
         if (sysstjek = 1)
@@ -3334,7 +3295,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     if (valgtTekstTilChf == "S")
     {
 
-        GuiControl, trio_genvej:text, Button1, Send reminder om skoletur
+        ; GuiControl, trio_genvej:text, Button1, Send reminder om skoletur
         sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for skoleturen? Mvh. Midttrafik", kørselsaftale ,styresystem)
         sleep 500
         if (sysstjek = 1)
@@ -3374,7 +3335,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     if (valgtTekstTilChf == "p")
     {
 
-        GuiControl, trio_genvej:text, Button1, Send reminder om privatrejse
+        ; GuiControl, trio_genvej:text, Button1, Send reminder om privatrejse
         sys_tjek := P6_tekstTilChf("Er der blevet glemt at kvittere for privatrejsen? Mvh. Midttrafik", kørselsaftale ,styresystem)
         sleep 500
         if (sys_tjek = 1)
@@ -3413,7 +3374,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     }
     if (valgtTekstTilChf == "P")
     {
-        GuiControl, trio_genvej:text, Button1, Send advisering om lås grundet privatrejse
+        ; GuiControl, trio_genvej:text, Button1, Send advisering om lås grundet privatrejse
         systjek := p6_tekst_tjek_for_system(styresystem)
         if (systjek = 1)
         {
@@ -3449,7 +3410,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     }
     if (valgtTekstTilChf == "w")
     {
-        GuiControl, trio_genvej:text, Button1, Send Wakeup
+        ; GuiControl, trio_genvej:text, Button1, Send Wakeup
         sys_tjek := P6_tekstTilChf("Der er ikke bedt om vognløb start. Huske at bede om første køreordre ved opstart, uanset om der ligger ture eller ej. Mvh. Midttrafik", kørselsaftale, styresystem)
         sleep 500
         if (sys_tjek = 1)
@@ -3488,7 +3449,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     }
     if (valgtTekstTilChf == "W")
     {
-        GuiControl, trio_genvej:text, Button1, Send advisering om lås grundet Wakeup
+        ; GuiControl, trio_genvej:text, Button1, Send advisering om lås grundet Wakeup
         sys_tjek := P6_tekstTilChf("Jeg kan ikke ringe dig op, der er ikke trykket for første køreordre. Vognløbet er nu låst, ring til driften, hvis du er ude at køre.", kørselsaftale , styresystem)
         if (sys_tjek = 1)
         {
@@ -3526,7 +3487,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     }
     if (valgtTekstTilChf == "r")
     {
-        GuiControl, trio_genvej:text, Button1, Send advisering om forkert telefonnummer
+        ; GuiControl, trio_genvej:text, Button1, Send advisering om forkert telefonnummer
         systjek := p6_tekst_tjek_for_system(styresystem)
         if (systjek = 1)
         {
@@ -3560,7 +3521,7 @@ P6_TekstTilChfSendTekst(vl, kørselsaftale, styresystem, valgtTekstTilChf)
     }
     if (valgtTekstTilChf = "a")
     {
-        GuiControl, trio_genvej:text, Button1, Send advisering om forgæves tal
+        ; GuiControl, trio_genvej:text, Button1, Send advisering om forgæves tal
         tlf := ""
         tlf := P6_hent_vl_tlf()
         sys_tjek := P6_tekstTilChf("Jeg kan ikke ringe dig op på " tlf ". Tryk for opkald igen, hvis du stadig gerne vil ringes op. Mvh. Midttrafik", kørselsaftale, styresystem)
@@ -4689,55 +4650,12 @@ vlliste_vis_note_fra_planbillede()
 ; Sæt kopieret tlf i Trio
 Trio_opkald(telefon)
 {
-    ifWinNotExist, ahk_class Addressbook
-        ControlClick, x373 y72, ahk_class Agent Main GUI
-    ; ControlGetText, OutputVar [, Control, WinTitle, WinText, ExcludeTitle, ExcludeText]
-    ; if (Con)
-    trio_pause()
-    sleep 100
-    SendInput, {CtrlUp}{AltUp}
-    if (telefon = "")
-    {
-        MsgBox, , , Der er ikke lavet en markering af telefonnummer
-        trio_klar()
-        return
-    }
-    ControlGetText, tlf_test, Edit2, Trio Attendant
-    sleep 100
-    controlsend, , +{Escape}, ahk_class Addressbook
-    ; controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
-    sleep 100
-    ControlGetText, tlf_test, Edit2, Trio Attendant
-    while (tlf_test != "")
-    {
-        if (A_Index > 5)
-        {
-            MsgBox, 16, Fejl, Der er sket en fejl - Prøv igen
-            trio_klar()
-            return 0
-        }
-        if !WinExist("ahk_class Addressbook")
-            ControlClick, x373 y72, ahk_class Agent Main GUI
-        controlsend, Edit2, ^a{delete} ,ahk_class Addressbook
-        sleep 100
-        ControlGetText, tlf_test, Edit2, Trio Attendant
-    }
-    sleep 80
-    controlsend, Edit2, %telefon%, ahk_class Addressbook
-    sleep 200
-    ControlGetText, kobl_test, Button1, Trio Attendant
-    GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
-    ; virker ikke hos Brøgger???
-    ; if (kobl_test = "Koble")
-    ; {
-    ;     controlsend, , {ShiftDown}{enter}{ShiftUp}, ahk_class Addressbook
-    ;     return
-    ; }
-    ; Else
-    ; {
-    controlsend, , {NumpadDot}, ahk_class Addressbook
+    ; ControlSend, , +S, Puzzel Agent
+    ; sleep 100
+    ; ControlSend, , %telefon%, Puzzel Agent
+    ; sleep 100
+    ; ControlSend, , {alt down} o {alt up}, Puzzel Agent
     Return
-    ; }
 }
 
 ; ***
@@ -4748,7 +4666,7 @@ Trio_afslutopkald()
     ; ControlGetText, opkaldsstatus, Button1, Trio Attendant
     ; sleep 200
     ; MsgBox, , , % opkaldsstatus
-    ControlSend, , {NumpadSub}, ahk_class Agent Main GUI
+    ; ControlSend, , {NumpadSub}, ahk_class Agent Main GUI
     ; WinActivate, ahk_class AccessBar
     ; winwaitactive, ahk_class AccessBar
     ; sleep 40
@@ -4762,7 +4680,7 @@ Trio_linie1()
     ; ControlGetText, opkaldsstatus, Button1, Trio Attendant
     ; sleep 200
     ; MsgBox, , , % opkaldsstatus
-    ControlSend, , {F6}, ahk_class Agent Main GUI
+    ; ControlSend, , {F6}, ahk_class Agent Main GUI
     ; WinActivate, ahk_class AccessBar
     ; winwaitactive, ahk_class AccessBar
     ; sleep 40
@@ -4776,7 +4694,7 @@ Trio_linie2()
     ; ControlGetText, opkaldsstatus, Button1, Trio Attendant
     ; sleep 200
     ; MsgBox, , , % opkaldsstatus
-    ControlSend, , {F7}, ahk_class Agent Main GUI
+    ; ControlSend, , {F7}, ahk_class Agent Main GUI
     ; WinActivate, ahk_class AccessBar
     ; winwaitactive, ahk_class AccessBar
     ; sleep 40
@@ -4789,7 +4707,7 @@ Trio_linie2()
 ; Trio hop til efterbehandling
 trio_efterbehandling()
 {
-    WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Rolle, 9&
+    ; WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Rolle, 9&
     ; WinActivate, ahk_class Agent Main GUI
     ; winwaitactive, ahk_class Agent Main GUI
     ; sleep 40
@@ -4807,7 +4725,7 @@ trio_efterbehandling()
 ; Trio hop til midt uden overløb
 trio_udenov()
 {
-    WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Rolle, 4&
+    ; WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Rolle, 4&
     ; WinActivate, ahk_class Agent Main GUI
     ; winwaitactive, ahk_class Agent Main GUI
     ; sleep 40
@@ -4827,7 +4745,7 @@ trio_udenov()
 ; Trio hop til alarm
 trio_alarm()
 {
-    WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Rolle, 8&
+    ; WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Rolle, 8&
     ; WinActivate, ahk_class Agent Main GUI
     ; winwaitactive, ahk_class Agent Main GUI
     ; sleep 40
@@ -4845,7 +4763,7 @@ trio_alarm()
 ; Trio hop til pause
 trio_pause()
 {
-    WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Pause
+    ; WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Pause
     ; WinActivate, ahk_class AccessBar
     ; winwaitactive, ahk_class AccessBar
     ; sleep 100
@@ -4859,7 +4777,7 @@ trio_pause()
 ; Trio hop til klar
 trio_klar()
 {
-    WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Klar
+    ; WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Klar
     ; WinActivate, ahk_class AccessBar
     ; winwaitactive,0 ahk_class AccessBar
     ; Sleep 100
@@ -4873,7 +4791,7 @@ trio_klar()
 ; Trio hop til frokost
 trio_frokost()
 {
-    WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Rolle, 10&
+    ; WinMenuSelectItem, ahk_class Agent Main GUI, , Fil, Rolle, 10&
     ;winwaitactive, ahk_class Agent Main GUI
     ;sleep 40
     ;SendInput, !f
@@ -4890,9 +4808,6 @@ trio_frokost()
 
 trio_pauseklar()
 {
-    trio_pause()
-    sleep 900
-    trio_klar()
 
     Return
 }
@@ -4901,33 +4816,11 @@ trio_pauseklar()
 ;Træk tlf fra Trio indkomne kald
 Trio_hent_tlf()
 {
-    clipboard := ""
-    sleep 200
-    Sendinput !+k
-    ClipWait, 1
-    if (clipboard = "")
-    {
-        SendInput, !+k
-        ClipWait, 1
-    }
-    Telefon := Clipboard
-    trio_tlf_knap(Telefon)
-    rentelefon := Substr(Telefon, 4, 8)
-    return rentelefon
+return
 }
 
 trio_tlf_knap(ByRef tlf := "")
 {
-    ; global tlf
-    ; SendInput, +!k
-    ; tlf := "test
-    ; tlf := "+4512345678"
-    if (SubStr(tlf, 1, 1) = "+")
-        tlf_knap := SubStr(tlf, 4, 4) . " " . (SubStr(tlf, 8, 4))
-    else
-        tlf_knap := SubStr(tlf, 1, 4) . " " . SubStr(tlf, 5, 4)
-    sleep 100
-    GuiControl, tlf:text, Button1, Tlf: %tlf_knap%
     return
 }
 
@@ -5776,63 +5669,63 @@ excel_p6_faerge()
     #IfWinActive ; for at resette indent
     ; ***
     l_p6_søg_vl: ; Søg VL ud fra indgående kald i Trio
-    global s
-    tlf := Trio_hent_tlf()
-    WinActivate, PLANET, , ,
-    sleep s * 40
-    vl := P6_hent_vl_fra_tlf(tlf)
-    if (vl = 0)
-    {
-        MsgBox, , Tlf ikke registreret , Telefonnummeret er ikke registreret i Ethics., 1
-        WinActivate, PLANET, , ,
-        SendInput, !tp!l
-        sys_afslut_genvej()
-        return
-    }
-    else
-        sleep s * 40
-    P6_udfyld_k_og_s(vl)
-    sys_afslut_genvej()
+    ; global s
+    ; tlf := Trio_hent_tlf()
+    ; WinActivate, PLANET, , ,
+    ; sleep s * 40
+    ; vl := P6_hent_vl_fra_tlf(tlf)
+    ; if (vl = 0)
+    ; {
+    ;     MsgBox, , Tlf ikke registreret , Telefonnummeret er ikke registreret i Ethics., 1
+    ;     WinActivate, PLANET, , ,
+    ;     SendInput, !tp!l
+    ;     sys_afslut_genvej()
+    ;     return
+    ; }
+    ; else
+    ;     sleep s * 40
+    ; P6_udfyld_k_og_s(vl)
+    ; sys_afslut_genvej()
     Return
 
     ; ***r
     l_trio_til_p6: ;træk tlf til rejsesøg
-    global s
+    ; global s
 
-    If (IfWinNotExist, PLANET, , , )
-        MsgBox, , PLANET, P6 er ikke åben.,
-    Else
-    {
-        telefon := Trio_hent_tlf()
-        if (telefon = "63112200"){
-            P6_aktiver()
-            p6_vaelg_vl()
-            sys_afslut_genvej()
-            return
-        }
-        if (telefon = "")
-        {
-            MsgBox, , Intet indgående telefonnummer, Der er intet indgående telefonnummer, 1
-            sys_afslut_genvej()
-            return
-        }
-        if (telefon = "78410222")
-        {
+    ; If (IfWinNotExist, PLANET, , , )
+    ;     MsgBox, , PLANET, P6 er ikke åben.,
+    ; Else
+    ; {
+    ;     telefon := Trio_hent_tlf()
+    ;     if (telefon = "63112200"){
+    ;         P6_aktiver()
+    ;         p6_vaelg_vl()
+    ;         sys_afslut_genvej()
+    ;         return
+    ;     }
+    ;     if (telefon = "")
+    ;     {
+    ;         MsgBox, , Intet indgående telefonnummer, Der er intet indgående telefonnummer, 1
+    ;         sys_afslut_genvej()
+    ;         return
+    ;     }
+    ;     if (telefon = "78410222")
+    ;     {
 
-            P6_rejsesogvindue()
-            sleep s * 40
-            SendInput, ^t
-            sys_afslut_genvej()
-            return
-        }
-        Else
-        {
-            WinActivate, PLANET
-            P6_rejsesog_tlf(telefon)
-            sys_afslut_genvej()
-            return
-        }
-    }
+    ;         P6_rejsesogvindue()
+    ;         sleep s * 40
+    ;         SendInput, ^t
+    ;         sys_afslut_genvej()
+    ;         return
+    ;     }
+    ;     Else
+    ;     {
+    ;         WinActivate, PLANET
+    ;         P6_rejsesog_tlf(telefon)
+    ;         sys_afslut_genvej()
+    ;         return
+    ;     }
+    ; }
     return
 
     ; gå i vl
@@ -5882,54 +5775,10 @@ excel_p6_faerge()
 
     ; ^+F5 col 12
     l_p6_vm_ring_op: ; træk vm-tlf fra aktivt planbillede, ring op i Trio
-    sys_genvej_start(12)
-    P6_planvindue()
-    sleep s * 100
-    vm_tlf := P6_hent_vm_tlf()
-    if (vm_tlf = "fejl")
-    {
-
-        sys_afslut_genvej()
-        return
-    }
-    sleep 500
-    tjek := Trio_opkald(vm_tlf)
-    if (tjek := 0)
-    {
-        sys_afslut_genvej()
-        return
-    }
-    sleep 800
-    WinActivate, PLANET
-    sleep 3000
-    trio_klar()
-    sys_afslut_genvej()
     Return
 
     ; P6 - ring op til kunde markeret i Vl (kræver tlf opsat på kundetilladelse)
     l_p6_ring_til_kunde:
-    p6_hent_kunde_tlf(telefon)
-    sleep s * 200
-    if (SubStr(telefon, 1, 3) = "888")
-    {
-        MsgBox, , Telefon ikke tilknyttet, Kunden har ikke telefon tilknyttet.
-        sys_afslut_genvej()
-        return
-    }
-    Else
-    {
-        tjek := Trio_opkald(telefon)
-        if (tjek := 0)
-        {
-            trio_klar()
-            sys_afslut_genvej()
-            return
-        }
-        sleep 3000
-        trio_klar()
-        sys_afslut_genvej()
-        return
-    }
     return
     l_p6_laas_vl:
     sys_genvej_beskrivelse(62)
@@ -6113,7 +5962,7 @@ excel_p6_faerge()
 
     ; KeyWait Alt
     ; keywait Ctrl
-    GuiControl, trio_genvej:text, Button1, Afventer valg af tekstbesked`n`m for menu
+    ; GuiControl, trio_genvej:text, Button1, Afventer valg af tekstbesked`n`m for menu
     valgtTekstTilChf := P6TekstTilChfValg()
     if (valgtTekstTilChf = "")
         {
@@ -6136,31 +5985,22 @@ excel_p6_faerge()
 
     ;; Trio
     l_trio_klar: ;Trio klar
-    trio_klar()
     Return
 
     l_trio_pause: ;Trio pause
-    trio_pause()
     Return
 
     l_trio_udenov: ;Trio Midt uden overløb
-    trio_udenov()
-    trio_klar()
     Return
 
     l_trio_efterbehandling: ;Trio efterbehandling
-    trio_efterbehandling()
-    trio_pauseklar()
     Return
     l_trio_linie1: ;Trio efterbehandling
-    trio_linie1()
     Return
     l_trio_linie2: ;Trio efterbehandling
-    trio_linie2()
     Return
 
     l_trio_alarm: ;Trio alarm bruger.9
-    trio_alarm()
     Return
 
     l_trio_frokost: ;Trio frokostr. bruger.10
@@ -6168,121 +6008,19 @@ excel_p6_faerge()
     Return
 
     l_triokald_til_udklip: ; trækker indkommende kald til udklip, ringer ikke op.
-    sys_genvej_start(29)
-    clipboard := Trio_hent_tlf()
-    sys_afslut_genvej()
     Return
 
     ; Telenor accepter indgående kald, søg planet
     l_trio_P6_opslag: ; brug label ist. for hotkey, defineret ovenfor. Bruger.4
-    sys_genvej_start(4)
-    if (!WinExist("--- ahk_exe Miralix OfficeClient.exe") and !WinExist("+ ahk_exe Miralix OfficeClient.exe"))
-    {
-        Trio_afslutopkald()
-        sys_afslut_genvej()
         return
-    }
-    if (WinExist("+4570112210 ahk_exe Miralix OfficeClient.exe"))
-    {
-        SendInput, % bruger_genvej[68] ; Misser den af og til?
-        sys_afslut_genvej()
-        return
-    }
-
-    if (WinExist("--- ahk_exe Miralix OfficeClient.exe") OR WinExist("+ ahk_exe Miralix OfficeClient.exe")OR WinExist(" ahk_exe Miralix OfficeClient.exe"))
-    {
-        ControlGetText, koble_test, Button1, Trio Attendant
-        SendInput, % bruger_genvej[68] ; Misser den af og til?
-        sleep 40
-        telefon := Trio_hent_tlf()
-        sleep 40
-        P6_aktiver()
-        if (telefon = "63112200")
-        {
-            P6_aktiver()
-            sleep 100
-            p6_vaelg_vl()
-            sys_afslut_genvej()
-            return
-        }
-        if (telefon = "")
-        {
-            MsgBox, , , Intet indgående telefonnummer el. hemmeligt nummer, 1
-            P6_aktiver()
-            sleep 100
-            p6_vaelg_vl()
-            sys_afslut_genvej()
-            return
-        }
-        vl := P6_hent_vl_fra_tlf(telefon)
-        if vl
-        {
-            sleep 200
-            P6_udfyld_k_og_s(vl)
-            sys_afslut_genvej()
-            Return
-        }
-        if (telefon = "78410222" OR telefon ="78410224") ; mangler yderligere?
-        {
-            ; MsgBox, ,CPR, CPR, 1
-            sleep 200
-            P6_rejsesogvindue()
-            SendInput, ^t
-            sys_afslut_genvej()
-            return
-        }
-        Else
-        {
-            sleep 200
-            P6_rejsesogvindue(telefon)
-            sys_afslut_genvej()
-            return
-        }
-        return
-    }
 
     ; Opkald på markeret tekst. Kolonne 28
     l_trio_opkald_markeret: ; Kald det markerede nummer i trio, global. Bruger.12
-    sys_genvej_start(28)
-    SendInput, {click}
-    sleep 100
-    SendInput, {Click}
-    sleep 200
-    clipboard := ""
-    SendInput, ^c
-    ClipWait, 1.3, 0
-    if (clipboard = "")
-    {
-        SendInput, {click}
-        sleep 100
-        SendInput, {Click}
-        sleep 200
-        clipboard := ""
-        SendInput, ^c
-        ClipWait, 1.3, 0
-    }
-    telefon := clipboard
-    telefon := RegExReplace(telefon, "\D")
-    GuiControl, trio_genvej:text, Button1, Ringer op til %telefon%
-    sleep 300
-    tjek := Trio_opkald(telefon)
-    if (tjek := 0)
-    {
-        trio_klar()
-        sys_afslut_genvej()
-        return
-    }
-    sleep 3100 ; for at genvejsbeskrivelsen bliver der - et problem?
-    trio_klar()
-    sys_afslut_genvej()
     Return
 
     ; Minus på numpad afslutter Trioopkald global (Skal der tilbage til P6?)
     l_trio_afslut_opkald:
     l_trio_afslut_opkaldB:
-    sys_genvej_start(30)
-    Trio_afslutopkald()
-    sys_afslut_genvej()
     Return
 
     ;; Flexfinder
@@ -7689,15 +7427,14 @@ excel_p6_faerge()
     return
 
     }
-    #IfWinActive, Opkald
-    NumpadEnter::
-    Enter::
-    {
-    Gui, opkald: Submit
-    Trio_opkald(guitlf)
-    return
+    
+    ; Enter::
+    ; {
+    ; Gui, opkald: Submit
+    ; Trio_opkald(guitlf)
+    ; return
 
-    }
+    ; }
     Esc::
     {
     gui, opkald: Submit
