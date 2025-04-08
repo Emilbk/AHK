@@ -4816,7 +4816,7 @@ trio_pauseklar()
 ;Træk tlf fra Trio indkomne kald
 Trio_hent_tlf()
 {
-return
+    return
 }
 
 trio_tlf_knap(ByRef tlf := "")
@@ -7427,7 +7427,7 @@ excel_p6_faerge()
     return
 
     }
-    
+
     ; Enter::
     ; {
     ; Gui, opkald: Submit
@@ -8156,7 +8156,7 @@ excel_p6_faerge()
     outlook_template := A_ScriptDir . "\lib\svigt_template.oft"
     forgTemplate := outlook.createitemfromtemplate(outlook_template)
     forgTemplate.sentOnBehalfOfName := "planet@midttrafik.dk"
-    forgTemplate.to := "patientbefordringsmail"
+    forgTemplate.to := "praehospital.midttrafikdata@rm.dk"
     forgTemplate.subject := turResult.Overskrift ": "turResult.PatientNavn " (" turResult.afd ")"
     ; forgTemplate.body := ImagePutFile(skærmpr)
     ; forgTemplate.attachments.add(skærmprLok)
@@ -8172,17 +8172,13 @@ excel_p6_faerge()
     Dato for afhentning: {7}
     Klokkeslæt for afhentning: {8}
 
-
-
-
-
     )"
     forgTekst := format(forgTekst, turResult.årsag, turResult.PatientNavn, turResult.patientCPR, turResult.fraAdresse ", " turResult.afhentningKommune, turResult.tilAdr ", " turResult.afleveringKommune, turResult.afd, turResult.turDato, turResult.turTidspunkt)
     forgTemplate.body := forgTekst
 
     forgTemplate.display()
     WinActivate, "forgæves"
-    SendInput, {down 12} ^v {PgUp 2}
+    SendInput, {down 8} ^v {PgUp 2}
 
     GuiControl, Text, underretningBeskrivelse,
     GuiControl, , underretningRadio, 0
@@ -8199,6 +8195,20 @@ excel_p6_faerge()
     l_p6_underretning:
         sys_genvej_start(78)
         sleep 100
+
+        if (A_WDay = 6){
+            if ((a_hour . A_Min >= 1200) or (A_Hour . a_min <= 0800)){
+            MsgBox, ,, Ingen mailadvisering udenfor åbningstid
+            return
+            }
+        }
+        else
+          if ((a_hour . A_Min >= 1400) or (A_Hour . a_min <= 0800)){
+            MsgBox, ,, Ingen mailadvisering udenfor åbningstid
+            return
+
+        }
+
         gui underretningGUI: Show, H250 W500
         ControlFocus, Edit1, Underretning patientbefordring
         sys_afslut_genvej()
